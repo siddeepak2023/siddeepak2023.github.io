@@ -12,11 +12,11 @@ public class GuessingGame {
     // Program Variables
     static Scanner scanner = new Scanner(System.in);
     static final int MIN_GUESS = 1;
-    static final int MAX_GUESS = 10;
+    static final int MAX_GUESS = 50;
 
     // Game Variables
     static int answer;
-    static int[] guessedNumbers;
+    static int[] guessedNumbers = new int[MAX_GUESS+2];
 
     public static void main(String[] args) {
         boolean game = playGame(), running = game;
@@ -45,7 +45,8 @@ public class GuessingGame {
      * Populates game variables
      */
     private static void init() {
-        //TODO: write this method
+        answer = (int) (Math.random()*(MAX_GUESS-MIN_GUESS)+MIN_GUESS);
+
     }
 
     /**
@@ -53,17 +54,21 @@ public class GuessingGame {
      * @return boolean value of the answer
      */
     private static boolean playGame() {
-        //TODO: write this method
+        System.out.println("press y to play game");
+        String userinput = scanner.nextLine();
+        if("y".equals(userinput)){
+            return true;
+        }
         return false;
     }
 
     /**
      * Asks the player for a guess
      * Must not allow the player to crash the game
-     * @return int of the player's guess
+     * @returni int of the player's guess
      */
     private static int getGuess() {
-        //TODO write this method
+        answer = (int) (Math.random()*(MAX_GUESS-MIN_GUESS)+MIN_GUESS);
         return -1;
     }
 
@@ -74,7 +79,7 @@ public class GuessingGame {
      * @return int of the computer's guess
      */
     private static int getCompGuess() {
-        //TODO write this method
+        answer = (int) (Math.random()*(MAX_GUESS-MIN_GUESS)+MIN_GUESS);
         return -1;
     }
 }
