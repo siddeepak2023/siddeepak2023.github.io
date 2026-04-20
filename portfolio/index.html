@@ -133,7 +133,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-val">7</div><div class="hstat-lbl">live projects</div></div>
+    <div class="hstat"><div class="hstat-val">8</div><div class="hstat-lbl">live projects</div></div>
   </div>
 </section>
 
@@ -142,7 +142,25 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
   <div class="projects-grid">
 
     <div class="project-card fade-in">
-      <span class="project-num">01 — MACHINE LEARNING · BUSINESS INTELLIGENCE</span>
+      <span class="project-num">01 — MACHINE LEARNING · PREDICTIVE ANALYTICS</span>
+      <h3 class="project-title">U.S. Flight Delay Intelligence Engine</h3>
+      <p class="project-desc">LightGBM classifier trained on 72M+ real BTS domestic flights (2015–2024) predicting delay risk with 84.7% accuracy and AUC 0.891. Route-level risk atlas for 5,248 O-D pairs, airline reliability index, airport bottleneck heatmap, and an interactive predictor backed by real historical patterns.</p>
+      <div class="mini-label">Annual delay rate 2015–2024 — 72M flights</div>
+      <div class="mini-wrap"><canvas id="flightChart"></canvas></div>
+      <div class="project-stats">
+        <span class="stat-pill">72M+ flights</span><span class="stat-pill">84.7% accuracy</span><span class="stat-pill">AUC 0.891</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span><span class="stack-tag">LightGBM</span><span class="stack-tag">BTS Data</span><span class="stack-tag">Chart.js</span><span class="stack-tag">HTML/JS</span>
+      </div>
+      <div class="project-links">
+        <a href="flight_delay_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+        <a href="https://github.com/siddeepak2023/flight-delay-intelligence" target="_blank" class="project-link">GitHub</a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in">
+      <span class="project-num">02 — MACHINE LEARNING · BUSINESS INTELLIGENCE</span>
       <h3 class="project-title">Retail Customer Intelligence Platform</h3>
       <p class="project-desc">End-to-end customer analytics platform on 805K cleaned transactions (Dec 2009–Dec 2011) across 38 countries. RFM segmentation identifies 5 customer tiers. Random forest churn model hits 75.4% accuracy with 0.834 ROC-AUC, flagging £1.46M revenue at risk. Includes market basket association rules and product recommendation engine.</p>
       <div class="mini-label">Monthly revenue trend — £17.74M total (2009–2011)</div>
@@ -159,7 +177,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">02 — DATA VIZ · THREE.JS</span>
+      <span class="project-num">03 — DATA VIZ · THREE.JS</span>
       <h3 class="project-title">Universe Data Visualization Dashboard</h3>
       <p class="project-desc">Real-time interactive 3D explorer visualizing 1M+ real astronomical objects — 500K Gaia DR3 stars, 200K HyperLEDA galaxies, NASA exoplanets, and SDSS quasars. Python pipeline pulls from 6 live scientific APIs converting raw coordinates into 3D positions using Astropy.</p>
       <div class="mini-label">Object type distribution (1M+ records)</div>
@@ -177,7 +195,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">03 — SPORTS ANALYTICS · MARKET EFFICIENCY</span>
+      <span class="project-num">04 — SPORTS ANALYTICS · MARKET EFFICIENCY</span>
       <h3 class="project-title">NFL Market Efficiency Dashboard</h3>
       <p class="project-desc">25 seasons of real NFL data (nflverse, 1999–2024) analyzed for betting market inefficiencies. Computes ATS cover rates, home field advantage trends, totals market calibration, and team-level spread records — all live in the browser. The 2020 no-fans season is a natural experiment in crowd effect on home advantage.</p>
       <div class="mini-label">Home ATS rate by season — 2020 (no fans) highlighted</div>
@@ -195,7 +213,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">04 — SQL · BUSINESS INTELLIGENCE</span>
+      <span class="project-num">05 — SQL · BUSINESS INTELLIGENCE</span>
       <h3 class="project-title">Olist E-Commerce Revenue Analysis</h3>
       <p class="project-desc">End-to-end BI project analyzing 96K+ real Brazilian e-commerce transactions across 9 relational tables using advanced SQL — CTEs, window functions, multi-table JOINs. Identified Health & Beauty as the #1 category at R$1.4M and discovered a 31% review score drop for orders with 21+ day delivery.</p>
       <div class="mini-label">Revenue by top 5 categories (R$M)</div>
@@ -214,7 +232,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">05 — MACHINE LEARNING · CLASSIFICATION</span>
+      <span class="project-num">06 — MACHINE LEARNING · CLASSIFICATION</span>
       <h3 class="project-title">T-Mobile Customer Churn Prediction</h3>
       <p class="project-desc">Logistic regression and random forest models predicting telecom churn with 79% accuracy and 0.834 ROC-AUC on 7K+ records. Identified month-to-month contracts (42.7% churn) and 0–12 month customers (47.7% churn) as top risk segments. Outputs a prioritized top-100 list with $334K+ revenue at risk.</p>
       <div class="mini-label">ROC curve — random forest (AUC = 0.834)</div>
@@ -232,7 +250,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">06 — STATISTICS · A/B TESTING</span>
+      <span class="project-num">07 — STATISTICS · A/B TESTING</span>
       <h3 class="project-title">Spotify Email Campaign A/B Test</h3>
       <p class="project-desc">Designed and analyzed an email marketing A/B test across 10,000 users using two-proportion z-tests. Found statistically significant lifts of 27.5% in open rate and 470% in conversion rate (p &lt; 0.05). Projected $83.9M additional annual Premium revenue if winning variant rolled out to 250M users.</p>
       <div class="mini-label">Funnel comparison — Variant A vs B</div>
@@ -250,7 +268,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">07 — TIME SERIES · FORECASTING</span>
+      <span class="project-num">08 — TIME SERIES · FORECASTING</span>
       <h3 class="project-title">Netflix Stock Intelligence Dashboard</h3>
       <p class="project-desc">Full-stack stock analysis app computing RSI, MACD, and Bollinger Bands on real Netflix data. Trains Facebook's Prophet model with custom quarterly seasonality, evaluated on a 90-day holdout with RMSE, MAE, and MAPE reporting and forecast horizon up to 365 days.</p>
       <div class="mini-label">Forecast vs actuals — 90-day holdout (simulated)</div>
@@ -348,6 +366,8 @@ Chart.defaults.color=MU;Chart.defaults.borderColor='rgba(74,222,128,0.07)';
   }
   init();draw();window.addEventListener('resize',resize);
 })();
+
+new Chart(document.getElementById('flightChart'),{type:'line',data:{labels:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],datasets:[{data:[19.7,19.7,19.0,19.0,21.7,18.9,22.0,23.5,20.0,19.5],borderColor:'#a78bfa',borderWidth:1.8,pointRadius:pts=>[0,0,0,0,0,3,0,3,0,0][pts.dataIndex]||0,pointBackgroundColor:['#a78bfa','#a78bfa','#a78bfa','#a78bfa','#a78bfa','#a78bfa','#f87171','#f87171','#a78bfa','#a78bfa'],tension:.4,fill:true,backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,76);g.addColorStop(0,'rgba(167,139,250,.2)');g.addColorStop(1,'rgba(167,139,250,0)');return g;}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1400}}});
 
 new Chart(document.getElementById('netflixChart'),{type:'line',data:{labels:Array.from({length:24},(_,i)=>i),datasets:[
   {data:[487,512,498,523,541,529,558,572,561,580,603,589,612,624,598,641,null,null,null,null,null,null,null,null],borderColor:G,borderWidth:1.8,pointRadius:0,tension:.4,fill:false},
