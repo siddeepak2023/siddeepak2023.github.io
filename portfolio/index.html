@@ -133,7 +133,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-val">5</div><div class="hstat-lbl">live projects</div></div>
+    <div class="hstat"><div class="hstat-val">7</div><div class="hstat-lbl">live projects</div></div>
   </div>
 </section>
 
@@ -142,20 +142,19 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
   <div class="projects-grid">
 
     <div class="project-card fade-in">
-      <span class="project-num">01 — TIME SERIES · FORECASTING</span>
-      <h3 class="project-title">Netflix Stock Intelligence Dashboard</h3>
-      <p class="project-desc">Full-stack stock analysis app computing RSI, MACD, and Bollinger Bands on real Netflix data. Trains Facebook's Prophet model with custom quarterly seasonality, evaluated on a 90-day holdout with RMSE, MAE, and MAPE reporting and forecast horizon up to 365 days.</p>
-      <div class="mini-label">Forecast vs actuals — 90-day holdout (simulated)</div>
-      <div class="mini-wrap"><canvas id="netflixChart"></canvas></div>
+      <span class="project-num">01 — MACHINE LEARNING · BUSINESS INTELLIGENCE</span>
+      <h3 class="project-title">Retail Customer Intelligence Platform</h3>
+      <p class="project-desc">End-to-end customer analytics platform on 805K cleaned transactions (Dec 2009–Dec 2011) across 38 countries. RFM segmentation identifies 5 customer tiers. Random forest churn model hits 75.4% accuracy with 0.834 ROC-AUC, flagging £1.46M revenue at risk. Includes market basket association rules and product recommendation engine.</p>
+      <div class="mini-label">Monthly revenue trend — £17.74M total (2009–2011)</div>
+      <div class="mini-wrap"><canvas id="retailChart"></canvas></div>
       <div class="project-stats">
-        <span class="stat-pill">90-day holdout</span><span class="stat-pill">365-day forecast</span><span class="stat-pill">Prophet model</span>
+        <span class="stat-pill">805K transactions</span><span class="stat-pill">£17.74M revenue</span><span class="stat-pill">38 countries</span>
       </div>
       <div class="project-stack">
-        <span class="stack-tag">Python</span><span class="stack-tag">Streamlit</span><span class="stack-tag">Prophet</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Matplotlib</span>
+        <span class="stack-tag">Python</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Pandas</span><span class="stack-tag">RFM Analysis</span><span class="stack-tag">HTML/JS</span>
       </div>
       <div class="project-links">
-        <a href="https://netflix-stock-forecasting-d3qozca3cxnvvwzrvhcn2a.streamlit.app" target="_blank" class="project-link demo">Live Demo ↗</a>
-        <a href="https://github.com/siddeepak2023/netflix-stock-prediction" target="_blank" class="project-link">GitHub</a>
+        <a href="retail_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
       </div>
     </div>
 
@@ -178,7 +177,25 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">03 — SQL · BUSINESS INTELLIGENCE</span>
+      <span class="project-num">03 — SPORTS ANALYTICS · MARKET EFFICIENCY</span>
+      <h3 class="project-title">NFL Market Efficiency Dashboard</h3>
+      <p class="project-desc">25 seasons of real NFL data (nflverse, 1999–2024) analyzed for betting market inefficiencies. Computes ATS cover rates, home field advantage trends, totals market calibration, and team-level spread records — all live in the browser. The 2020 no-fans season is a natural experiment in crowd effect on home advantage.</p>
+      <div class="mini-label">Home ATS rate by season — 2020 (no fans) highlighted</div>
+      <div class="mini-wrap"><canvas id="bettingChart"></canvas></div>
+      <div class="project-stats">
+        <span class="stat-pill">6,500+ real games</span><span class="stat-pill">26 NFL seasons</span><span class="stat-pill">Live data fetch</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">JavaScript</span><span class="stack-tag">PapaParse</span><span class="stack-tag">Chart.js</span><span class="stack-tag">nflverse API</span><span class="stack-tag">HTML/JS</span>
+      </div>
+      <div class="project-links">
+        <a href="sports_betting_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+        <a href="https://github.com/nflverse/nfldata" target="_blank" class="project-link secondary">Data Source ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in">
+      <span class="project-num">04 — SQL · BUSINESS INTELLIGENCE</span>
       <h3 class="project-title">Olist E-Commerce Revenue Analysis</h3>
       <p class="project-desc">End-to-end BI project analyzing 96K+ real Brazilian e-commerce transactions across 9 relational tables using advanced SQL — CTEs, window functions, multi-table JOINs. Identified Health & Beauty as the #1 category at R$1.4M and discovered a 31% review score drop for orders with 21+ day delivery.</p>
       <div class="mini-label">Revenue by top 5 categories (R$M)</div>
@@ -197,7 +214,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">04 — MACHINE LEARNING · CLASSIFICATION</span>
+      <span class="project-num">05 — MACHINE LEARNING · CLASSIFICATION</span>
       <h3 class="project-title">T-Mobile Customer Churn Prediction</h3>
       <p class="project-desc">Logistic regression and random forest models predicting telecom churn with 79% accuracy and 0.834 ROC-AUC on 7K+ records. Identified month-to-month contracts (42.7% churn) and 0–12 month customers (47.7% churn) as top risk segments. Outputs a prioritized top-100 list with $334K+ revenue at risk.</p>
       <div class="mini-label">ROC curve — random forest (AUC = 0.834)</div>
@@ -215,7 +232,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">05 — STATISTICS · A/B TESTING</span>
+      <span class="project-num">06 — STATISTICS · A/B TESTING</span>
       <h3 class="project-title">Spotify Email Campaign A/B Test</h3>
       <p class="project-desc">Designed and analyzed an email marketing A/B test across 10,000 users using two-proportion z-tests. Found statistically significant lifts of 27.5% in open rate and 470% in conversion rate (p &lt; 0.05). Projected $83.9M additional annual Premium revenue if winning variant rolled out to 250M users.</p>
       <div class="mini-label">Funnel comparison — Variant A vs B</div>
@@ -229,6 +246,24 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
       <div class="project-links">
         <a href="spotify_ab_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
         <a href="https://github.com/siddeepak2023/spotify-email-ab-test" target="_blank" class="project-link">GitHub</a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in">
+      <span class="project-num">07 — TIME SERIES · FORECASTING</span>
+      <h3 class="project-title">Netflix Stock Intelligence Dashboard</h3>
+      <p class="project-desc">Full-stack stock analysis app computing RSI, MACD, and Bollinger Bands on real Netflix data. Trains Facebook's Prophet model with custom quarterly seasonality, evaluated on a 90-day holdout with RMSE, MAE, and MAPE reporting and forecast horizon up to 365 days.</p>
+      <div class="mini-label">Forecast vs actuals — 90-day holdout (simulated)</div>
+      <div class="mini-wrap"><canvas id="netflixChart"></canvas></div>
+      <div class="project-stats">
+        <span class="stat-pill">90-day holdout</span><span class="stat-pill">365-day forecast</span><span class="stat-pill">Prophet model</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span><span class="stack-tag">Streamlit</span><span class="stack-tag">Prophet</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Matplotlib</span>
+      </div>
+      <div class="project-links">
+        <a href="https://netflix-stock-forecasting-d3qozca3cxnvvwzrvhcn2a.streamlit.app" target="_blank" class="project-link demo">Live Demo ↗</a>
+        <a href="https://github.com/siddeepak2023/netflix-stock-prediction" target="_blank" class="project-link">GitHub</a>
       </div>
     </div>
 
@@ -319,6 +354,8 @@ new Chart(document.getElementById('netflixChart'),{type:'line',data:{labels:Arra
   {data:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,641,658,643,672,688,665,694,711,698],borderColor:MU,borderWidth:1.5,borderDash:[4,3],pointRadius:0,tension:.4,fill:false}
 ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1400}}});
 
+new Chart(document.getElementById('retailChart'),{type:'line',data:{labels:['Dec\'09','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec\'11'],datasets:[{data:[687,557,506,700,595,600,639,592,604,832,1037,1172,885,569,447,596,469,679,661,600,645,953,1039,1162,518],borderColor:G,borderWidth:1.8,pointRadius:0,tension:.4,fill:true,backgroundColor:(ctx)=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,76);g.addColorStop(0,'rgba(74,222,128,.18)');g.addColorStop(1,'rgba(74,222,128,0)');return g;}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1400}}});
+
 new Chart(document.getElementById('universeChart'),{type:'bar',data:{labels:['Gaia Stars','HyperLEDA Galaxies','NASA Exoplanets','SDSS Quasars'],datasets:[{data:[500,200,5.5,0.5],backgroundColor:[G+'cc',G2+'bb',MU+'99',MU+'55'],borderWidth:0,borderRadius:3}]},
 options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:600},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1400}}});
 
@@ -338,6 +375,16 @@ new Chart(document.getElementById('spotifyChart'),{type:'bar',data:{labels:['Ope
   {label:'Variant A',data:[25.2,1.70,0.06],backgroundColor:'rgba(255,255,255,.1)',borderWidth:0,borderRadius:3},
   {label:'Variant B',data:[32.1,3.71,0.34],backgroundColor:G+'cc',borderWidth:0,borderRadius:3}
 ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,boxHeight:8,padding:10,usePointStyle:true}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{display:false}},barPercentage:.65,categoryPercentage:.7,animation:{duration:1400}}});
+
+(function(){
+  const seasons=[1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+  const atsRates=[51.2,49.8,52.1,50.4,48.9,51.7,50.2,49.6,52.3,50.8,51.4,49.2,50.9,51.6,49.3,52.0,50.7,49.5,51.1,50.3,51.8,46.2,50.6,49.9,51.3,50.1];
+  const colors=seasons.map(s=>s===2020?'#f59e0b':atsRates[seasons.indexOf(s)]>50?'rgba(74,222,128,.7)':'rgba(248,113,113,.6)');
+  new Chart(document.getElementById('bettingChart'),{type:'bar',data:{labels:seasons,datasets:[
+    {data:atsRates,backgroundColor:colors,borderWidth:0,borderRadius:1},
+    {type:'line',data:seasons.map(()=>50),borderColor:'rgba(248,113,113,.4)',borderWidth:1,borderDash:[3,3],pointRadius:0,fill:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false,min:44,max:56}},animation:{duration:1600}}});
+})();
 
 const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:.08});
 document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
