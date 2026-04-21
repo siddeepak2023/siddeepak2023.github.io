@@ -1,0 +1,203 @@
+{
+  "model_version": "hgbm_v1",
+  "feature_cols": [
+    "home_roll_win_pct",
+    "home_roll_pts",
+    "home_roll_off_rtg",
+    "home_roll_ts",
+    "home_roll_pace",
+    "home_roll_tov",
+    "home_roll_oreb",
+    "home_roll_reb",
+    "home_roll_ast",
+    "home_roll_fg3_rate",
+    "home_rest_days",
+    "home_season_win_pct",
+    "away_roll_win_pct",
+    "away_roll_pts",
+    "away_roll_off_rtg",
+    "away_roll_ts",
+    "away_roll_pace",
+    "away_roll_tov",
+    "away_roll_oreb",
+    "away_roll_reb",
+    "away_roll_ast",
+    "away_roll_fg3_rate",
+    "away_rest_days",
+    "away_season_win_pct",
+    "diff_roll_win_pct",
+    "diff_roll_pts",
+    "diff_roll_off_rtg",
+    "diff_roll_ts",
+    "diff_roll_pace",
+    "diff_roll_tov",
+    "diff_roll_oreb",
+    "diff_roll_reb",
+    "diff_roll_ast",
+    "diff_roll_fg3_rate",
+    "diff_rest_days",
+    "diff_season_win_pct"
+  ],
+  "cv_auc_mean": 0.6157,
+  "cv_auc_std": 0.044,
+  "train": {
+    "accuracy": 0.9349,
+    "auc": 0.9869,
+    "log_loss": 0.4843,
+    "brier": 0.1503,
+    "n": 2413
+  },
+  "test": {
+    "accuracy": 0.5935,
+    "auc": 0.6311,
+    "log_loss": 0.6658,
+    "brier": 0.2364,
+    "n": 1230
+  },
+  "feature_importance": [
+    {
+      "feature": "diff_season_win_pct",
+      "importance": 0.03567
+    },
+    {
+      "feature": "away_roll_reb",
+      "importance": 0.00856
+    },
+    {
+      "feature": "home_season_win_pct",
+      "importance": 0.00715
+    },
+    {
+      "feature": "diff_roll_oreb",
+      "importance": 0.00595
+    },
+    {
+      "feature": "diff_roll_off_rtg",
+      "importance": 0.00565
+    },
+    {
+      "feature": "home_roll_off_rtg",
+      "importance": 0.00499
+    },
+    {
+      "feature": "away_roll_tov",
+      "importance": 0.0047
+    },
+    {
+      "feature": "away_roll_oreb",
+      "importance": 0.00448
+    },
+    {
+      "feature": "away_roll_off_rtg",
+      "importance": 0.00419
+    },
+    {
+      "feature": "diff_roll_reb",
+      "importance": 0.00415
+    },
+    {
+      "feature": "home_roll_fg3_rate",
+      "importance": 0.00322
+    },
+    {
+      "feature": "away_roll_ts",
+      "importance": 0.00291
+    },
+    {
+      "feature": "diff_roll_ts",
+      "importance": 0.00246
+    },
+    {
+      "feature": "home_roll_pace",
+      "importance": 0.00228
+    },
+    {
+      "feature": "home_roll_ts",
+      "importance": 0.00205
+    },
+    {
+      "feature": "home_roll_pts",
+      "importance": 0.00199
+    },
+    {
+      "feature": "diff_rest_days",
+      "importance": 0.0017
+    },
+    {
+      "feature": "home_roll_reb",
+      "importance": 0.0016
+    },
+    {
+      "feature": "home_roll_win_pct",
+      "importance": 0.00132
+    },
+    {
+      "feature": "diff_roll_fg3_rate",
+      "importance": 0.00131
+    },
+    {
+      "feature": "away_roll_ast",
+      "importance": -0.00023
+    },
+    {
+      "feature": "home_roll_ast",
+      "importance": -0.00023
+    },
+    {
+      "feature": "away_season_win_pct",
+      "importance": -0.00026
+    },
+    {
+      "feature": "away_rest_days",
+      "importance": -0.00033
+    },
+    {
+      "feature": "diff_roll_pace",
+      "importance": -0.00041
+    },
+    {
+      "feature": "home_roll_tov",
+      "importance": -0.00066
+    },
+    {
+      "feature": "away_roll_fg3_rate",
+      "importance": -0.00103
+    },
+    {
+      "feature": "home_rest_days",
+      "importance": -0.00123
+    },
+    {
+      "feature": "diff_roll_win_pct",
+      "importance": -0.00136
+    },
+    {
+      "feature": "diff_roll_pts",
+      "importance": -0.00169
+    },
+    {
+      "feature": "diff_roll_tov",
+      "importance": -0.00178
+    },
+    {
+      "feature": "home_roll_oreb",
+      "importance": -0.00219
+    },
+    {
+      "feature": "away_roll_pts",
+      "importance": -0.00241
+    },
+    {
+      "feature": "diff_roll_ast",
+      "importance": -0.00303
+    },
+    {
+      "feature": "away_roll_pace",
+      "importance": -0.00303
+    },
+    {
+      "feature": "away_roll_win_pct",
+      "importance": -0.00759
+    }
+  ]
+}

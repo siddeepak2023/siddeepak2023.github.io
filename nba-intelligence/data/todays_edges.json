@@ -1,0 +1,6 @@
+{
+  "date": "2026-04-20",
+  "model_version": "hgbm_v1",
+  "games": [],
+  "note": "No odds data available \u2014 set ODDS_API_KEY and re-run pipeline."
+}
