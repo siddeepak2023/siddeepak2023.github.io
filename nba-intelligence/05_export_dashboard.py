@@ -17,6 +17,7 @@ DB_PATH        = "data/nba.db"
 FEATURES_CSV   = "data/features.csv"
 METRICS_JSON   = "data/model_metrics.json"
 EDGES_JSON     = "data/todays_edges.json"
+BACKTEST_JSON  = "data/backtest.json"
 OUTPUT_JSON    = "data/dashboard_data.json"
 
 logging.basicConfig(
@@ -154,9 +155,10 @@ def build_h2h(conn) -> list:
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 def main():
-    conn    = sqlite3.connect(DB_PATH)
-    metrics = load_json(METRICS_JSON)
-    edges   = load_json(EDGES_JSON)
+    conn      = sqlite3.connect(DB_PATH)
+    metrics   = load_json(METRICS_JSON)
+    edges     = load_json(EDGES_JSON)
+    backtest  = load_json(BACKTEST_JSON)
 
     log.info("Building standings …")
     standings = build_standings(conn)
@@ -216,6 +218,25 @@ def main():
         },
         "h2h": h2h,
         "season_game_counts": season_counts,
+        "backtest": {
+            "season":           backtest["season"],
+            "total_games":      backtest["total_games"],
+            "overall_accuracy": backtest["overall_accuracy"],
+            "flat_bet":         backtest["flat_bet"],
+            "vig_odds":         backtest["vig_odds"],
+            "breakeven_pct":    backtest["breakeven_pct"],
+            "conf_thresh":      backtest["conf_thresh"],
+            "edge_thresh":      backtest["edge_thresh"],
+            "strategy_a":       backtest["strategy_a"],
+            "strategy_b":       backtest["strategy_b"],
+            "strategy_a_monthly":    backtest["strategy_a_monthly"],
+            "strategy_b_monthly":    backtest["strategy_b_monthly"],
+            "strategy_a_cumulative": backtest["strategy_a_cumulative"],
+            "strategy_b_cumulative": backtest["strategy_b_cumulative"],
+            "recent_picks":     backtest["recent_picks"],
+        },
+        "matchups":     backtest["matchups"],
+        "team_ratings": backtest["team_ratings"],
     }
 
     with open(OUTPUT_JSON, "w") as f:
