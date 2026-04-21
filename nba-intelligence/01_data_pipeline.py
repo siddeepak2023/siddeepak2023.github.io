@@ -20,7 +20,12 @@ from nba_api.stats.static import teams as nba_teams_static
 
 # ── Config ──────────────────────────────────────────────────────────────────
 DB_PATH       = "data/nba.db"
-SEASONS       = ["2022-23", "2023-24", "2024-25"]
+SEASONS       = [
+    "2016-17", "2017-18", "2018-19", "2019-20",
+    "2020-21", "2021-22", "2022-23", "2023-24", "2024-25",
+]
+# 2019-20 bubble games (after restart) had no home-court advantage; flag them
+BUBBLE_START  = "2020-07-30"
 ODDS_API_KEY  = os.getenv("ODDS_API_KEY", "")   # export ODDS_API_KEY=xxx  or paste here
 ODDS_SPORT    = "basketball_nba"
 ODDS_REGION   = "us"

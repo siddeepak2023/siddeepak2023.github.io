@@ -144,11 +144,11 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     <div class="project-card fade-in">
       <span class="project-num">01 — SPORTS ANALYTICS · MACHINE LEARNING · BETTING EDGES</span>
       <h3 class="project-title">NBA Game Intelligence Dashboard</h3>
-      <p class="project-desc">End-to-end predictive pipeline for NBA game outcomes — 3 seasons of game logs (7,380 rows) via nba_api, rolling 10-game feature engineering, HistGradientBoostingClassifier with isotonic calibration, TimeSeriesSplit CV. Backtested 2024-25 season: 62.1% win rate, 18.6% ROI, $16,882 profit on flat $100 bets. Live scoreboard powered by ESPN API with model win-probability overlay. Interactive game predictor uses pre-computed 30×29 matchup matrix.</p>
+      <p class="project-desc">End-to-end predictive pipeline for NBA game outcomes — 9 seasons of game logs (21,498 rows) via nba_api, Elo ratings, defensive rating, multi-window rolling features (5/10/20 games), EWMA, and Optuna hyperparameter tuning. AUC jumped from 0.631 → 0.726 on 2024-25 holdout. Backtested: 71.1% win rate, 35.8% ROI, $34,301 profit. Live scoreboard from ESPN API with model win-probability overlay and 7-day schedule.</p>
       <div class="mini-label">2024-25 Win % — OKC leads at 82.9%</div>
       <div class="mini-wrap"><canvas id="nbaChart"></canvas></div>
       <div class="project-stats">
-        <span class="stat-pill">62.1% win rate</span><span class="stat-pill">18.6% ROI</span><span class="stat-pill">Live scores</span>
+        <span class="stat-pill">AUC 0.726</span><span class="stat-pill">71.1% win rate</span><span class="stat-pill">35.8% ROI</span>
       </div>
       <div class="project-stack">
         <span class="stack-tag">Python</span><span class="stack-tag">HistGBM</span><span class="stack-tag">nba_api</span><span class="stack-tag">SQLite</span><span class="stack-tag">ESPN API</span><span class="stack-tag">Chart.js</span>
