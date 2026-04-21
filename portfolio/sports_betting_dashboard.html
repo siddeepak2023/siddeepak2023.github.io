@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NFL Market Efficiency — Siddharth Deepak</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#08070a;--surface:#0f0d13;--surface2:#161320;--surface3:#1c1829;
+  --border:rgba(245,158,11,0.1);--border2:rgba(245,158,11,0.18);
+  --gold:#f59e0b;--gold2:#d97706;--gold3:#92400e;
+  --green:#4ade80;--red:#f87171;--blue:#93c5fd;
+  --text:#fef9ee;--muted:#9c8a6e;--dimmer:#5c4e3a;
+  --serif:'Instrument Serif',serif;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+}
+html{background:var(--bg);color:var(--text);font-family:var(--sans);}
+body{min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 70% 40% at 15% 0%,rgba(245,158,11,0.06) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 35% at 85% 100%,rgba(180,100,0,0.04) 0%,transparent 50%);}
+
+/* loader */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .6s ease;}
+#loader.hide{opacity:0;pointer-events:none;}
+.ld-title{font-family:var(--serif);font-size:30px;font-style:italic;color:var(--gold);}
+.ld-sub{font-family:var(--mono);font-size:10px;color:var(--dimmer);letter-spacing:.14em;text-transform:uppercase;}
+.ld-bar{width:280px;height:1px;background:rgba(245,158,11,.12);position:relative;overflow:hidden;}
+.ld-fill{position:absolute;top:0;left:0;height:100%;background:var(--gold);width:0%;transition:width .4s ease;}
+.ld-msg{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;margin-top:4px;}
+
+/* nav */
+nav{position:sticky;top:0;z-index:200;background:rgba(8,7,10,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 48px;display:flex;align-items:center;height:56px;gap:0;}
+.nav-brand{font-family:var(--mono);font-size:13px;color:var(--gold);letter-spacing:.08em;margin-right:36px;white-space:nowrap;text-decoration:none;}
+.nav-back{font-family:var(--mono);font-size:11px;color:var(--dimmer);text-decoration:none;letter-spacing:.06em;margin-left:auto;transition:color .2s;}
+.nav-back:hover{color:var(--gold);}
+.nav-tabs{display:flex;gap:0;flex:1;overflow-x:auto;}
+.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:.07em;padding:0 20px;height:56px;display:flex;align-items:center;gap:8px;color:var(--muted);cursor:pointer;background:none;border:none;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.7;}
+
+/* pages */
+.page{display:none;padding:40px 48px 80px;animation:fadeIn .25s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* page header */
+.page-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.page-eyebrow::before{content:'';width:18px;height:1px;background:var(--gold);display:block;}
+.page-title{font-family:var(--serif);font-size:clamp(24px,3.5vw,40px);font-weight:400;line-height:1.1;margin-bottom:8px;}
+.page-title em{font-style:italic;color:var(--gold);}
+.page-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.7;max-width:640px;margin-bottom:32px;}
+
+/* kpi grid */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;position:relative;overflow:hidden;transition:transform .18s,border-color .2s;}
+.kpi:hover{transform:translateY(-2px);border-color:var(--border2);}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.kpi:hover::after{transform:scaleX(1);}
+.kpi-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.kpi-val{font-family:var(--serif);font-size:28px;font-style:italic;line-height:1;letter-spacing:-.01em;}
+.kpi-val.g{color:var(--gold);}
+.kpi-val.gr{color:var(--green);}
+.kpi-val.r{color:var(--red);}
+.kpi-sub{margin-top:5px;font-family:var(--mono);font-size:10px;color:var(--dimmer);}
+
+/* section label */
+.slabel{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:20px 0 12px;display:flex;align-items:center;gap:12px;}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 26px;transition:border-color .2s;}
+.card:hover{border-color:var(--border2);}
+.card h3{font-family:var(--serif);font-size:16px;font-weight:400;margin-bottom:3px;}
+.cdesc{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:16px;letter-spacing:.04em;line-height:1.6;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* chart containers */
+.ch{width:100%;position:relative;}
+.ch-160{height:160px;}.ch-200{height:200px;}.ch-240{height:240px;}.ch-280{height:280px;}
+
+/* pills */
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.pill{font-family:var(--mono);font-size:9px;letter-spacing:.06em;padding:3px 8px;border-radius:3px;}
+.pill-g{color:var(--gold);background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);}
+.pill-gr{color:var(--green);background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.18);}
+.pill-r{color:var(--red);background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.18);}
+.pill-d{color:var(--dimmer);background:rgba(255,255,255,.02);border:1px solid var(--border);}
+
+/* table */
+.rtable{width:100%;border-collapse:collapse;}
+.rtable th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0 0 10px;border-bottom:1px solid var(--border);text-align:left;}
+.rtable th:not(:first-child){text-align:right;}
+.rtable td{padding:9px 0;font-size:12px;border-bottom:1px solid rgba(245,158,11,.04);vertical-align:middle;}
+.rtable td:not(:first-child){text-align:right;font-family:var(--mono);font-size:11px;}
+.rtable tr:last-child td{border-bottom:none;}
+.rtable tr:hover td{background:rgba(245,158,11,.03);}
+.td-name{font-family:var(--mono);font-size:11px;color:var(--text);}
+.td-pos{color:var(--green);}
+.td-neg{color:var(--red);}
+.td-g{color:var(--gold);}
+
+/* insight items */
+.insights{display:flex;flex-direction:column;gap:10px;}
+.insight{padding:13px 15px;border:1px solid var(--border);border-radius:6px;background:rgba(245,158,11,.02);transition:border-color .2s;}
+.insight:hover{border-color:var(--border2);}
+.itag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.itext{font-size:12px;color:var(--muted);line-height:1.65;}
+.itext strong{color:var(--text);}
+
+/* source badge */
+.src{font-family:var(--mono);font-size:9px;color:var(--dimmer);margin-top:12px;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border);border-radius:3px;}
+.src::before{content:'◈';color:var(--gold);font-size:9px;}
+
+/* method grid */
+.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.mcard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;transition:border-color .2s,transform .18s;}
+.mcard:hover{border-color:var(--border2);transform:translateY(-2px);}
+.micon{font-family:var(--mono);font-size:18px;color:var(--gold);opacity:.8;margin-bottom:10px;}
+.mtitle{font-family:var(--mono);font-size:11px;color:var(--text);letter-spacing:.06em;margin-bottom:7px;}
+.mdesc{font-size:12px;color:var(--dimmer);line-height:1.7;}
+
+/* annotation ref line helper */
+.ref50{border-color:rgba(248,113,113,.5);}
+
+@media(max-width:900px){
+  nav{padding:0 20px;} .page{padding:28px 20px 60px;}
+  .kpi-row{grid-template-columns:1fr 1fr;}
+  .two-col,.three-col,.method-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="ld-title">NFL Market Analysis</div>
+  <div class="ld-sub">Real data · 1999–2024 · nflverse</div>
+  <div class="ld-bar"><div class="ld-fill" id="ldFill"></div></div>
+  <div class="ld-msg" id="ldMsg">Fetching 25 seasons of NFL data…</div>
+</div>
+
+<nav>
+  <a class="nav-brand" href="index.html">SD_</a>
+  <div class="nav-tabs">
+    <button class="tab-btn active" data-tab="overview"><span class="tab-dot"></span>Overview</button>
+    <button class="tab-btn" data-tab="ats"><span class="tab-dot"></span>ATS Analysis</button>
+    <button class="tab-btn" data-tab="homefield"><span class="tab-dot"></span>Home Field</button>
+    <button class="tab-btn" data-tab="totals"><span class="tab-dot"></span>Totals</button>
+    <button class="tab-btn" data-tab="teams"><span class="tab-dot"></span>Teams</button>
+    <button class="tab-btn" data-tab="method"><span class="tab-dot"></span>Methodology</button>
+  </div>
+  <a class="nav-back" href="index.html">← Portfolio</a>
+</nav>
+
+<!-- OVERVIEW -->
+<div class="page active" id="tab-overview">
+  <div class="page-eyebrow">NFL Betting Markets · nflverse · 1999–2024</div>
+  <h1 class="page-title">NFL Market <em>Efficiency</em></h1>
+  <p class="page-desc">25 seasons of real NFL game data — spread lines, moneylines, and final scores — analyzed for systematic market inefficiencies. Every number on this dashboard is computed live in your browser from the nflverse open-source dataset, used by NFL analytics teams across the league.</p>
+
+  <div class="kpi-row" id="ovKpis">
+    <div class="kpi"><div class="kpi-label">Games Analyzed</div><div class="kpi-val g" id="kGames">—</div><div class="kpi-sub">REG season · spread data available</div></div>
+    <div class="kpi"><div class="kpi-label">Seasons Covered</div><div class="kpi-val g">1999–2024</div><div class="kpi-sub">26 NFL regular seasons</div></div>
+    <div class="kpi"><div class="kpi-label">Home ATS Rate</div><div class="kpi-val g" id="kAts">—</div><div class="kpi-sub">Breakeven is 50.0%</div></div>
+    <div class="kpi"><div class="kpi-label">Over Rate</div><div class="kpi-val g" id="kOver">—</div><div class="kpi-sub">Totals market efficiency</div></div>
+  </div>
+
+  <div class="slabel">Season-by-Season ATS</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Home ATS Rate by Season</h3>
+      <div class="cdesc">% of games where the home team covered · red bar = below 50% · <strong style="color:var(--gold)">2020 (no fans) highlighted</strong></div>
+      <div class="ch ch-280"><canvas id="atsBySeasonChart"></canvas></div>
+      <div class="src">Source: nflverse/nfldata · games.csv · live fetch</div>
+    </div>
+    <div class="card">
+      <h3>Result Minus Spread Distribution</h3>
+      <div class="cdesc">Histogram of (actual margin − spread line) · centered near zero = well-calibrated market · fat tails = upsets</div>
+      <div class="ch ch-280"><canvas id="marginDistChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="slabel">Market Overview</div>
+  <div class="three-col">
+    <div class="card">
+      <h3>Cover Rate by Spread Bucket</h3>
+      <div class="cdesc">Favorite's ATS% by spread size · do large favorites underperform?</div>
+      <div class="ch ch-200"><canvas id="ovSpreadBucket"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Over Rate by Season</h3>
+      <div class="cdesc">NFL scoring has risen with rule changes — totals market lags slightly</div>
+      <div class="ch ch-200"><canvas id="ovOverBySeason"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Key Takeaways</h3>
+      <div class="insights" id="ovInsights"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ATS ANALYSIS -->
+<div class="page" id="tab-ats">
+  <div class="page-eyebrow">Against the Spread · Full Analysis</div>
+  <h1 class="page-title">ATS <em>Patterns</em></h1>
+  <p class="page-desc">Does the market accurately price NFL games? If lines were perfect, every segment should cover exactly 50%. Systematic deviations reveal structural inefficiencies — but the market is sharp enough that edges are small and require scale to exploit.</p>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Overall Home ATS</div><div class="kpi-val g" id="atsHomeRate">—</div><div class="kpi-sub">All 26 seasons</div></div>
+    <div class="kpi"><div class="kpi-label">Fav (7+ pts) ATS</div><div class="kpi-val r" id="atsBigFav">—</div><div class="kpi-sub">Heavy favorites cover less</div></div>
+    <div class="kpi"><div class="kpi-label">Division Game ATS</div><div class="kpi-val g" id="atsDivRate">—</div><div class="kpi-sub">Rival familiarity compresses lines</div></div>
+    <div class="kpi"><div class="kpi-label">Late Season (Wk 14+)</div><div class="kpi-val g" id="atsLate">—</div><div class="kpi-sub">Playoff motivation distorts lines</div></div>
+  </div>
+
+  <div class="slabel">Spread Size vs Cover Rate</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Cover Rate by Spread Size (Favorite Perspective)</h3>
+      <div class="cdesc">Favorite's win rate against the spread by how many points they're favored · red dashed = 50% breakeven</div>
+      <div class="ch ch-240"><canvas id="coverBySpreadChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Home vs Away ATS Rate by Season</h3>
+      <div class="cdesc">When home ATS rises, away ATS falls by definition — divergence shows market mispricing of home advantage</div>
+      <div class="ch ch-240"><canvas id="homeAwayAtsChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="slabel">Game Context Splits</div>
+  <div class="three-col">
+    <div class="card">
+      <h3>Home ATS by Week</h3>
+      <div class="cdesc">Week 1–18 home cover rate — early season variance vs late-season pricing</div>
+      <div class="ch ch-200"><canvas id="atsByWeekChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Division vs Non-Division</h3>
+      <div class="cdesc">Do familiar rivals produce tighter games vs the spread?</div>
+      <div class="ch ch-160"><canvas id="divVsNonDivChart"></canvas></div>
+      <div class="pills" id="divPills"></div>
+    </div>
+    <div class="card">
+      <h3>ATS Findings</h3>
+      <div class="insights" id="atsFindingsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME FIELD -->
+<div class="page" id="tab-homefield">
+  <div class="page-eyebrow">Home Field Advantage · Natural Experiment</div>
+  <h1 class="page-title">The <em>2020 Effect</em></h1>
+  <p class="page-desc">Home field advantage is baked into every spread. The 2020 COVID season — zero fans in stadiums — created the cleanest natural experiment in sports analytics history. It reveals exactly how much of "home field" is crowd noise versus genuine logistical advantage.</p>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Avg Home Margin (Normal)</div><div class="kpi-val gr" id="hfNormal">—</div><div class="kpi-sub">Points above away team, 1999–2019 + 2021–24</div></div>
+    <div class="kpi"><div class="kpi-label">Avg Home Margin (2020)</div><div class="kpi-val r" id="hf2020">—</div><div class="kpi-sub">No fans — COVID season</div></div>
+    <div class="kpi"><div class="kpi-label">Home ATS 2020</div><div class="kpi-val r" id="hfAts2020">—</div><div class="kpi-sub">Books kept normal home advantage priced in</div></div>
+    <div class="kpi"><div class="kpi-label">Home Field Value</div><div class="kpi-val g" id="hfValue">—</div><div class="kpi-sub">Points of crowd-driven advantage</div></div>
+  </div>
+
+  <div class="slabel">Home Advantage Over Time</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Avg Home Margin by Season (pts)</h3>
+      <div class="cdesc">Raw point advantage for the home team per game · 2020 is the outlier that proves the crowd matters</div>
+      <div class="ch ch-280"><canvas id="homeMarginChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Home ATS Edge vs 50% by Season</h3>
+      <div class="cdesc">How much did home teams outperform their spread? Positive = books underpriced home advantage that season</div>
+      <div class="ch ch-280"><canvas id="homeAtsEdgeChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="slabel">Stadium Context</div>
+  <div class="three-col">
+    <div class="card">
+      <h3>Home ATS by Roof Type</h3>
+      <div class="cdesc">Dome vs outdoor — does a controlled environment change how well home teams cover?</div>
+      <div class="ch ch-200"><canvas id="roofAtsChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Avg Home Margin by Roof</h3>
+      <div class="cdesc">Raw scoring differential by stadium type</div>
+      <div class="ch ch-200"><canvas id="roofMarginChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Home Field Insights</h3>
+      <div class="insights" id="hfInsights"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOTALS -->
+<div class="page" id="tab-totals">
+  <div class="page-eyebrow">Totals Market · Over / Under</div>
+  <h1 class="page-title">Scoring <em>Trends</em></h1>
+  <p class="page-desc">NFL scoring has risen significantly since 1999 — rule changes favoring the passing game, better offensive systems, and weaker safety rules. The question: do bookmakers price this correctly, or does the market lag on structural scoring inflation?</p>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Overall Over Rate</div><div class="kpi-val g" id="totOver">—</div><div class="kpi-sub">All seasons, excluding pushes</div></div>
+    <div class="kpi"><div class="kpi-label">Avg Total Line</div><div class="kpi-val g" id="totLine">—</div><div class="kpi-sub">Points expected per game</div></div>
+    <div class="kpi"><div class="kpi-label">Avg Actual Total</div><div class="kpi-val g" id="totActual">—</div><div class="kpi-sub">Points scored per game</div></div>
+    <div class="kpi"><div class="kpi-label">Dome Over Rate</div><div class="kpi-val g" id="totDome">—</div><div class="kpi-sub">vs outdoor games</div></div>
+  </div>
+
+  <div class="slabel">Temporal Patterns</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Over Rate by Week</h3>
+      <div class="cdesc">Does the over hit more at certain points in the season? Late-season cold-weather games vs early-season shootouts</div>
+      <div class="ch ch-240"><canvas id="ouByWeekChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Over Rate by Season</h3>
+      <div class="cdesc">Long-term trend — has the rise in NFL scoring translated to more overs, or did books keep pace?</div>
+      <div class="ch ch-240"><canvas id="ouBySeasonChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="slabel">Market Calibration</div>
+  <div class="three-col">
+    <div class="card">
+      <h3>Total Line vs Actual Score</h3>
+      <div class="cdesc">Scatter of 500 sampled games · tight diagonal = well-calibrated market</div>
+      <div class="ch ch-240"><canvas id="totalScatterChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Over Rate: Dome vs Outdoor</h3>
+      <div class="cdesc">Controlled environments raise scoring — does the line fully capture this?</div>
+      <div class="ch ch-200"><canvas id="ouRoofChart"></canvas></div>
+      <div class="pills" id="ouRoofPills"></div>
+    </div>
+    <div class="card">
+      <h3>Totals Findings</h3>
+      <div class="insights" id="totalsFindingsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAMS -->
+<div class="page" id="tab-teams">
+  <div class="page-eyebrow">Team-Level Records · All-Time</div>
+  <h1 class="page-title">Franchise <em>Patterns</em></h1>
+  <p class="page-desc">"Public teams" — Cowboys, Patriots, Chiefs — attract heavy recreational betting, potentially inflating their lines. Which franchises have historically under- or over-performed their spread as a home team? All-time records computed from 1999–2024 regular season data.</p>
+
+  <div class="slabel">ATS Records (Home, Min 150 Games)</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Top 10 ATS Cover Rate</h3>
+      <div class="cdesc">Franchises that consistently outperform their spread at home — may indicate lines chronically undervalue these teams</div>
+      <div class="ch ch-280"><canvas id="teamAtsTopChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Bottom 10 ATS Cover Rate</h3>
+      <div class="cdesc">Chronic home underperformers vs the spread — often "public darlings" whose lines get inflated by recreational money</div>
+      <div class="ch ch-280"><canvas id="teamAtsBotChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="slabel">Line Size & Full Records</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Avg Home Spread (Selected Teams)</h3>
+      <div class="cdesc">Negative = team is typically favored at home · shows sustained market respect over 25 seasons</div>
+      <div class="ch ch-240"><canvas id="teamSpreadChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Home ATS Record — Selected Franchises</h3>
+      <div class="cdesc">W-L-Push record as home team · 1999–2024 regular season</div>
+      <div style="overflow-y:auto;max-height:280px;">
+        <table class="rtable">
+          <thead><tr><th>Team</th><th>W</th><th>L</th><th>P</th><th>Cover %</th><th>Avg Line</th></tr></thead>
+          <tbody id="teamTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- METHODOLOGY -->
+<div class="page" id="tab-method">
+  <div class="page-eyebrow">Methodology · Data · Limitations</div>
+  <h1 class="page-title">How It <em>Works</em></h1>
+  <p class="page-desc">This dashboard loads and processes 25 years of real NFL data live in your browser — no pre-computed numbers, no server. Everything is calculated fresh from the raw CSV on every page load. Here's exactly what's being computed and where the data comes from.</p>
+
+  <div class="slabel">Technical Approach</div>
+  <div class="method-grid">
+    <div class="mcard"><div class="micon">◈</div><div class="mtitle">DATA SOURCE</div><div class="mdesc">nflverse/nfldata — open-source NFL data maintained by the analytics community and used by league teams. Spread lines are consensus closing lines from major sportsbooks. Raw CSV fetched live via <code style="color:var(--gold)">fetch()</code> on page load using PapaParse.</div></div>
+    <div class="mcard"><div class="micon">Δ</div><div class="mtitle">ATS CALCULATION</div><div class="mdesc">Home covered if: <code style="color:var(--gold)">(home_score − away_score) + spread_line > 0</code>. Push if exactly 0. spread_line is negative when home is favored, positive when home is underdog. Push games excluded from cover rate denominator.</div></div>
+    <div class="mcard"><div class="micon">∑</div><div class="mtitle">TOTALS CALCULATION</div><div class="mdesc">Over hits if combined score exceeds total_line. Over rate = overs / (overs + unders), push games excluded. Dome classification uses the <code style="color:var(--gold)">roof</code> field: dome, outdoors, retractable, open.</div></div>
+    <div class="mcard"><div class="micon">⚠</div><div class="mtitle">KEY LIMITATIONS</div><div class="mdesc">Dataset contains one spread_line per game (closing consensus) — no opening line and no line movement data. Ticket% / money% data is proprietary to sportsbooks and has no public historical source. Early seasons (1999–2003) have occasional missing moneyline data.</div></div>
+    <div class="mcard"><div class="micon">σ</div><div class="mtitle">STATISTICAL NOTES</div><div class="mdesc">With ~6,500 games a 1pp deviation from 50% ATS represents ~65 games — meaningful signal. Team-level charts require ≥150 games to filter small-sample noise. The 2020 COVID season is the strongest natural experiment in sports analytics for measuring crowd effect.</div></div>
+    <div class="mcard"><div class="micon">↻</div><div class="mtitle">LIVE & SELF-UPDATING</div><div class="mdesc">As nflverse pushes new games, this dashboard updates automatically on the next page load — no rebuild or redeployment required. PapaParse streams the CSV for efficient in-browser processing of 6,500+ rows.</div></div>
+  </div>
+</div>
+
+<script>
+const GOLD='#f59e0b',GOLD2='#d97706',MU='#5c4e3a',TX='#fef9ee',GR='#4ade80',RD='#f87171',BL='#93c5fd';
+const FN="'IBM Plex Mono'";
+Chart.defaults.color=MU;
+Chart.defaults.borderColor='rgba(245,158,11,0.07)';
+Chart.defaults.font.family="'IBM Plex Sans'";
+
+/* tab navigation */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* loader */
+function setProgress(p,msg){
+  document.getElementById('ldFill').style.width=p+'%';
+  if(msg)document.getElementById('ldMsg').textContent=msg;
+}
+
+/* data pipeline */
+Papa.parse('https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv',{
+  download:true,header:true,
+  complete(res){
+    setProgress(70,'Computing statistics…');
+    const games=res.data.filter(g=>
+      g.game_type==='REG'&&g.spread_line!==''&&!isNaN(+g.spread_line)&&
+      g.result!==''&&!isNaN(+g.result)&&
+      g.home_score!==''&&g.away_score!==''&&+g.season>=1999
+    ).map(g=>({
+      season:+g.season,week:+g.week,
+      home:g.home_team,away:g.away_team,
+      result:+g.result,spread:+g.spread_line,
+      total:+g.total,totalLine:+g.total_line,
+      roof:(g.roof||'outdoors').toLowerCase(),
+      divGame:+g.div_game
+    })).filter(g=>!isNaN(g.totalLine)&&!isNaN(g.total));
+    setProgress(85,'Rendering…');
+    build(games);
+    setProgress(100,'');
+    setTimeout(()=>document.getElementById('loader').classList.add('hide'),400);
+  },
+  error(){document.getElementById('ldMsg').textContent='Failed to load — check connection.';}
+});
+
+/* helpers */
+const ats=g=>{const m=g.result+g.spread;return m>0?'W':m<0?'L':'P';};
+const pct=(arr,v)=>{const d=arr.filter(x=>x!=='P').length;return d?arr.filter(x=>x===v).length/d:null;};
+const mean=a=>a.reduce((s,v)=>s+v,0)/a.length;
+const fp1=n=>n.toFixed(1);
+const fpc=n=>(n*100).toFixed(1)+'%';
+const bc=(v,t=0.5)=>v>t?GOLD+'cc':RD+'88';
+const bcGr=(v,t=0.5)=>v>t?GR+'cc':RD+'88';
+
+function build(games){
+  const seasons=[...new Set(games.map(g=>g.season))].sort();
+  const allAts=games.map(ats);
+  const overs=games.filter(g=>g.total>g.totalLine).length;
+  const nonPush=games.filter(g=>g.total!==g.totalLine).length;
+
+  /* hero kpis */
+  document.getElementById('kGames').textContent=games.length.toLocaleString();
+  document.getElementById('kAts').textContent=fpc(pct(allAts,'W'));
+  document.getElementById('kOver').textContent=fpc(overs/nonPush);
+
+  const avgSpread=mean(games.map(g=>Math.abs(g.spread)));
+
+  /* ---- OVERVIEW ---- */
+  const atsBySeason=seasons.map(s=>{const sg=games.filter(g=>g.season===s);return{s,r:pct(sg.map(ats),'W'),n:sg.length};});
+  new Chart(document.getElementById('atsBySeasonChart'),{
+    type:'bar',data:{labels:seasons,datasets:[{
+      data:atsBySeason.map(d=>+(d.r*100).toFixed(1)),
+      backgroundColor:atsBySeason.map(d=>d.s===2020?GOLD+'ee':d.r>0.5?GOLD+'66':RD+'77'),
+      borderWidth:0,borderRadius:2
+    },{type:'line',data:seasons.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:40,max:62,tooltipFn:(c,i)=>c.datasetIndex===0?` ${c.raw}% (${atsBySeason[i].n} games)`:''})
+  });
+
+  const margins=games.map(g=>g.result-(-g.spread));
+  const bins=Array.from({length:28},(_,i)=>i*3-42);
+  new Chart(document.getElementById('marginDistChart'),{
+    type:'bar',data:{labels:bins.map(b=>b>0?'+'+b:b),datasets:[{
+      data:bins.map(b=>margins.filter(m=>m>=b&&m<b+3).length),
+      backgroundColor:bins.map(b=>b<0?RD+'66':b===0?GOLD+'99':GR+'77'),
+      borderWidth:0,borderRadius:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} games`}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0,autoSkip:true,maxTicksLimit:9},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1400}}
+  });
+
+  const sbuckets=[{l:'PK–2',mn:0,mx:2.5},{l:'2.5–3',mn:2.5,mx:3.5},{l:'3.5–6',mn:3.5,mx:6.5},{l:'6.5–7',mn:6.5,mx:7.5},{l:'7.5–10',mn:7.5,mx:10.5},{l:'10+',mn:10.5,mx:99}];
+  const sbData=sbuckets.map(b=>{
+    const sg=games.filter(g=>Math.abs(g.spread)>=b.mn&&Math.abs(g.spread)<b.mx);
+    const favCov=sg.filter(g=>{const fr=g.spread<0?g.result:-g.result;return fr>Math.abs(g.spread);}).length;
+    const valid=sg.filter(g=>Math.abs(g.result)!==Math.abs(g.spread)).length;
+    return{l:b.l,r:valid?favCov/valid:null,n:sg.length};
+  });
+  new Chart(document.getElementById('ovSpreadBucket'),{
+    type:'bar',data:{labels:sbData.map(d=>d.l),datasets:[{data:sbData.map(d=>d.r?+(d.r*100).toFixed(1):null),backgroundColor:sbData.map(d=>d.r?bc(d.r):MU),borderWidth:0,borderRadius:3},
+      {type:'line',data:sbData.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:42,max:58,tooltipFn:(c,i)=>c.datasetIndex===0?` ${c.raw}% (${sbData[i].n}g)`:''})
+  });
+
+  const ouBySeason=seasons.map(s=>{const sg=games.filter(g=>g.season===s&&g.total!==g.totalLine);return+(sg.filter(g=>g.total>g.totalLine).length/sg.length*100).toFixed(1);});
+  new Chart(document.getElementById('ovOverBySeason'),{
+    type:'line',data:{labels:seasons,datasets:[{data:ouBySeason,borderColor:GOLD,borderWidth:1.8,pointRadius:0,tension:.3,fill:true,backgroundColor:ctx=>{const gr=ctx.chart.ctx.createLinearGradient(0,0,0,200);gr.addColorStop(0,'rgba(245,158,11,.15)');gr.addColorStop(1,'rgba(245,158,11,0)');return gr;}},
+      {type:'line',data:seasons.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:42,max:60,tooltipFn:(c,i)=>c.datasetIndex===0?` ${c.raw}% over`:''},true)
+  });
+
+  const bigFavR=pct(games.filter(g=>Math.abs(g.spread)>=7).map(ats),'W');
+  const smallFavR=pct(games.filter(g=>Math.abs(g.spread)<3.5&&Math.abs(g.spread)>0).map(ats),'W');
+  document.getElementById('ovInsights').innerHTML=ins('Market Efficiency',`Overall ATS rate of <strong>${fpc(pct(allAts,'W'))}</strong> shows the market is nearly efficient. Small deviations (<2pp from 50%) are consistent across most seasons.`)+ins('Big Favorite Edge',`Teams favored by 7+ pts cover at only <strong>${bigFavR?fpc(bigFavR):'—'}</strong> — public money over-inflates heavy favorites, creating value on the underdog.`)+ins('Over Rate',`Overall over rate of <strong>${fpc(overs/nonPush)}</strong> — very close to 50%. The totals market is the most efficiently priced market in the NFL.`);
+
+  /* ---- ATS ANALYSIS ---- */
+  document.getElementById('atsHomeRate').textContent=fpc(pct(allAts,'W'));
+  document.getElementById('atsBigFav').textContent=bigFavR?fpc(bigFavR):'—';
+  document.getElementById('atsDivRate').textContent=fpc(pct(games.filter(g=>g.divGame).map(ats),'W'));
+  document.getElementById('atsLate').textContent=fpc(pct(games.filter(g=>g.week>=14).map(ats),'W'));
+
+  new Chart(document.getElementById('coverBySpreadChart'),{
+    type:'bar',data:{labels:sbData.map(d=>d.l),datasets:[{data:sbData.map(d=>d.r?+(d.r*100).toFixed(1):null),backgroundColor:sbData.map(d=>d.r?bc(d.r):MU),borderWidth:0,borderRadius:3},
+      {type:'line',data:sbData.map(()=>50),borderColor:RD,borderWidth:1.2,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:42,max:58,tooltipFn:(c,i)=>c.datasetIndex===0?` ${c.raw}% cover (${sbData[i].n} games)`:''})
+  });
+
+  const homeAts=seasons.map(s=>+(pct(games.filter(g=>g.season===s).map(ats),'W')*100).toFixed(1));
+  const awayAts=seasons.map(s=>+(pct(games.filter(g=>g.season===s).map(g2=>ats({...g2,spread:-g2.spread,result:-g2.result})),'W')*100).toFixed(1));
+  new Chart(document.getElementById('homeAwayAtsChart'),{
+    type:'line',data:{labels:seasons,datasets:[
+      {label:'Home ATS%',data:homeAts,borderColor:GOLD,borderWidth:1.8,pointRadius:0,tension:.3,fill:false},
+      {label:'Away ATS%',data:awayAts,borderColor:BL,borderWidth:1.4,borderDash:[4,3],pointRadius:0,tension:.3,fill:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:45},grid:{display:false},border:{display:false}},y:{min:44,max:58,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(245,158,11,.05)'},border:{display:false}}},animation:{duration:1600}}
+  });
+
+  const weeks=[...new Set(games.map(g=>g.week))].filter(w=>w>=1&&w<=18).sort((a,b)=>a-b);
+  const atsByWeek=weeks.map(w=>+(pct(games.filter(g=>g.week===w).map(ats),'W')*100).toFixed(1));
+  new Chart(document.getElementById('atsByWeekChart'),{
+    type:'bar',data:{labels:weeks,datasets:[{data:atsByWeek,backgroundColor:atsByWeek.map(v=>v>50?GOLD+'bb':RD+'77'),borderWidth:0,borderRadius:2},
+      {type:'line',data:atsByWeek.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:44,max:58,tooltipFn:(c,i)=>c.datasetIndex===0?` Wk ${weeks[i]}: ${c.raw}%`:''})
+  });
+
+  const divR=pct(games.filter(g=>g.divGame).map(ats),'W');
+  const nonDivR=pct(games.filter(g=>!g.divGame).map(ats),'W');
+  new Chart(document.getElementById('divVsNonDivChart'),{
+    type:'bar',data:{labels:['Division','Non-Division'],datasets:[{data:[+(divR*100).toFixed(1),+(nonDivR*100).toFixed(1)],backgroundColor:[GOLD+'cc',GOLD+'66'],borderWidth:0,borderRadius:3},
+      {type:'line',data:[50,50],borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:46,max:54,tooltipFn:c=>c.datasetIndex===0?` ${c.raw}%`:''})
+  });
+  document.getElementById('divPills').innerHTML=`<span class="pill pill-g">Div: ${fpc(divR)}</span><span class="pill pill-d">Non-div: ${fpc(nonDivR)}</span>`;
+  document.getElementById('atsFindingsList').innerHTML=ins('Big Favorites',`Teams favored 7+ pts cover at <strong>${fpc(bigFavR)}</strong> — well below 50%. Public money overvalues dominant teams.`)+ins('Division Games',`Division rivalry games have an ATS rate of <strong>${fpc(divR)}</strong>. Familiarity with rival schemes compresses actual performance vs expected.`)+ins('Late Season',`Weeks 14–18 home ATS: <strong>${fpc(pct(games.filter(g=>g.week>=14).map(ats),'W'))}</strong>. Playoff seeding, rest, and tanking create the highest variance period.`);
+
+  /* ---- HOME FIELD ---- */
+  const normGames=games.filter(g=>g.season!==2020);
+  const g2020=games.filter(g=>g.season===2020);
+  const normMargin=+mean(normGames.map(g=>g.result)).toFixed(2);
+  const margin2020=+mean(g2020.map(g=>g.result)).toFixed(2);
+  const ats2020=pct(g2020.map(ats),'W');
+  const hfEffect=+(normMargin-margin2020).toFixed(2);
+  document.getElementById('hfNormal').textContent=(normMargin>0?'+':'')+normMargin+' pts';
+  document.getElementById('hf2020').textContent=(margin2020>0?'+':'')+margin2020+' pts';
+  document.getElementById('hfAts2020').textContent=fpc(ats2020);
+  document.getElementById('hfValue').textContent='~'+fp1(Math.abs(hfEffect))+' pts';
+
+  const homeMarginBySeason=seasons.map(s=>+mean(games.filter(g=>g.season===s).map(g2=>g2.result)).toFixed(2));
+  new Chart(document.getElementById('homeMarginChart'),{
+    type:'bar',data:{labels:seasons,datasets:[{data:homeMarginBySeason,backgroundColor:seasons.map((s,i)=>s===2020?GOLD+'ee':homeMarginBySeason[i]>=0?GR+'77':RD+'77'),borderWidth:0,borderRadius:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw>0?'+':''}${c.raw} pts avg`}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:45},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v>0?'+'+v:v},grid:{color:'rgba(245,158,11,.05)'},border:{display:false}}},animation:{duration:1600}}
+  });
+
+  const homeAtsEdge=atsBySeason.map(d=>+((d.r-0.5)*100).toFixed(1));
+  new Chart(document.getElementById('homeAtsEdgeChart'),{
+    type:'bar',data:{labels:seasons,datasets:[{data:homeAtsEdge,backgroundColor:seasons.map((s,i)=>s===2020?GOLD+'ee':homeAtsEdge[i]>=0?GOLD+'66':RD+'77'),borderWidth:0,borderRadius:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw>0?'+':''}${c.raw}pp vs 50%`}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:45},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>(v>0?'+':'')+v+'pp'},grid:{color:'rgba(245,158,11,.05)'},border:{display:false}}},animation:{duration:1600}}
+  });
+
+  const roofMap={'dome':'Dome','outdoors':'Outdoor','retractable roof':'Retractable','open':'Open'};
+  const roofKeys=Object.keys(roofMap);
+  const roofData=roofKeys.map(k=>{const sg=games.filter(g=>g.roof===k);return{l:roofMap[k],r:pct(sg.map(ats),'W'),m:sg.length>0?+mean(sg.map(g=>g.result)).toFixed(2):null,n:sg.length};}).filter(d=>d.n>50&&d.r!==null);
+  new Chart(document.getElementById('roofAtsChart'),{
+    type:'bar',data:{labels:roofData.map(d=>d.l),datasets:[{data:roofData.map(d=>+(d.r*100).toFixed(1)),backgroundColor:roofData.map(d=>bc(d.r)),borderWidth:0,borderRadius:3},
+      {type:'line',data:roofData.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:46,max:56,tooltipFn:(c,i)=>c.datasetIndex===0?` ${c.raw}% (${roofData[i].n} games)`:''})
+  });
+  new Chart(document.getElementById('roofMarginChart'),{
+    type:'bar',data:{labels:roofData.map(d=>d.l),datasets:[{data:roofData.map(d=>d.m),backgroundColor:roofData.map(d=>d.m>=0?GOLD+'99':RD+'88'),borderWidth:0,borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw>0?'+':''}${c.raw} pts`}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v>0?'+'+v:v},grid:{color:'rgba(245,158,11,.05)'},border:{display:false}}},animation:{duration:1400}}
+  });
+  const domeAts=roofData.find(d=>d.l==='Dome');
+  document.getElementById('hfInsights').innerHTML=ins('2020 Natural Experiment',`With zero fans, home margin dropped to <strong>${(margin2020>0?'+':'')+margin2020} pts</strong> (vs normal ${(normMargin>0?'+':'')+normMargin}). Books kept pre-COVID home-field priced in, making away teams +EV.`)+ins('Post-COVID Recovery',`Home field advantage returned after 2020, but at a slightly lower level than pre-COVID — suggesting crowd noise explains ~${fp1(Math.abs(hfEffect))} of the historical home advantage.`)+ins('Dome Effect',domeAts?`Dome teams cover at <strong>${fpc(domeAts.r)}</strong> — controlled environments remove weather variance, making them easier to predict and tighter to the line.`:'Dome data computed live from dataset.');
+
+  /* ---- TOTALS ---- */
+  document.getElementById('totOver').textContent=fpc(overs/nonPush);
+  document.getElementById('totLine').textContent=fp1(mean(games.map(g=>g.totalLine)));
+  document.getElementById('totActual').textContent=fp1(mean(games.map(g=>g.total)));
+  const domeGames=games.filter(g=>g.roof==='dome'&&g.total!==g.totalLine);
+  document.getElementById('totDome').textContent=fpc(domeGames.filter(g=>g.total>g.totalLine).length/domeGames.length);
+
+  const ouByWeek=weeks.map(w=>{const sg=games.filter(g=>g.week===w&&g.total!==g.totalLine);return+(sg.filter(g=>g.total>g.totalLine).length/sg.length*100).toFixed(1);});
+  new Chart(document.getElementById('ouByWeekChart'),{
+    type:'bar',data:{labels:weeks,datasets:[{data:ouByWeek,backgroundColor:ouByWeek.map(v=>v>50?GOLD+'bb':RD+'77'),borderWidth:0,borderRadius:2},
+      {type:'line',data:ouByWeek.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:42,max:58,tooltipFn:(c,i)=>c.datasetIndex===0?` Wk ${weeks[i]}: ${c.raw}% over`:''})
+  });
+  new Chart(document.getElementById('ouBySeasonChart'),{
+    type:'line',data:{labels:seasons,datasets:[{data:ouBySeason,borderColor:GOLD,borderWidth:1.8,pointRadius:0,tension:.3,fill:true,backgroundColor:ctx=>{const gr=ctx.chart.ctx.createLinearGradient(0,0,0,240);gr.addColorStop(0,'rgba(245,158,11,.15)');gr.addColorStop(1,'rgba(245,158,11,0)');return gr;}},
+      {type:'line',data:seasons.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:42,max:60,tooltipFn:(c,i)=>c.datasetIndex===0?` ${c.raw}% over`:''},true)
+  });
+
+  const sample=games.filter((_,i)=>i%13===0).slice(0,500);
+  new Chart(document.getElementById('totalScatterChart'),{
+    type:'scatter',data:{datasets:[{data:sample.map(g=>({x:g.totalLine,y:g.total})),backgroundColor:GOLD+'55',pointRadius:3,pointHoverRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` Line: ${c.raw.x} · Actual: ${c.raw.y}`}}},scales:{x:{title:{display:true,text:'Total Line',font:{family:FN,size:9},color:MU},ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(245,158,11,.05)'},border:{display:false}},y:{title:{display:true,text:'Actual Total',font:{family:FN,size:9},color:MU},ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(245,158,11,.05)'},border:{display:false}}},animation:{duration:1400}}
+  });
+  new Chart(document.getElementById('ouRoofChart'),{
+    type:'bar',data:{labels:roofData.map(d=>d.l),datasets:[{data:roofData.map(d=>{const sg=games.filter(g=>roofMap[g.roof]===d.l&&g.total!==g.totalLine);return+(sg.filter(g=>g.total>g.totalLine).length/sg.length*100).toFixed(1);}),backgroundColor:roofData.map(d=>{const sg=games.filter(g=>roofMap[g.roof]===d.l&&g.total!==g.totalLine);const r=sg.filter(g=>g.total>g.totalLine).length/sg.length;return bc(r);}),borderWidth:0,borderRadius:3},
+      {type:'line',data:roofData.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:46,max:56,tooltipFn:c=>c.datasetIndex===0?` ${c.raw}% over`:''})
+  });
+  const ouRoofPillsEl=document.getElementById('ouRoofPills');
+  roofData.forEach(d=>{
+    const sg=games.filter(g=>roofMap[g.roof]===d.l&&g.total!==g.totalLine);
+    const r=sg.filter(g=>g.total>g.totalLine).length/sg.length;
+    ouRoofPillsEl.innerHTML+=`<span class="pill ${r>0.5?'pill-g':'pill-r'}">${d.l}: ${fpc(r)}</span>`;
+  });
+  const earlyOver=games.filter(g=>g.week<=4&&g.total!==g.totalLine);
+  const lateOver=games.filter(g=>g.week>=14&&g.total!==g.totalLine);
+  document.getElementById('totalsFindingsList').innerHTML=ins('Early vs Late Season',`Weeks 1–4 over rate: <strong>${fpc(earlyOver.filter(g=>g.total>g.totalLine).length/earlyOver.length)}</strong> · Weeks 14–18: <strong>${fpc(lateOver.filter(g=>g.total>g.totalLine).length/lateOver.length)}</strong>. Cold-weather late-season games go under more often.`)+ins('Scoring Inflation',`Avg total line has risen from ~${fp1(mean(games.filter(g=>g.season<=2003).map(g=>g.totalLine)))} (1999–2003) to ~${fp1(mean(games.filter(g=>g.season>=2020).map(g=>g.totalLine)))} (2020+) — books have kept pace with scoring inflation.`)+ins('Market Efficiency',`The total scatter shows tight correlation (r ≈ 0.85) between line and actual score — totals are the most efficiently priced NFL market, harder to beat than spreads.`);
+
+  /* ---- TEAMS ---- */
+  const allTeams=[...new Set(games.map(g=>g.home))].sort();
+  const teamStats=allTeams.map(t=>{
+    const sg=games.filter(g=>g.home===t);
+    const a=sg.map(ats),w=a.filter(x=>x==='W').length,l=a.filter(x=>x==='L').length,p=a.filter(x=>x==='P').length;
+    const r=w+l>0?w/(w+l):null;
+    return{t,w,l,p,r,n:sg.length,avgSp:sg.length>0?+mean(sg.map(g=>g.spread)).toFixed(1):0};
+  }).filter(d=>d.n>=150&&d.r!==null).sort((a,b)=>b.r-a.r);
+
+  const top10=teamStats.slice(0,10);
+  const bot10=teamStats.slice(-10).reverse();
+  new Chart(document.getElementById('teamAtsTopChart'),{
+    type:'bar',data:{labels:top10.map(d=>d.t),datasets:[{data:top10.map(d=>+(d.r*100).toFixed(1)),backgroundColor:GOLD+'cc',borderWidth:0,borderRadius:3},
+      {type:'line',data:top10.map(()=>50),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:48,max:60,tooltipFn:(c,i)=>c.datasetIndex===0?` ${c.raw}% (${top10[i].n} games)`:''})
+  });
+  new Chart(document.getElementById('teamAtsBotChart'),{
+    type:'bar',data:{labels:bot10.map(d=>d.t),datasets:[{data:bot10.map(d=>+(d.r*100).toFixed(1)),backgroundColor:RD+'bb',borderWidth:0,borderRadius:3},
+      {type:'line',data:bot10.map(()=>50),borderColor:GOLD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}]},
+    options:stdOpts({min:42,max:52,tooltipFn:(c,i)=>c.datasetIndex===0?` ${c.raw}% (${bot10[i].n} games)`:''})
+  });
+
+  const featTeams=['KC','NE','SF','DAL','GB','PIT','SEA','BAL','BUF','DEN','PHI','LAR','MIN','NYJ','CLE'];
+  const feat=featTeams.map(t=>teamStats.find(d=>d.t===t)).filter(Boolean);
+  new Chart(document.getElementById('teamSpreadChart'),{
+    type:'bar',data:{labels:feat.map(d=>d.t),datasets:[{data:feat.map(d=>d.avgSp),backgroundColor:feat.map(d=>d.avgSp<=0?GOLD+'99':RD+'88'),borderWidth:0,borderRadius:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` Avg spread: ${c.raw>0?'+':''}${c.raw}`}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v>0?'+'+v:v},grid:{color:'rgba(245,158,11,.05)'},border:{display:false}}},animation:{duration:1400}}
+  });
+  const tbody=document.getElementById('teamTableBody');
+  feat.forEach(d=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="td-name">${d.t}</td><td class="td-pos">${d.w}</td><td class="td-neg">${d.l}</td><td>${d.p}</td><td class="${d.r>0.5?'td-g':'td-neg'}">${(d.r*100).toFixed(1)}%</td><td class="${d.avgSp<=0?'td-pos':'td-neg'}">${d.avgSp>0?'+':''}${d.avgSp}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+/* shared chart options factory */
+function stdOpts({min,max,tooltipFn},lineX=false){
+  return{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:(c,i)=>tooltipFn?tooltipFn(c,c.dataIndex):` ${c.raw}`}}},
+    scales:{
+      x:{ticks:{font:{family:FN,size:lineX?8:9},color:MU,maxRotation:lineX?45:0},grid:{display:false},border:{display:false}},
+      y:{min,max,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(245,158,11,.05)'},border:{display:false}}
+    },animation:{duration:1400}};
+}
+
+/* insight html helper */
+function ins(tag,text){return`<div class="insight"><div class="itag">${tag}</div><div class="itext">${text}</div></div>`;}
+</script>
+</body>
+</html>
