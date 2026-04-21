@@ -142,7 +142,24 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
   <div class="projects-grid">
 
     <div class="project-card fade-in">
-      <span class="project-num">01 — MACHINE LEARNING · PREDICTIVE ANALYTICS</span>
+      <span class="project-num">01 — SPORTS ANALYTICS · MACHINE LEARNING · BETTING EDGES</span>
+      <h3 class="project-title">NBA Game Intelligence Dashboard</h3>
+      <p class="project-desc">End-to-end predictive pipeline for NBA game outcomes — 3 seasons of game logs (7,380 rows) via nba_api, rolling 10-game feature engineering, HistGradientBoostingClassifier with isotonic calibration, TimeSeriesSplit CV. Backtested 2024-25 season: 62.1% win rate, 18.6% ROI, $16,882 profit on flat $100 bets. Live scoreboard powered by ESPN API with model win-probability overlay. Interactive game predictor uses pre-computed 30×29 matchup matrix.</p>
+      <div class="mini-label">2024-25 Win % — OKC leads at 82.9%</div>
+      <div class="mini-wrap"><canvas id="nbaChart"></canvas></div>
+      <div class="project-stats">
+        <span class="stat-pill">62.1% win rate</span><span class="stat-pill">18.6% ROI</span><span class="stat-pill">Live scores</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span><span class="stack-tag">HistGBM</span><span class="stack-tag">nba_api</span><span class="stack-tag">SQLite</span><span class="stack-tag">ESPN API</span><span class="stack-tag">Chart.js</span>
+      </div>
+      <div class="project-links">
+        <a href="nba_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in">
+      <span class="project-num">02 — MACHINE LEARNING · PREDICTIVE ANALYTICS</span>
       <h3 class="project-title">U.S. Flight Delay Intelligence Engine</h3>
       <p class="project-desc">LightGBM classifier trained on 72M+ real BTS domestic flights (2015–2024) predicting delay risk with 84.7% accuracy and AUC 0.891. Route-level risk atlas for 5,248 O-D pairs, airline reliability index, airport bottleneck heatmap, and an interactive predictor backed by real historical patterns.</p>
       <div class="mini-label">Annual delay rate 2015–2024 — 72M flights</div>
@@ -156,23 +173,6 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
       <div class="project-links">
         <a href="flight_delay_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
         <a href="https://github.com/siddeepak2023/flight-delay-intelligence" target="_blank" class="project-link">GitHub</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-in">
-      <span class="project-num">02 — MACHINE LEARNING · BUSINESS INTELLIGENCE</span>
-      <h3 class="project-title">Retail Customer Intelligence Platform</h3>
-      <p class="project-desc">End-to-end customer analytics platform on 805K cleaned transactions (Dec 2009–Dec 2011) across 38 countries. RFM segmentation identifies 5 customer tiers. Random forest churn model hits 75.4% accuracy with 0.834 ROC-AUC, flagging £1.46M revenue at risk. Includes market basket association rules and product recommendation engine.</p>
-      <div class="mini-label">Monthly revenue trend — £17.74M total (2009–2011)</div>
-      <div class="mini-wrap"><canvas id="retailChart"></canvas></div>
-      <div class="project-stats">
-        <span class="stat-pill">805K transactions</span><span class="stat-pill">£17.74M revenue</span><span class="stat-pill">38 countries</span>
-      </div>
-      <div class="project-stack">
-        <span class="stack-tag">Python</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Pandas</span><span class="stack-tag">RFM Analysis</span><span class="stack-tag">HTML/JS</span>
-      </div>
-      <div class="project-links">
-        <a href="retail_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
       </div>
     </div>
 
@@ -195,7 +195,24 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">04 — SPORTS ANALYTICS · MARKET EFFICIENCY</span>
+      <span class="project-num">04 — MACHINE LEARNING · BUSINESS INTELLIGENCE</span>
+      <h3 class="project-title">Retail Customer Intelligence Platform</h3>
+      <p class="project-desc">End-to-end customer analytics platform on 805K cleaned transactions (Dec 2009–Dec 2011) across 38 countries. RFM segmentation identifies 5 customer tiers. Random forest churn model hits 75.4% accuracy with 0.834 ROC-AUC, flagging £1.46M revenue at risk. Includes market basket association rules and product recommendation engine.</p>
+      <div class="mini-label">Monthly revenue trend — £17.74M total (2009–2011)</div>
+      <div class="mini-wrap"><canvas id="retailChart"></canvas></div>
+      <div class="project-stats">
+        <span class="stat-pill">805K transactions</span><span class="stat-pill">£17.74M revenue</span><span class="stat-pill">38 countries</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Pandas</span><span class="stack-tag">RFM Analysis</span><span class="stack-tag">HTML/JS</span>
+      </div>
+      <div class="project-links">
+        <a href="retail_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in">
+      <span class="project-num">05 — SPORTS ANALYTICS · MARKET EFFICIENCY</span>
       <h3 class="project-title">NFL Market Efficiency Dashboard</h3>
       <p class="project-desc">25 seasons of real NFL data (nflverse, 1999–2024) analyzed for betting market inefficiencies. Computes ATS cover rates, home field advantage trends, totals market calibration, and team-level spread records — all live in the browser. The 2020 no-fans season is a natural experiment in crowd effect on home advantage.</p>
       <div class="mini-label">Home ATS rate by season — 2020 (no fans) highlighted</div>
@@ -213,44 +230,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">05 — SQL · BUSINESS INTELLIGENCE</span>
-      <h3 class="project-title">Olist E-Commerce Revenue Analysis</h3>
-      <p class="project-desc">End-to-end BI project analyzing 96K+ real Brazilian e-commerce transactions across 9 relational tables using advanced SQL — CTEs, window functions, multi-table JOINs. Identified Health & Beauty as the #1 category at R$1.4M and discovered a 31% review score drop for orders with 21+ day delivery.</p>
-      <div class="mini-label">Revenue by top 5 categories (R$M)</div>
-      <div class="mini-wrap"><canvas id="olistChart"></canvas></div>
-      <div class="project-stats">
-        <span class="stat-pill">96K+ transactions</span><span class="stat-pill">R$15.4M revenue</span><span class="stat-pill">9 relational tables</span>
-      </div>
-      <div class="project-stack">
-        <span class="stack-tag">Python</span><span class="stack-tag">SQL</span><span class="stack-tag">Tableau</span><span class="stack-tag">Pandas</span><span class="stack-tag">Excel</span>
-      </div>
-      <div class="project-links">
-        <a href="olist_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
-        <a href="https://public.tableau.com/views/OlistE-CommercePerformanceAnalysis2016-2018/OlistE-CommercePerformanceAnalysis20162018" target="_blank" class="project-link secondary">Tableau ↗</a>
-        <a href="https://github.com/siddeepak2023/olist-e-commerce-analysis-sql" target="_blank" class="project-link">GitHub</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-in">
-      <span class="project-num">06 — MACHINE LEARNING · CLASSIFICATION</span>
-      <h3 class="project-title">T-Mobile Customer Churn Prediction</h3>
-      <p class="project-desc">Logistic regression and random forest models predicting telecom churn with 79% accuracy and 0.834 ROC-AUC on 7K+ records. Identified month-to-month contracts (42.7% churn) and 0–12 month customers (47.7% churn) as top risk segments. Outputs a prioritized top-100 list with $334K+ revenue at risk.</p>
-      <div class="mini-label">ROC curve — random forest (AUC = 0.834)</div>
-      <div class="mini-wrap"><canvas id="rocChart"></canvas></div>
-      <div class="project-stats">
-        <span class="stat-pill">79% accuracy</span><span class="stat-pill">0.834 ROC-AUC</span><span class="stat-pill">$334K+ at risk</span>
-      </div>
-      <div class="project-stack">
-        <span class="stack-tag">Python</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Pandas</span><span class="stack-tag">Plotly</span>
-      </div>
-      <div class="project-links">
-        <a href="churn_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
-        <a href="https://github.com/siddeepak2023/t-mobile-churn-prediction-model" target="_blank" class="project-link">GitHub</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-in">
-      <span class="project-num">07 — STATISTICS · A/B TESTING</span>
+      <span class="project-num">06 — STATISTICS · A/B TESTING</span>
       <h3 class="project-title">Spotify Email Campaign A/B Test</h3>
       <p class="project-desc">Designed and analyzed an email marketing A/B test across 10,000 users using two-proportion z-tests. Found statistically significant lifts of 27.5% in open rate and 470% in conversion rate (p &lt; 0.05). Projected $83.9M additional annual Premium revenue if winning variant rolled out to 250M users.</p>
       <div class="mini-label">Funnel comparison — Variant A vs B</div>
@@ -264,6 +244,24 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
       <div class="project-links">
         <a href="spotify_ab_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
         <a href="https://github.com/siddeepak2023/spotify-email-ab-test" target="_blank" class="project-link">GitHub</a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in">
+      <span class="project-num">07 — MACHINE LEARNING · CLASSIFICATION</span>
+      <h3 class="project-title">T-Mobile Customer Churn Prediction</h3>
+      <p class="project-desc">Logistic regression and random forest models predicting telecom churn with 79% accuracy and 0.834 ROC-AUC on 7K+ records. Identified month-to-month contracts (42.7% churn) and 0–12 month customers (47.7% churn) as top risk segments. Outputs a prioritized top-100 list with $334K+ revenue at risk.</p>
+      <div class="mini-label">ROC curve — random forest (AUC = 0.834)</div>
+      <div class="mini-wrap"><canvas id="rocChart"></canvas></div>
+      <div class="project-stats">
+        <span class="stat-pill">79% accuracy</span><span class="stat-pill">0.834 ROC-AUC</span><span class="stat-pill">$334K+ at risk</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Pandas</span><span class="stack-tag">Plotly</span>
+      </div>
+      <div class="project-links">
+        <a href="churn_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+        <a href="https://github.com/siddeepak2023/t-mobile-churn-prediction-model" target="_blank" class="project-link">GitHub</a>
       </div>
     </div>
 
@@ -286,19 +284,21 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
 
     <div class="project-card fade-in">
-      <span class="project-num">09 — SPORTS ANALYTICS · MACHINE LEARNING · BETTING EDGES</span>
-      <h3 class="project-title">NBA Game Intelligence Dashboard</h3>
-      <p class="project-desc">End-to-end predictive model for NBA game outcomes — 3 seasons of game logs (7,380 rows) via nba_api, rolling 10-game feature engineering, HistGradientBoostingClassifier with isotonic calibration, TimeSeriesSplit cross-validation. Compares model probabilities against Vegas implied odds (vig-normalized) to surface value bets with &gt;5% edge. AUC 0.631 on 2024-25 holdout.</p>
-      <div class="mini-label">2024-25 Win % — OKC leads at 82.9%</div>
-      <div class="mini-wrap"><canvas id="nbaChart"></canvas></div>
+      <span class="project-num">09 — SQL · BUSINESS INTELLIGENCE</span>
+      <h3 class="project-title">Olist E-Commerce Revenue Analysis</h3>
+      <p class="project-desc">End-to-end BI project analyzing 96K+ real Brazilian e-commerce transactions across 9 relational tables using advanced SQL — CTEs, window functions, multi-table JOINs. Identified Health & Beauty as the #1 category at R$1.4M and discovered a 31% review score drop for orders with 21+ day delivery.</p>
+      <div class="mini-label">Revenue by top 5 categories (R$M)</div>
+      <div class="mini-wrap"><canvas id="olistChart"></canvas></div>
       <div class="project-stats">
-        <span class="stat-pill">AUC 0.631</span><span class="stat-pill">7,380 games</span><span class="stat-pill">3 seasons</span>
+        <span class="stat-pill">96K+ transactions</span><span class="stat-pill">R$15.4M revenue</span><span class="stat-pill">9 relational tables</span>
       </div>
       <div class="project-stack">
-        <span class="stack-tag">Python</span><span class="stack-tag">HistGBM</span><span class="stack-tag">nba_api</span><span class="stack-tag">SQLite</span><span class="stack-tag">Chart.js</span><span class="stack-tag">HTML/JS</span>
+        <span class="stack-tag">Python</span><span class="stack-tag">SQL</span><span class="stack-tag">Tableau</span><span class="stack-tag">Pandas</span><span class="stack-tag">Excel</span>
       </div>
       <div class="project-links">
-        <a href="nba_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+        <a href="olist_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+        <a href="https://public.tableau.com/views/OlistE-CommercePerformanceAnalysis2016-2018/OlistE-CommercePerformanceAnalysis20162018" target="_blank" class="project-link secondary">Tableau ↗</a>
+        <a href="https://github.com/siddeepak2023/olist-e-commerce-analysis-sql" target="_blank" class="project-link">GitHub</a>
       </div>
     </div>
 

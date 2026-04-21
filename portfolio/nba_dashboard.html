@@ -189,6 +189,51 @@ select.pred-sel{width:100%;background:var(--s3);border:1px solid var(--border);c
 /* ── CALIBRATION ── */
 .calib-note{font-size:.7rem;color:var(--muted);margin-top:1rem;line-height:1.7}
 
+/* ── LIVE SCORES ── */
+.live-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.2rem}
+.live-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:1.2rem;transition:border-color .2s}
+.live-card-active{border-color:rgba(239,68,68,.4);animation:livePulse 2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.15)}50%{box-shadow:0 0 0 6px rgba(239,68,68,0)}}
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:5px;animation:dotBlink 1.2s ease-in-out infinite}
+@keyframes dotBlink{0%,100%{opacity:1}50%{opacity:.3}}
+.live-teams{display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;gap:.5rem}
+.live-team{display:flex;align-items:center;gap:.6rem}
+.live-team-home{flex-direction:row-reverse}
+.live-logo{width:36px;height:36px;object-fit:contain;flex-shrink:0}
+.live-abbr{font-size:1rem;font-weight:600;color:var(--text)}
+.live-tname{font-size:.62rem;color:var(--muted);margin-top:1px}
+.live-score{font-size:1.6rem;font-weight:700;color:var(--muted);min-width:36px;text-align:center;margin-left:auto}
+.live-score-win{color:var(--text)}
+.live-team-home .live-score{margin-left:0;margin-right:auto}
+.live-vs-col{display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.live-status{font-size:.65rem;color:var(--red);font-weight:600;display:flex;align-items:center;letter-spacing:.04em;white-space:nowrap}
+.live-final{font-size:.62rem;color:var(--muted);letter-spacing:.09em;text-transform:uppercase}
+.live-upcoming{font-size:.62rem;color:var(--blue);white-space:nowrap;text-align:center}
+.live-sep{font-size:.75rem;color:var(--dim);font-family:var(--serif)}
+.live-model-row{margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--border)}
+.live-model-bar{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;margin-bottom:.3rem;display:flex}
+.live-model-home{height:100%;background:var(--gold);border-radius:2px 0 0 2px}
+.live-model-away{height:100%;background:var(--blue);border-radius:0 2px 2px 0}
+.live-model-labels{display:flex;justify-content:space-between;align-items:center;font-size:.62rem}
+.live-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.18rem .5rem;font-size:.6rem;color:var(--red);letter-spacing:.05em}
+.live-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem}
+.live-updated{font-size:.62rem;color:var(--dim)}
+.live-refresh-btn{background:var(--s2);border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:.62rem;padding:.3rem .7rem;border-radius:5px;cursor:pointer;transition:all .18s}
+.live-refresh-btn:hover{color:var(--text);border-color:rgba(74,143,216,.3)}
+.sched-section{margin-bottom:2rem}
+.sched-day-label{font-size:.6rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.sched-day-label::before{content:"";width:3px;height:12px;background:var(--gold);border-radius:2px}
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.7rem}
+.sched-row{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:.8rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.6rem;transition:border-color .15s}
+.sched-row:hover{border-color:rgba(74,143,216,.25)}
+.sched-teams{display:flex;align-items:center;gap:.5rem;flex:1;min-width:0}
+.sched-logo{width:22px;height:22px;object-fit:contain}
+.sched-abbr{font-size:.78rem;font-weight:600;color:var(--text)}
+.sched-at{font-size:.65rem;color:var(--dim);flex-shrink:0}
+.sched-time{font-size:.65rem;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.sched-model{font-size:.65rem;display:flex;align-items:center;gap:.3rem;flex-shrink:0;padding-left:.6rem;border-left:1px solid var(--border)}
+.live-no-games{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:2.5rem;text-align:center;color:var(--muted);font-size:.78rem}
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   .grid-2,.grid-3,.bt-hero{grid-template-columns:1fr}
@@ -197,6 +242,7 @@ select.pred-sel{width:100%;background:var(--s3);border:1px solid var(--border);c
   .page{padding:1.2rem 1rem}
   .hero{padding:1.8rem 1.2rem}
   .hero-title{font-size:1.8rem}
+  .live-teams{grid-template-columns:1fr 60px 1fr}
 }
 </style>
 </head>
@@ -210,6 +256,7 @@ select.pred-sel{width:100%;background:var(--s3);border:1px solid var(--border);c
     <span>ML · betting analytics</span>
   </div>
   <div class="nav-tabs">
+    <button class="tab-btn" onclick="showTab('live',this)" id="live-tab-btn" style="display:flex;align-items:center;gap:.35rem"><span style="width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;animation:dotBlink 1.2s ease-in-out infinite"></span>Live</button>
     <button class="tab-btn active" onclick="showTab('overview',this)">Overview</button>
     <button class="tab-btn" onclick="showTab('standings',this)">Standings</button>
     <button class="tab-btn" onclick="showTab('form',this)">Team Form</button>
@@ -242,6 +289,27 @@ select.pred-sel{width:100%;background:var(--s3);border:1px solid var(--border);c
       <div class="hero-badges" id="hero-badges"></div>
     </div>
     <div class="hero-kpis" id="hero-kpis"></div>
+  </div>
+</div>
+
+<!-- ══ LIVE SCORES ══ -->
+<div id="tab-live" class="page">
+  <div class="live-toolbar">
+    <div style="display:flex;align-items:center;gap:.8rem">
+      <div class="sec-hd" style="margin-bottom:0;border-bottom:none">Today's Games</div>
+      <span class="live-badge" id="live-games-badge" style="display:none"><span class="live-dot"></span>LIVE</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.7rem">
+      <span class="live-updated" id="live-updated"></span>
+      <button class="live-refresh-btn" onclick="window.refreshLive()">↻ Refresh</button>
+    </div>
+  </div>
+  <div id="live-today" class="live-grid" style="margin-bottom:2.5rem">
+    <div style="color:var(--dim);font-size:.75rem;padding:1rem">Loading live scores…</div>
+  </div>
+  <div class="sec-hd">Upcoming Schedule + Model Predictions</div>
+  <div id="live-schedule">
+    <div style="color:var(--dim);font-size:.75rem;padding:1rem">Loading schedule…</div>
   </div>
 </div>
 
@@ -442,8 +510,8 @@ function showTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
-  // Chart.js needs a resize event to render in previously-hidden tabs
   setTimeout(()=>window.dispatchEvent(new Event('resize')),30);
+  if(id==='live') window._loadLive && window._loadLive();
 }
 
 // ── Chart defaults ────────────────────────────────────────────────────────
@@ -891,6 +959,158 @@ function switchBtStrat(s,btn){
       </div>`;
     }).join('');
   }
+})();
+
+// ── Live Scores (ESPN public API) ─────────────────────────────────────────
+(function(){
+  const ESPN='https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
+  let refreshTimer=null, loaded=false;
+
+  async function fetchDate(d){
+    const url=d?`${ESPN}?dates=${d}`:ESPN;
+    const r=await fetch(url);return (await r.json()).events||[];
+  }
+
+  function fmtTime(iso){
+    return new Date(iso).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+  }
+
+  function modelBar(homeAbbr,awayAbbr){
+    const prob=DATA.matchups&&DATA.matchups[homeAbbr]&&DATA.matchups[homeAbbr][awayAbbr]
+      ?DATA.matchups[homeAbbr][awayAbbr]:null;
+    if(!prob)return'';
+    const hp=Math.round(prob*100),ap=100-hp;
+    return`<div class="live-model-row">
+      <div class="live-model-bar">
+        <div class="live-model-away" style="width:${ap}%"></div>
+        <div class="live-model-home" style="width:${hp}%"></div>
+      </div>
+      <div class="live-model-labels">
+        <span style="color:var(--blue)">${ap}% ${awayAbbr}</span>
+        <span style="color:var(--dim);font-size:.57rem">MODEL EDGE</span>
+        <span style="color:var(--gold)">${homeAbbr} ${hp}%</span>
+      </div>
+    </div>`;
+  }
+
+  function gameCard(ev){
+    const comp=ev.competitions[0];
+    const home=comp.competitors.find(t=>t.homeAway==='home');
+    const away=comp.competitors.find(t=>t.homeAway==='away');
+    const st=comp.status,state=st.type.state;
+    const isLive=state==='in',isFinal=state==='post';
+    const hWin=isFinal&&parseInt(home.score||0)>parseInt(away.score||0);
+    const aWin=isFinal&&parseInt(away.score||0)>parseInt(home.score||0);
+
+    let statusHTML;
+    if(isLive) statusHTML=`<div class="live-status"><span class="live-dot"></span>Q${st.period} ${st.displayClock}</div>`;
+    else if(isFinal) statusHTML=`<div class="live-final">FINAL</div>`;
+    else statusHTML=`<div class="live-upcoming">${fmtTime(ev.date)}</div>`;
+
+    const scoreA=isFinal||isLive?`<div class="live-score${aWin?' live-score-win':''}">${away.score||'—'}</div>`:'';
+    const scoreH=isFinal||isLive?`<div class="live-score${hWin?' live-score-win':''}">${home.score||'—'}</div>`:'';
+
+    return`<div class="live-card${isLive?' live-card-active':''}">
+      <div class="live-teams">
+        <div class="live-team">
+          <img class="live-logo" src="${away.team.logo||''}" onerror="this.style.display='none'">
+          <div><div class="live-abbr">${away.team.abbreviation}</div><div class="live-tname">${away.team.shortDisplayName||''}</div></div>
+          ${scoreA}
+        </div>
+        <div class="live-vs-col">${statusHTML}<div class="live-sep">@</div></div>
+        <div class="live-team live-team-home">
+          ${scoreH}
+          <div style="text-align:right"><div class="live-abbr">${home.team.abbreviation}</div><div class="live-tname">${home.team.shortDisplayName||''}</div></div>
+          <img class="live-logo" src="${home.team.logo||''}" onerror="this.style.display='none'">
+        </div>
+      </div>
+      ${modelBar(home.team.abbreviation,away.team.abbreviation)}
+    </div>`;
+  }
+
+  function schedCard(ev){
+    const comp=ev.competitions[0];
+    const home=comp.competitors.find(t=>t.homeAway==='home');
+    const away=comp.competitors.find(t=>t.homeAway==='away');
+    const ha=home.team.abbreviation,aa=away.team.abbreviation;
+    const prob=DATA.matchups&&DATA.matchups[ha]&&DATA.matchups[ha][aa]?DATA.matchups[ha][aa]:null;
+    const modelFrag=prob?`<div class="sched-model">
+      <span style="color:var(--blue)">${Math.round((1-prob)*100)}%</span>
+      <span style="color:var(--dim);font-size:.57rem">vs</span>
+      <span style="color:var(--gold)">${Math.round(prob*100)}%</span>
+    </div>`:'';
+    return`<div class="sched-row">
+      <div class="sched-teams">
+        <img class="sched-logo" src="${away.team.logo||''}" onerror="this.style.display='none'">
+        <span class="sched-abbr">${aa}</span>
+        <span class="sched-at">@</span>
+        <img class="sched-logo" src="${home.team.logo||''}" onerror="this.style.display='none'">
+        <span class="sched-abbr">${ha}</span>
+      </div>
+      <div class="sched-time">${fmtTime(ev.date)}</div>
+      ${modelFrag}
+    </div>`;
+  }
+
+  async function renderToday(){
+    const el=document.getElementById('live-today');
+    if(!el)return;
+    try{
+      el.innerHTML='<div style="color:var(--dim);font-size:.75rem;padding:.5rem">Loading…</div>';
+      const evs=await fetchDate(null);
+      if(!evs.length){
+        el.innerHTML='<div class="live-no-games">No NBA games scheduled today.</div>';
+      }else{
+        el.innerHTML=`<div class="live-grid">${evs.map(gameCard).join('')}</div>`;
+      }
+      const hasLive=evs.some(e=>e.competitions[0].status.type.state==='in');
+      const badge=document.getElementById('live-games-badge');
+      if(badge)badge.style.display=hasLive?'inline-flex':'none';
+      // style live tab button
+      const lbtn=document.getElementById('live-tab-btn');
+      if(lbtn)lbtn.style.color=hasLive?'var(--red)':lbtn.classList.contains('active')?'var(--gold)':'';
+      document.getElementById('live-updated').textContent='Updated '+new Date().toLocaleTimeString();
+      clearTimeout(refreshTimer);
+      if(hasLive)refreshTimer=setTimeout(renderToday,30000);
+    }catch(e){
+      el.innerHTML='<div class="live-no-games">Could not load live data. Check connection.</div>';
+    }
+  }
+
+  async function renderSchedule(){
+    const el=document.getElementById('live-schedule');
+    if(!el)return;
+    const today=new Date();
+    const dateStrs=Array.from({length:7},(_,i)=>{
+      const d=new Date(today);d.setDate(today.getDate()+i+1);
+      return d.toISOString().slice(0,10).replace(/-/g,'');
+    });
+    const byDate={};
+    await Promise.all(dateStrs.map(async ds=>{
+      try{
+        const evs=await fetchDate(ds);
+        if(evs.length)byDate[ds]=evs;
+      }catch(e){}
+    }));
+    const sorted=Object.keys(byDate).sort().slice(0,5);
+    if(!sorted.length){el.innerHTML='<div style="color:var(--muted);font-size:.75rem">No upcoming games in next 7 days.</div>';return;}
+    el.innerHTML=sorted.map(ds=>{
+      const d=new Date(ds.slice(0,4)+'-'+ds.slice(4,6)+'-'+ds.slice(6,8)+'T12:00:00');
+      const label=d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
+      return`<div class="sched-section">
+        <div class="sched-day-label">${label} &nbsp;·&nbsp; ${byDate[ds].length} games</div>
+        <div class="sched-grid">${byDate[ds].map(schedCard).join('')}</div>
+      </div>`;
+    }).join('');
+  }
+
+  window._loadLive=function(){
+    if(loaded)return;
+    loaded=true;
+    renderToday();
+    renderSchedule();
+  };
+  window.refreshLive=function(){loaded=false;window._loadLive();};
 })();
 </script>
 </body>
