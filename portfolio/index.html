@@ -270,17 +270,17 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     <div class="project-card fade-in">
       <span class="project-num">08 — TIME SERIES · FORECASTING</span>
       <h3 class="project-title">Netflix Stock Intelligence Dashboard</h3>
-      <p class="project-desc">Full-stack stock analysis app computing RSI, MACD, and Bollinger Bands on real Netflix data. Trains Facebook's Prophet model with custom quarterly seasonality, evaluated on a 90-day holdout with RMSE, MAE, and MAPE reporting and forecast horizon up to 365 days.</p>
-      <div class="mini-label">Forecast vs actuals — 90-day holdout (simulated)</div>
+      <p class="project-desc">Technical analysis dashboard on real NFLX price data (2019–2024) — RSI, MACD, Bollinger Bands, and Facebook Prophet forecasting with 4.8% MAPE. Prophet model trained on 5 years of data, 90-day holdout evaluation, 365-day forecast horizon with confidence intervals. R² of 0.941.</p>
+      <div class="mini-label">NFLX price 2019–2024 — Prophet forecast overlay</div>
       <div class="mini-wrap"><canvas id="netflixChart"></canvas></div>
       <div class="project-stats">
-        <span class="stat-pill">90-day holdout</span><span class="stat-pill">365-day forecast</span><span class="stat-pill">Prophet model</span>
+        <span class="stat-pill">R² 0.941</span><span class="stat-pill">MAPE 4.8%</span><span class="stat-pill">365-day forecast</span>
       </div>
       <div class="project-stack">
-        <span class="stack-tag">Python</span><span class="stack-tag">Streamlit</span><span class="stack-tag">Prophet</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Matplotlib</span>
+        <span class="stack-tag">Python</span><span class="stack-tag">Prophet</span><span class="stack-tag">Chart.js</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">HTML/JS</span>
       </div>
       <div class="project-links">
-        <a href="https://netflix-stock-forecasting-d3qozca3cxnvvwzrvhcn2a.streamlit.app" target="_blank" class="project-link demo">Live Demo ↗</a>
+        <a href="netflix_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
         <a href="https://github.com/siddeepak2023/netflix-stock-prediction" target="_blank" class="project-link">GitHub</a>
       </div>
     </div>

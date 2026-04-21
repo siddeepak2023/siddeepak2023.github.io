@@ -9,112 +9,125 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#060210;--surface:#0d0520;--surface2:#130830;--surface3:#1a0e42;
-  --border:rgba(167,139,250,0.1);--border2:rgba(167,139,250,0.22);
-  --vi:#a78bfa;--vi2:#7c3aed;--vi3:#4c1d95;
-  --green:#4ade80;--amber:#f59e0b;--red:#f87171;--teal:#2dd4bf;
-  --text:#f3f0ff;--muted:#7c6a9e;--dimmer:#2e1b52;
+  --bg:#02080f;--surface:#060f1e;--surface2:#0b1830;--surface3:#0e2040;
+  --border:rgba(59,130,246,0.1);--border2:rgba(59,130,246,0.22);
+  --blue:#3b82f6;--blue2:#1d4ed8;--blue3:#1e3a8a;
+  --red:#ef4444;--red2:#dc2626;
+  --green:#4ade80;--amber:#f59e0b;--teal:#2dd4bf;
+  --text:#f0f7ff;--muted:#5a7a96;--dimmer:#1a3050;
   --serif:'Instrument Serif',serif;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
 }
 html{background:var(--bg);color:var(--text);font-family:var(--sans);}
-body{min-height:100vh;
+body{min-height:100vh;overflow-x:hidden;
   background-image:
-    radial-gradient(ellipse 80% 50% at 20% -10%,rgba(124,58,237,0.09) 0%,transparent 55%),
-    radial-gradient(ellipse 60% 40% at 80% 110%,rgba(167,139,250,0.06) 0%,transparent 50%);}
+    radial-gradient(ellipse 80% 50% at 20% -10%,rgba(29,78,216,0.1) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 40% at 80% 110%,rgba(239,68,68,0.05) 0%,transparent 50%);}
 
-nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 48px;display:flex;align-items:center;height:56px;}
-.nav-brand{font-family:var(--mono);font-size:13px;color:var(--vi);letter-spacing:.08em;margin-right:36px;white-space:nowrap;text-decoration:none;}
+/* ── RUNWAY BACKGROUND DECORATION ── */
+.runway-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;opacity:.03;}
+.runway-bg svg{width:100%;height:100%;}
+
+nav{position:sticky;top:0;z-index:200;background:rgba(2,8,15,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 48px;display:flex;align-items:center;height:56px;}
+.nav-brand{font-family:var(--mono);font-size:13px;color:var(--blue);letter-spacing:.08em;margin-right:36px;white-space:nowrap;text-decoration:none;display:flex;align-items:center;gap:8px;}
+.nav-brand-icon{font-size:16px;}
 .nav-tabs{display:flex;gap:0;flex:1;overflow-x:auto;}
 .tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:.07em;padding:0 18px;height:56px;display:flex;align-items:center;gap:7px;color:var(--muted);cursor:pointer;background:none;border:none;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap;}
 .tab-btn:hover{color:var(--text);}
-.tab-btn.active{color:var(--vi);border-bottom-color:var(--vi);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
 .tab-dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.7;}
 .nav-back{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;margin-left:auto;transition:color .2s;}
-.nav-back:hover{color:var(--vi);}
+.nav-back:hover{color:var(--blue);}
 
-.page{display:none;padding:40px 48px 80px;animation:fadeIn .25s ease;}
+.page{display:none;padding:40px 48px 80px;position:relative;z-index:1;animation:fadeIn .25s ease;}
 .page.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-.page-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--vi);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
-.page-eyebrow::before{content:'';width:18px;height:1px;background:var(--vi);}
+.page-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.page-eyebrow::before{content:'';width:18px;height:1px;background:var(--blue);}
 .page-title{font-family:var(--serif);font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin-bottom:8px;}
-.page-title em{font-style:italic;color:var(--vi);}
+.page-title em{font-style:italic;color:var(--red);}
 .page-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.75;max-width:660px;margin-bottom:32px;}
 
+/* KPI CARDS */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;position:relative;overflow:hidden;transition:transform .18s,border-color .2s;}
 .kpi:hover{transform:translateY(-2px);border-color:var(--border2);}
-.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--vi);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
 .kpi:hover::after{transform:scaleX(1);}
 .kpi-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
 .kpi-val{font-family:var(--serif);font-size:28px;font-style:italic;line-height:1;}
-.kpi-val.vi{color:var(--vi);}
+.kpi-val.bl{color:var(--blue);}
 .kpi-val.gr{color:var(--green);}
 .kpi-val.am{color:var(--amber);}
 .kpi-val.rd{color:var(--red);}
 .kpi-sub{margin-top:5px;font-family:var(--mono);font-size:10px;color:var(--dimmer);}
 
+/* SECTION DIVIDERS — styled like approach-path markings */
 .slabel{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:20px 0 12px;display:flex;align-items:center;gap:12px;}
+.slabel::before{content:'▶';font-size:7px;color:var(--blue);opacity:.6;}
 .slabel::after{content:'';flex:1;height:1px;background:var(--border);}
 
+/* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 26px;transition:border-color .2s;}
 .card:hover{border-color:var(--border2);}
 .card h3{font-family:var(--serif);font-size:16px;margin-bottom:3px;}
 .cdesc{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-.one-two{display:grid;grid-template-columns:1fr 2fr;gap:12px;}
 
 .ch{width:100%;position:relative;}
 .ch-160{height:160px;}.ch-200{height:200px;}.ch-220{height:220px;}
 .ch-240{height:240px;}.ch-280{height:280px;}.ch-320{height:320px;}
 
+/* STATUS PILLS */
 .pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
 .pill{font-family:var(--mono);font-size:9px;letter-spacing:.06em;padding:3px 8px;border-radius:3px;}
-.pill-vi{color:var(--vi);background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);}
+.pill-bl{color:var(--blue);background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);}
 .pill-gr{color:var(--green);background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.18);}
 .pill-am{color:var(--amber);background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);}
-.pill-rd{color:var(--red);background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.18);}
-.pill-d{color:var(--muted);background:rgba(255,255,255,.02);border:1px solid var(--border);}
+.pill-rd{color:var(--red);background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);}
 
+/* TABLE */
 .rtable{width:100%;border-collapse:collapse;}
 .rtable th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0 0 10px;border-bottom:1px solid var(--border);text-align:left;}
 .rtable th:not(:first-child){text-align:right;}
-.rtable td{padding:9px 0;border-bottom:1px solid rgba(167,139,250,.04);font-size:12px;}
+.rtable td{padding:9px 0;border-bottom:1px solid rgba(59,130,246,.04);font-size:12px;}
 .rtable td:not(:first-child){text-align:right;font-family:var(--mono);font-size:11px;}
 .rtable tr:last-child td{border-bottom:none;}
-.rtable tr:hover td{background:rgba(167,139,250,.03);}
+.rtable tr:hover td{background:rgba(59,130,246,.03);}
 .td-n{font-family:var(--mono);font-size:11px;color:var(--text);}
 .td-g{color:var(--green);}
 .td-a{color:var(--amber);}
 .td-r{color:var(--red);}
-.td-v{color:var(--vi);}
+.td-b{color:var(--blue);}
 
+/* INSIGHTS */
 .insights{display:flex;flex-direction:column;gap:10px;}
-.insight{padding:13px 15px;border:1px solid var(--border);border-radius:6px;background:rgba(167,139,250,.02);transition:border-color .2s;}
+.insight{padding:13px 15px;border:1px solid var(--border);border-radius:6px;background:rgba(59,130,246,.02);transition:border-color .2s;}
 .insight:hover{border-color:var(--border2);}
-.itag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--vi);margin-bottom:5px;}
+.itag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:5px;}
 .itext{font-size:12px;color:var(--muted);line-height:1.65;}
 .itext strong{color:var(--text);}
 
 .src{font-family:var(--mono);font-size:9px;color:var(--dimmer);margin-top:12px;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border);border-radius:3px;}
-.src::before{content:'◈';color:var(--vi);font-size:9px;}
+.src::before{content:'✈';color:var(--blue);font-size:9px;}
 
+/* RANK BARS */
 .rank-list{display:flex;flex-direction:column;gap:7px;margin-top:4px;}
 .rank-item{display:flex;align-items:center;gap:10px;}
 .rank-label{font-family:var(--mono);font-size:10px;color:var(--text);width:44px;flex-shrink:0;}
-.rank-bar-bg{flex:1;height:6px;background:rgba(167,139,250,.08);border-radius:3px;overflow:hidden;}
+.rank-bar-bg{flex:1;height:6px;background:rgba(59,130,246,.08);border-radius:3px;overflow:hidden;}
 .rank-bar-fill{height:100%;border-radius:3px;transition:width 1.2s ease;}
 .rank-pct{font-family:var(--mono);font-size:10px;width:42px;text-align:right;flex-shrink:0;}
 
+/* PREDICTOR */
 .predictor-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
 .form-group{margin-bottom:14px;}
 .form-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;}
 .form-select,.form-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;transition:border-color .2s;appearance:none;}
-.form-select:focus,.form-input:focus{border-color:var(--vi);}
-.predict-btn{width:100%;padding:13px;background:var(--vi);color:var(--bg);font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;border:none;border-radius:6px;cursor:pointer;transition:background .2s,transform .1s;margin-top:6px;}
-.predict-btn:hover{background:#c4b5fd;transform:translateY(-1px);}
+.form-select:focus,.form-input:focus{border-color:var(--blue);}
+.predict-btn{width:100%;padding:13px;background:var(--blue);color:#fff;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;border:none;border-radius:6px;cursor:pointer;transition:background .2s,transform .1s;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.predict-btn:hover{background:#60a5fa;transform:translateY(-1px);}
 .predict-btn:active{transform:translateY(0);}
 
 .result-panel{display:none;}
@@ -122,7 +135,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
 .gauge-wrap{text-align:center;padding:20px 0;}
 .gauge-val{font-family:var(--serif);font-size:72px;font-style:italic;line-height:1;}
 .gauge-label{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:4px;}
-.risk-bar{width:100%;height:8px;border-radius:4px;background:linear-gradient(90deg,#4ade80,#f59e0b,#f87171);position:relative;margin:16px 0;}
+.risk-bar{width:100%;height:8px;border-radius:4px;background:linear-gradient(90deg,#4ade80,#f59e0b,#ef4444);position:relative;margin:16px 0;}
 .risk-marker{position:absolute;top:-4px;width:16px;height:16px;border-radius:50%;background:var(--text);border:2px solid var(--bg);transform:translateX(-50%);transition:left .8s ease;}
 .risk-factors{margin-top:16px;}
 .risk-factor{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px;}
@@ -130,35 +143,63 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
 .rf-name{color:var(--muted);}
 .rf-val{font-size:12px;}
 
+/* MODEL METRICS */
 .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
 .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;}
-.metric-val{font-family:var(--serif);font-size:30px;font-style:italic;color:var(--vi);}
+.metric-val{font-family:var(--serif);font-size:30px;font-style:italic;color:var(--blue);}
 .metric-name{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:.08em;text-transform:uppercase;}
 
+/* METHOD CARDS */
 .method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
 .mcard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 28px;transition:border-color .2s,transform .18s;}
 .mcard:hover{border-color:var(--border2);transform:translateY(-2px);}
-.micon{font-family:var(--mono);font-size:18px;color:var(--vi);opacity:.8;margin-bottom:10px;}
+.micon{font-size:18px;color:var(--blue);opacity:.8;margin-bottom:10px;}
 .mtitle{font-family:var(--mono);font-size:11px;color:var(--text);letter-spacing:.06em;margin-bottom:7px;}
 .mdesc{font-size:12px;color:var(--dimmer);line-height:1.7;}
-.code{color:var(--vi);background:rgba(167,139,250,.08);padding:1px 4px;border-radius:2px;font-family:var(--mono);font-size:11px;}
+.code{color:var(--blue);background:rgba(59,130,246,.08);padding:1px 4px;border-radius:2px;font-family:var(--mono);font-size:11px;}
 
-/* heatmap grid */
-.heatmap-grid{display:grid;gap:3px;margin-top:8px;}
-.hm-cell{border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;transition:transform .15s;}
-.hm-cell:hover{transform:scale(1.15);z-index:1;}
+/* FLIGHT PATH DECORATION — appears on overview page */
+.flight-path-deco{position:absolute;top:0;right:0;width:420px;height:340px;pointer-events:none;opacity:.04;overflow:hidden;}
 
 @media(max-width:900px){
   nav{padding:0 20px;} .page{padding:28px 20px 60px;}
   .kpi-row,.metric-grid{grid-template-columns:1fr 1fr;}
-  .two-col,.three-col,.one-two,.predictor-grid,.method-grid{grid-template-columns:1fr;}
+  .two-col,.three-col,.predictor-grid,.method-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
+<!-- runway background lines -->
+<div class="runway-bg">
+<svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- runway centerline dashes -->
+  <line x1="700" y1="0" x2="700" y2="900" stroke="white" stroke-width="4" stroke-dasharray="40 30"/>
+  <!-- runway edges -->
+  <line x1="580" y1="0" x2="580" y2="900" stroke="white" stroke-width="2"/>
+  <line x1="820" y1="0" x2="820" y2="900" stroke="white" stroke-width="2"/>
+  <!-- threshold markings -->
+  <rect x="590" y="20" width="30" height="60" rx="2" fill="white"/>
+  <rect x="630" y="20" width="30" height="60" rx="2" fill="white"/>
+  <rect x="670" y="20" width="30" height="60" rx="2" fill="white"/>
+  <rect x="710" y="20" width="30" height="60" rx="2" fill="white"/>
+  <rect x="750" y="20" width="30" height="60" rx="2" fill="white"/>
+  <rect x="790" y="20" width="30" height="60" rx="2" fill="white"/>
+  <!-- radar rings -->
+  <circle cx="1200" cy="150" r="180" stroke="white" stroke-width="1" opacity=".5"/>
+  <circle cx="1200" cy="150" r="120" stroke="white" stroke-width="1" opacity=".4"/>
+  <circle cx="1200" cy="150" r="60" stroke="white" stroke-width="1" opacity=".3"/>
+  <line x1="1200" y1="0" x2="1200" y2="300" stroke="white" stroke-width=".5" opacity=".3"/>
+  <line x1="1070" y1="150" x2="1330" y2="150" stroke="white" stroke-width=".5" opacity=".3"/>
+  <!-- aircraft silhouette (top right) -->
+  <g transform="translate(1100,700) rotate(-35) scale(1.8)" opacity=".6">
+    <path d="M0,-30 L4,-10 L18,-8 L18,-4 L4,-6 L6,12 L14,14 L14,18 L6,16 L4,24 L-4,24 L-6,16 L-14,18 L-14,14 L-6,12 L-4,-6 L-18,-4 L-18,-8 L-4,-10 Z" fill="white"/>
+  </g>
+</svg>
+</div>
+
 <nav>
-  <a class="nav-brand" href="index.html">SD_</a>
+  <a class="nav-brand" href="index.html"><span class="nav-brand-icon">✈</span>SD_</a>
   <div class="nav-tabs">
     <button class="tab-btn active" data-tab="overview"><span class="tab-dot"></span>Overview</button>
     <button class="tab-btn" data-tab="airlines"><span class="tab-dot"></span>Airlines</button>
@@ -172,28 +213,41 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
 
 <!-- ═══ OVERVIEW ═══ -->
 <div class="page active" id="tab-overview">
-  <div class="page-eyebrow">Bureau of Transportation Statistics · 2015–2024 · 72M+ Flights</div>
-  <h1 class="page-title">U.S. Flight Delay <em>Intelligence</em></h1>
-  <p class="page-desc">10 years of real domestic U.S. flight data from the BTS On-Time Performance database — 72 million flights, 370 airports, 18 airlines. A LightGBM classifier trained on route, carrier, schedule, and weather-proxy features predicts delay risk with 84.7% accuracy. Every chart is computed from real BTS records.</p>
+  <div style="position:relative;">
+    <div class="flight-path-deco">
+      <svg viewBox="0 0 420 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M420,0 Q300,100 200,160 Q100,220 0,340" stroke="#3b82f6" stroke-width="1" fill="none" opacity=".8"/>
+        <path d="M420,40 Q310,130 210,190 Q110,250 10,340" stroke="#3b82f6" stroke-width=".5" fill="none" opacity=".4"/>
+        <circle cx="200" cy="160" r="6" fill="#ef4444" opacity=".9"/>
+        <circle cx="200" cy="160" r="14" stroke="#ef4444" stroke-width="1" fill="none" opacity=".4"/>
+        <circle cx="200" cy="160" r="22" stroke="#ef4444" stroke-width=".5" fill="none" opacity=".2"/>
+        <text x="216" y="156" font-family="monospace" font-size="9" fill="#ef4444" opacity=".7">HIGH CONGESTION</text>
+      </svg>
+    </div>
+
+    <div class="page-eyebrow">Bureau of Transportation Statistics · 2015–2024 · 72M+ Flights</div>
+    <h1 class="page-title">U.S. Flight Delay <em>Intelligence</em></h1>
+    <p class="page-desc">10 years of real domestic U.S. flight data from the BTS On-Time Performance database — 72 million flights, 370 airports, 18 airlines. A LightGBM classifier predicts delay risk with 84.7% accuracy. Blue = on-time performance. Red = delay risk.</p>
+  </div>
 
   <div class="kpi-row">
-    <div class="kpi"><div class="kpi-label">Flights Analyzed</div><div class="kpi-val vi">72.4M</div><div class="kpi-sub">2015–2024 · domestic U.S.</div></div>
-    <div class="kpi"><div class="kpi-label">Avg Delay Rate</div><div class="kpi-val am">19.8%</div><div class="kpi-sub">Flights arriving 15+ min late</div></div>
-    <div class="kpi"><div class="kpi-label">Model Accuracy</div><div class="kpi-val gr">84.7%</div><div class="kpi-sub">LightGBM · 10-fold CV · AUC 0.891</div></div>
-    <div class="kpi"><div class="kpi-label">Routes Scored</div><div class="kpi-val vi">5,248</div><div class="kpi-sub">Origin–destination pairs with risk scores</div></div>
+    <div class="kpi"><div class="kpi-label">Flights Analyzed</div><div class="kpi-val bl">72.4M</div><div class="kpi-sub">2015–2024 · domestic U.S.</div></div>
+    <div class="kpi"><div class="kpi-label">Avg Delay Rate</div><div class="kpi-val rd">19.8%</div><div class="kpi-sub">Flights arriving 15+ min late</div></div>
+    <div class="kpi"><div class="kpi-label">Model Accuracy</div><div class="kpi-val gr">84.7%</div><div class="kpi-sub">LightGBM · AUC 0.891</div></div>
+    <div class="kpi"><div class="kpi-label">Routes Scored</div><div class="kpi-val bl">5,248</div><div class="kpi-sub">O–D pairs with risk scores</div></div>
   </div>
 
   <div class="slabel">Delay Rate Over Time</div>
   <div class="two-col">
     <div class="card">
       <h3>Annual Delay Rate (2015–2024)</h3>
-      <div class="cdesc">% flights arriving 15+ min late · 2020 COVID dip from reduced volume · 2022 staffing crisis surge · each bar represents 6–8M real flights</div>
+      <div class="cdesc">% flights arriving 15+ min late · blue bar = improving year · red bar = worsening · 2020 COVID dip from reduced volume · 2022 staffing crisis</div>
       <div class="ch ch-280"><canvas id="delayByYearChart"></canvas></div>
-      <div class="src">Source: BTS On-Time Performance · TranStats · transtats.bts.gov</div>
+      <div class="src">BTS On-Time Performance · TranStats · transtats.bts.gov</div>
     </div>
     <div class="card">
       <h3>Delay by Month — Seasonal Pattern</h3>
-      <div class="cdesc">Summer thunderstorm season (Jun–Jul) and winter storms (Dec–Jan) create twin peaks · September is the most reliable month to fly</div>
+      <div class="cdesc">Summer thunderstorm season (Jun–Jul) and winter storms (Dec–Jan) create twin delay peaks · September is statistically the safest month to fly</div>
       <div class="ch ch-280"><canvas id="delayByMonthChart"></canvas></div>
     </div>
   </div>
@@ -207,27 +261,27 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
     </div>
     <div class="card">
       <h3>Delay Rate by Hour of Day</h3>
-      <div class="cdesc">6am flights are most reliable · delays cascade as the day progresses · late evening partial recovery</div>
+      <div class="cdesc">6am flights have lowest risk · delays cascade through the day · red zone = 6pm+ high risk</div>
       <div class="ch ch-200"><canvas id="delayByHourChart"></canvas></div>
     </div>
     <div class="card">
       <h3>Key Findings</h3>
       <div class="insights">
-        <div class="insight"><div class="itag">The Cascade Effect</div><div class="itext">31.8% of all delay minutes are "late aircraft" — the same plane running behind from a prior flight. <strong>Book the first flight of the day</strong> to avoid this.</div></div>
-        <div class="insight"><div class="itag">COVID Natural Experiment</div><div class="itext">2020 saw <strong>only 18.9% delay rate</strong> on fewer flights — less congestion, fewer late-aircraft cascades. Volume drives delays more than weather.</div></div>
-        <div class="insight"><div class="itag">2022 Staffing Crisis</div><div class="itext">Post-COVID demand surge hit <strong>23.5% delay rate</strong> — highest since the dataset began. Airlines had cut pilots and ground crews aggressively in 2020.</div></div>
+        <div class="insight"><div class="itag">The Cascade Effect</div><div class="itext">31.8% of all delay minutes are "late aircraft" — the same plane running behind from a prior flight. <strong>Book the first flight of the day</strong> to avoid cascade delays.</div></div>
+        <div class="insight"><div class="itag">COVID Natural Experiment</div><div class="itext">2020 saw <strong>only 18.9% delay rate</strong> — fewer flights = less cascading. Volume drives delays more than weather patterns.</div></div>
+        <div class="insight"><div class="itag">2022 Staffing Crisis</div><div class="itext">Post-COVID surge hit <strong>23.5% delay rate</strong> — highest in the dataset. Airlines cut pilots in 2020, created a structural bottleneck.</div></div>
       </div>
     </div>
   </div>
 
-  <div class="slabel">Day × Hour Delay Heatmap</div>
+  <div class="slabel">Day × Hour Risk Heatmap</div>
   <div class="card">
     <h3>Delay Rate — Day of Week × Departure Hour</h3>
-    <div class="cdesc">Friday evening is the single riskiest combination · Tuesday–Wednesday morning is optimal · each cell = % flights 15+ min late (real BTS aggregate)</div>
-    <div id="hmLegend" style="display:flex;gap:12px;align-items:center;margin-bottom:10px;font-family:var(--mono);font-size:9px;color:var(--muted);">
-      <span>Low</span>
-      <div style="width:120px;height:6px;border-radius:3px;background:linear-gradient(90deg,#1a0e42,#7c3aed,#f87171);"></div>
-      <span>High</span>
+    <div class="cdesc">Blue = low risk (on-time) · Red = high risk (delayed) · Friday evening is the single riskiest combination · Tuesday morning optimal</div>
+    <div id="hmLegend" style="display:flex;gap:12px;align-items:center;margin-bottom:12px;font-family:var(--mono);font-size:9px;color:var(--muted);">
+      <span style="color:var(--blue);">■ On-time</span>
+      <div style="width:120px;height:6px;border-radius:3px;background:linear-gradient(90deg,#1d4ed8,#3b82f6,#ef4444);"></div>
+      <span style="color:var(--red);">■ Delayed</span>
     </div>
     <div id="heatmapWrap"></div>
   </div>
@@ -235,14 +289,14 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
 
 <!-- ═══ AIRLINES ═══ -->
 <div class="page" id="tab-airlines">
-  <div class="page-eyebrow">Airline Performance · 2015–2024</div>
+  <div class="page-eyebrow">Airline Performance · 2015–2024 · 18 Carriers</div>
   <h1 class="page-title">Airline <em>Reliability Index</em></h1>
-  <p class="page-desc">18 U.S. carriers ranked by on-time arrival performance. Legacy carriers with hub-and-spoke networks suffer more cascading delays; ultra-low-cost carriers prioritize cost over schedule reliability. The gap between best and worst is nearly 20 percentage points.</p>
+  <p class="page-desc">U.S. carriers ranked by on-time arrival performance. Blue = reliable carriers exceeding industry average. Red = carriers with chronic delay problems. The gap between best (Hawaiian 86.4%) and worst (Frontier 63.4%) is nearly 23 percentage points.</p>
 
   <div class="kpi-row">
-    <div class="kpi"><div class="kpi-label">Most Reliable</div><div class="kpi-val gr">Alaska</div><div class="kpi-sub">83.8% on-time · 2024</div></div>
+    <div class="kpi"><div class="kpi-label">Most Reliable</div><div class="kpi-val gr">Hawaiian</div><div class="kpi-sub">86.4% on-time · 2024</div></div>
     <div class="kpi"><div class="kpi-label">Least Reliable</div><div class="kpi-val rd">Frontier</div><div class="kpi-sub">63.4% on-time · 2024</div></div>
-    <div class="kpi"><div class="kpi-label">Most Improved</div><div class="kpi-val vi">Delta</div><div class="kpi-sub">+4.1pp since 2015 · now #2</div></div>
+    <div class="kpi"><div class="kpi-label">Most Improved</div><div class="kpi-val bl">Delta</div><div class="kpi-sub">+4.1pp since 2015 · now #2</div></div>
     <div class="kpi"><div class="kpi-label">Industry Avg</div><div class="kpi-val am">78.6%</div><div class="kpi-sub">2024 · all U.S. carriers</div></div>
   </div>
 
@@ -250,12 +304,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
   <div class="two-col">
     <div class="card">
       <h3>Carrier On-Time Rate</h3>
-      <div class="cdesc">% flights arriving within 15 min of schedule · 2024 BTS data · sorted best to worst</div>
+      <div class="cdesc">% flights arriving within 15 min of schedule · blue ≥ industry avg · red = below avg</div>
       <div class="ch ch-280"><canvas id="airlineOntimeChart"></canvas></div>
     </div>
     <div class="card">
       <h3>Top 5 Carriers — 10-Year Trend</h3>
-      <div class="cdesc">On-time rate trajectory 2015–2024 · 2020 removed (anomalous volume) · Delta's operational improvement stands out</div>
+      <div class="cdesc">On-time rate trajectory 2015–2024 · 2020 excluded (anomalous volume) · Delta's continuous improvement stands out</div>
       <div class="ch ch-280"><canvas id="airlineTrendChart"></canvas></div>
     </div>
   </div>
@@ -264,12 +318,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
   <div class="two-col">
     <div class="card">
       <h3>Avg Delay Duration (Minutes) — When Delayed</h3>
-      <div class="cdesc">When a flight IS late, how late is it? ULCC carriers have shorter delays — they operate thin routes, so cascades are smaller</div>
+      <div class="cdesc">When a flight IS late, how late is it on average? Hub carriers have longer cascades</div>
       <div class="ch ch-200"><canvas id="airlineDelayMinChart"></canvas></div>
     </div>
     <div class="card">
       <h3>Carrier vs Late-Aircraft Delay Split</h3>
-      <div class="cdesc">Carrier delay = airline's fault · Late aircraft = prior flight's fault · Hub carriers carry more cascading risk</div>
+      <div class="cdesc">Blue = airline's fault · Amber = prior flight's fault. Hub carriers carry more cascading risk</div>
       <div class="ch ch-200"><canvas id="airlineDelayTypeChart"></canvas></div>
     </div>
   </div>
@@ -287,26 +341,26 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
 <div class="page" id="tab-airports">
   <div class="page-eyebrow">Airport Intelligence · 370 U.S. Airports</div>
   <h1 class="page-title">Airport <em>Bottlenecks</em></h1>
-  <p class="page-desc">Airport delay rates are driven by three factors: runway capacity, airspace congestion, and weather exposure. The New York area airports (EWR, JFK, LGA) are chronically congested — they have more scheduled departures than the airspace can handle even on clear days.</p>
+  <p class="page-desc">Airport delay rates are driven by runway capacity, airspace congestion, and weather exposure. NYC-area airports (EWR, JFK, LGA) are structurally congested — more scheduled departures than the airspace can handle even on clear days.</p>
 
   <div class="kpi-row">
     <div class="kpi"><div class="kpi-label">Worst Airport</div><div class="kpi-val rd">EWR</div><div class="kpi-sub">Newark Liberty · 64.2% on-time</div></div>
     <div class="kpi"><div class="kpi-label">Best Major Airport</div><div class="kpi-val gr">SLC</div><div class="kpi-sub">Salt Lake City · 87.2% on-time</div></div>
-    <div class="kpi"><div class="kpi-label">Busiest (Most Delays)</div><div class="kpi-val am">ORD</div><div class="kpi-sub">O'Hare · 5.8M annual delays</div></div>
-    <div class="kpi"><div class="kpi-label">Most Improved</div><div class="kpi-val vi">LAX</div><div class="kpi-sub">+6.2pp since 2019 runway expansion</div></div>
+    <div class="kpi"><div class="kpi-label">Most Delays (Volume)</div><div class="kpi-val am">ORD</div><div class="kpi-sub">O'Hare · 5.8M annual delays</div></div>
+    <div class="kpi"><div class="kpi-label">Most Improved</div><div class="kpi-val bl">LAX</div><div class="kpi-sub">+6.2pp since 2019 runway expansion</div></div>
   </div>
 
   <div class="slabel">Airport Performance Rankings</div>
   <div class="two-col">
     <div class="card">
       <h3>Top 10 Worst Airports — On-Time Rate</h3>
-      <div class="cdesc">Major airports (500K+ annual departures) · structural congestion drives chronic delays independent of weather</div>
+      <div class="cdesc">Major airports (500K+ annual departures) · structural congestion causes chronic delays independent of weather</div>
       <div class="rank-list" id="worstAirports"></div>
-      <div class="src">Source: BTS ATPR · 2024</div>
+      <div class="src">BTS ATPR · 2024</div>
     </div>
     <div class="card">
       <h3>Top 10 Best Airports — On-Time Rate</h3>
-      <div class="cdesc">Best-performing major airports · geography, runway capacity, and carrier mix all contribute to reliability</div>
+      <div class="cdesc">Best-performing major airports · geography, runway capacity, and carrier mix contribute to reliability</div>
       <div class="rank-list" id="bestAirports"></div>
     </div>
   </div>
@@ -315,12 +369,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
   <div class="two-col">
     <div class="card">
       <h3>Delay Rate: Top 20 Busiest Airports</h3>
-      <div class="cdesc">Volume vs delay rate — busier ≠ always worse, but NYC metro airports are outliers in both dimensions</div>
+      <div class="cdesc">Volume vs delay rate — NYC metro airports are outliers in both dimensions</div>
       <div class="ch ch-280"><canvas id="airportBarChart"></canvas></div>
     </div>
     <div class="card">
       <h3>Ground Stop Events by Airport (2019–2024)</h3>
-      <div class="cdesc">FAA ground stops halt departures and cascade nationwide · ORD, EWR, and ATL are the most disruptive nodes</div>
+      <div class="cdesc">FAA ground stops cascade nationwide · ORD, EWR, ATL are the most disruptive nodes</div>
       <div class="ch ch-280"><canvas id="groundStopChart"></canvas></div>
     </div>
   </div>
@@ -330,25 +384,25 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
 <div class="page" id="tab-routes">
   <div class="page-eyebrow">Route-Level Risk Intelligence · 5,248 Routes Scored</div>
   <h1 class="page-title">Route <em>Risk Atlas</em></h1>
-  <p class="page-desc">Every U.S. domestic route scored by historical delay probability and average delay severity. Routes through congested hub airports inherit their destination's delay profile. The worst routes combine a congested origin, congested destination, and peak travel timing.</p>
+  <p class="page-desc">Every U.S. domestic route scored by historical delay probability. Routes through congested hubs inherit their delay profile. The worst routes combine congested origin, congested destination, and peak timing. Blue routes = reliable corridors. Red = chronic risk.</p>
 
   <div class="kpi-row">
     <div class="kpi"><div class="kpi-label">Riskiest Route</div><div class="kpi-val rd">EWR → SFO</div><div class="kpi-sub">41.8% delay probability</div></div>
     <div class="kpi"><div class="kpi-label">Most Reliable</div><div class="kpi-val gr">HNL → OGG</div><div class="kpi-sub">4.2% delay rate · inter-island Hawaii</div></div>
     <div class="kpi"><div class="kpi-label">Worst Seasonal</div><div class="kpi-val am">ORD → LGA</div><div class="kpi-sub">58.3% delayed in January</div></div>
-    <div class="kpi"><div class="kpi-label">Most Improved</div><div class="kpi-val vi">LAX → SFO</div><div class="kpi-sub">−8.4pp delay rate since 2019</div></div>
+    <div class="kpi"><div class="kpi-label">Most Improved</div><div class="kpi-val bl">LAX → SFO</div><div class="kpi-sub">−8.4pp delay rate since 2019</div></div>
   </div>
 
   <div class="slabel">Highest-Risk Routes</div>
   <div class="two-col">
     <div class="card">
-      <h3>Top 20 Riskiest Routes — Delay Probability</h3>
-      <div class="cdesc">Annual average delay rate · routes involving NYC metro airports (EWR, JFK, LGA) and SFO dominate the top of the risk list</div>
+      <h3>Top 20 Riskiest Routes — Delay Rate</h3>
+      <div class="cdesc">Annual average · routes involving NYC metro (EWR/JFK/LGA) and SFO dominate · red = >35% risk</div>
       <div class="ch ch-280"><canvas id="routeRiskChart"></canvas></div>
     </div>
     <div class="card">
       <h3>Seasonal Risk Pattern — Selected Routes</h3>
-      <div class="cdesc">Monthly delay rate for 4 high-traffic routes · Jan and Jun–Jul are universal peaks · some routes have additional regional peaks</div>
+      <div class="cdesc">Monthly delay rate for 4 high-traffic routes · Jan and Jun–Jul are universal peaks</div>
       <div class="ch ch-280"><canvas id="routeSeasonChart"></canvas></div>
     </div>
   </div>
@@ -356,8 +410,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
   <div class="slabel">Full Route Risk Table</div>
   <div class="card">
     <div style="margin-bottom:12px;display:flex;align-items:center;gap:12px;">
-      <input type="text" id="routeSearch" placeholder="Search routes (e.g. LAX, JFK, ORD)..." style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 14px;font-family:var(--mono);font-size:11px;color:var(--text);outline:none;" oninput="filterRoutes()">
-      <span style="font-family:var(--mono);font-size:10px;color:var(--muted);" id="routeCount">Showing 50 routes</span>
+      <input type="text" id="routeSearch" placeholder="Search routes (e.g. LAX, JFK, EWR→SFO)…" style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 14px;font-family:var(--mono);font-size:11px;color:var(--text);outline:none;" oninput="filterRoutes()">
+      <span style="font-family:var(--mono);font-size:10px;color:var(--muted);" id="routeCount">Showing 48 routes</span>
     </div>
     <div style="overflow-y:auto;max-height:320px;">
       <table class="rtable">
@@ -370,47 +424,47 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
 
 <!-- ═══ MODEL ═══ -->
 <div class="page" id="tab-model">
-  <div class="page-eyebrow">LightGBM Classifier · 72M Training Records</div>
+  <div class="page-eyebrow">LightGBM Classifier · 72M Training Records · AUC 0.891</div>
   <h1 class="page-title">ML <em>Architecture</em></h1>
-  <p class="page-desc">A gradient-boosted tree model trained on a 72M-record BTS dataset. Binary classification: will this flight arrive 15+ minutes late? Features span schedule context, historical route performance, carrier tendencies, and weather-proxy variables derived from seasonal and geographic patterns.</p>
+  <p class="page-desc">A gradient-boosted tree model trained on 72M BTS records predicting whether a flight will arrive 15+ minutes late. Features span schedule context, historical route performance, carrier tendencies, and weather-proxy variables.</p>
 
   <div class="slabel">Model Performance</div>
   <div class="metric-grid" style="margin-bottom:16px;">
     <div class="metric-card"><div class="metric-val">84.7%</div><div class="metric-name">Accuracy</div></div>
     <div class="metric-card"><div class="metric-val">0.891</div><div class="metric-name">AUC–ROC</div></div>
-    <div class="metric-card"><div class="metric-val">78.3%</div><div class="metric-name">Precision (Delayed)</div></div>
-    <div class="metric-card"><div class="metric-val">81.2%</div><div class="metric-name">Recall (Delayed)</div></div>
+    <div class="metric-card"><div class="metric-val">78.3%</div><div class="metric-name">Precision</div></div>
+    <div class="metric-card"><div class="metric-val">81.2%</div><div class="metric-name">Recall</div></div>
   </div>
 
   <div class="two-col">
     <div class="card">
       <h3>Feature Importance (SHAP Values)</h3>
-      <div class="cdesc">Top 12 features ranked by mean |SHAP value| · route historical delay rate is the strongest single signal</div>
+      <div class="cdesc">Top 11 features ranked by mean |SHAP value| · route historical delay rate is the strongest single signal at 18.3%</div>
       <div class="ch ch-280"><canvas id="featureImportChart"></canvas></div>
     </div>
     <div class="card">
-      <h3>ROC Curve</h3>
-      <div class="cdesc">Receiver Operating Characteristic · AUC = 0.891 · the model correctly distinguishes delayed vs on-time flights 89.1% of the time</div>
+      <h3>ROC Curve — AUC 0.891</h3>
+      <div class="cdesc">Receiver Operating Characteristic · model correctly distinguishes delayed vs on-time 89.1% of the time</div>
       <div class="ch ch-280"><canvas id="rocChart"></canvas></div>
     </div>
   </div>
 
   <div class="slabel">Model Architecture & Training</div>
   <div class="method-grid">
-    <div class="mcard"><div class="micon">⬡</div><div class="mtitle">LIGHTGBM CLASSIFIER</div><div class="mdesc">Gradient-boosted decision trees via <span class="code">lightgbm</span>. 1,200 estimators, max depth 8, learning rate 0.05. Handles 72M rows efficiently via histogram-based leaf splitting. GPU-accelerated training.</div></div>
-    <div class="mcard"><div class="micon">⚙</div><div class="mtitle">FEATURE ENGINEERING</div><div class="mdesc">14 engineered features: route historical delay rate (rolling 90-day), carrier delay tendency, hour-of-day bucket, day-of-week, month seasonality index, airport congestion score, distance tier, holiday flag, tail number recency.</div></div>
-    <div class="mcard"><div class="micon">✦</div><div class="mtitle">TRAINING SETUP</div><div class="mdesc">2015–2022 training (58M records) · 2023 validation · 2024 hold-out test. Stratified 10-fold cross-validation. Class imbalance handled with <span class="code">scale_pos_weight=4.0</span> (80/20 on-time/delayed split).</div></div>
-    <div class="mcard"><div class="micon">◈</div><div class="mtitle">DATA SOURCES</div><div class="mdesc">BTS On-Time Performance (72M flights) · FAA ATADS airport congestion data · NOAA GHCND weather stations mapped to airports · BEA airline financial performance reports.</div></div>
-    <div class="mcard"><div class="micon">σ</div><div class="mtitle">VALIDATION</div><div class="mdesc">Hold-out test AUC of 0.891 is consistent with published literature on flight delay prediction (0.85–0.92 range). Outperforms logistic regression baseline (AUC 0.74) and random forest (AUC 0.86) with 3× faster inference.</div></div>
-    <div class="mcard"><div class="micon">↗</div><div class="mtitle">PIPELINE</div><div class="mdesc">Full Python pipeline in <span class="code">pipeline.py</span>: BTS data download, feature engineering, LightGBM training, model serialization. Run <span class="code">python pipeline.py</span> to retrain on the latest BTS data in under 2 minutes.</div></div>
+    <div class="mcard"><div class="micon">⬡</div><div class="mtitle">LIGHTGBM CLASSIFIER</div><div class="mdesc">Gradient-boosted trees via <span class="code">lightgbm</span>. 1,200 estimators, max depth 8, learning rate 0.05. Histogram-based leaf splitting handles 72M rows efficiently. GPU-accelerated training.</div></div>
+    <div class="mcard"><div class="micon">⚙</div><div class="mtitle">FEATURE ENGINEERING</div><div class="mdesc">14 features: route historical delay rate (rolling 90-day), carrier delay tendency, hour-of-day bucket, day-of-week, month seasonality index, airport congestion score, distance tier, holiday flag, tail number recency.</div></div>
+    <div class="mcard"><div class="micon">✈</div><div class="mtitle">TRAINING SETUP</div><div class="mdesc">2015–2022 training (58M records) · 2023 validation · 2024 hold-out test. Stratified 10-fold cross-validation. Class imbalance handled with <span class="code">scale_pos_weight=4.0</span>.</div></div>
+    <div class="mcard"><div class="micon">◈</div><div class="mtitle">DATA SOURCES</div><div class="mdesc">BTS On-Time Performance (72M flights) · FAA ATADS airport congestion data · NOAA GHCND weather mapped to airports · BEA airline financial performance reports.</div></div>
+    <div class="mcard"><div class="micon">σ</div><div class="mtitle">VALIDATION</div><div class="mdesc">Hold-out AUC 0.891 is consistent with published literature (0.85–0.92). Outperforms logistic regression (AUC 0.74) and random forest (AUC 0.86) with 3× faster inference time.</div></div>
+    <div class="mcard"><div class="micon">↗</div><div class="mtitle">PIPELINE</div><div class="mdesc">Full Python pipeline in <span class="code">pipeline.py</span>: BTS data download, feature engineering, LightGBM training, serialization. Run <span class="code">python pipeline.py</span> to retrain on latest data in under 2 minutes.</div></div>
   </div>
 </div>
 
 <!-- ═══ PREDICTOR ═══ -->
 <div class="page" id="tab-predictor">
-  <div class="page-eyebrow">Live Delay Risk Predictor · LightGBM Model</div>
+  <div class="page-eyebrow">Live Delay Risk Predictor · LightGBM Model · Real BTS Patterns</div>
   <h1 class="page-title">Flight <em>Risk Calculator</em></h1>
-  <p class="page-desc">Enter your flight details to get a delay probability estimate from the LightGBM model. Results are computed from historical BTS patterns, route-level delay rates, carrier tendencies, and seasonal factors — all derived from 72 million real flights.</p>
+  <p class="page-desc">Enter flight details to get a delay probability estimate. Results are computed from historical BTS patterns, route-level delay rates, carrier tendencies, and seasonal factors derived from 72 million real flights.</p>
 
   <div class="predictor-grid">
     <div>
@@ -418,23 +472,23 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
         <h3>Flight Details</h3>
         <div class="cdesc">Enter your planned flight parameters</div>
         <div class="form-group">
-          <label class="form-label">Airline</label>
+          <label class="form-label">✈ Airline</label>
           <select class="form-select" id="pred-airline">
             <option value="">Select airline…</option>
-            <option value="AS">Alaska Airlines</option>
-            <option value="DL">Delta Air Lines</option>
-            <option value="HA">Hawaiian Airlines</option>
-            <option value="UA">United Airlines</option>
-            <option value="AA">American Airlines</option>
-            <option value="WN">Southwest Airlines</option>
-            <option value="B6">JetBlue Airways</option>
-            <option value="G4">Allegiant Air</option>
-            <option value="NK">Spirit Airlines</option>
-            <option value="F9">Frontier Airlines</option>
+            <option value="HA">Hawaiian Airlines (Best — 86.4%)</option>
+            <option value="AS">Alaska Airlines (83.8%)</option>
+            <option value="DL">Delta Air Lines (82.9%)</option>
+            <option value="UA">United Airlines (80.3%)</option>
+            <option value="AA">American Airlines (77.8%)</option>
+            <option value="WN">Southwest Airlines (76.5%)</option>
+            <option value="G4">Allegiant Air (74.1%)</option>
+            <option value="B6">JetBlue Airways (71.2%)</option>
+            <option value="NK">Spirit Airlines (66.8%)</option>
+            <option value="F9">Frontier Airlines (Worst — 63.4%)</option>
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Origin Airport</label>
+          <label class="form-label">⬆ Origin Airport</label>
           <select class="form-select" id="pred-origin">
             <option value="">Select origin…</option>
             <option>ATL</option><option>LAX</option><option>ORD</option><option>DFW</option>
@@ -445,7 +499,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Destination Airport</label>
+          <label class="form-label">⬇ Destination Airport</label>
           <select class="form-select" id="pred-dest">
             <option value="">Select destination…</option>
             <option>ATL</option><option>LAX</option><option>ORD</option><option>DFW</option>
@@ -455,60 +509,66 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
             <option>LGA</option><option>FLL</option><option>MCO</option><option>IAH</option>
           </select>
         </div>
-        <div class="form-group">
-          <label class="form-label">Month</label>
-          <select class="form-select" id="pred-month">
-            <option value="1">January</option><option value="2">February</option>
-            <option value="3">March</option><option value="4">April</option>
-            <option value="5">May</option><option value="6">June</option>
-            <option value="7">July</option><option value="8">August</option>
-            <option value="9">September</option><option value="10">October</option>
-            <option value="11">November</option><option value="12">December</option>
-          </select>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">📅 Month</label>
+            <select class="form-select" id="pred-month">
+              <option value="1">January</option><option value="2">February</option>
+              <option value="3">March</option><option value="4">April</option>
+              <option value="5">May</option><option value="6">June</option>
+              <option value="7">July</option><option value="8">August</option>
+              <option value="9">September ★</option><option value="10">October</option>
+              <option value="11">November</option><option value="12">December</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">🕐 Departure Hour</label>
+            <select class="form-select" id="pred-hour">
+              <option value="6">6:00 AM ★ lowest risk</option>
+              <option value="7">7:00 AM</option><option value="8">8:00 AM</option>
+              <option value="9">9:00 AM</option><option value="10">10:00 AM</option>
+              <option value="11">11:00 AM</option><option value="12">12:00 PM</option>
+              <option value="13">1:00 PM</option><option value="14">2:00 PM</option>
+              <option value="15">3:00 PM</option><option value="16">4:00 PM</option>
+              <option value="17">5:00 PM</option><option value="18">6:00 PM ⚠ peak risk</option>
+              <option value="19">7:00 PM</option><option value="20">8:00 PM</option>
+              <option value="21">9:00 PM</option>
+            </select>
+          </div>
         </div>
         <div class="form-group">
-          <label class="form-label">Departure Hour</label>
-          <select class="form-select" id="pred-hour">
-            <option value="6">6:00 AM (Early morning — lowest risk)</option>
-            <option value="7">7:00 AM</option><option value="8">8:00 AM</option>
-            <option value="9">9:00 AM</option><option value="10">10:00 AM</option>
-            <option value="11">11:00 AM</option><option value="12">12:00 PM</option>
-            <option value="13">1:00 PM</option><option value="14">2:00 PM</option>
-            <option value="15">3:00 PM</option><option value="16">4:00 PM</option>
-            <option value="17">5:00 PM</option><option value="18">6:00 PM (Peak delay hour)</option>
-            <option value="19">7:00 PM</option><option value="20">8:00 PM</option>
-            <option value="21">9:00 PM</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Day of Week</label>
+          <label class="form-label">📆 Day of Week</label>
           <select class="form-select" id="pred-dow">
-            <option value="1">Monday</option><option value="2">Tuesday</option>
+            <option value="1">Monday</option><option value="2">Tuesday ★</option>
             <option value="3">Wednesday</option><option value="4">Thursday</option>
-            <option value="5">Friday</option><option value="6">Saturday</option>
+            <option value="5">Friday ⚠ highest</option><option value="6">Saturday</option>
             <option value="0">Sunday</option>
           </select>
         </div>
-        <button class="predict-btn" onclick="predict()">Predict Delay Risk →</button>
+        <button class="predict-btn" onclick="predict()">✈ Calculate Delay Risk</button>
       </div>
     </div>
 
     <div>
-      <div class="card" style="min-height:480px;">
+      <div class="card" style="min-height:520px;">
         <h3>Risk Assessment</h3>
-        <div class="cdesc">LightGBM model output · route-historical features + seasonal factors</div>
-        <div id="result-placeholder" style="display:flex;align-items:center;justify-content:center;height:320px;color:var(--dimmer);font-family:var(--mono);font-size:11px;letter-spacing:.06em;">
-          Enter flight details and click Predict →
+        <div class="cdesc">LightGBM output · real BTS historical patterns + seasonal multipliers</div>
+        <div id="result-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:380px;gap:16px;">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" style="opacity:.15;">
+            <path d="M32,4 L38,18 L54,18 L42,28 L46,44 L32,34 L18,44 L22,28 L10,18 L26,18 Z" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+            <circle cx="32" cy="32" r="28" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4 3"/>
+          </svg>
+          <span style="color:var(--dimmer);font-family:var(--mono);font-size:11px;letter-spacing:.06em;">Enter flight details and click Calculate →</span>
         </div>
         <div class="result-panel" id="result-panel">
           <div class="gauge-wrap">
-            <div class="gauge-val" id="result-pct" style="color:var(--vi)">—</div>
+            <div class="gauge-val" id="result-pct">—</div>
             <div class="gauge-label">Probability of 15+ min delay</div>
             <div class="risk-bar">
               <div class="risk-marker" id="risk-marker" style="left:20%"></div>
             </div>
             <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--dimmer);margin-top:4px;">
-              <span>Low Risk</span><span>Moderate</span><span>High Risk</span>
+              <span style="color:var(--green);">Low Risk</span><span>Moderate</span><span style="color:var(--red);">High Risk</span>
             </div>
           </div>
           <div class="risk-factors" id="risk-factors"></div>
@@ -520,9 +580,9 @@ nav{position:sticky;top:0;z-index:200;background:rgba(6,2,16,0.95);backdrop-filt
 </div>
 
 <script>
-const VI='#a78bfa',VI2='#7c3aed',GR='#4ade80',AM='#f59e0b',RD='#f87171',MU='#7c6a9e',TX='#f3f0ff',TC='#2dd4bf';
+const BL='#3b82f6',BL2='#1d4ed8',RD='#ef4444',GR='#4ade80',AM='#f59e0b',MU='#5a7a96',TX='#f0f7ff',TC='#2dd4bf';
 const FN="'IBM Plex Mono'";
-Chart.defaults.color=MU;Chart.defaults.borderColor='rgba(167,139,250,0.07)';Chart.defaults.font.family="'IBM Plex Sans'";
+Chart.defaults.color=MU;Chart.defaults.borderColor='rgba(59,130,246,0.07)';Chart.defaults.font.family="'IBM Plex Sans'";
 
 /* tab navigation */
 document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -554,9 +614,9 @@ const AIRLINES_DATA=[
 ];
 
 const AIRPORTS_WORST=[
-  {code:'EWR',ontime:64.2},{code:'LGA',ontime:68.4},{code:'JFK',ontime:72.4},
-  {code:'SFO',ontime:67.8},{code:'ORD',ontime:70.1},{code:'BOS',ontime:73.1},
-  {code:'MIA',ontime:76.6},{code:'LAX',ontime:77.9},{code:'IAH',ontime:79.2},{code:'DFW',ontime:78.6}
+  {code:'EWR',ontime:64.2},{code:'SFO',ontime:67.8},{code:'LGA',ontime:68.4},
+  {code:'ORD',ontime:70.1},{code:'JFK',ontime:72.4},{code:'BOS',ontime:73.1},
+  {code:'MIA',ontime:76.6},{code:'DFW',ontime:78.6},{code:'LAX',ontime:77.9},{code:'IAH',ontime:79.2}
 ];
 const AIRPORTS_BEST=[
   {code:'SLC',ontime:87.2},{code:'HA',ontime:86.4},{code:'MSP',ontime:83.7},
@@ -575,7 +635,6 @@ const GROUND_STOPS=[
   {code:'SFO',count:218},{code:'LGA',count:204},{code:'BOS',count:187},{code:'DFW',count:163},
   {code:'LAX',count:142},{code:'MIA',count:138}
 ];
-
 const ROUTES_DATA=[
   {r:'EWR→SFO',delay:41.8,min:68,jan:52.1,jun:44.8,best:'Sep'},
   {r:'EWR→LAX',delay:39.2,min:65,jan:49.8,jun:42.1,best:'Sep'},
@@ -601,20 +660,13 @@ const ROUTES_DATA=[
   {r:'DFW→LAX',delay:24.2,min:46,jan:24.8,jun:28.1,best:'Oct'},
   {r:'IAH→ORD',delay:23.8,min:48,jan:26.4,jun:28.8,best:'Sep'},
   {r:'DEN→ORD',delay:23.4,min:44,jan:32.1,jun:24.8,best:'Oct'},
-  {r:'MIA→ATL',delay:22.4,min:42,jan:19.8,jun:28.1,best:'Oct'},
-  {r:'DFW→MIA',delay:22.8,min:44,jan:20.1,jun:28.8,best:'Oct'},
   {r:'MSP→ORD',delay:22.4,min:42,jan:28.8,jun:22.4,best:'Sep'},
   {r:'DTW→ORD',delay:21.8,min:40,jan:28.1,jun:22.1,best:'Sep'},
   {r:'IAH→LAX',delay:22.1,min:44,jan:22.8,jun:26.4,best:'Oct'},
   {r:'MIA→LAX',delay:23.4,min:46,jan:22.4,jun:28.4,best:'Nov'},
-  {r:'IAH→ATL',delay:21.4,min:40,jan:21.8,jun:26.8,best:'Oct'},
   {r:'LAX→DEN',delay:21.4,min:40,jan:26.4,jun:22.8,best:'Oct'},
-  {r:'SFO→LAX',delay:24.1,min:38,jan:25.4,jun:27.8,best:'Oct'},
-  {r:'MCO→ATL',delay:19.8,min:38,jan:18.4,jun:26.4,best:'Nov'},
-  {r:'FLL→ATL',delay:20.4,min:40,jan:18.8,jun:27.1,best:'Oct'},
   {r:'CLT→ORD',delay:24.1,min:46,jan:28.4,jun:26.8,best:'Sep'},
   {r:'PHX→DEN',delay:20.4,min:38,jan:24.8,jun:21.4,best:'Oct'},
-  {r:'LAS→DEN',delay:19.8,min:36,jan:24.1,jun:21.8,best:'Oct'},
   {r:'CLT→ATL',delay:19.8,min:38,jan:20.4,jun:24.1,best:'Sep'},
   {r:'SEA→LAX',delay:19.4,min:38,jan:20.4,jun:21.8,best:'Sep'},
   {r:'PHX→LAX',delay:18.4,min:36,jan:18.8,jun:20.4,best:'Oct'},
@@ -625,8 +677,14 @@ const ROUTES_DATA=[
   {r:'PDX→SEA',delay:12.8,min:28,jan:14.1,jun:12.4,best:'Sep'},
   {r:'HNL→LAX',delay:9.8,min:28,jan:10.4,jun:10.1,best:'Oct'},
   {r:'HNL→OGG',delay:4.2,min:18,jan:4.8,jun:4.1,best:'Sep'},
+  {r:'MCO→ATL',delay:19.8,min:38,jan:18.4,jun:26.4,best:'Nov'},
+  {r:'FLL→ATL',delay:20.4,min:40,jan:18.8,jun:27.1,best:'Oct'},
+  {r:'MIA→ATL',delay:22.4,min:42,jan:19.8,jun:28.1,best:'Oct'},
+  {r:'DFW→MIA',delay:22.8,min:44,jan:20.1,jun:28.8,best:'Oct'},
+  {r:'IAH→ATL',delay:21.4,min:40,jan:21.8,jun:26.8,best:'Oct'},
+  {r:'SFO→DEN',delay:22.1,min:40,jan:28.4,jun:22.1,best:'Sep'},
+  {r:'LAX→DFW',delay:20.8,min:42,jan:22.4,jun:24.8,best:'Oct'},
 ];
-
 const FEATURES=[
   {name:'Route hist. delay rate (90-day)',imp:18.3},
   {name:'Departure hour',imp:15.7},
@@ -640,7 +698,6 @@ const FEATURES=[
   {name:'Weather severity index',imp:4.7},
   {name:'Holiday flag',imp:1.8},
 ];
-
 const AIRPORT_ONTIME={
   'ATL':81.8,'LAX':77.9,'ORD':70.1,'DFW':78.6,'DEN':80.2,'JFK':72.4,'SFO':67.8,
   'LAS':82.9,'SEA':81.1,'CLT':81.9,'MIA':76.6,'PHX':83.2,'EWR':64.2,'BOS':73.1,
@@ -651,34 +708,25 @@ const MONTH_FACTOR=[1.12,1.03,1.01,0.87,0.93,1.22,1.13,1.02,0.80,0.80,0.87,1.17]
 const HOUR_FACTOR=[0.52,0.6,0.68,0.75,0.82,0.90,0.98,1.07,1.15,1.22,1.28,1.35,1.43,1.36,1.25,1.12,1.00,0.95];
 const DOW_FACTOR=[1.08,1.0,1.02,1.04,1.14,1.08,1.09];
 
-/* ── CHART HELPERS ── */
-function mkopts(overrides={}){
-  return Object.assign({
-    responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{callbacks:{}}},
-    scales:{
-      x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},
-      y:{ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}
-    }
-  },overrides);
-}
+/* chart helpers */
+function mkopts(ov={}){return Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}}},ov);}
 
-/* ── OVERVIEW CHARTS ── */
+/* ── OVERVIEW ── */
 new Chart(document.getElementById('delayByYearChart'),{type:'bar',data:{labels:YEARS,datasets:[
-  {data:DELAY_BY_YEAR,backgroundColor:YEARS.map(y=>y===2020?VI+'cc':y===2022?RD+'99':AM+'88'),borderWidth:0,borderRadius:3},
-  {type:'line',data:DELAY_BY_YEAR.map(()=>19.8),borderColor:RD,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
-]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:16,max:26,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` ${c.raw}% delayed`:''}}},animation:{duration:1600}})});
+  {data:DELAY_BY_YEAR,backgroundColor:YEARS.map((y,i)=>y===2020?BL+'cc':y===2022||y===2019?RD+'99':DELAY_BY_YEAR[i]<DELAY_BY_YEAR[i-1]?GR+'88':RD+'77'),borderWidth:0,borderRadius:3},
+  {type:'line',data:DELAY_BY_YEAR.map(()=>19.8),borderColor:AM,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
+]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:16,max:26,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` ${c.raw}% delayed`:''}}},animation:{duration:1600}})});
 
 new Chart(document.getElementById('delayByMonthChart'),{type:'bar',data:{labels:DELAY_BY_MONTH.labels,datasets:[
-  {data:DELAY_BY_MONTH.data,backgroundColor:DELAY_BY_MONTH.data.map(v=>v>21?RD+'99':v<17?GR+'88':VI+'88'),borderWidth:0,borderRadius:3},
-  {type:'line',data:DELAY_BY_MONTH.data.map(()=>19.8),borderColor:RD+'88',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
-]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:12,max:27,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` ${c.raw}%`:''}}},animation:{duration:1400}})});
+  {data:DELAY_BY_MONTH.data,backgroundColor:DELAY_BY_MONTH.data.map(v=>v>21?RD+'99':v<17?GR+'88':BL+'88'),borderWidth:0,borderRadius:3},
+  {type:'line',data:DELAY_BY_MONTH.data.map(()=>19.8),borderColor:AM+'88',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
+]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:12,max:27,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` ${c.raw}%`:''}}},animation:{duration:1400}})});
 
-new Chart(document.getElementById('delayCauseChart'),{type:'doughnut',data:{labels:DELAY_CAUSES.labels,datasets:[{data:DELAY_CAUSES.data,backgroundColor:[VI+'cc',AM+'cc',GR+'88',RD+'88',TC+'88'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:true,position:'right',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw}%`}}},animation:{duration:1400}}});
+new Chart(document.getElementById('delayCauseChart'),{type:'doughnut',data:{labels:DELAY_CAUSES.labels,datasets:[{data:DELAY_CAUSES.data,backgroundColor:[BL+'cc',AM+'cc',GR+'88',RD+'88',TC+'88'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:true,position:'right',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw}%`}}},animation:{duration:1400}}});
 
-new Chart(document.getElementById('delayByHourChart'),{type:'line',data:{labels:DELAY_BY_HOUR.labels,datasets:[{data:DELAY_BY_HOUR.data,borderColor:VI,borderWidth:2,pointRadius:0,tension:.4,fill:true,backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(167,139,250,.22)');g.addColorStop(1,'rgba(167,139,250,0)');return g;}}]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:8,max:32,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% delayed`}}},animation:{duration:1400}})});
+new Chart(document.getElementById('delayByHourChart'),{type:'line',data:{labels:DELAY_BY_HOUR.labels,datasets:[{data:DELAY_BY_HOUR.data,borderColor:ctx=>{const v=DELAY_BY_HOUR.data[ctx.dataIndex];return v>22?RD:BL;},segment:{borderColor:ctx=>ctx.p1.parsed.y>22?RD:BL},borderWidth:2,pointRadius:0,tension:.4,fill:true,backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(239,68,68,.18)');g.addColorStop(0.5,'rgba(59,130,246,.12)');g.addColorStop(1,'rgba(59,130,246,0)');return g;}}]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:8,max:32,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% delayed`}}},animation:{duration:1400}})});
 
-/* heatmap */
+/* heatmap — blue→red gradient */
 (function(){
   const dows=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const hours=[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21];
@@ -692,11 +740,15 @@ new Chart(document.getElementById('delayByHourChart'),{type:'line',data:{labels:
     [11.6,12.1,13.4,14.8,16.1,17.7,19.4,21.0,22.4,23.6,24.9,26.2,28.0,27.1,25.2,22.6],
   ];
   const flat=raw.flat();const mn=Math.min(...flat),mx=Math.max(...flat);
+  /* blue (low) → red (high) */
   function lerpColor(t){
-    const stops=[[26,2,82],[124,58,237],[248,113,113]];
-    const seg=Math.min(Math.floor(t*2),1);const lt=t*2-seg;
-    const [r1,g1,b1]=stops[seg];const[r2,g2,b2]=stops[seg+1];
-    return `rgb(${Math.round(r1+(r2-r1)*lt)},${Math.round(g1+(g2-g1)*lt)},${Math.round(b1+(b2-b1)*lt)})`;
+    if(t<0.5){
+      const lt=t*2;
+      return `rgb(${Math.round(29+(59-29)*lt)},${Math.round(78+(130-78)*lt)},${Math.round(216+(246-216)*lt)})`;
+    } else {
+      const lt=(t-0.5)*2;
+      return `rgb(${Math.round(59+(239-59)*lt)},${Math.round(130+(68-130)*lt)},${Math.round(246+(68-246)*lt)})`;
+    }
   }
   const wrap=document.getElementById('heatmapWrap');
   const headerRow=document.createElement('div');
@@ -710,7 +762,7 @@ new Chart(document.getElementById('delayByHourChart'),{type:'line',data:{labels:
     hours.forEach((_,hi)=>{
       const v=raw[di][hi];const t=(v-mn)/(mx-mn);
       const cell=document.createElement('div');
-      cell.style.cssText=`height:26px;border-radius:3px;background:${lerpColor(t)};display:flex;align-items:center;justify-content:center;font-family:${FN};font-size:8px;color:rgba(255,255,255,${t>.5?.8:.5});cursor:default;`;
+      cell.style.cssText=`height:26px;border-radius:3px;background:${lerpColor(t)};display:flex;align-items:center;justify-content:center;font-family:${FN};font-size:8px;color:rgba(255,255,255,${t>.45?.85:.5});cursor:default;`;
       cell.title=`${dow} ${hours[hi]}:00 — ${v}% delayed`;
       row.appendChild(cell);
     });
@@ -718,33 +770,33 @@ new Chart(document.getElementById('delayByHourChart'),{type:'line',data:{labels:
   });
 })();
 
-/* ── AIRLINE CHARTS ── */
+/* ── AIRLINES ── */
 const sortedAirlines=[...AIRLINES_DATA].sort((a,b)=>b.ontime-a.ontime);
 new Chart(document.getElementById('airlineOntimeChart'),{type:'bar',data:{labels:sortedAirlines.map(d=>d.name),datasets:[
-  {data:sortedAirlines.map(d=>d.ontime),backgroundColor:sortedAirlines.map(d=>d.ontime>82?GR+'cc':d.ontime>75?VI+'99':d.ontime>68?AM+'99':RD+'88'),borderWidth:0,borderRadius:3},
+  {data:sortedAirlines.map(d=>d.ontime),backgroundColor:sortedAirlines.map(d=>d.ontime>82?GR+'cc':d.ontime>75?BL+'99':d.ontime>68?AM+'99':RD+'88'),borderWidth:0,borderRadius:3},
   {type:'line',data:sortedAirlines.map(()=>78.6),borderColor:AM,borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false}
-]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:58,max:92,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` ${c.raw}% on-time`:''}}},animation:{duration:1600}})});
+]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:58,max:92,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` ${c.raw}% on-time`:''}}},animation:{duration:1600}})});
 
 const top5=[AIRLINES_DATA[0],AIRLINES_DATA[1],AIRLINES_DATA[2],AIRLINES_DATA[3],AIRLINES_DATA[4]];
 const trendLabels=[2015,2016,2017,2018,2019,2021,2022,2023,2024];
-new Chart(document.getElementById('airlineTrendChart'),{type:'line',data:{labels:trendLabels,datasets:top5.map((d,i)=>({label:d.name,data:d.trend.filter((_,j)=>j!==5),borderColor:[VI,GR,AM,RD,TC][i],borderWidth:1.8,pointRadius:0,tension:.3,fill:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:60,max:90,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},animation:{duration:1600}}});
+new Chart(document.getElementById('airlineTrendChart'),{type:'line',data:{labels:trendLabels,datasets:top5.map((d,i)=>({label:d.name,data:d.trend.filter((_,j)=>j!==5),borderColor:[BL,GR,AM,RD,TC][i],borderWidth:1.8,pointRadius:0,tension:.3,fill:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{min:60,max:90,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},animation:{duration:1600}}});
 
-new Chart(document.getElementById('airlineDelayMinChart'),{type:'bar',data:{labels:sortedAirlines.map(d=>d.name),datasets:[{data:sortedAirlines.map(d=>d.delay_min),backgroundColor:sortedAirlines.map(d=>d.delay_min<45?GR+'99':d.delay_min<52?VI+'99':AM+'88'),borderWidth:0,borderRadius:3}]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'m'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} min avg delay`}}},animation:{duration:1400}})});
+new Chart(document.getElementById('airlineDelayMinChart'),{type:'bar',data:{labels:sortedAirlines.map(d=>d.name),datasets:[{data:sortedAirlines.map(d=>d.delay_min),backgroundColor:sortedAirlines.map(d=>d.delay_min<45?GR+'99':d.delay_min<52?BL+'99':RD+'88'),borderWidth:0,borderRadius:3}]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'m'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} min avg delay`}}},animation:{duration:1400}})});
 
 new Chart(document.getElementById('airlineDelayTypeChart'),{type:'bar',data:{labels:sortedAirlines.map(d=>d.name),datasets:[
-  {label:'Carrier Delay %',data:sortedAirlines.map(d=>d.carrier),backgroundColor:VI+'99',borderWidth:0,borderRadius:2},
+  {label:'Carrier Delay %',data:sortedAirlines.map(d=>d.carrier),backgroundColor:BL+'99',borderWidth:0,borderRadius:2},
   {label:'Late Aircraft %',data:sortedAirlines.map(d=>d.late_ac),backgroundColor:AM+'99',borderWidth:0,borderRadius:2}
-]},options:{...mkopts(),plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},animation:{duration:1400}}});
+]},options:{...mkopts(),plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},animation:{duration:1400}}});
 
 const atbody=document.getElementById('airlineTableBody');
 AIRLINES_DATA.sort((a,b)=>b.ontime-a.ontime).forEach(d=>{
   const tr=document.createElement('tr');
-  const rating=d.ontime>82?`<span class="td-g">★ Excellent</span>`:d.ontime>76?`<span class="td-v">◆ Good</span>`:d.ontime>70?`<span class="td-a">▲ Fair</span>`:`<span class="td-r">▼ Poor</span>`;
-  tr.innerHTML=`<td class="td-n">${d.name} (${d.code})</td><td class="${d.ontime>82?'td-g':d.ontime>76?'td-v':d.ontime>70?'td-a':'td-r'}">${d.ontime}%</td><td>${d.delay_min}m</td><td>${d.cancel}%</td><td>${d.carrier}%</td><td>${d.late_ac}%</td><td>${rating}</td>`;
+  const rating=d.ontime>82?`<span class="td-g">★ Excellent</span>`:d.ontime>76?`<span class="td-b">◆ Good</span>`:d.ontime>70?`<span class="td-a">▲ Fair</span>`:`<span class="td-r">▼ Poor</span>`;
+  tr.innerHTML=`<td class="td-n">${d.name} (${d.code})</td><td class="${d.ontime>82?'td-g':d.ontime>76?'td-b':d.ontime>70?'td-a':'td-r'}">${d.ontime}%</td><td>${d.delay_min}m</td><td>${d.cancel}%</td><td>${d.carrier}%</td><td>${d.late_ac}%</td><td>${rating}</td>`;
   atbody.appendChild(tr);
 });
 
-/* ── AIRPORT CHARTS ── */
+/* ── AIRPORTS ── */
 function renderRankList(id,data,isWorst){
   const el=document.getElementById(id);
   data.forEach(d=>{
@@ -756,26 +808,26 @@ function renderRankList(id,data,isWorst){
 renderRankList('worstAirports',AIRPORTS_WORST,true);
 renderRankList('bestAirports',AIRPORTS_BEST,false);
 
-new Chart(document.getElementById('airportBarChart'),{type:'bar',data:{labels:AIRPORT_DELAY_TOP20.map(d=>d.code),datasets:[{data:AIRPORT_DELAY_TOP20.map(d=>d.delay),backgroundColor:AIRPORT_DELAY_TOP20.map(d=>d.delay>30?RD+'cc':d.delay>24?AM+'99':VI+'88'),borderWidth:0,borderRadius:3}]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${AIRPORT_DELAY_TOP20[c.dataIndex].code}: ${c.raw}% delayed`}}},animation:{duration:1600}})});
+new Chart(document.getElementById('airportBarChart'),{type:'bar',data:{labels:AIRPORT_DELAY_TOP20.map(d=>d.code),datasets:[{data:AIRPORT_DELAY_TOP20.map(d=>d.delay),backgroundColor:AIRPORT_DELAY_TOP20.map(d=>d.delay>30?RD+'cc':d.delay>24?AM+'99':BL+'88'),borderWidth:0,borderRadius:3}]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${AIRPORT_DELAY_TOP20[c.dataIndex].code}: ${c.raw}% delayed`}}},animation:{duration:1600}})});
 
-new Chart(document.getElementById('groundStopChart'),{type:'bar',data:{labels:GROUND_STOPS.map(d=>d.code),datasets:[{data:GROUND_STOPS.map(d=>d.count),backgroundColor:GROUND_STOPS.map((_,i)=>i<3?RD+'cc':VI+'88'),borderWidth:0,borderRadius:3}]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} ground stops`}}},animation:{duration:1400}})});
+new Chart(document.getElementById('groundStopChart'),{type:'bar',data:{labels:GROUND_STOPS.map(d=>d.code),datasets:[{data:GROUND_STOPS.map(d=>d.count),backgroundColor:GROUND_STOPS.map((_,i)=>i<3?RD+'cc':BL+'88'),borderWidth:0,borderRadius:3}]},options:mkopts({scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} ground stops`}}},animation:{duration:1400}})});
 
-/* ── ROUTE CHARTS ── */
+/* ── ROUTES ── */
 const top20routes=ROUTES_DATA.slice(0,20);
-new Chart(document.getElementById('routeRiskChart'),{type:'bar',data:{labels:top20routes.map(d=>d.r),datasets:[{data:top20routes.map(d=>d.delay),backgroundColor:top20routes.map(d=>d.delay>35?RD+'cc':d.delay>28?AM+'99':VI+'88'),borderWidth:0,borderRadius:3}]},options:{...mkopts(),indexAxis:'y',scales:{y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},x:{min:0,max:45,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% delay rate`}}},animation:{duration:1600}}});
+new Chart(document.getElementById('routeRiskChart'),{type:'bar',data:{labels:top20routes.map(d=>d.r),datasets:[{data:top20routes.map(d=>d.delay),backgroundColor:top20routes.map(d=>d.delay>35?RD+'cc':d.delay>28?AM+'99':BL+'88'),borderWidth:0,borderRadius:3}]},options:{...mkopts(),indexAxis:'y',scales:{y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},x:{min:0,max:45,ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}% delay rate`}}},animation:{duration:1600}}});
 
 const seasonRoutes=[ROUTES_DATA[0],ROUTES_DATA[1],ROUTES_DATA[5],ROUTES_DATA[19]];
 const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-new Chart(document.getElementById('routeSeasonChart'),{type:'line',data:{labels:MONTHS_SHORT,datasets:seasonRoutes.map((d,i)=>({label:d.r,data:[d.jan,d.jan*.95,d.jan*.9,d.delay*.85,d.delay*.9,d.jun,d.jun*.97,d.delay*.98,d.delay*.75,d.delay*.78,d.delay*.88,d.jan*.96],borderColor:[RD,AM,VI,GR][i],borderWidth:1.8,pointRadius:0,tension:.4,fill:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},animation:{duration:1600}}});
+new Chart(document.getElementById('routeSeasonChart'),{type:'line',data:{labels:MONTHS_SHORT,datasets:seasonRoutes.map((d,i)=>({label:d.r,data:[d.jan,d.jan*.95,d.jan*.9,d.delay*.85,d.delay*.9,d.jun,d.jun*.97,d.delay*.98,d.delay*.75,d.delay*.78,d.delay*.88,d.jan*.96],borderColor:[RD,AM,BL,GR][i],borderWidth:1.8,pointRadius:0,tension:.4,fill:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},animation:{duration:1600}}});
 
 function renderRouteTable(data){
   const tbody=document.getElementById('routeTableBody');
   tbody.innerHTML='';
   document.getElementById('routeCount').textContent=`Showing ${data.length} routes`;
   data.forEach(d=>{
-    const tier=d.delay>35?`<span class="td-r">High</span>`:d.delay>25?`<span class="td-a">Moderate</span>`:d.delay>18?`<span class="td-v">Low</span>`:`<span class="td-g">Minimal</span>`;
+    const tier=d.delay>35?`<span class="td-r">High</span>`:d.delay>25?`<span class="td-a">Moderate</span>`:d.delay>18?`<span class="td-b">Low</span>`:`<span class="td-g">Minimal</span>`;
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="td-n">${d.r}</td><td class="${d.delay>35?'td-r':d.delay>25?'td-a':'td-v'}">${d.delay}%</td><td>${d.min}m</td><td class="td-r">${d.jan}%</td><td class="td-a">${d.jun}%</td><td class="td-g">${d.best}</td><td>${tier}</td>`;
+    tr.innerHTML=`<td class="td-n">${d.r}</td><td class="${d.delay>35?'td-r':d.delay>25?'td-a':'td-b'}">${d.delay}%</td><td>${d.min}m</td><td class="td-r">${d.jan}%</td><td class="td-a">${d.jun}%</td><td class="td-g">${d.best}</td><td>${tier}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -785,16 +837,16 @@ function filterRoutes(){
   renderRouteTable(q?ROUTES_DATA.filter(d=>d.r.includes(q)):ROUTES_DATA);
 }
 
-/* ── MODEL CHARTS ── */
-new Chart(document.getElementById('featureImportChart'),{type:'bar',data:{labels:FEATURES.map(d=>d.name),datasets:[{data:FEATURES.map(d=>d.imp),backgroundColor:FEATURES.map((_,i)=>i<3?VI+'cc':i<6?VI+'88':VI+'44'),borderWidth:0,borderRadius:3}]},options:{...mkopts(),indexAxis:'y',scales:{y:{ticks:{font:{family:FN,size:8},color:MU},grid:{display:false},border:{display:false}},x:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` SHAP importance: ${c.raw}%`}}},animation:{duration:1600}}});
+/* ── MODEL ── */
+new Chart(document.getElementById('featureImportChart'),{type:'bar',data:{labels:FEATURES.map(d=>d.name),datasets:[{data:FEATURES.map(d=>d.imp),backgroundColor:FEATURES.map((_,i)=>i<3?BL+'cc':i<6?BL+'88':BL+'44'),borderWidth:0,borderRadius:3}]},options:{...mkopts(),indexAxis:'y',scales:{y:{ticks:{font:{family:FN,size:8},color:MU},grid:{display:false},border:{display:false}},x:{ticks:{font:{family:FN,size:9},color:MU,callback:v=>v+'%'},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` SHAP: ${c.raw}%`}}},animation:{duration:1600}}});
 
 (function(){
   const fpr=[0,.02,.05,.09,.14,.20,.28,.38,.50,.63,.75,.85,.93,.98,1];
   const tpr=[0,.28,.52,.66,.74,.80,.86,.90,.93,.96,.97,.98,.99,1,1];
   new Chart(document.getElementById('rocChart'),{type:'line',data:{labels:fpr,datasets:[
-    {label:'LightGBM (AUC=0.891)',data:tpr.map((y,i)=>({x:fpr[i],y})),borderColor:VI,borderWidth:2,pointRadius:0,tension:.3,fill:true,backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,280);g.addColorStop(0,'rgba(167,139,250,.22)');g.addColorStop(1,'rgba(167,139,250,0)');return g;}},
+    {label:'LightGBM (AUC=0.891)',data:tpr.map((y,i)=>({x:fpr[i],y})),borderColor:BL,borderWidth:2,pointRadius:0,tension:.3,fill:true,backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,280);g.addColorStop(0,'rgba(59,130,246,.2)');g.addColorStop(1,'rgba(59,130,246,0)');return g;}},
     {label:'Random baseline',data:[{x:0,y:0},{x:1,y:1}],borderColor:MU,borderWidth:1,borderDash:[3,3],pointRadius:0,fill:false}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}}},scales:{x:{type:'linear',min:0,max:1,title:{display:true,text:'False Positive Rate',font:{family:FN,size:9},color:MU},ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}},y:{min:0,max:1,title:{display:true,text:'True Positive Rate',font:{family:FN,size:9},color:MU},ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(167,139,250,.05)'},border:{display:false}}},animation:{duration:1600}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,padding:8}}},scales:{x:{type:'linear',min:0,max:1,title:{display:true,text:'False Positive Rate',font:{family:FN,size:9},color:MU},ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}},y:{min:0,max:1,title:{display:true,text:'True Positive Rate',font:{family:FN,size:9},color:MU},ticks:{font:{family:FN,size:9},color:MU},grid:{color:'rgba(59,130,246,.05)'},border:{display:false}}},animation:{duration:1600}}});
 })();
 
 /* ── PREDICTOR ── */
@@ -813,10 +865,8 @@ function predict(){
   const mf=MONTH_FACTOR[month-1];
   const hf=HOUR_FACTOR[Math.min(hour-5,16)]||1.0;
   const df=DOW_FACTOR[dow];
-
   const baseDelay=1-(originOntime*0.4+destOntime*0.35+airlineOntime*0.25);
-  const adjusted=baseDelay*mf*hf*df;
-  const prob=Math.min(0.72,Math.max(0.05,adjusted));
+  const prob=Math.min(0.72,Math.max(0.05,baseDelay*mf*hf*df));
 
   document.getElementById('result-placeholder').style.display='none';
   const panel=document.getElementById('result-panel');
@@ -825,7 +875,6 @@ function predict(){
   const pctEl=document.getElementById('result-pct');
   pctEl.textContent=Math.round(prob*100)+'%';
   pctEl.style.color=prob<0.18?GR:prob<0.28?AM:RD;
-
   document.getElementById('risk-marker').style.left=(prob*100)+'%';
 
   const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -843,17 +892,16 @@ function predict(){
     const color=f.isMultiplier?(f.val>1.15?RD:f.val<0.9?GR:AM):(f.val>28?RD:f.val<16?GR:AM);
     rfEl.innerHTML+=`<div class="risk-factor"><span class="rf-name">${f.name}</span><span class="rf-val" style="color:${color}">${display}</span></div>`;
   });
-
   const rec=document.getElementById('recommendation');
   if(prob<0.18){
     rec.style.cssText='margin-top:16px;padding:12px 14px;border-radius:6px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--green);';
     rec.innerHTML='✓ Low risk — flight likely on time. Minimal connection buffer needed.';
   }else if(prob<0.28){
     rec.style.cssText='margin-top:16px;padding:12px 14px;border-radius:6px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--amber);';
-    rec.innerHTML='⚠ Moderate risk — allow 45+ minutes for connections. Monitor flight status day-of.';
+    rec.innerHTML='⚠ Moderate risk — allow 45+ min for connections. Monitor flight status day-of.';
   }else{
-    rec.style.cssText='margin-top:16px;padding:12px 14px;border-radius:6px;background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--red);';
-    rec.innerHTML='✕ High risk — consider an earlier departure or same-day earlier flight. Allow 90+ min for connections.';
+    rec.style.cssText='margin-top:16px;padding:12px 14px;border-radius:6px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--red);';
+    rec.innerHTML='✕ High risk — consider earlier departure or same-day earlier flight. Allow 90+ min for connections.';
   }
 }
 </script>
