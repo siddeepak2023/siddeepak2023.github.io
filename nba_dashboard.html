@@ -212,14 +212,14 @@ select.pred-sel:focus{border-color:rgba(0,180,255,.4)}
 @keyframes livePulse{0%,100%{box-shadow:0 0 24px rgba(255,23,68,.12)}50%{box-shadow:0 0 40px rgba(255,23,68,.25)}}
 .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:5px;box-shadow:0 0 6px var(--redglow);animation:dotBlink 1.2s ease-in-out infinite}
 @keyframes dotBlink{0%,100%{opacity:1;box-shadow:0 0 6px var(--redglow)}50%{opacity:.3;box-shadow:none}}
-.live-teams{display:grid;grid-template-columns:1fr auto auto auto 1fr;align-items:center;gap:.4rem}
+.live-teams{display:grid;grid-template-columns:1fr auto auto auto 1fr;align-items:center;column-gap:1rem;row-gap:.4rem}
 .live-team{display:flex;align-items:center;gap:.5rem;min-width:0}
 .live-team-home{flex-direction:row-reverse}
 .live-team-home .live-team-info{text-align:right}
 .live-logo{width:34px;height:34px;object-fit:contain;flex-shrink:0}
 .live-abbr{font-size:.95rem;font-weight:700;color:var(--text);white-space:nowrap}
 .live-tname{font-size:.6rem;color:var(--muted);margin-top:1px;white-space:nowrap}
-.live-score{font-size:1.65rem;font-weight:700;color:var(--muted);width:44px;text-align:center;flex-shrink:0}
+.live-score{font-size:1.65rem;font-weight:700;color:var(--muted);min-width:54px;text-align:center;flex-shrink:0}
 .live-score-win{color:var(--text);text-shadow:0 0 10px rgba(255,255,255,.2)}
 .live-vs-col{display:flex;flex-direction:column;align-items:center;gap:.3rem}
 .live-status{font-size:.65rem;color:var(--red);font-weight:700;display:flex;align-items:center;letter-spacing:.04em;white-space:nowrap;text-shadow:0 0 8px var(--redglow)}
@@ -258,8 +258,8 @@ select.pred-sel:focus{border-color:rgba(0,180,255,.4)}
   .page{padding:1.2rem 1rem}
   .hero{padding:1.8rem 1.2rem}
   .hero-title{font-size:1.8rem}
-  .live-teams{grid-template-columns:1fr auto auto auto 1fr;gap:.25rem}
-  .live-score{width:38px;font-size:1.4rem}
+  .live-teams{grid-template-columns:1fr auto auto auto 1fr;gap:.45rem}
+  .live-score{min-width:46px;font-size:1.4rem}
 }
 </style>
 </head>
