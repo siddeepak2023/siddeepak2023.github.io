@@ -994,9 +994,13 @@ function switchBtStrat(s,btn){
     return new Date(iso).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
   }
 
+  const ESPN_TO_NBA={'SA':'SAS','GS':'GSW','NY':'NYK','NO':'NOP','UTAH':'UTA','NJ':'NJN'};
+  function normAbbr(a){return ESPN_TO_NBA[a]||a;}
+
   function modelBar(homeAbbr,awayAbbr){
-    const prob=DATA.matchups&&DATA.matchups[homeAbbr]&&DATA.matchups[homeAbbr][awayAbbr]
-      ?DATA.matchups[homeAbbr][awayAbbr]:null;
+    const ha=normAbbr(homeAbbr),aa=normAbbr(awayAbbr);
+    const prob=DATA.matchups&&DATA.matchups[ha]&&DATA.matchups[ha][aa]
+      ?DATA.matchups[ha][aa]:null;
     if(!prob)return'';
     const hp=Math.round(prob*100),ap=100-hp;
     return`<div class="live-model-row">
@@ -1005,9 +1009,9 @@ function switchBtStrat(s,btn){
         <div class="live-model-home" style="width:${hp}%"></div>
       </div>
       <div class="live-model-labels">
-        <span style="color:var(--blue)">${ap}% ${awayAbbr}</span>
+        <span style="color:var(--blue)">${ap}% ${aa}</span>
         <span style="color:var(--dim);font-size:.57rem">MODEL EDGE</span>
-        <span style="color:var(--gold)">${homeAbbr} ${hp}%</span>
+        <span style="color:var(--gold)">${ha} ${hp}%</span>
       </div>
     </div>`;
   }
