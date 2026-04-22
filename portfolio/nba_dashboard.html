@@ -299,8 +299,8 @@ select.pred-sel:focus{border-color:rgba(0,180,255,.4)}
     <div>
       <div class="hero-title">NBA Game Intelligence</div>
       <div class="hero-sub">
-        3 seasons of data &nbsp;·&nbsp; 7,380 game logs via nba_api &nbsp;·&nbsp; gradient-boosted prediction model<br>
-        rolling feature engineering &nbsp;·&nbsp; Vegas odds comparison &nbsp;·&nbsp; backtested betting strategy
+        9 seasons of data &nbsp;·&nbsp; 21,498 game logs via nba_api &nbsp;·&nbsp; Elo ratings · defensive rating<br>
+        multi-window features · Optuna tuning &nbsp;·&nbsp; Vegas edge detection &nbsp;·&nbsp; backtested +35.8% ROI
       </div>
       <div class="hero-badges" id="hero-badges"></div>
     </div>
@@ -450,7 +450,7 @@ select.pred-sel:focus{border-color:rgba(0,180,255,.4)}
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;font-size:.77rem;color:var(--muted);line-height:1.85">
       <div>
         <div style="color:var(--gold);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem">Data Pipeline</div>
-        3 seasons of NBA game logs (2022-23 through 2024-25) via nba_api. 30 teams × 82 games = 7,380 team-game rows. Stored in SQLite with game ID deduplication. Today's games via ScoreboardV2 + live betting odds from the-odds-api.com.
+        9 seasons of NBA game logs (2016-17 through 2024-25) via nba_api — 21,498 team-game rows. Features: Elo ratings, defensive rating, multi-window rolling (5/10/20), EWMA. Optuna-tuned HistGBM with isotonic calibration. Live scores from ESPN API.
       </div>
       <div>
         <div style="color:var(--gold);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem">Feature Engineering</div>
