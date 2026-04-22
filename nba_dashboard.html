@@ -212,15 +212,15 @@ select.pred-sel:focus{border-color:rgba(0,180,255,.4)}
 @keyframes livePulse{0%,100%{box-shadow:0 0 24px rgba(255,23,68,.12)}50%{box-shadow:0 0 40px rgba(255,23,68,.25)}}
 .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:5px;box-shadow:0 0 6px var(--redglow);animation:dotBlink 1.2s ease-in-out infinite}
 @keyframes dotBlink{0%,100%{opacity:1;box-shadow:0 0 6px var(--redglow)}50%{opacity:.3;box-shadow:none}}
-.live-teams{display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;gap:.5rem}
-.live-team{display:flex;align-items:center;gap:.6rem}
+.live-teams{display:grid;grid-template-columns:1fr auto auto auto 1fr;align-items:center;gap:.4rem}
+.live-team{display:flex;align-items:center;gap:.5rem;min-width:0}
 .live-team-home{flex-direction:row-reverse}
-.live-logo{width:36px;height:36px;object-fit:contain;flex-shrink:0}
-.live-abbr{font-size:1rem;font-weight:700;color:var(--text)}
-.live-tname{font-size:.62rem;color:var(--muted);margin-top:1px}
-.live-score{font-size:1.7rem;font-weight:700;color:var(--muted);min-width:36px;text-align:center;margin-left:auto}
+.live-team-home .live-team-info{text-align:right}
+.live-logo{width:34px;height:34px;object-fit:contain;flex-shrink:0}
+.live-abbr{font-size:.95rem;font-weight:700;color:var(--text);white-space:nowrap}
+.live-tname{font-size:.6rem;color:var(--muted);margin-top:1px;white-space:nowrap}
+.live-score{font-size:1.65rem;font-weight:700;color:var(--muted);width:44px;text-align:center;flex-shrink:0}
 .live-score-win{color:var(--text);text-shadow:0 0 10px rgba(255,255,255,.2)}
-.live-team-home .live-score{margin-left:0;margin-right:auto}
 .live-vs-col{display:flex;flex-direction:column;align-items:center;gap:.3rem}
 .live-status{font-size:.65rem;color:var(--red);font-weight:700;display:flex;align-items:center;letter-spacing:.04em;white-space:nowrap;text-shadow:0 0 8px var(--redglow)}
 .live-final{font-size:.62rem;color:var(--muted);letter-spacing:.09em;text-transform:uppercase}
@@ -258,7 +258,8 @@ select.pred-sel:focus{border-color:rgba(0,180,255,.4)}
   .page{padding:1.2rem 1rem}
   .hero{padding:1.8rem 1.2rem}
   .hero-title{font-size:1.8rem}
-  .live-teams{grid-template-columns:1fr 60px 1fr}
+  .live-teams{grid-template-columns:1fr auto auto auto 1fr;gap:.25rem}
+  .live-score{width:38px;font-size:1.4rem}
 }
 </style>
 </head>
@@ -1032,13 +1033,13 @@ function switchBtStrat(s,btn){
       <div class="live-teams">
         <div class="live-team">
           <img class="live-logo" src="${away.team.logo||''}" onerror="this.style.display='none'">
-          <div><div class="live-abbr">${away.team.abbreviation}</div><div class="live-tname">${away.team.shortDisplayName||''}</div></div>
-          ${scoreA}
+          <div class="live-team-info"><div class="live-abbr">${away.team.abbreviation}</div><div class="live-tname">${away.team.shortDisplayName||''}</div></div>
         </div>
+        ${scoreA||'<div class="live-score"></div>'}
         <div class="live-vs-col">${statusHTML}<div class="live-sep">@</div></div>
+        ${scoreH||'<div class="live-score"></div>'}
         <div class="live-team live-team-home">
-          ${scoreH}
-          <div style="text-align:right"><div class="live-abbr">${home.team.abbreviation}</div><div class="live-tname">${home.team.shortDisplayName||''}</div></div>
+          <div class="live-team-info"><div class="live-abbr">${home.team.abbreviation}</div><div class="live-tname">${home.team.shortDisplayName||''}</div></div>
           <img class="live-logo" src="${home.team.logo||''}" onerror="this.style.display='none'">
         </div>
       </div>
