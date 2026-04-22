@@ -1,0 +1,100 @@
+{
+  "segment_summary": {
+    "At-Risk": {
+      "n": 1034,
+      "avg_recency": 368.99,
+      "avg_frequency": 3.49,
+      "avg_ltv": 733.91
+    },
+    "Lapsed": {
+      "n": 705,
+      "avg_recency": 753.78,
+      "avg_frequency": 3.95,
+      "avg_ltv": 834.61
+    },
+    "Loyal Medical": {
+      "n": 455,
+      "avg_recency": 540.24,
+      "avg_frequency": 12.26,
+      "avg_ltv": 1255.43
+    },
+    "VIP Cosmetic": {
+      "n": 306,
+      "avg_recency": 589.32,
+      "avg_frequency": 8.91,
+      "avg_ltv": 5780.28
+    }
+  },
+  "ltv_by_segment": {
+    "At-Risk": {
+      "avg_ltv": 733.91,
+      "median_ltv": 469.44,
+      "n": 1034
+    },
+    "Lapsed": {
+      "avg_ltv": 834.61,
+      "median_ltv": 582.52,
+      "n": 705
+    },
+    "Loyal Medical": {
+      "avg_ltv": 1255.43,
+      "median_ltv": 1210.19,
+      "n": 455
+    },
+    "VIP Cosmetic": {
+      "avg_ltv": 5780.28,
+      "median_ltv": 5214.17,
+      "n": 306
+    }
+  },
+  "ltv_by_channel": {
+    "doctor_referral": {
+      "avg_ltv": 1430.65,
+      "median_ltv": 801.17,
+      "n": 602
+    },
+    "google_search": {
+      "avg_ltv": 1530.47,
+      "median_ltv": 795.42,
+      "n": 884
+    },
+    "instagram": {
+      "avg_ltv": 1526.45,
+      "median_ltv": 778.86,
+      "n": 376
+    },
+    "patient_referral": {
+      "avg_ltv": 1433.01,
+      "median_ltv": 757.93,
+      "n": 513
+    },
+    "walk_in": {
+      "avg_ltv": 1311.89,
+      "median_ltv": 660.18,
+      "n": 125
+    }
+  },
+  "revenue_concentration": {
+    "top_1pct_revenue_share": 0.0667,
+    "top_10pct_revenue_share": 0.4225,
+    "top_20pct_revenue_share": 0.6246,
+    "gini_coefficient": 0.5733
+  },
+  "churn_model": {
+    "auc": 0.8145,
+    "accuracy": 0.19,
+    "churn_rate": 0.4488,
+    "n_churned": 1122,
+    "n_active": 1378,
+    "feature_coefs": {
+      "frequency": 0.2762,
+      "monetary": 0.2916,
+      "age": 0.1486,
+      "insurance_enc": -0.1537,
+      "channel_enc": -0.0995
+    }
+  },
+  "total_patients": 2500,
+  "avg_ltv": 1474.9,
+  "median_ltv": 777.6
+}

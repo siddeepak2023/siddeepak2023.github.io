@@ -1,0 +1,3 @@
+data/clinic.db
+__pycache__/
+*.pyc

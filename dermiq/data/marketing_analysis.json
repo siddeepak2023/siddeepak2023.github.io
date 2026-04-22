@@ -1,0 +1,263 @@
+{
+  "roas_by_channel": [
+    {
+      "channel": "doctor_referral",
+      "total_spend": 15168.13,
+      "total_patients": 350,
+      "total_rev_attributed": 47706.17,
+      "roas": 3.14,
+      "actual_cac": 43.34
+    },
+    {
+      "channel": "google_search",
+      "total_spend": 83232.51,
+      "total_patients": 667,
+      "total_rev_attributed": 49053.34,
+      "roas": 0.59,
+      "actual_cac": 124.79
+    },
+    {
+      "channel": "instagram",
+      "total_spend": 67659.06,
+      "total_patients": 353,
+      "total_rev_attributed": 16624.8,
+      "roas": 0.25,
+      "actual_cac": 191.67
+    },
+    {
+      "channel": "patient_referral",
+      "total_spend": 11260.53,
+      "total_patients": 181,
+      "total_rev_attributed": 21433.03,
+      "roas": 1.9,
+      "actual_cac": 62.21
+    },
+    {
+      "channel": "walk_in",
+      "total_spend": 1902.11,
+      "total_patients": 78,
+      "total_rev_attributed": 4604.03,
+      "roas": 2.42,
+      "actual_cac": 24.39
+    }
+  ],
+  "ltv_cac_by_channel": [
+    {
+      "channel": "walk_in",
+      "n_patients": 125,
+      "avg_ltv": 1311.89,
+      "cac": 20,
+      "ltv_cac_ratio": 65.59,
+      "ret_2yr": 0.48,
+      "benchmark_ltv": 1400
+    },
+    {
+      "channel": "doctor_referral",
+      "n_patients": 602,
+      "avg_ltv": 1430.65,
+      "cac": 40,
+      "ltv_cac_ratio": 35.77,
+      "ret_2yr": 0.74,
+      "benchmark_ltv": 3200
+    },
+    {
+      "channel": "patient_referral",
+      "n_patients": 513,
+      "avg_ltv": 1433.01,
+      "cac": 55,
+      "ltv_cac_ratio": 26.05,
+      "ret_2yr": 0.68,
+      "benchmark_ltv": 2800
+    },
+    {
+      "channel": "google_search",
+      "n_patients": 884,
+      "avg_ltv": 1530.47,
+      "cac": 120,
+      "ltv_cac_ratio": 12.75,
+      "ret_2yr": 0.55,
+      "benchmark_ltv": 1800
+    },
+    {
+      "channel": "instagram",
+      "n_patients": 376,
+      "avg_ltv": 1526.45,
+      "cac": 180,
+      "ltv_cac_ratio": 8.48,
+      "ret_2yr": 0.41,
+      "benchmark_ltv": 1100
+    }
+  ],
+  "monthly_trend": {
+    "months": [
+      "2023-12",
+      "2024-01",
+      "2024-02",
+      "2024-03",
+      "2024-04",
+      "2024-05",
+      "2024-06",
+      "2024-07",
+      "2024-08",
+      "2024-09",
+      "2024-10",
+      "2024-11"
+    ],
+    "spend": {
+      "google_search": [
+        2661.2,
+        2058.13,
+        2574.58,
+        2681.84,
+        2069.76,
+        2202.64,
+        2409.16,
+        2014.56,
+        1827.41,
+        2276.15,
+        2153.51,
+        3047.74
+      ],
+      "doctor_referral": [
+        576.27,
+        428.64,
+        451.29,
+        449.76,
+        381.42,
+        354.66,
+        420.47,
+        328.87,
+        338.46,
+        363.85,
+        418.95,
+        537.75
+      ],
+      "patient_referral": [
+        410.67,
+        270.74,
+        355.88,
+        320.04,
+        318.02,
+        314.92,
+        330.52,
+        229.08,
+        241.12,
+        332.44,
+        311.78,
+        429.82
+      ],
+      "instagram": [
+        2456.81,
+        1805.04,
+        2123.55,
+        2097.03,
+        1871.82,
+        1884.92,
+        1633.62,
+        1529.11,
+        1477.53,
+        1800.44,
+        1789.23,
+        2450.53
+      ],
+      "walk_in": [
+        66.76,
+        55.45,
+        65.83,
+        55.83,
+        55.92,
+        55.03,
+        46.1,
+        43.51,
+        42.46,
+        55.73,
+        44.97,
+        72.15
+      ]
+    },
+    "patients": {
+      "google_search": [
+        22,
+        19,
+        18,
+        23,
+        16,
+        18,
+        21,
+        15,
+        17,
+        16,
+        15,
+        22
+      ],
+      "doctor_referral": [
+        13,
+        9,
+        11,
+        10,
+        9,
+        9,
+        9,
+        7,
+        7,
+        9,
+        9,
+        12
+      ],
+      "patient_referral": [
+        6,
+        4,
+        6,
+        5,
+        6,
+        6,
+        5,
+        4,
+        3,
+        5,
+        4,
+        7
+      ],
+      "instagram": [
+        14,
+        10,
+        11,
+        11,
+        9,
+        10,
+        9,
+        7,
+        7,
+        10,
+        8,
+        14
+      ],
+      "walk_in": [
+        3,
+        2,
+        3,
+        2,
+        2,
+        2,
+        2,
+        1,
+        2,
+        3,
+        2,
+        3
+      ]
+    }
+  },
+  "budget_recommendation": {
+    "headline": "Reallocate 20% of instagram budget (CAC $180, LTV:CAC 8.5x) to walk_in (CAC $20, LTV:CAC 65.6x)",
+    "best_channel": "walk_in",
+    "worst_channel": "instagram",
+    "best_ltv_cac": 65.59,
+    "worst_ltv_cac": 8.48,
+    "insight": "Doctor referrals produce the highest LTV:CAC ratio and 74% 2-year retention \u2014 far exceeding Instagram (41% retention, 4.5x lower LTV). Investing $500/month into a referral program (gift cards, co-marketing with PCPs) generates more durable revenue than equivalent social spend."
+  },
+  "total_spend_3yr": 179222.34,
+  "total_patients_3yr": 1629,
+  "blended_cac": 110.02,
+  "blended_roas": 0.778
+}

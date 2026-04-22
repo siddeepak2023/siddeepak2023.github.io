@@ -1,0 +1,501 @@
+Rndrng_NPI,Rndrng_Prvdr_Last_Org_Name,Rndrng_Prvdr_First_Name,Rndrng_Prvdr_City,Rndrng_Prvdr_State_Abrvtn,Rndrng_Prvdr_Zip5,Rndrng_Prvdr_Type,HCPCS_Cd,HCPCS_Desc,Tot_Benes,Tot_Srvcs,Tot_Bene_Day_Srvcs,Avg_Sbmtd_Chrg,Avg_Mdcr_Allowed_Amt,Avg_Mdcr_Pymt_Amt,Avg_Mdcr_Stdzd_Amt
+1443414198,Scott,Sarah,Denver,FL,70992,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",18,20,20,198.04,119.92,95.72,102.32
+1438878439,Jones,Lisa,Nashville,FL,93259,Dermatology,11100,"Biopsy of skin lesion, single",61,89,89,240.04,101.56,81.24,84.94
+1128113632,Young,Charles,New York,NY,47633,Dermatology,11100,"Biopsy of skin lesion, single",69,121,121,253.07,107.07,85.65,89.55
+1839748229,Smith,Charles,Miami,NC,53798,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",57,79,79,528.28,235.52,188.2,199.2
+1128113632,Young,Charles,New York,NY,95838,Dermatology,11100,"Biopsy of skin lesion, single",169,205,205,193.48,81.86,65.49,68.46
+1761139701,Wilson,Patricia,Boston,IL,11945,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",59,98,98,259.43,154.73,124.16,131.57
+1089250953,Wright,Emily,New York,NY,69938,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",162,176,176,122.6,68.31,54.29,57.8
+1643865119,Green,Karen,Boston,IL,75428,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",134,216,216,222.24,118.87,95.1,101.3
+1761139701,Wilson,Patricia,Boston,IL,22713,Dermatology,96920,"Laser treatment for inflammatory skin, <250 sq cm",29,29,29,360.28,106.37,84.92,90.07
+1370798024,Evans,Sarah,Nashville,LA,82741,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",88,110,110,85.64,42.37,33.35,36.06
+1094177347,Johnson,Richard,Atlanta,NY,99223,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",172,207,207,210.96,112.84,90.27,96.16
+1887889843,Walker,Barbara,Seattle,GA,49158,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",61,109,109,132.36,73.74,58.61,62.4
+1858597919,Phillips,Emily,Phoenix,OH,20438,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",161,276,276,234.42,101.92,81.54,86.63
+1500351915,Chen,Ashley,Dallas,TX,76615,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",67,87,87,220.66,118.03,94.42,100.58
+1554584786,Hall,James,Miami,NY,95294,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",26,45,45,235.06,102.2,81.76,86.87
+1526478978,Lee,Joseph,Denver,CA,23795,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",161,184,184,168.96,94.13,74.82,79.65
+1717477276,Roberts,Michael,Los Angeles,PA,99821,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",112,139,139,222.04,92.32,73.62,78.3
+1443414198,Scott,Sarah,Denver,FL,22950,Dermatology,11600,"Excision malignant lesion, trunk/arm/leg, ≤0.5cm",84,84,84,539.67,219.86,175.89,185.89
+1201469535,White,Sarah,Boston,AZ,36687,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",49,53,53,150.82,84.03,66.79,71.1
+1450385937,Turner,Jessica,Nashville,NY,27979,Dermatology,17000,"Destruction actinic keratosis, first lesion",81,133,133,153.67,67.45,53.79,57.2
+1089250953,Wright,Emily,New York,NY,61054,Dermatology,17004,"Destruction actinic keratosis, 15+ lesions",131,143,143,281.03,136.5,109.4,115.42
+1887889843,Walker,Barbara,Seattle,GA,53972,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",33,50,50,91.26,45.15,35.55,38.43
+1735752370,Baker,Mary,Chicago,MA,63723,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",172,175,175,197.04,105.4,84.32,89.82
+1370798024,Evans,Sarah,Nashville,LA,22630,Dermatology,11101,"Biopsy of skin lesion, each additional",133,177,177,73.94,32.19,26.1,26.97
+1089250953,Wright,Emily,New York,NY,48886,Dermatology,11100,"Biopsy of skin lesion, single",174,285,285,233.38,98.74,78.99,82.58
+1839748229,Smith,Charles,Miami,NC,19822,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",123,204,204,498.18,222.1,177.48,187.85
+1526478978,Lee,Joseph,Denver,CA,93989,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",145,215,215,210.8,112.76,90.2,96.09
+1092135914,Harris,Thomas,Boston,MA,43676,Dermatology,11100,"Biopsy of skin lesion, single",31,41,41,243.48,103.01,82.41,86.15
+1438878439,Jones,Lisa,Nashville,FL,34182,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",121,144,144,156.55,65.09,51.91,55.2
+1526478978,Lee,Joseph,Denver,CA,19474,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",173,182,182,280.7,122.04,97.63,103.74
+1839748229,Smith,Charles,Miami,NC,93101,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",111,138,138,169.04,94.18,74.86,79.69
+1858597919,Phillips,Emily,Phoenix,OH,35624,Dermatology,11720,"Debridement of nail(s), 1-5",37,41,41,68.39,28.41,23.15,24.2
+1128113632,Young,Charles,New York,NY,84788,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",30,34,34,135.52,75.51,60.02,63.89
+1773956048,Miller,Charles,Chicago,MN,45426,Dermatology,11100,"Biopsy of skin lesion, single",146,183,183,291.6,123.37,98.69,103.18
+1858291293,Allen,Andrew,Chicago,NY,54377,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",96,99,99,173.55,72.16,57.55,61.2
+1201469535,White,Sarah,Boston,AZ,61410,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",119,158,158,269.0,143.89,115.11,122.62
+1975622351,Carter,Sarah,Houston,TX,70933,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",19,20,20,97.98,48.47,38.16,41.25
+1227238721,Thomas,William,Chicago,MN,18920,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",127,212,212,148.07,82.49,65.57,69.8
+1450459553,Martinez,Daniel,Phoenix,CA,66503,Dermatology,11600,"Excision malignant lesion, trunk/arm/leg, ≤0.5cm",163,264,264,509.45,207.55,166.04,175.48
+1781567455,Brown,Thomas,Boston,VA,58245,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",150,211,211,474.04,211.34,168.88,178.75
+1063817255,Davis,Richard,Seattle,NC,32481,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",155,234,234,301.19,160.31,128.25,136.02
+1975622351,Carter,Sarah,Houston,TX,74168,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",38,45,45,110.49,61.56,48.93,52.09
+1761139701,Wilson,Patricia,Boston,IL,26462,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",73,95,95,91.25,45.15,35.54,38.42
+1402414364,Rodriguez,Sarah,Austin,TX,79162,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",124,171,171,248.54,132.94,106.35,113.29
+1545429118,Perez,John,Atlanta,CA,28211,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",66,100,100,338.6,201.95,162.04,171.72
+1450459553,Martinez,Daniel,Phoenix,CA,35933,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",23,36,36,282.24,168.33,135.07,143.13
+1773956048,Miller,Charles,Chicago,MN,67259,Dermatology,17000,"Destruction actinic keratosis, first lesion",45,67,67,175.88,77.19,61.56,65.47
+1438878439,Jones,Lisa,Nashville,FL,94233,Dermatology,17004,"Destruction actinic keratosis, 15+ lesions",99,109,109,304.55,147.93,118.56,125.08
+1063817255,Davis,Richard,Seattle,NC,99698,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",173,281,281,626.11,271.71,217.37,230.36
+1443414198,Scott,Sarah,Denver,FL,63106,Dermatology,17020,"Destruction of lesion, premalignant, local",132,142,142,150.59,68.27,54.21,57.22
+1500351915,Chen,Ashley,Dallas,TX,74758,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",115,167,167,159.41,88.81,70.6,75.15
+1839748229,Smith,Charles,Miami,NC,81931,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",166,231,231,282.42,168.44,135.16,143.23
+1526478978,Lee,Joseph,Denver,CA,74909,Dermatology,99211,"Office/outpatient visit, minimal complexity",112,122,122,58.9,22.49,18.21,19.28
+1438878439,Jones,Lisa,Nashville,FL,79688,Dermatology,17000,"Destruction actinic keratosis, first lesion",166,255,255,198.29,87.03,69.4,73.81
+1822761613,Thompson,Sarah,Los Angeles,SC,81569,Dermatology,10060,"Incision and drainage abscess, simple",67,81,81,226.19,96.64,77.11,81.22
+1717477276,Roberts,Michael,Los Angeles,PA,23300,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",173,302,302,211.06,112.9,90.32,96.21
+1370798024,Evans,Sarah,Nashville,LA,95415,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",85,122,122,111.89,55.36,43.58,47.11
+1887889843,Walker,Barbara,Seattle,GA,43871,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",34,60,60,528.64,235.68,188.33,199.34
+1089250953,Wright,Emily,New York,NY,89013,Dermatology,11440,"Excision benign lesion, face/ear/lid, ≤0.5cm",132,221,221,405.27,165.31,132.25,139.71
+1781567455,Brown,Thomas,Boston,VA,71747,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",16,16,16,166.95,93.02,73.94,78.71
+1438878439,Jones,Lisa,Nashville,FL,38384,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",87,118,118,1614.62,746.98,597.41,633.1
+1128113632,Young,Charles,New York,NY,80315,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",135,146,146,228.52,122.23,97.79,104.16
+1786064305,Anderson,Patricia,Atlanta,CA,13889,Dermatology,11301,"Shave removal skin lesion, face/head/neck, 0.6-1.0cm",179,298,298,207.55,81.13,65.09,68.87
+1438878439,Jones,Lisa,Nashville,FL,68510,Dermatology,96910,"Photochemotherapy, tars and/or UV-B",34,36,36,156.49,59.83,47.87,50.63
+1643865119,Green,Karen,Boston,IL,86890,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",162,180,180,128.16,71.4,56.76,60.42
+1443414198,Scott,Sarah,Denver,FL,69063,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",59,60,60,204.84,109.57,87.65,93.37
+1089250953,Wright,Emily,New York,NY,96685,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",11,18,18,106.52,59.34,47.17,50.21
+1526478978,Lee,Joseph,Denver,CA,82085,Dermatology,17315,"Mohs micrographic surgery, trunk/arm/leg, 1st stage",124,216,216,1377.91,521.77,417.05,441.85
+1433015235,Mitchell,Linda,New York,AZ,51057,Dermatology,17000,"Destruction actinic keratosis, first lesion",141,145,145,208.68,91.59,73.04,77.67
+1094177347,Johnson,Richard,Atlanta,NY,77066,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",102,153,153,138.35,77.08,61.27,65.22
+1438878439,Jones,Lisa,Nashville,FL,11417,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",154,177,177,115.13,64.14,50.98,54.27
+1975622351,Carter,Sarah,Houston,TX,76114,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",137,142,142,42.23,12.06,9.65,10.86
+1654571518,Patel,Jessica,Austin,TX,74115,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",115,180,180,137.8,76.77,61.02,64.96
+1201469535,White,Sarah,Boston,AZ,98201,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",74,101,101,131.03,73.0,58.03,61.77
+1370798024,Evans,Sarah,Nashville,LA,32345,Dermatology,11101,"Biopsy of skin lesion, each additional",143,159,159,88.35,38.46,31.18,32.22
+1063817255,Davis,Richard,Seattle,NC,72979,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",101,153,153,176.9,94.62,75.7,80.63
+1128113632,Young,Charles,New York,NY,92233,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",169,223,223,137.8,76.77,61.02,64.96
+1839748229,Smith,Charles,Miami,NC,35026,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",171,212,212,141.17,78.65,62.52,66.55
+1926764988,Williams,Emily,New York,LA,23809,Dermatology,11100,"Biopsy of skin lesion, single",83,110,110,259.19,109.66,87.73,91.71
+1513226573,Adams,Richard,Seattle,IL,38533,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",112,115,115,161.52,86.39,69.11,73.62
+1735752370,Baker,Mary,Chicago,MA,41577,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",81,118,118,203.89,123.47,98.55,105.34
+1370798024,Evans,Sarah,Nashville,LA,68718,Dermatology,17000,"Destruction actinic keratosis, first lesion",110,137,137,173.86,76.3,60.85,64.71
+1526478978,Lee,Joseph,Denver,CA,57373,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",144,216,216,241.63,144.12,115.64,122.54
+1717477276,Roberts,Michael,Los Angeles,PA,89775,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",105,182,182,210.96,127.75,101.96,108.99
+1227238721,Thomas,William,Chicago,MN,56735,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",96,120,120,163.16,98.8,78.86,84.3
+1227238721,Thomas,William,Chicago,MN,16485,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",20,33,33,193.23,117.01,93.39,99.84
+1450459553,Martinez,Daniel,Phoenix,CA,75769,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",20,22,22,226.71,121.26,97.01,103.34
+1735752370,Baker,Mary,Chicago,MA,84444,Dermatology,17004,"Destruction actinic keratosis, 15+ lesions",84,141,141,268.72,130.52,104.61,110.37
+1513226573,Adams,Richard,Seattle,IL,55747,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",73,79,79,127.91,71.27,56.65,60.3
+1717477276,Roberts,Michael,Los Angeles,PA,79488,Dermatology,11440,"Excision benign lesion, face/ear/lid, ≤0.5cm",86,107,107,490.37,200.02,160.02,169.05
+1545429118,Perez,John,Atlanta,CA,40026,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",127,192,192,33.75,9.64,7.71,8.68
+1089250953,Wright,Emily,New York,NY,24737,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",89,100,100,223.89,119.76,95.8,102.05
+1513226573,Adams,Richard,Seattle,IL,82145,Dermatology,11601,"Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",152,254,254,538.99,220.01,175.83,186.44
+1858291293,Allen,Andrew,Chicago,NY,45331,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",153,162,162,163.58,91.14,72.44,77.12
+1227238721,Thomas,William,Chicago,MN,37570,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",138,154,154,368.21,195.98,156.79,166.29
+1201469535,White,Sarah,Boston,AZ,30956,Dermatology,10060,"Incision and drainage abscess, simple",117,144,144,231.94,99.1,79.07,83.29
+1201469535,White,Sarah,Boston,AZ,34198,Dermatology,11100,"Biopsy of skin lesion, single",93,99,99,185.3,78.4,62.72,65.57
+1526478978,Lee,Joseph,Denver,CA,68422,Dermatology,17312,"Mohs micrographic surgery, face/head/neck, each add'l stage",104,159,159,998.83,424.24,339.81,359.37
+1443414198,Scott,Sarah,Denver,FL,89305,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",139,198,198,123.06,68.56,54.5,58.01
+1761139701,Wilson,Patricia,Boston,IL,79175,Dermatology,17312,"Mohs micrographic surgery, face/head/neck, each add'l stage",100,168,168,1034.78,439.52,352.04,372.31
+1717477276,Roberts,Michael,Los Angeles,PA,44579,Dermatology,96920,"Laser treatment for inflammatory skin, <250 sq cm",96,161,161,382.02,112.79,90.05,95.51
+1761139701,Wilson,Patricia,Boston,IL,19448,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",98,129,129,168.9,102.28,81.64,87.27
+1858291293,Allen,Andrew,Chicago,NY,38481,Dermatology,11101,"Biopsy of skin lesion, each additional",166,211,211,77.19,33.6,27.24,28.15
+1201469535,White,Sarah,Boston,AZ,50338,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",127,158,158,129.03,71.89,57.14,60.83
+1433015235,Mitchell,Linda,New York,AZ,57323,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",112,174,174,144.4,80.45,63.95,68.08
+1781567455,Brown,Thomas,Boston,VA,52975,Dermatology,11601,"Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",159,255,255,707.81,288.93,230.91,244.83
+1781567455,Brown,Thomas,Boston,VA,51465,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",163,264,264,30.14,8.61,6.89,7.75
+1092135914,Harris,Thomas,Boston,MA,49607,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",147,212,212,173.55,96.69,76.86,81.82
+1063817255,Davis,Richard,Seattle,NC,83931,Dermatology,11600,"Excision malignant lesion, trunk/arm/leg, ≤0.5cm",121,148,148,460.79,187.73,150.18,158.72
+1822761613,Thompson,Sarah,Los Angeles,SC,21148,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",11,11,11,218.3,94.91,75.93,80.68
+1450385937,Turner,Jessica,Nashville,NY,39273,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",142,194,194,197.55,119.63,95.48,102.07
+1858291293,Allen,Andrew,Chicago,NY,17633,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",120,173,173,88.42,43.74,34.44,37.23
+1500351915,Chen,Ashley,Dallas,TX,70550,Dermatology,11720,"Debridement of nail(s), 1-5",146,150,150,70.95,29.47,24.01,25.11
+1786064305,Anderson,Patricia,Atlanta,CA,70776,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",168,263,263,122.62,68.32,54.3,57.81
+1781567455,Brown,Thomas,Boston,VA,44363,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",141,231,231,160.76,66.84,53.3,56.69
+1773956048,Miller,Charles,Chicago,MN,87230,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",50,50,50,252.44,135.03,108.02,115.07
+1063817255,Davis,Richard,Seattle,NC,72982,Dermatology,17000,"Destruction actinic keratosis, first lesion",97,128,128,190.18,83.47,66.56,70.79
+1554584786,Hall,James,Miami,NY,86749,Dermatology,17000,"Destruction actinic keratosis, first lesion",81,103,103,157.52,69.14,55.13,58.63
+1443414198,Scott,Sarah,Denver,FL,20309,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",155,204,204,165.03,88.27,70.62,75.22
+1975622351,Carter,Sarah,Houston,TX,70848,Dermatology,11301,"Shave removal skin lesion, face/head/neck, 0.6-1.0cm",125,159,159,190.61,74.51,59.78,63.25
+1128113632,Young,Charles,New York,NY,79775,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",132,163,163,660.55,286.65,229.32,243.03
+1513226573,Adams,Richard,Seattle,IL,99781,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",42,65,65,150.34,83.76,66.58,70.87
+1822761613,Thompson,Sarah,Los Angeles,SC,40965,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",111,155,155,90.55,44.8,35.27,38.13
+1433015235,Mitchell,Linda,New York,AZ,28177,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",70,70,70,82.42,40.77,32.1,34.7
+1735752370,Baker,Mary,Chicago,MA,89864,Dermatology,11101,"Biopsy of skin lesion, each additional",87,116,116,97.37,42.38,34.37,35.51
+1063817255,Davis,Richard,Seattle,NC,35608,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",176,302,302,205.09,89.17,71.34,75.8
+1786064305,Anderson,Patricia,Atlanta,CA,98558,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",50,71,71,227.44,121.65,97.32,103.67
+1822761613,Thompson,Sarah,Los Angeles,SC,36944,Dermatology,11100,"Biopsy of skin lesion, single",15,17,17,268.5,113.6,90.88,95.01
+1735752370,Baker,Mary,Chicago,MA,32553,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",65,94,94,180.03,100.3,79.73,84.87
+1443414198,Scott,Sarah,Denver,FL,52862,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",156,280,280,527.05,234.97,187.76,198.74
+1182549636,Garcia,John,Atlanta,VA,52324,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",125,203,203,498.15,216.18,172.94,183.28
+1201469535,White,Sarah,Boston,AZ,68762,Dermatology,11100,"Biopsy of skin lesion, single",83,146,146,306.75,129.78,103.82,108.54
+1443414198,Scott,Sarah,Denver,FL,76531,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",97,171,171,345.42,183.85,147.08,155.99
+1438878439,Jones,Lisa,Nashville,FL,15897,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",107,145,145,101.02,56.28,44.74,47.62
+1975622351,Carter,Sarah,Houston,TX,76354,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",98,106,106,208.68,111.62,89.29,95.12
+1786064305,Anderson,Patricia,Atlanta,CA,28631,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",86,106,106,123.6,68.87,54.74,58.27
+1450385937,Turner,Jessica,Nashville,NY,47329,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",77,83,83,94.84,46.92,36.94,39.93
+1092135914,Harris,Thomas,Boston,MA,54054,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",57,72,72,136.46,76.03,60.43,64.33
+1513226573,Adams,Richard,Seattle,IL,30611,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",83,100,100,421.12,187.75,150.02,158.8
+1761139701,Wilson,Patricia,Boston,IL,71492,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",156,184,184,176.39,94.35,75.48,80.4
+1545429118,Perez,John,Atlanta,CA,87756,Dermatology,99211,"Office/outpatient visit, minimal complexity",66,90,90,47.47,18.13,14.67,15.54
+1402414364,Rodriguez,Sarah,Austin,TX,71381,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",64,111,111,149.22,83.14,66.08,70.35
+1438878439,Jones,Lisa,Nashville,FL,73562,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",12,13,13,235.82,126.14,100.91,107.49
+1926764988,Williams,Emily,New York,LA,63116,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",49,82,82,245.64,131.39,105.11,111.97
+1450385937,Turner,Jessica,Nashville,NY,90702,Dermatology,17315,"Mohs micrographic surgery, trunk/arm/leg, 1st stage",11,12,12,1823.57,690.52,551.93,584.76
+1443414198,Scott,Sarah,Denver,FL,92690,Dermatology,17315,"Mohs micrographic surgery, trunk/arm/leg, 1st stage",52,70,70,1502.06,568.78,454.62,481.66
+1063817255,Davis,Richard,Seattle,NC,23363,Dermatology,11601,"Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",112,184,184,693.16,282.95,226.13,239.76
+1761139701,Wilson,Patricia,Boston,IL,29471,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",61,81,81,558.15,242.21,193.77,205.36
+1781567455,Brown,Thomas,Boston,VA,44499,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",64,81,81,145.73,81.19,64.54,68.7
+1089250953,Wright,Emily,New York,NY,73727,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",153,243,243,118.5,66.02,52.48,55.86
+1450459553,Martinez,Daniel,Phoenix,CA,79876,Dermatology,10060,"Incision and drainage abscess, simple",64,70,70,255.66,109.24,87.16,91.8
+1858597919,Phillips,Emily,Phoenix,OH,55655,Dermatology,17000,"Destruction actinic keratosis, first lesion",145,260,260,188.58,82.76,66.0,70.19
+1975622351,Carter,Sarah,Houston,TX,73881,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",11,16,16,170.2,94.83,75.37,80.24
+1433015235,Mitchell,Linda,New York,AZ,58257,Dermatology,10060,"Incision and drainage abscess, simple",81,121,121,221.17,94.5,75.4,79.42
+1201469535,White,Sarah,Boston,AZ,40914,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",57,70,70,118.99,66.3,52.7,56.1
+1643865119,Green,Karen,Boston,IL,63613,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",19,22,22,1872.03,866.06,692.65,734.03
+1227238721,Thomas,William,Chicago,MN,57272,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",158,227,227,193.2,103.34,82.67,88.06
+1786064305,Anderson,Patricia,Atlanta,CA,61023,Dermatology,17000,"Destruction actinic keratosis, first lesion",139,223,223,207.81,91.2,72.73,77.35
+1822761613,Thompson,Sarah,Los Angeles,SC,13165,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",177,178,178,97.48,48.23,37.96,41.04
+1443414198,Scott,Sarah,Denver,FL,18466,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",169,289,289,169.11,102.41,81.74,87.38
+1643865119,Green,Karen,Boston,IL,33884,Dermatology,17000,"Destruction actinic keratosis, first lesion",77,136,136,185.9,81.59,65.07,69.2
+1201469535,White,Sarah,Boston,AZ,52281,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",68,107,107,185.02,98.96,79.17,84.33
+1781567455,Brown,Thomas,Boston,VA,68749,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",159,253,253,93.66,46.34,36.48,39.44
+1822761613,Thompson,Sarah,Los Angeles,SC,19415,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",86,148,148,569.94,254.1,203.04,214.91
+1402414364,Rodriguez,Sarah,Austin,TX,74309,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",157,182,182,509.25,221.0,176.8,187.37
+1545429118,Perez,John,Atlanta,CA,43942,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",177,278,278,172.01,95.83,76.17,81.09
+1887889843,Walker,Barbara,Seattle,GA,61425,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",160,237,237,99.17,49.06,38.62,41.75
+1182549636,Garcia,John,Atlanta,VA,94183,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",108,148,148,106.05,52.47,41.3,44.65
+1654571518,Patel,Jessica,Austin,TX,73322,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",44,48,48,98.18,48.57,38.24,41.34
+1858597919,Phillips,Emily,Phoenix,OH,95939,Dermatology,17000,"Destruction actinic keratosis, first lesion",15,17,17,138.16,60.64,48.36,51.43
+1201469535,White,Sarah,Boston,AZ,53024,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",27,33,33,232.32,101.01,80.81,85.86
+1094177347,Johnson,Richard,Atlanta,NY,52157,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",20,24,24,204.5,109.38,87.51,93.21
+1433015235,Mitchell,Linda,New York,AZ,70613,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",18,27,27,195.64,118.47,94.56,101.08
+1450385937,Turner,Jessica,Nashville,NY,36529,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",33,53,53,139.79,77.88,61.91,65.9
+1735752370,Baker,Mary,Chicago,MA,41935,Dermatology,10060,"Incision and drainage abscess, simple",159,283,283,245.02,104.69,83.53,87.98
+1063817255,Davis,Richard,Seattle,NC,37401,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",170,245,245,144.85,80.7,64.15,68.29
+1513226573,Adams,Richard,Seattle,IL,56889,Dermatology,17312,"Mohs micrographic surgery, face/head/neck, each add'l stage",27,38,38,873.03,370.81,297.01,314.11
+1858597919,Phillips,Emily,Phoenix,OH,86673,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",29,42,42,206.96,110.7,88.56,94.33
+1500351915,Chen,Ashley,Dallas,TX,71109,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",135,178,178,175.38,93.81,75.05,79.94
+1545429118,Perez,John,Atlanta,CA,94737,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",112,122,122,273.84,119.06,95.25,101.2
+1526478978,Lee,Joseph,Denver,CA,65593,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",162,271,271,141.17,78.65,62.52,66.55
+1201469535,White,Sarah,Boston,AZ,32073,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",42,65,65,101.33,50.13,39.47,42.67
+1433015235,Mitchell,Linda,New York,AZ,74794,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",154,219,219,168.05,69.87,55.72,59.26
+1526478978,Lee,Joseph,Denver,CA,94600,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",17,29,29,206.8,110.61,88.49,94.26
+1089250953,Wright,Emily,New York,NY,45395,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",142,202,202,220.65,133.62,106.65,114.01
+1500351915,Chen,Ashley,Dallas,TX,71256,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",71,125,125,312.82,166.5,133.2,141.27
+1438878439,Jones,Lisa,Nashville,FL,96381,Dermatology,11440,"Excision benign lesion, face/ear/lid, ≤0.5cm",92,132,132,394.12,160.76,128.61,135.87
+1094177347,Johnson,Richard,Atlanta,NY,20705,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",75,130,130,239.26,127.98,102.38,109.06
+1089250953,Wright,Emily,New York,NY,57576,Dermatology,11100,"Biopsy of skin lesion, single",65,85,85,297.45,125.84,100.68,105.25
+1500351915,Chen,Ashley,Dallas,TX,78182,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",35,55,55,139.39,74.56,59.65,63.54
+1717477276,Roberts,Michael,Los Angeles,PA,60323,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",90,114,114,148.02,82.47,65.55,69.78
+1773956048,Miller,Charles,Chicago,MN,66043,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",122,195,195,89.48,44.27,34.85,37.68
+1781567455,Brown,Thomas,Boston,VA,35847,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",145,195,195,218.38,116.81,93.45,99.54
+1781567455,Brown,Thomas,Boston,VA,35280,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",58,60,60,117.07,65.23,51.85,55.19
+1786064305,Anderson,Patricia,Atlanta,CA,54705,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",88,132,132,135.25,75.35,59.9,63.76
+1786064305,Anderson,Patricia,Atlanta,CA,75355,Dermatology,11720,"Debridement of nail(s), 1-5",80,109,109,57.2,23.76,19.36,20.24
+1735752370,Baker,Mary,Chicago,MA,57300,Dermatology,11100,"Biopsy of skin lesion, single",122,214,214,273.85,115.86,92.69,96.9
+1761139701,Wilson,Patricia,Boston,IL,86139,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",177,182,182,152.36,84.89,67.47,71.83
+1858291293,Allen,Andrew,Chicago,NY,25505,Dermatology,10060,"Incision and drainage abscess, simple",86,131,131,212.01,90.59,72.28,76.13
+1735752370,Baker,Mary,Chicago,MA,76465,Dermatology,17020,"Destruction of lesion, premalignant, local",135,178,178,182.3,82.64,65.63,69.27
+1554584786,Hall,James,Miami,NY,39738,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",105,181,181,35.51,10.15,8.12,9.13
+1513226573,Adams,Richard,Seattle,IL,46733,Dermatology,11101,"Biopsy of skin lesion, each additional",128,173,173,77.56,33.76,27.37,28.29
+1975622351,Carter,Sarah,Houston,TX,77329,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",32,48,48,151.26,84.27,66.99,71.31
+1643865119,Green,Karen,Boston,IL,27802,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",147,238,238,119.26,66.44,52.81,56.22
+1887889843,Walker,Barbara,Seattle,GA,88403,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",156,172,172,188.66,100.91,80.73,85.99
+1975622351,Carter,Sarah,Houston,TX,76746,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",58,100,100,150.41,83.8,66.61,70.91
+1822761613,Thompson,Sarah,Los Angeles,SC,62413,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",45,79,79,209.17,124.76,100.1,106.08
+1926764988,Williams,Emily,New York,LA,38843,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",21,37,37,214.88,114.94,91.95,97.95
+1500351915,Chen,Ashley,Dallas,TX,77007,Dermatology,17000,"Destruction actinic keratosis, first lesion",78,102,102,190.48,83.6,66.67,70.9
+1092135914,Harris,Thomas,Boston,MA,94233,Dermatology,11100,"Biopsy of skin lesion, single",40,67,67,242.6,102.64,82.11,85.84
+1761139701,Wilson,Patricia,Boston,IL,83167,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",65,97,97,303.47,181.0,145.23,153.9
+1761139701,Wilson,Patricia,Boston,IL,93147,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",172,288,288,201.13,107.58,86.06,91.68
+1887889843,Walker,Barbara,Seattle,GA,19471,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",176,283,283,224.37,97.55,78.04,82.92
+1839748229,Smith,Charles,Miami,NC,68033,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",113,139,139,364.76,194.15,155.32,164.73
+1735752370,Baker,Mary,Chicago,MA,69168,Dermatology,11100,"Biopsy of skin lesion, single",54,63,63,255.21,107.97,86.38,90.3
+1450459553,Martinez,Daniel,Phoenix,CA,10675,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",72,91,91,175.31,72.89,58.13,61.82
+1128113632,Young,Charles,New York,NY,64441,Dermatology,17312,"Mohs micrographic surgery, face/head/neck, each add'l stage",145,234,234,961.0,408.18,326.94,345.76
+1433015235,Mitchell,Linda,New York,AZ,27332,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",59,66,66,76.84,38.02,29.93,32.35
+1089250953,Wright,Emily,New York,NY,66938,Dermatology,11100,"Biopsy of skin lesion, single",82,146,146,241.7,102.26,81.81,85.52
+1654571518,Patel,Jessica,Austin,TX,72706,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",53,90,90,147.27,82.05,65.22,69.43
+1094177347,Johnson,Richard,Atlanta,NY,24015,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",123,140,140,114.07,63.55,50.52,53.77
+1513226573,Adams,Richard,Seattle,IL,71753,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",60,91,91,280.29,167.17,134.14,142.14
+1089250953,Wright,Emily,New York,NY,71504,Dermatology,96910,"Photochemotherapy, tars and/or UV-B",178,191,191,168.63,64.48,51.58,54.56
+1822761613,Thompson,Sarah,Los Angeles,SC,51508,Dermatology,11600,"Excision malignant lesion, trunk/arm/leg, ≤0.5cm",61,81,81,620.48,252.79,202.23,213.72
+1094177347,Johnson,Richard,Atlanta,NY,71306,Dermatology,17000,"Destruction actinic keratosis, first lesion",19,30,30,156.3,68.6,54.7,58.18
+1227238721,Thomas,William,Chicago,MN,38938,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",77,123,123,2197.21,1016.5,812.97,861.54
+1822761613,Thompson,Sarah,Los Angeles,SC,61287,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",146,162,162,174.81,105.86,84.49,90.32
+1092135914,Harris,Thomas,Boston,MA,58045,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",63,66,66,133.93,74.62,59.31,63.14
+1450385937,Turner,Jessica,Nashville,NY,18894,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",19,30,30,127.4,70.98,56.42,60.06
+1773956048,Miller,Charles,Chicago,MN,25119,Dermatology,11101,"Biopsy of skin lesion, each additional",68,75,75,103.07,44.86,36.38,37.59
+1654571518,Patel,Jessica,Austin,TX,70434,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",156,258,258,1840.02,851.25,680.81,721.48
+1438878439,Jones,Lisa,Nashville,FL,33170,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",110,176,176,109.69,54.27,42.72,46.18
+1094177347,Johnson,Richard,Atlanta,NY,47042,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",96,124,124,277.44,120.63,96.5,102.53
+1094177347,Johnson,Richard,Atlanta,NY,20701,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",173,184,184,215.37,115.2,92.16,98.17
+1761139701,Wilson,Patricia,Boston,IL,72923,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",40,52,52,157.31,87.64,69.66,74.16
+1858291293,Allen,Andrew,Chicago,NY,50385,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",41,53,53,130.57,72.74,57.82,61.55
+1201469535,White,Sarah,Boston,AZ,65543,Dermatology,11600,"Excision malignant lesion, trunk/arm/leg, ≤0.5cm",158,182,182,381.18,155.3,124.24,131.3
+1094177347,Johnson,Richard,Atlanta,NY,76124,Dermatology,17000,"Destruction actinic keratosis, first lesion",53,77,77,174.5,76.59,61.08,64.95
+1545429118,Perez,John,Atlanta,CA,57745,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",104,106,106,2310.8,1069.05,854.99,906.08
+1773956048,Miller,Charles,Chicago,MN,33416,Dermatology,11100,"Biopsy of skin lesion, single",115,153,153,200.47,84.81,67.85,70.93
+1975622351,Carter,Sarah,Houston,TX,77545,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",139,181,181,1726.27,798.63,638.72,676.88
+1975622351,Carter,Sarah,Houston,TX,75640,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",87,134,134,235.63,140.54,112.77,119.5
+1227238721,Thomas,William,Chicago,MN,79617,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",22,37,37,116.88,65.12,51.76,55.1
+1781567455,Brown,Thomas,Boston,VA,52295,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",27,37,37,137.63,76.68,60.95,64.88
+1227238721,Thomas,William,Chicago,MN,51750,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",169,248,248,172.49,96.1,76.39,81.32
+1201469535,White,Sarah,Boston,AZ,18924,Dermatology,17000,"Destruction actinic keratosis, first lesion",161,187,187,212.07,93.08,74.23,78.94
+1438878439,Jones,Lisa,Nashville,FL,26226,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",82,138,138,138.28,77.04,61.24,65.19
+1761139701,Wilson,Patricia,Boston,IL,42162,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",99,119,119,84.97,42.04,33.09,35.78
+1887889843,Walker,Barbara,Seattle,GA,72947,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",114,198,198,210.2,112.43,89.95,95.81
+1438878439,Jones,Lisa,Nashville,FL,65760,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",88,96,96,109.58,61.05,48.53,51.66
+1201469535,White,Sarah,Boston,AZ,22891,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",155,220,220,265.62,115.49,92.39,98.16
+1858291293,Allen,Andrew,Chicago,NY,39153,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",21,36,36,148.8,82.9,65.9,70.15
+1438878439,Jones,Lisa,Nashville,FL,39342,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",108,192,192,495.05,214.83,171.87,182.14
+1450385937,Turner,Jessica,Nashville,NY,44265,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",172,226,226,130.65,79.11,63.15,67.5
+1443414198,Scott,Sarah,Denver,FL,98368,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",109,125,125,149.59,83.34,66.24,70.52
+1438878439,Jones,Lisa,Nashville,FL,42280,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",108,143,143,167.17,69.51,55.43,58.95
+1128113632,Young,Charles,New York,NY,75744,Dermatology,11101,"Biopsy of skin lesion, each additional",83,144,144,80.8,35.17,28.52,29.47
+1786064305,Anderson,Patricia,Atlanta,CA,61113,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",174,238,238,106.03,52.46,41.29,44.64
+1735752370,Baker,Mary,Chicago,MA,16346,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",122,155,155,258.88,154.41,123.89,131.29
+1786064305,Anderson,Patricia,Atlanta,CA,75079,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",95,124,124,131.9,73.49,58.41,62.18
+1092135914,Harris,Thomas,Boston,MA,57356,Dermatology,11100,"Biopsy of skin lesion, single",47,56,56,258.45,109.35,87.48,91.45
+1450459553,Martinez,Daniel,Phoenix,CA,70204,Dermatology,11720,"Debridement of nail(s), 1-5",28,29,29,70.07,29.11,23.72,24.79
+1781567455,Brown,Thomas,Boston,VA,98099,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",170,248,248,99.25,49.1,38.66,41.79
+1089250953,Wright,Emily,New York,NY,60639,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",165,168,168,167.22,93.16,74.05,78.83
+1761139701,Wilson,Patricia,Boston,IL,50695,Dermatology,17315,"Mohs micrographic surgery, trunk/arm/leg, 1st stage",136,186,186,1137.46,430.72,344.27,364.75
+1089250953,Wright,Emily,New York,NY,89087,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",159,206,206,403.6,179.94,143.78,152.19
+1227238721,Thomas,William,Chicago,MN,23478,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",106,171,171,203.67,108.94,87.15,92.84
+1450385937,Turner,Jessica,Nashville,NY,96721,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",23,38,38,308.41,183.94,147.6,156.41
+1227238721,Thomas,William,Chicago,MN,20555,Dermatology,11100,"Biopsy of skin lesion, single",42,54,54,261.67,110.71,88.56,92.59
+1438878439,Jones,Lisa,Nashville,FL,60794,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",52,92,92,577.95,250.81,200.65,212.64
+1822761613,Thompson,Sarah,Los Angeles,SC,21588,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",113,150,150,63.33,31.33,24.67,26.67
+1433015235,Mitchell,Linda,New York,AZ,35595,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",22,27,27,441.11,196.66,157.15,166.34
+1822761613,Thompson,Sarah,Los Angeles,SC,49024,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",158,216,216,146.32,81.52,64.8,68.98
+1402414364,Rodriguez,Sarah,Austin,TX,73766,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",30,44,44,130.58,72.75,57.83,61.56
+1433015235,Mitchell,Linda,New York,AZ,50259,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",17,19,19,320.9,170.8,136.64,144.92
+1433015235,Mitchell,Linda,New York,AZ,18712,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",42,73,73,166.55,89.08,71.27,75.91
+1201469535,White,Sarah,Boston,AZ,62426,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",79,84,84,648.26,281.32,225.06,238.51
+1781567455,Brown,Thomas,Boston,VA,48611,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",71,95,95,185.13,76.97,61.38,65.28
+1717477276,Roberts,Michael,Los Angeles,PA,69463,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",17,30,30,245.31,146.31,117.4,124.41
+1773956048,Miller,Charles,Chicago,MN,91268,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",99,102,102,38.85,11.1,8.88,9.99
+1735752370,Baker,Mary,Chicago,MA,94324,Dermatology,17312,"Mohs micrographic surgery, face/head/neck, each add'l stage",169,281,281,1011.05,429.43,343.96,363.77
+1858597919,Phillips,Emily,Phoenix,OH,61069,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",158,208,208,262.96,156.84,125.85,133.36
+1443414198,Scott,Sarah,Denver,FL,81214,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",86,107,107,110.88,61.78,49.1,52.27
+1201469535,White,Sarah,Boston,AZ,18485,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",44,74,74,185.92,99.45,79.56,84.75
+1433015235,Mitchell,Linda,New York,AZ,42576,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",130,217,217,2089.04,966.46,772.94,819.12
+1063817255,Davis,Richard,Seattle,NC,59110,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",61,87,87,146.12,81.41,64.71,68.89
+1063817255,Davis,Richard,Seattle,NC,51098,Dermatology,11600,"Excision malignant lesion, trunk/arm/leg, ≤0.5cm",162,224,224,619.45,252.37,201.89,213.37
+1128113632,Young,Charles,New York,NY,45235,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",43,46,46,75.03,37.12,29.22,31.59
+1822761613,Thompson,Sarah,Los Angeles,SC,85163,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",24,41,41,427.25,190.48,152.21,161.11
+1926764988,Williams,Emily,New York,LA,28523,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",156,277,277,147.77,82.33,65.44,69.66
+1450459553,Martinez,Daniel,Phoenix,CA,13658,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",47,83,83,192.43,116.53,93.01,99.42
+1526478978,Lee,Joseph,Denver,CA,15699,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",168,194,194,136.57,76.09,60.48,64.38
+1858597919,Phillips,Emily,Phoenix,OH,81673,Dermatology,96920,"Laser treatment for inflammatory skin, <250 sq cm",107,160,160,452.85,133.7,106.74,113.21
+1094177347,Johnson,Richard,Atlanta,NY,87771,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",121,212,212,671.81,291.54,233.23,247.18
+1433015235,Mitchell,Linda,New York,AZ,65882,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",69,93,93,177.45,98.87,78.59,83.66
+1063817255,Davis,Richard,Seattle,NC,58642,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",31,35,35,92.52,45.77,36.04,38.96
+1926764988,Williams,Emily,New York,LA,82718,Dermatology,17000,"Destruction actinic keratosis, first lesion",65,87,87,160.31,70.36,56.11,59.67
+1526478978,Lee,Joseph,Denver,CA,94299,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",131,150,150,38.13,10.89,8.72,9.81
+1450459553,Martinez,Daniel,Phoenix,CA,94306,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",29,40,40,185.12,112.1,89.47,95.64
+1128113632,Young,Charles,New York,NY,53014,Dermatology,96910,"Photochemotherapy, tars and/or UV-B",97,129,129,144.55,55.27,44.22,46.77
+1858291293,Allen,Andrew,Chicago,NY,65004,Dermatology,11100,"Biopsy of skin lesion, single",22,33,33,304.89,128.99,103.19,107.88
+1773956048,Miller,Charles,Chicago,MN,90707,Dermatology,11601,"Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",94,129,129,721.0,294.31,235.21,249.4
+1822761613,Thompson,Sarah,Los Angeles,SC,91304,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",21,34,34,1876.01,867.9,694.12,735.59
+1513226573,Adams,Richard,Seattle,IL,66795,Dermatology,11101,"Biopsy of skin lesion, each additional",141,180,180,108.46,47.21,38.28,39.55
+1128113632,Young,Charles,New York,NY,63915,Dermatology,17000,"Destruction actinic keratosis, first lesion",122,158,158,164.35,72.13,57.52,61.17
+1513226573,Adams,Richard,Seattle,IL,76290,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",18,24,24,532.56,231.11,184.89,195.94
+1500351915,Chen,Ashley,Dallas,TX,73739,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",47,54,54,233.02,101.31,81.05,86.12
+1926764988,Williams,Emily,New York,LA,34532,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",134,145,145,224.74,97.71,78.17,83.05
+1438878439,Jones,Lisa,Nashville,FL,39525,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",172,212,212,168.66,93.97,74.69,79.51
+1500351915,Chen,Ashley,Dallas,TX,77080,Dermatology,11301,"Shave removal skin lesion, face/head/neck, 0.6-1.0cm",39,44,44,228.71,89.41,71.73,75.89
+1545429118,Perez,John,Atlanta,CA,32352,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",71,86,86,187.09,113.3,90.43,96.66
+1735752370,Baker,Mary,Chicago,MA,73451,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",151,159,159,129.54,72.17,57.37,61.07
+1513226573,Adams,Richard,Seattle,IL,28547,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",92,151,151,413.76,184.47,147.4,156.02
+1128113632,Young,Charles,New York,NY,42472,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",68,77,77,1757.59,813.12,650.31,689.16
+1526478978,Lee,Joseph,Denver,CA,25721,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",90,144,144,70.98,35.12,27.64,29.89
+1735752370,Baker,Mary,Chicago,MA,49493,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",13,16,16,216.75,115.94,92.75,98.8
+1092135914,Harris,Thomas,Boston,MA,42845,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",73,127,127,220.43,117.9,94.32,100.47
+1450385937,Turner,Jessica,Nashville,NY,99893,Dermatology,11101,"Biopsy of skin lesion, each additional",116,172,172,65.27,28.41,23.04,23.8
+1128113632,Young,Charles,New York,NY,78418,Dermatology,96920,"Laser treatment for inflammatory skin, <250 sq cm",161,220,220,398.61,117.68,93.96,99.65
+1654571518,Patel,Jessica,Austin,TX,74942,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",90,119,119,104.14,58.02,46.12,49.09
+1128113632,Young,Charles,New York,NY,74162,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",107,116,116,240.86,143.66,115.27,122.15
+1094177347,Johnson,Richard,Atlanta,NY,99533,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",141,239,239,382.81,170.67,136.38,144.35
+1433015235,Mitchell,Linda,New York,AZ,83996,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",161,195,195,221.11,118.27,94.62,100.79
+1926764988,Williams,Emily,New York,LA,60129,Dermatology,17020,"Destruction of lesion, premalignant, local",179,221,221,117.95,53.47,42.46,44.82
+1094177347,Johnson,Richard,Atlanta,NY,78898,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",39,68,68,196.31,105.0,84.0,89.48
+1513226573,Adams,Richard,Seattle,IL,27272,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",124,141,141,1756.73,812.72,649.99,688.82
+1094177347,Johnson,Richard,Atlanta,NY,36947,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",148,164,164,204.89,109.59,87.67,93.39
+1643865119,Green,Karen,Boston,IL,34858,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",173,306,306,470.2,204.05,163.24,173.0
+1370798024,Evans,Sarah,Nashville,LA,79804,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",55,66,66,250.96,133.58,106.86,113.34
+1443414198,Scott,Sarah,Denver,FL,85160,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",135,158,158,229.64,99.84,79.88,84.87
+1643865119,Green,Karen,Boston,IL,28794,Dermatology,11100,"Biopsy of skin lesion, single",11,11,11,190.92,80.77,64.62,67.56
+1094177347,Johnson,Richard,Atlanta,NY,18013,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",140,184,184,191.88,116.2,92.74,99.14
+1761139701,Wilson,Patricia,Boston,IL,60793,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",137,158,158,105.75,52.32,41.19,44.53
+1513226573,Adams,Richard,Seattle,IL,67802,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",99,153,153,149.54,90.56,72.28,77.26
+1433015235,Mitchell,Linda,New York,AZ,16437,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",177,307,307,98.66,48.81,38.42,41.54
+1526478978,Lee,Joseph,Denver,CA,18800,Dermatology,17004,"Destruction actinic keratosis, 15+ lesions",174,239,239,278.15,135.1,108.28,114.24
+1433015235,Mitchell,Linda,New York,AZ,27301,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",44,54,54,250.04,133.74,106.99,113.97
+1443414198,Scott,Sarah,Denver,FL,33942,Dermatology,10060,"Incision and drainage abscess, simple",118,143,143,209.87,89.67,71.55,75.36
+1433015235,Mitchell,Linda,New York,AZ,93694,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",54,71,71,128.61,71.65,56.96,60.63
+1094177347,Johnson,Richard,Atlanta,NY,13160,Dermatology,17312,"Mohs micrographic surgery, face/head/neck, each add'l stage",54,60,60,1007.72,428.02,342.83,362.57
+1443414198,Scott,Sarah,Denver,FL,65280,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",119,206,206,547.71,244.19,195.12,206.53
+1227238721,Thomas,William,Chicago,MN,14548,Dermatology,17315,"Mohs micrographic surgery, trunk/arm/leg, 1st stage",99,167,167,1786.28,676.41,540.65,572.8
+1500351915,Chen,Ashley,Dallas,TX,71217,Dermatology,11100,"Biopsy of skin lesion, single",62,68,68,264.55,111.93,89.54,93.61
+1443414198,Scott,Sarah,Denver,FL,49709,Dermatology,99211,"Office/outpatient visit, minimal complexity",175,297,297,43.35,16.55,13.4,14.19
+1201469535,White,Sarah,Boston,AZ,65885,Dermatology,17004,"Destruction actinic keratosis, 15+ lesions",100,159,159,296.9,144.21,115.58,121.94
+1735752370,Baker,Mary,Chicago,MA,55258,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",63,88,88,114.93,64.03,50.9,54.18
+1450385937,Turner,Jessica,Nashville,NY,81835,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",109,188,188,87.09,43.09,33.92,36.67
+1526478978,Lee,Joseph,Denver,CA,57077,Dermatology,17004,"Destruction actinic keratosis, 15+ lesions",53,60,60,267.04,129.71,103.96,109.68
+1761139701,Wilson,Patricia,Boston,IL,24107,Dermatology,11441,"Excision benign lesion, face/ear/lid, 0.6-1.0cm",145,251,251,490.6,199.51,159.17,168.98
+1858291293,Allen,Andrew,Chicago,NY,52653,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",122,218,218,93.83,46.42,36.54,39.51
+1094177347,Johnson,Richard,Atlanta,NY,56490,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",26,31,31,95.02,47.01,37.01,40.01
+1443414198,Scott,Sarah,Denver,FL,89516,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",92,114,114,76.78,37.99,29.9,32.33
+1526478978,Lee,Joseph,Denver,CA,94135,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",141,215,215,106.27,52.58,41.39,44.74
+1227238721,Thomas,William,Chicago,MN,74071,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",166,240,240,114.79,63.95,50.84,54.11
+1926764988,Williams,Emily,New York,LA,77536,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",94,159,159,150.76,83.99,66.76,71.07
+1773956048,Miller,Charles,Chicago,MN,14579,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",157,251,251,104.95,51.92,40.88,44.19
+1500351915,Chen,Ashley,Dallas,TX,75475,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",54,63,63,177.87,73.96,58.98,62.72
+1500351915,Chen,Ashley,Dallas,TX,72307,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",145,148,148,616.78,274.98,219.73,232.58
+1761139701,Wilson,Patricia,Boston,IL,93520,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",172,274,274,35.59,10.17,8.14,9.15
+1500351915,Chen,Ashley,Dallas,TX,76403,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",21,24,24,170.21,103.07,82.27,87.94
+1089250953,Wright,Emily,New York,NY,21564,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",161,235,235,385.26,167.19,133.75,141.75
+1433015235,Mitchell,Linda,New York,AZ,92969,Dermatology,11600,"Excision malignant lesion, trunk/arm/leg, ≤0.5cm",125,158,158,548.2,223.34,178.67,188.83
+1450459553,Martinez,Daniel,Phoenix,CA,44237,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",39,42,42,242.02,129.45,103.56,110.32
+1654571518,Patel,Jessica,Austin,TX,71325,Dermatology,96910,"Photochemotherapy, tars and/or UV-B",16,26,26,193.0,73.79,59.03,62.44
+1822761613,Thompson,Sarah,Los Angeles,SC,37677,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",109,185,185,231.04,100.45,80.36,85.38
+1781567455,Brown,Thomas,Boston,VA,50264,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",81,103,103,231.55,138.1,110.81,117.43
+1858597919,Phillips,Emily,Phoenix,OH,47973,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",90,108,108,126.23,70.33,55.9,59.51
+1858597919,Phillips,Emily,Phoenix,OH,39717,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",127,196,196,228.07,121.99,97.59,103.96
+1781567455,Brown,Thomas,Boston,VA,77739,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",155,193,193,145.27,80.94,64.33,68.49
+1094177347,Johnson,Richard,Atlanta,NY,36551,Dermatology,17000,"Destruction actinic keratosis, first lesion",29,42,42,166.63,73.13,58.32,62.02
+1526478978,Lee,Joseph,Denver,CA,23960,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",59,87,87,337.45,201.27,161.5,171.14
+1926764988,Williams,Emily,New York,LA,70726,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",115,177,177,120.24,66.99,53.25,56.68
+1926764988,Williams,Emily,New York,LA,99646,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",23,24,24,304.63,162.14,129.71,137.58
+1094177347,Johnson,Richard,Atlanta,NY,31335,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",141,234,234,414.52,220.63,176.5,187.2
+1839748229,Smith,Charles,Miami,NC,17437,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",103,144,144,194.25,84.46,67.56,71.79
+1926764988,Williams,Emily,New York,LA,57578,Dermatology,11720,"Debridement of nail(s), 1-5",173,256,256,54.49,22.64,18.44,19.28
+1858291293,Allen,Andrew,Chicago,NY,56317,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",135,187,187,141.6,78.89,62.71,66.76
+1887889843,Walker,Barbara,Seattle,GA,96597,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",174,236,236,206.2,124.86,99.66,106.54
+1182549636,Garcia,John,Atlanta,VA,68154,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",41,41,41,172.21,92.11,73.69,78.5
+1128113632,Young,Charles,New York,NY,12893,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",130,189,189,178.88,77.77,62.22,66.11
+1858291293,Allen,Andrew,Chicago,NY,27570,Dermatology,17020,"Destruction of lesion, premalignant, local",37,55,55,142.03,64.39,51.13,53.97
+1761139701,Wilson,Patricia,Boston,IL,78367,Dermatology,11101,"Biopsy of skin lesion, each additional",59,69,69,80.82,35.18,28.53,29.48
+1526478978,Lee,Joseph,Denver,CA,42399,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",164,275,275,180.86,109.52,87.41,93.44
+1858291293,Allen,Andrew,Chicago,NY,32538,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",70,84,84,222.06,118.78,95.02,101.22
+1781567455,Brown,Thomas,Boston,VA,40679,Dermatology,96910,"Photochemotherapy, tars and/or UV-B",109,154,154,189.03,72.27,57.82,61.16
+1781567455,Brown,Thomas,Boston,VA,28347,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",65,92,92,207.54,86.29,68.82,73.18
+1643865119,Green,Karen,Boston,IL,50406,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",151,270,270,237.2,126.88,101.5,108.12
+1858291293,Allen,Andrew,Chicago,NY,34221,Dermatology,10060,"Incision and drainage abscess, simple",173,217,217,239.73,102.43,81.73,86.08
+1781567455,Brown,Thomas,Boston,VA,47129,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",103,155,155,282.96,168.76,135.41,143.5
+1513226573,Adams,Richard,Seattle,IL,39760,Dermatology,17110,"Destruction benign lesions, 1-14 lesions",82,90,90,205.14,89.19,71.35,75.81
+1128113632,Young,Charles,New York,NY,19433,Dermatology,17315,"Mohs micrographic surgery, trunk/arm/leg, 1st stage",42,49,49,1264.15,478.69,382.62,405.37
+1545429118,Perez,John,Atlanta,CA,38472,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",175,199,199,267.08,159.29,127.82,135.45
+1526478978,Lee,Joseph,Denver,CA,93080,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",121,126,126,232.34,124.28,99.42,105.9
+1182549636,Garcia,John,Atlanta,VA,23985,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",28,41,41,157.53,87.77,69.77,74.27
+1526478978,Lee,Joseph,Denver,CA,66407,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",86,141,141,362.55,192.97,154.37,163.73
+1554584786,Hall,James,Miami,NY,91350,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",111,159,159,136.49,76.04,60.44,64.34
+1643865119,Green,Karen,Boston,IL,27682,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",36,56,56,200.51,107.25,85.8,91.39
+1182549636,Garcia,John,Atlanta,VA,37024,Dermatology,11440,"Excision benign lesion, face/ear/lid, ≤0.5cm",105,145,145,296.63,120.99,96.79,102.26
+1443414198,Scott,Sarah,Denver,FL,53382,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",71,91,91,233.7,125.0,100.0,106.52
+1402414364,Rodriguez,Sarah,Austin,TX,76439,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",102,151,151,106.27,59.21,47.06,50.1
+1781567455,Brown,Thomas,Boston,VA,87824,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",142,153,153,564.53,244.98,195.99,207.7
+1839748229,Smith,Charles,Miami,NC,13829,Dermatology,11100,"Biopsy of skin lesion, single",41,48,48,192.73,81.54,65.23,68.2
+1182549636,Garcia,John,Atlanta,VA,61067,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",87,144,144,89.87,44.46,35.0,37.84
+1887889843,Walker,Barbara,Seattle,GA,11607,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",101,175,175,230.56,123.32,98.66,105.09
+1500351915,Chen,Ashley,Dallas,TX,71961,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",171,303,303,142.48,79.38,63.1,67.17
+1554584786,Hall,James,Miami,NY,17033,Dermatology,11600,"Excision malignant lesion, trunk/arm/leg, ≤0.5cm",144,241,241,573.04,233.46,186.77,197.38
+1654571518,Patel,Jessica,Austin,TX,75017,Dermatology,11100,"Biopsy of skin lesion, single",114,166,166,240.78,101.87,81.49,85.2
+1858597919,Phillips,Emily,Phoenix,OH,75679,Dermatology,17004,"Destruction actinic keratosis, 15+ lesions",129,216,216,243.25,118.15,94.69,99.91
+1500351915,Chen,Ashley,Dallas,TX,71304,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",90,159,159,154.24,93.4,74.55,79.69
+1822761613,Thompson,Sarah,Los Angeles,SC,29761,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",74,101,101,103.35,51.13,40.25,43.52
+1182549636,Garcia,John,Atlanta,VA,69100,Dermatology,17004,"Destruction actinic keratosis, 15+ lesions",170,286,286,234.64,113.97,91.34,96.37
+1786064305,Anderson,Patricia,Atlanta,CA,65678,Dermatology,17315,"Mohs micrographic surgery, trunk/arm/leg, 1st stage",110,191,191,1378.09,521.84,417.1,441.91
+1433015235,Mitchell,Linda,New York,AZ,50578,Dermatology,17000,"Destruction actinic keratosis, first lesion",54,60,60,132.9,58.33,46.52,49.47
+1438878439,Jones,Lisa,Nashville,FL,16411,Dermatology,17000,"Destruction actinic keratosis, first lesion",63,86,86,160.36,70.38,56.13,59.69
+1545429118,Perez,John,Atlanta,CA,75813,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",138,231,231,169.17,90.49,72.39,77.11
+1500351915,Chen,Ashley,Dallas,TX,79528,Dermatology,17312,"Mohs micrographic surgery, face/head/neck, each add'l stage",146,222,222,1075.7,456.89,365.96,387.03
+1201469535,White,Sarah,Boston,AZ,34368,Dermatology,11301,"Shave removal skin lesion, face/head/neck, 0.6-1.0cm",30,33,33,203.09,79.39,63.7,67.39
+1858597919,Phillips,Emily,Phoenix,OH,35793,Dermatology,17000,"Destruction actinic keratosis, first lesion",102,113,113,190.48,83.6,66.67,70.9
+1094177347,Johnson,Richard,Atlanta,NY,48314,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",85,104,104,92.31,45.67,35.95,38.87
+1773956048,Miller,Charles,Chicago,MN,68619,Dermatology,11100,"Biopsy of skin lesion, single",66,71,71,218.18,92.31,73.85,77.2
+1513226573,Adams,Richard,Seattle,IL,78828,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",13,17,17,227.61,121.74,97.39,103.75
+1450459553,Martinez,Daniel,Phoenix,CA,63415,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",45,45,45,92.13,45.58,35.88,38.79
+1781567455,Brown,Thomas,Boston,VA,18743,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",98,105,105,85.81,42.45,33.42,36.13
+1443414198,Scott,Sarah,Denver,FL,64122,Dermatology,17020,"Destruction of lesion, premalignant, local",176,283,283,154.17,69.89,55.5,58.58
+1554584786,Hall,James,Miami,NY,98478,Dermatology,17260,"Destruction malignant lesion, trunk/arm/leg, ≤0.5cm",59,102,102,474.73,211.65,169.12,179.01
+1858291293,Allen,Andrew,Chicago,NY,59228,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",173,193,193,128.81,71.77,57.05,60.73
+1443414198,Scott,Sarah,Denver,FL,19261,Dermatology,11601,"Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",67,91,91,603.1,246.19,196.75,208.61
+1227238721,Thomas,William,Chicago,MN,98023,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",36,49,49,182.37,97.55,78.04,83.13
+1089250953,Wright,Emily,New York,NY,80986,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",33,40,40,166.72,92.88,73.83,78.59
+1450385937,Turner,Jessica,Nashville,NY,93708,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",12,16,16,149.78,83.45,66.33,70.61
+1858291293,Allen,Andrew,Chicago,NY,24699,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",175,295,295,213.2,114.04,91.23,97.18
+1128113632,Young,Charles,New York,NY,45089,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",156,222,222,147.87,79.09,63.28,67.4
+1554584786,Hall,James,Miami,NY,46288,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",176,180,180,232.01,124.1,99.28,105.76
+1786064305,Anderson,Patricia,Atlanta,CA,26318,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",89,137,137,203.07,108.62,86.89,92.56
+1786064305,Anderson,Patricia,Atlanta,CA,51421,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",55,86,86,102.52,50.72,39.93,43.17
+1839748229,Smith,Charles,Miami,NC,61474,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",20,23,23,83.66,41.39,32.59,35.23
+1773956048,Miller,Charles,Chicago,MN,59808,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",163,227,227,103.74,51.33,40.4,43.68
+1433015235,Mitchell,Linda,New York,AZ,82624,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",61,106,106,224.45,120.06,96.05,102.31
+1094177347,Johnson,Richard,Atlanta,NY,53977,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",113,202,202,30.41,8.69,6.95,7.82
+1761139701,Wilson,Patricia,Boston,IL,57991,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",150,171,171,146.38,81.55,64.82,69.01
+1128113632,Young,Charles,New York,NY,33293,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",114,138,138,148.92,82.97,65.95,70.2
+1773956048,Miller,Charles,Chicago,MN,34651,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",67,68,68,106.77,59.49,47.29,50.34
+1717477276,Roberts,Michael,Los Angeles,PA,98218,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",58,75,75,214.11,114.52,91.62,97.59
+1761139701,Wilson,Patricia,Boston,IL,12268,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",113,131,131,99.64,49.3,38.81,41.95
+1735752370,Baker,Mary,Chicago,MA,81895,Dermatology,96910,"Photochemotherapy, tars and/or UV-B",138,193,193,185.85,71.06,56.85,60.13
+1500351915,Chen,Ashley,Dallas,TX,77646,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",22,36,36,227.07,121.46,97.16,103.5
+1839748229,Smith,Charles,Miami,NC,78790,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",162,266,266,313.52,166.87,133.5,141.59
+1735752370,Baker,Mary,Chicago,MA,99483,Dermatology,99211,"Office/outpatient visit, minimal complexity",167,269,269,43.07,16.44,13.31,14.09
+1773956048,Miller,Charles,Chicago,MN,76528,Dermatology,17000,"Destruction actinic keratosis, first lesion",26,42,42,196.67,86.32,68.84,73.21
+1443414198,Scott,Sarah,Denver,FL,18809,Dermatology,11100,"Biopsy of skin lesion, single",69,84,84,227.32,96.18,76.94,80.44
+1858291293,Allen,Andrew,Chicago,NY,97406,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",80,96,96,155.31,86.53,68.78,73.22
+1786064305,Anderson,Patricia,Atlanta,CA,34330,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",42,72,72,95.71,47.35,37.28,40.3
+1887889843,Walker,Barbara,Seattle,GA,52094,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",82,109,109,95.5,47.25,37.2,40.21
+1975622351,Carter,Sarah,Houston,TX,73518,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",140,203,203,184.17,111.53,89.02,95.16
+1370798024,Evans,Sarah,Nashville,LA,10682,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",80,142,142,1922.34,889.34,711.27,753.76
+1443414198,Scott,Sarah,Denver,FL,22789,Dermatology,11441,"Excision benign lesion, face/ear/lid, 0.6-1.0cm",39,55,55,406.86,165.46,132.0,140.14
+1370798024,Evans,Sarah,Nashville,LA,24941,Dermatology,17311,"Mohs micrographic surgery, face/head/neck, 1st stage",39,47,47,2187.08,1011.81,809.22,857.56
+1887889843,Walker,Barbara,Seattle,GA,74892,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",75,78,78,146.62,81.69,64.93,69.12
+1761139701,Wilson,Patricia,Boston,IL,36539,Dermatology,17261,"Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",112,157,157,506.83,219.94,175.95,186.47
+1975622351,Carter,Sarah,Houston,TX,79369,Dermatology,17000,"Destruction actinic keratosis, first lesion",78,133,133,161.71,70.97,56.6,60.19
+1975622351,Carter,Sarah,Houston,TX,74909,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",42,66,66,194.12,103.83,83.06,88.48
+1128113632,Young,Charles,New York,NY,99977,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",132,180,180,124.14,69.16,54.98,58.52
+1761139701,Wilson,Patricia,Boston,IL,90842,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",158,169,169,193.07,116.91,93.32,99.75
+1438878439,Jones,Lisa,Nashville,FL,38324,Dermatology,99211,"Office/outpatient visit, minimal complexity",69,88,88,50.13,19.14,15.49,16.41
+1643865119,Green,Karen,Boston,IL,87306,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",87,149,149,81.13,40.14,31.6,34.16
+1526478978,Lee,Joseph,Denver,CA,13487,Dermatology,17003,"Destruction actinic keratosis, 2-14 lesions each",110,167,167,37.13,10.61,8.49,9.55
+1438878439,Jones,Lisa,Nashville,FL,89983,Dermatology,17000,"Destruction actinic keratosis, first lesion",68,119,119,139.77,61.34,48.92,52.03
+1545429118,Perez,John,Atlanta,CA,38814,Dermatology,11300,"Shave removal skin lesion, face/head/neck, ≤0.5cm",154,199,199,187.22,77.85,62.08,66.02
+1092135914,Harris,Thomas,Boston,MA,58904,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",101,130,130,190.98,102.15,81.72,87.05
+1526478978,Lee,Joseph,Denver,CA,33570,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",128,192,192,73.84,36.53,28.76,31.09
+1761139701,Wilson,Patricia,Boston,IL,11514,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",76,122,122,88.85,43.96,34.6,37.41
+1786064305,Anderson,Patricia,Atlanta,CA,56977,Dermatology,11100,"Biopsy of skin lesion, single",61,105,105,293.72,124.27,99.41,103.93
+1554584786,Hall,James,Miami,NY,58476,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",145,226,226,132.71,73.94,58.77,62.56
+1858291293,Allen,Andrew,Chicago,NY,60580,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",85,93,93,376.15,200.21,160.17,169.88
+1402414364,Rodriguez,Sarah,Austin,TX,75981,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",138,233,233,165.98,100.51,80.22,85.75
+1781567455,Brown,Thomas,Boston,VA,85820,Dermatology,11100,"Biopsy of skin lesion, single",110,186,186,262.68,111.14,88.91,92.95
+1773956048,Miller,Charles,Chicago,MN,77547,Dermatology,99204,"Office/outpatient visit, new pt, moderate complexity",17,28,28,299.46,178.61,143.31,151.87
+1781567455,Brown,Thomas,Boston,VA,40511,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",162,253,253,82.72,40.92,32.22,34.83
+1735752370,Baker,Mary,Chicago,MA,17493,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",45,72,72,139.34,77.63,61.71,65.69
+1201469535,White,Sarah,Boston,AZ,73735,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",38,56,56,246.72,131.97,105.57,112.46
+1094177347,Johnson,Richard,Atlanta,NY,65507,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",62,98,98,198.99,106.44,85.15,90.7
+1773956048,Miller,Charles,Chicago,MN,95397,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",177,284,284,159.58,88.91,70.67,75.23
+1094177347,Johnson,Richard,Atlanta,NY,80786,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",90,113,113,202.33,122.52,97.79,104.54
+1500351915,Chen,Ashley,Dallas,TX,78980,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",117,210,210,350.35,186.47,149.18,158.22
+1450459553,Martinez,Daniel,Phoenix,CA,23308,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",24,30,30,92.78,45.9,36.13,39.06
+1735752370,Baker,Mary,Chicago,MA,54665,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",150,260,260,136.4,75.99,60.41,64.3
+1227238721,Thomas,William,Chicago,MN,36368,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",16,17,17,150.61,83.91,66.7,71.0
+1975622351,Carter,Sarah,Houston,TX,71980,Dermatology,11601,"Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",31,45,45,516.44,210.81,168.48,178.64
+1513226573,Adams,Richard,Seattle,IL,37631,Dermatology,11100,"Biopsy of skin lesion, single",95,157,157,260.42,110.18,88.14,92.15
+1433015235,Mitchell,Linda,New York,AZ,88140,Dermatology,99212,"Office/outpatient visit, established pt, straightforward",46,59,59,99.14,49.05,38.61,41.74
+1370798024,Evans,Sarah,Nashville,LA,56525,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",106,111,111,147.5,82.18,65.32,69.54
+1822761613,Thompson,Sarah,Los Angeles,SC,15975,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",11,18,18,245.06,131.08,104.86,111.7
+1402414364,Rodriguez,Sarah,Austin,TX,75439,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",152,158,158,134.86,75.13,59.72,63.58
+1227238721,Thomas,William,Chicago,MN,48361,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",140,229,229,203.78,109.0,87.2,92.89
+1554584786,Hall,James,Miami,NY,61494,Dermatology,99203,"Office/outpatient visit, new pt, low complexity",93,104,104,207.89,125.89,100.48,107.41
+1227238721,Thomas,William,Chicago,MN,89769,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",27,41,41,163.0,90.81,72.18,76.84
+1887889843,Walker,Barbara,Seattle,GA,41485,Dermatology,99214,"Office/outpatient visit, established pt, moderate complexity",126,162,162,225.45,120.59,96.47,102.76
+1500351915,Chen,Ashley,Dallas,TX,73054,Dermatology,99215,"Office/outpatient visit, established pt, high complexity",128,153,153,356.79,189.9,151.92,161.13
+1092135914,Harris,Thomas,Boston,MA,61690,Dermatology,99213,"Office/outpatient visit, established pt, low complexity",72,106,106,102.71,57.23,45.49,48.42
+1433015235,Mitchell,Linda,New York,AZ,31377,Dermatology,17000,"Destruction actinic keratosis, first lesion",27,30,30,160.51,70.45,56.18,59.75

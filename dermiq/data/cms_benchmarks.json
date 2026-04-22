@@ -1,0 +1,810 @@
+{
+  "source": "SYNTHETIC SAMPLE (replace with real CMS file per instructions above)",
+  "n_providers": 35,
+  "n_states": 15,
+  "total_rows": 500,
+  "top20_by_volume": [
+    {
+      "HCPCS_Cd": "99213",
+      "HCPCS_Desc": "Office/outpatient visit, established pt, low complexity",
+      "nat_total_srvcs": 13428,
+      "nat_total_benes": 9913,
+      "avg_payment": 61.63,
+      "avg_stdz": 65.61,
+      "avg_charge": 139.17,
+      "n_providers": 34
+    },
+    {
+      "HCPCS_Cd": "99214",
+      "HCPCS_Desc": "Office/outpatient visit, established pt, moderate complexity",
+      "nat_total_srvcs": 8833,
+      "nat_total_benes": 6381,
+      "avg_payment": 90.07,
+      "avg_stdz": 95.94,
+      "avg_charge": 210.48,
+      "n_providers": 31
+    },
+    {
+      "HCPCS_Cd": "99212",
+      "HCPCS_Desc": "Office/outpatient visit, established pt, straightforward",
+      "nat_total_srvcs": 6658,
+      "nat_total_benes": 4725,
+      "avg_payment": 36.06,
+      "avg_stdz": 38.98,
+      "avg_charge": 92.59,
+      "n_providers": 23
+    },
+    {
+      "HCPCS_Cd": "99203",
+      "HCPCS_Desc": "Office/outpatient visit, new pt, low complexity",
+      "nat_total_srvcs": 3764,
+      "nat_total_benes": 2661,
+      "avg_payment": 89.19,
+      "avg_stdz": 95.34,
+      "avg_charge": 184.52,
+      "n_providers": 19
+    },
+    {
+      "HCPCS_Cd": "11100",
+      "HCPCS_Desc": "Biopsy of skin lesion, single",
+      "nat_total_srvcs": 3063,
+      "nat_total_benes": 2142,
+      "avg_payment": 84.16,
+      "avg_stdz": 87.99,
+      "avg_charge": 248.66,
+      "n_providers": 19
+    },
+    {
+      "HCPCS_Cd": "17000",
+      "HCPCS_Desc": "Destruction actinic keratosis, first lesion",
+      "nat_total_srvcs": 2870,
+      "nat_total_benes": 2042,
+      "avg_payment": 60.84,
+      "avg_stdz": 64.7,
+      "avg_charge": 173.82,
+      "n_providers": 16
+    },
+    {
+      "HCPCS_Cd": "17110",
+      "HCPCS_Desc": "Destruction benign lesions, 1-14 lesions",
+      "nat_total_srvcs": 2563,
+      "nat_total_benes": 1853,
+      "avg_payment": 80.69,
+      "avg_stdz": 85.74,
+      "avg_charge": 231.99,
+      "n_providers": 15
+    },
+    {
+      "HCPCS_Cd": "17261",
+      "HCPCS_Desc": "Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+      "nat_total_srvcs": 2365,
+      "nat_total_benes": 1614,
+      "avg_payment": 191.06,
+      "avg_stdz": 202.48,
+      "avg_charge": 550.33,
+      "n_providers": 12
+    },
+    {
+      "HCPCS_Cd": "17260",
+      "HCPCS_Desc": "Destruction malignant lesion, trunk/arm/leg, \u22640.5cm",
+      "nat_total_srvcs": 2202,
+      "nat_total_benes": 1450,
+      "avg_payment": 172.31,
+      "avg_stdz": 182.38,
+      "avg_charge": 483.67,
+      "n_providers": 11
+    },
+    {
+      "HCPCS_Cd": "99204",
+      "HCPCS_Desc": "Office/outpatient visit, new pt, moderate complexity",
+      "nat_total_srvcs": 2201,
+      "nat_total_benes": 1577,
+      "avg_payment": 130.17,
+      "avg_stdz": 137.94,
+      "avg_charge": 271.99,
+      "n_providers": 15
+    },
+    {
+      "HCPCS_Cd": "99215",
+      "HCPCS_Desc": "Office/outpatient visit, established pt, high complexity",
+      "nat_total_srvcs": 2029,
+      "nat_total_benes": 1388,
+      "avg_payment": 144.25,
+      "avg_stdz": 152.99,
+      "avg_charge": 338.77,
+      "n_providers": 11
+    },
+    {
+      "HCPCS_Cd": "17003",
+      "HCPCS_Desc": "Destruction actinic keratosis, 2-14 lesions each",
+      "nat_total_srvcs": 1674,
+      "nat_total_benes": 1157,
+      "avg_payment": 8.17,
+      "avg_stdz": 9.19,
+      "avg_charge": 35.75,
+      "n_providers": 8
+    },
+    {
+      "HCPCS_Cd": "11300",
+      "HCPCS_Desc": "Shave removal skin lesion, face/head/neck, \u22640.5cm",
+      "nat_total_srvcs": 1515,
+      "nat_total_benes": 1148,
+      "avg_payment": 59.72,
+      "avg_stdz": 63.51,
+      "avg_charge": 180.11,
+      "n_providers": 8
+    },
+    {
+      "HCPCS_Cd": "11101",
+      "HCPCS_Desc": "Biopsy of skin lesion, each additional",
+      "nat_total_srvcs": 1476,
+      "nat_total_benes": 1124,
+      "avg_payment": 30.1,
+      "avg_stdz": 31.1,
+      "avg_charge": 85.28,
+      "n_providers": 8
+    },
+    {
+      "HCPCS_Cd": "17311",
+      "HCPCS_Desc": "Mohs micrographic surgery, face/head/neck, 1st stage",
+      "nat_total_srvcs": 1466,
+      "nat_total_benes": 1044,
+      "avg_payment": 713.78,
+      "avg_stdz": 756.43,
+      "avg_charge": 1929.14,
+      "n_providers": 11
+    },
+    {
+      "HCPCS_Cd": "11600",
+      "HCPCS_Desc": "Excision malignant lesion, trunk/arm/leg, \u22640.5cm",
+      "nat_total_srvcs": 1382,
+      "nat_total_benes": 1018,
+      "avg_payment": 173.24,
+      "avg_stdz": 183.09,
+      "avg_charge": 531.53,
+      "n_providers": 7
+    },
+    {
+      "HCPCS_Cd": "17004",
+      "HCPCS_Desc": "Destruction actinic keratosis, 15+ lesions",
+      "nat_total_srvcs": 1353,
+      "nat_total_benes": 940,
+      "avg_payment": 105.8,
+      "avg_stdz": 111.63,
+      "avg_charge": 271.78,
+      "n_providers": 7
+    },
+    {
+      "HCPCS_Cd": "10060",
+      "HCPCS_Desc": "Incision and drainage abscess, simple",
+      "nat_total_srvcs": 1190,
+      "nat_total_benes": 865,
+      "avg_payment": 78.48,
+      "avg_stdz": 82.66,
+      "avg_charge": 230.2,
+      "n_providers": 7
+    },
+    {
+      "HCPCS_Cd": "17312",
+      "HCPCS_Desc": "Mohs micrographic surgery, face/head/neck, each add'l stage",
+      "nat_total_srvcs": 1162,
+      "nat_total_benes": 745,
+      "avg_payment": 338.36,
+      "avg_stdz": 357.85,
+      "avg_charge": 994.59,
+      "n_providers": 7
+    },
+    {
+      "HCPCS_Cd": "11601",
+      "HCPCS_Desc": "Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+      "nat_total_srvcs": 958,
+      "nat_total_benes": 615,
+      "avg_payment": 205.55,
+      "avg_stdz": 217.95,
+      "avg_charge": 630.08,
+      "n_providers": 6
+    }
+  ],
+  "payment_by_code": {
+    "10060": {
+      "desc": "Incision and drainage abscess, simple",
+      "avg_payment": 78.48,
+      "avg_stdz": 82.66,
+      "avg_charge": 230.2,
+      "avg_allowed": 98.36,
+      "nat_total_srvcs": 1190,
+      "p25_payment": 74.62,
+      "p75_payment": 82.18,
+      "category": "other_proc"
+    },
+    "11100": {
+      "desc": "Biopsy of skin lesion, single",
+      "avg_payment": 84.16,
+      "avg_stdz": 87.99,
+      "avg_charge": 248.66,
+      "avg_allowed": 105.2,
+      "nat_total_srvcs": 3063,
+      "p25_payment": 78.48,
+      "p75_payment": 89.88,
+      "category": "biopsy"
+    },
+    "11101": {
+      "desc": "Biopsy of skin lesion, each additional",
+      "avg_payment": 30.1,
+      "avg_stdz": 31.1,
+      "avg_charge": 85.28,
+      "avg_allowed": 37.12,
+      "nat_total_srvcs": 1476,
+      "p25_payment": 27.27,
+      "p75_payment": 33.57,
+      "category": "biopsy"
+    },
+    "11300": {
+      "desc": "Shave removal skin lesion, face/head/neck, \u22640.5cm",
+      "avg_payment": 59.72,
+      "avg_stdz": 63.51,
+      "avg_charge": 180.11,
+      "avg_allowed": 74.89,
+      "nat_total_srvcs": 1515,
+      "p25_payment": 55.58,
+      "p75_payment": 61.73,
+      "category": "shave"
+    },
+    "11301": {
+      "desc": "Shave removal skin lesion, face/head/neck, 0.6-1.0cm",
+      "avg_payment": 65.08,
+      "avg_stdz": 68.85,
+      "avg_charge": 207.49,
+      "avg_allowed": 81.11,
+      "nat_total_srvcs": 534,
+      "p25_payment": 62.72,
+      "p75_payment": 66.75,
+      "category": "shave"
+    },
+    "11440": {
+      "desc": "Excision benign lesion, face/ear/lid, \u22640.5cm",
+      "avg_payment": 129.42,
+      "avg_stdz": 136.72,
+      "avg_charge": 396.6,
+      "avg_allowed": 161.77,
+      "nat_total_srvcs": 605,
+      "p25_payment": 120.66,
+      "p75_payment": 139.19,
+      "category": "excision"
+    },
+    "11441": {
+      "desc": "Excision benign lesion, face/ear/lid, 0.6-1.0cm",
+      "avg_payment": 145.58,
+      "avg_stdz": 154.56,
+      "avg_charge": 448.73,
+      "avg_allowed": 182.48,
+      "nat_total_srvcs": 306,
+      "p25_payment": 138.79,
+      "p75_payment": 152.38,
+      "category": "excision"
+    },
+    "11600": {
+      "desc": "Excision malignant lesion, trunk/arm/leg, \u22640.5cm",
+      "avg_payment": 173.24,
+      "avg_stdz": 183.09,
+      "avg_charge": 531.53,
+      "avg_allowed": 216.55,
+      "nat_total_srvcs": 1382,
+      "p25_payment": 162.07,
+      "p75_payment": 190.55,
+      "category": "excision"
+    },
+    "11601": {
+      "desc": "Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+      "avg_payment": 205.55,
+      "avg_stdz": 217.95,
+      "avg_charge": 630.08,
+      "avg_allowed": 257.2,
+      "nat_total_srvcs": 958,
+      "p25_payment": 181.06,
+      "p75_payment": 229.72,
+      "category": "excision"
+    },
+    "11720": {
+      "desc": "Debridement of nail(s), 1-5",
+      "avg_payment": 21.74,
+      "avg_stdz": 22.72,
+      "avg_charge": 64.22,
+      "avg_allowed": 26.68,
+      "nat_total_srvcs": 585,
+      "p25_payment": 19.36,
+      "p75_payment": 23.72,
+      "category": "other_proc"
+    },
+    "17000": {
+      "desc": "Destruction actinic keratosis, first lesion",
+      "avg_payment": 60.84,
+      "avg_stdz": 64.7,
+      "avg_charge": 173.82,
+      "avg_allowed": 76.29,
+      "nat_total_srvcs": 2870,
+      "p25_payment": 56.11,
+      "p75_payment": 66.67,
+      "category": "destruction"
+    },
+    "17003": {
+      "desc": "Destruction actinic keratosis, 2-14 lesions each",
+      "avg_payment": 8.17,
+      "avg_stdz": 9.19,
+      "avg_charge": 35.75,
+      "avg_allowed": 10.21,
+      "nat_total_srvcs": 1674,
+      "p25_payment": 7.71,
+      "p75_payment": 8.72,
+      "category": "destruction"
+    },
+    "17004": {
+      "desc": "Destruction actinic keratosis, 15+ lesions",
+      "avg_payment": 105.8,
+      "avg_stdz": 111.63,
+      "avg_charge": 271.78,
+      "avg_allowed": 132.01,
+      "nat_total_srvcs": 1353,
+      "p25_payment": 101.64,
+      "p75_payment": 110.94,
+      "category": "destruction"
+    },
+    "17020": {
+      "desc": "Destruction of lesion, premalignant, local",
+      "avg_payment": 53.79,
+      "avg_stdz": 56.77,
+      "avg_charge": 149.41,
+      "avg_allowed": 67.73,
+      "nat_total_srvcs": 879,
+      "p25_payment": 51.13,
+      "p75_payment": 55.5,
+      "category": "destruction"
+    },
+    "17110": {
+      "desc": "Destruction benign lesions, 1-14 lesions",
+      "avg_payment": 80.69,
+      "avg_stdz": 85.74,
+      "avg_charge": 231.99,
+      "avg_allowed": 100.87,
+      "nat_total_srvcs": 2563,
+      "p25_payment": 75.93,
+      "p75_payment": 81.76,
+      "category": "destruction"
+    },
+    "17260": {
+      "desc": "Destruction malignant lesion, trunk/arm/leg, \u22640.5cm",
+      "avg_payment": 172.31,
+      "avg_stdz": 182.38,
+      "avg_charge": 483.67,
+      "avg_allowed": 215.63,
+      "nat_total_srvcs": 2202,
+      "p25_payment": 151.12,
+      "p75_payment": 188.26,
+      "category": "destruction_mal"
+    },
+    "17261": {
+      "desc": "Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+      "avg_payment": 191.06,
+      "avg_stdz": 202.48,
+      "avg_charge": 550.33,
+      "avg_allowed": 238.82,
+      "nat_total_srvcs": 2365,
+      "p25_payment": 173.69,
+      "p75_payment": 213.19,
+      "category": "destruction_mal"
+    },
+    "17311": {
+      "desc": "Mohs micrographic surgery, face/head/neck, 1st stage",
+      "avg_payment": 713.78,
+      "avg_stdz": 756.43,
+      "avg_charge": 1929.14,
+      "avg_allowed": 892.48,
+      "nat_total_srvcs": 1466,
+      "p25_payment": 650.23,
+      "p75_payment": 782.01,
+      "category": "mohs"
+    },
+    "17312": {
+      "desc": "Mohs micrographic surgery, face/head/neck, each add'l stage",
+      "avg_payment": 338.36,
+      "avg_stdz": 357.85,
+      "avg_charge": 994.59,
+      "avg_allowed": 422.44,
+      "nat_total_srvcs": 1162,
+      "p25_payment": 333.38,
+      "p75_payment": 348.0,
+      "category": "mohs"
+    },
+    "17315": {
+      "desc": "Mohs micrographic surgery, trunk/arm/leg, 1st stage",
+      "avg_payment": 444.03,
+      "avg_stdz": 470.44,
+      "avg_charge": 1467.07,
+      "avg_allowed": 555.53,
+      "nat_total_srvcs": 891,
+      "p25_payment": 399.84,
+      "p75_payment": 497.64,
+      "category": "mohs"
+    },
+    "96910": {
+      "desc": "Photochemotherapy, tars and/or UV-B",
+      "avg_payment": 52.9,
+      "avg_stdz": 55.95,
+      "avg_charge": 172.92,
+      "avg_allowed": 66.12,
+      "nat_total_srvcs": 729,
+      "p25_payment": 48.8,
+      "p75_payment": 57.58,
+      "category": "phototherapy"
+    },
+    "96920": {
+      "desc": "Laser treatment for inflammatory skin, <250 sq cm",
+      "avg_payment": 93.92,
+      "avg_stdz": 99.61,
+      "avg_charge": 398.44,
+      "avg_allowed": 117.64,
+      "nat_total_srvcs": 570,
+      "p25_payment": 88.77,
+      "p75_payment": 97.16,
+      "category": "phototherapy"
+    },
+    "99203": {
+      "desc": "Office/outpatient visit, new pt, low complexity",
+      "avg_payment": 89.19,
+      "avg_stdz": 95.34,
+      "avg_charge": 184.52,
+      "avg_allowed": 111.74,
+      "nat_total_srvcs": 3764,
+      "p25_payment": 81.87,
+      "p75_payment": 95.66,
+      "category": "em_new"
+    },
+    "99204": {
+      "desc": "Office/outpatient visit, new pt, moderate complexity",
+      "avg_payment": 130.17,
+      "avg_stdz": 137.94,
+      "avg_charge": 271.99,
+      "avg_allowed": 162.22,
+      "nat_total_srvcs": 2201,
+      "p25_payment": 116.52,
+      "p75_payment": 139.36,
+      "category": "em_new"
+    },
+    "99211": {
+      "desc": "Office/outpatient visit, minimal complexity",
+      "avg_payment": 15.02,
+      "avg_stdz": 15.9,
+      "avg_charge": 48.58,
+      "avg_allowed": 18.55,
+      "nat_total_srvcs": 866,
+      "p25_payment": 13.4,
+      "p75_payment": 15.49,
+      "category": "em_visit"
+    },
+    "99212": {
+      "desc": "Office/outpatient visit, established pt, straightforward",
+      "avg_payment": 36.06,
+      "avg_stdz": 38.98,
+      "avg_charge": 92.59,
+      "avg_allowed": 45.81,
+      "nat_total_srvcs": 6658,
+      "p25_payment": 33.54,
+      "p75_payment": 38.65,
+      "category": "em_visit"
+    },
+    "99213": {
+      "desc": "Office/outpatient visit, established pt, low complexity",
+      "avg_payment": 61.63,
+      "avg_stdz": 65.61,
+      "avg_charge": 139.17,
+      "avg_allowed": 77.54,
+      "nat_total_srvcs": 13428,
+      "p25_payment": 56.42,
+      "p75_payment": 66.58,
+      "category": "em_visit"
+    },
+    "99214": {
+      "desc": "Office/outpatient visit, established pt, moderate complexity",
+      "avg_payment": 90.07,
+      "avg_stdz": 95.94,
+      "avg_charge": 210.48,
+      "avg_allowed": 112.58,
+      "nat_total_srvcs": 8833,
+      "p25_payment": 84.08,
+      "p75_payment": 97.37,
+      "category": "em_visit"
+    },
+    "99215": {
+      "desc": "Office/outpatient visit, established pt, high complexity",
+      "avg_payment": 144.25,
+      "avg_stdz": 152.99,
+      "avg_charge": 338.77,
+      "avg_allowed": 180.31,
+      "nat_total_srvcs": 2029,
+      "p25_payment": 133.27,
+      "p75_payment": 155.08,
+      "category": "em_visit"
+    }
+  },
+  "geographic_variation": {
+    "by_state": [
+      {
+        "state": "LA",
+        "n_providers": 2,
+        "avg_payment": 134.14,
+        "avg_stdz": 142.24,
+        "total_srvcs": 2646
+      },
+      {
+        "state": "SC",
+        "n_providers": 1,
+        "avg_payment": 129.27,
+        "avg_stdz": 137.13,
+        "total_srvcs": 1657
+      },
+      {
+        "state": "IL",
+        "n_providers": 3,
+        "avg_payment": 126.53,
+        "avg_stdz": 134.24,
+        "total_srvcs": 6622
+      },
+      {
+        "state": "MN",
+        "n_providers": 2,
+        "avg_payment": 116.98,
+        "avg_stdz": 124.11,
+        "total_srvcs": 4047
+      },
+      {
+        "state": "NC",
+        "n_providers": 2,
+        "avg_payment": 114.04,
+        "avg_stdz": 120.94,
+        "total_srvcs": 3505
+      },
+      {
+        "state": "TX",
+        "n_providers": 4,
+        "avg_payment": 111.88,
+        "avg_stdz": 118.76,
+        "total_srvcs": 5683
+      },
+      {
+        "state": "FL",
+        "n_providers": 2,
+        "avg_payment": 108.18,
+        "avg_stdz": 114.73,
+        "total_srvcs": 5832
+      },
+      {
+        "state": "CA",
+        "n_providers": 4,
+        "avg_payment": 105.13,
+        "avg_stdz": 111.66,
+        "total_srvcs": 8094
+      },
+      {
+        "state": "AZ",
+        "n_providers": 2,
+        "avg_payment": 100.74,
+        "avg_stdz": 106.94,
+        "total_srvcs": 4420
+      },
+      {
+        "state": "NY",
+        "n_providers": 6,
+        "avg_payment": 99.86,
+        "avg_stdz": 105.96,
+        "total_srvcs": 12895
+      },
+      {
+        "state": "PA",
+        "n_providers": 1,
+        "avg_payment": 98.82,
+        "avg_stdz": 104.98,
+        "total_srvcs": 1110
+      },
+      {
+        "state": "MA",
+        "n_providers": 2,
+        "avg_payment": 83.74,
+        "avg_stdz": 88.61,
+        "total_srvcs": 3752
+      },
+      {
+        "state": "VA",
+        "n_providers": 2,
+        "avg_payment": 82.49,
+        "avg_stdz": 87.65,
+        "total_srvcs": 4348
+      },
+      {
+        "state": "GA",
+        "n_providers": 1,
+        "avg_payment": 80.56,
+        "avg_stdz": 85.86,
+        "total_srvcs": 1869
+      },
+      {
+        "state": "OH",
+        "n_providers": 1,
+        "avg_payment": 77.73,
+        "avg_stdz": 82.51,
+        "total_srvcs": 1637
+      }
+    ],
+    "national_avg_payment": 106.07,
+    "tx_avg_payment": 111.88,
+    "tx_vs_national_pct": 5.5,
+    "n_tx_providers": 4
+  },
+  "procedure_mix_pct": {
+    "biopsy": 6.66,
+    "destruction": 13.71,
+    "destruction_mal": 6.7,
+    "em_new": 8.76,
+    "em_visit": 46.7,
+    "excision": 4.77,
+    "mohs": 5.17,
+    "other_proc": 2.61,
+    "phototherapy": 1.91,
+    "shave": 3.01
+  },
+  "high_value_procedures": [
+    {
+      "code": "17311",
+      "desc": "Mohs micrographic surgery, face/head/neck, 1st stage",
+      "avg_payment": 713.78
+    },
+    {
+      "code": "17315",
+      "desc": "Mohs micrographic surgery, trunk/arm/leg, 1st stage",
+      "avg_payment": 444.03
+    },
+    {
+      "code": "17312",
+      "desc": "Mohs micrographic surgery, face/head/neck, each add'l stage",
+      "avg_payment": 338.36
+    },
+    {
+      "code": "11601",
+      "desc": "Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+      "avg_payment": 205.55
+    },
+    {
+      "code": "17261",
+      "desc": "Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+      "avg_payment": 191.06
+    },
+    {
+      "code": "11600",
+      "desc": "Excision malignant lesion, trunk/arm/leg, \u22640.5cm",
+      "avg_payment": 173.24
+    },
+    {
+      "code": "17260",
+      "desc": "Destruction malignant lesion, trunk/arm/leg, \u22640.5cm",
+      "avg_payment": 172.31
+    },
+    {
+      "code": "11441",
+      "desc": "Excision benign lesion, face/ear/lid, 0.6-1.0cm",
+      "avg_payment": 145.58
+    },
+    {
+      "code": "99215",
+      "desc": "Office/outpatient visit, established pt, high complexity",
+      "avg_payment": 144.25
+    },
+    {
+      "code": "99204",
+      "desc": "Office/outpatient visit, new pt, moderate complexity",
+      "avg_payment": 130.17
+    }
+  ],
+  "provider_volume_dist": {
+    "p10": 1025.0,
+    "p25": 1370.0,
+    "p50": 1869.0,
+    "p75": 2404.0,
+    "p90": 3076.0,
+    "mean": 1946.0,
+    "solo_practice_weekly_patients": 90
+  },
+  "tx_benchmarks": {
+    "top_procedures": [
+      {
+        "HCPCS_Cd": "99213",
+        "avg_payment": 61.13,
+        "total_srvcs": 1532
+      },
+      {
+        "HCPCS_Cd": "99214",
+        "avg_payment": 86.43,
+        "total_srvcs": 699
+      },
+      {
+        "HCPCS_Cd": "99203",
+        "avg_payment": 81.52,
+        "total_srvcs": 619
+      },
+      {
+        "HCPCS_Cd": "99215",
+        "avg_payment": 144.77,
+        "total_srvcs": 488
+      },
+      {
+        "HCPCS_Cd": "17311",
+        "avg_payment": 659.76,
+        "total_srvcs": 439
+      },
+      {
+        "HCPCS_Cd": "17000",
+        "avg_payment": 61.64,
+        "total_srvcs": 235
+      },
+      {
+        "HCPCS_Cd": "11100",
+        "avg_payment": 85.52,
+        "total_srvcs": 234
+      },
+      {
+        "HCPCS_Cd": "17312",
+        "avg_payment": 365.96,
+        "total_srvcs": 222
+      },
+      {
+        "HCPCS_Cd": "11301",
+        "avg_payment": 65.76,
+        "total_srvcs": 203
+      },
+      {
+        "HCPCS_Cd": "17261",
+        "avg_payment": 176.8,
+        "total_srvcs": 182
+      },
+      {
+        "HCPCS_Cd": "11720",
+        "avg_payment": 24.01,
+        "total_srvcs": 150
+      },
+      {
+        "HCPCS_Cd": "17260",
+        "avg_payment": 219.73,
+        "total_srvcs": 148
+      },
+      {
+        "HCPCS_Cd": "17003",
+        "avg_payment": 9.65,
+        "total_srvcs": 142
+      },
+      {
+        "HCPCS_Cd": "99204",
+        "avg_payment": 112.77,
+        "total_srvcs": 134
+      },
+      {
+        "HCPCS_Cd": "99212",
+        "avg_payment": 38.2,
+        "total_srvcs": 68
+      }
+    ],
+    "avg_payment": 111.88,
+    "n_providers": 4,
+    "total_srvcs": 5683
+  },
+  "cosmetic_gap": {
+    "note": "Medicare covers MEDICAL dermatology only. Cosmetic procedures (Botox, fillers, laser rejuvenation, chemical peels) are entirely cash-pay and NOT captured in CMS data. For a typical solo TX derm practice, cosmetic revenue represents 30-45% of total billings \u2014 this gap is modeled separately in the synthetic clinic data.",
+    "cosmetic_codes_excluded": [
+      "64612 (Botox injection)",
+      "15820 (Blepharoplasty)",
+      "17106 (Tattoo removal)",
+      "15823 (Laser resurfacing)"
+    ],
+    "est_cosmetic_revenue_pct": 0.38
+  },
+  "national_avg_payment_per_service": 106.07,
+  "national_avg_charge_per_service": 282.36,
+  "mohs_avg_payment": 540.08
+}

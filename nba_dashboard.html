@@ -345,7 +345,7 @@ select.pred-sel:focus{border-color:rgba(0,180,255,.4)}
   </div>
   <div class="grid-2">
     <div class="card">
-      <div class="card-title">2024-25 Standings — Top 15</div>
+      <div class="card-title">Standings — Top 15</div>
       <div class="tbl-wrap tbl-scroll" id="ov-standings"></div>
     </div>
     <div class="card">
@@ -550,13 +550,14 @@ function baseOpts(o={}){
 // ── Hero ──────────────────────────────────────────────────────────────────
 (function(){
   const m=DATA.model,bt=DATA.backtest;
-  const top=DATA.standings['2024-25']&&DATA.standings['2024-25'][0]?DATA.standings['2024-25'][0].team_abbr:'—';
+  const _latestSsn=Object.keys(DATA.standings).sort().pop();
+  const top=(DATA.standings[_latestSsn]||[])[0]?.team_abbr||'—';
   document.getElementById('hero-kpis').innerHTML=[
     {val:(m.test_auc*100).toFixed(1)+'%',label:'Holdout AUC',cls:'blue'},
     {val:(m.test_acc*100).toFixed(1)+'%',label:'Accuracy',cls:'blue'},
     {val:'+'+Math.round(bt.strategy_a.roi*100)+'%',label:'Backtest ROI',cls:'red'},
     {val:'$'+Math.round(bt.strategy_a.total_pnl/1000)+'K',label:'Season P&L',cls:'gold'},
-    {val:top,label:'#1 Seed 24-25',cls:'green'},
+    {val:top,label:'#1 Seed (Latest)',cls:'green'},
   ].map(k=>`<div class="kpi"><div class="kpi-val ${k.cls}">${k.val}</div><div class="kpi-label">${k.label}</div></div>`).join('');
   document.getElementById('hero-badges').innerHTML=[
     '21,498 game logs','9 seasons (2016→2025)','Elo ratings','defensive rating','multi-window rolling','Optuna tuning','HistGBM + isotonic calibration','nba_api + ESPN live'
@@ -566,7 +567,8 @@ function baseOpts(o={}){
 // ── Overview ──────────────────────────────────────────────────────────────
 (function(){
   const m=DATA.model,bt=DATA.backtest;
-  const s24=DATA.standings['2024-25']||[];
+  const _latestSsn2=Object.keys(DATA.standings).sort().pop();
+  const s24=DATA.standings[_latestSsn2]||[];
   document.getElementById('ov-stats').innerHTML=[
     {val:(m.test_auc*100).toFixed(1)+'%',label:'Test AUC',sub:'2024-25 holdout',cls:''},
     {val:(bt.strategy_a.win_pct*100).toFixed(1)+'%',label:'Backtest Win Rate',sub:bt.strategy_a.n_bets+' bets placed',cls:'green'},
@@ -616,7 +618,7 @@ function baseOpts(o={}){
 })();
 
 // ── Standings ─────────────────────────────────────────────────────────────
-let _actSeason='2024-25',_stdChart=null;
+let _actSeason='2025-26',_stdChart=null;
 function renderStandings(){
   const seasons=Object.keys(DATA.standings);
   document.getElementById('std-seasons').innerHTML=seasons.map(s=>
@@ -651,7 +653,56 @@ function renderStandings(){
       <td>${(r.win_pct*100).toFixed(1)}%</td>
     </tr>`).join('')}</tbody></table>`;
 }
+// Pre-populate 2025-26 with a loading placeholder, then fetch live from ESPN
+DATA.standings['2025-26']=[{team_abbr:'Loading…',team_name:'Fetching live 2025-26 standings from ESPN',wins:0,losses:0,win_pct:0.5}];
 renderStandings();
+(async function fetchESPN2526(){
+  try{
+    const resp=await fetch(
+      'https://site.api.espn.com/apis/v2/sports/basketball/nba/standings?season=2026',
+      {signal:AbortSignal.timeout(9000)}
+    );
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const d=await resp.json();
+    const rows=[];
+    for(const conf of(d.children||[])){
+      for(const e of(conf.standings?.entries||[])){
+        const stats=e.stats||[];
+        const g=n=>+(stats.find(s=>s.name===n)||{value:0}).value;
+        rows.push({
+          team_abbr:e.team?.abbreviation||'???',
+          team_name:e.team?.displayName||e.team?.abbreviation||'Unknown',
+          wins:g('wins'),losses:g('losses'),win_pct:g('winPercent')
+        });
+      }
+    }
+    rows.sort((a,b)=>b.wins-a.wins);
+    if(rows.length>=20){
+      DATA.standings['2025-26']=rows;
+      // Also refresh the overview top-15 with live data
+      const el=document.getElementById('ov-standings');
+      if(el){
+        const top15=rows.slice(0,15);
+        el.innerHTML=`<table><thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>Win%</th><th></th></tr></thead>
+          <tbody>${top15.map((r,i)=>`<tr>
+            <td class="tbl-num">${i<3?['🥇','🥈','🥉'][i]:i+1}</td>
+            <td class="tbl-team">${r.team_abbr} <span class="tbl-muted" style="font-size:.65rem">${r.team_name}</span></td>
+            <td style="color:${GREEN}">${r.wins}</td><td style="color:${RED}">${r.losses}</td>
+            <td>${(r.win_pct*100).toFixed(1)}%</td>
+            <td><div class="win-bar" style="width:${r.win_pct*70}px"></div></td>
+          </tr>`).join('')}</tbody></table>`;
+      }
+    } else {
+      delete DATA.standings['2025-26'];
+      _actSeason='2024-25';
+    }
+  } catch(err){
+    // ESPN fetch failed — fall back to 2024-25
+    delete DATA.standings['2025-26'];
+    _actSeason='2024-25';
+  }
+  if(_actSeason==='2025-26'||!DATA.standings['2025-26'])renderStandings();
+})();
 
 // ── Team Form ─────────────────────────────────────────────────────────────
 let _formChart=null;

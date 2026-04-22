@@ -1,0 +1,74 @@
+[
+  {
+    "cohort": "2022Q1",
+    "n_patients": 288,
+    "ret_6mo": 0.7396,
+    "ret_12mo": 0.4236,
+    "ret_18mo": 0.0868,
+    "ret_24mo": 0.0
+  },
+  {
+    "cohort": "2022Q2",
+    "n_patients": 290,
+    "ret_6mo": 0.7345,
+    "ret_12mo": 0.3552,
+    "ret_18mo": 0.0483,
+    "ret_24mo": 0.0
+  },
+  {
+    "cohort": "2022Q3",
+    "n_patients": 291,
+    "ret_6mo": 0.6942,
+    "ret_12mo": 0.2096,
+    "ret_18mo": 0.0069,
+    "ret_24mo": 0.0
+  },
+  {
+    "cohort": "2022Q4",
+    "n_patients": 278,
+    "ret_6mo": 0.7122,
+    "ret_12mo": 0.1763,
+    "ret_18mo": 0.0,
+    "ret_24mo": 0.0
+  },
+  {
+    "cohort": "2023Q1",
+    "n_patients": 285,
+    "ret_6mo": 0.5053,
+    "ret_12mo": 0.0842,
+    "ret_18mo": 0.0,
+    "ret_24mo": 0.0
+  },
+  {
+    "cohort": "2023Q2",
+    "n_patients": 278,
+    "ret_6mo": 0.6079,
+    "ret_12mo": 0.0432,
+    "ret_18mo": 0.0,
+    "ret_24mo": 0.0
+  },
+  {
+    "cohort": "2023Q3",
+    "n_patients": 268,
+    "ret_6mo": 0.4515,
+    "ret_12mo": 0.0,
+    "ret_18mo": 0.0,
+    "ret_24mo": 0.0
+  },
+  {
+    "cohort": "2023Q4",
+    "n_patients": 299,
+    "ret_6mo": 0.3445,
+    "ret_12mo": 0.0,
+    "ret_18mo": 0.0,
+    "ret_24mo": 0.0
+  },
+  {
+    "cohort": "2024Q1",
+    "n_patients": 223,
+    "ret_6mo": 0.139,
+    "ret_12mo": 0.0,
+    "ret_18mo": 0.0,
+    "ret_24mo": 0.0
+  }
+]

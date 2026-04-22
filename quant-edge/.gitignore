@@ -1,0 +1,4 @@
+data/features.csv
+data/quant.db
+__pycache__/
+*.pyc

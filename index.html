@@ -133,7 +133,7 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
     </div>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-val">9</div><div class="hstat-lbl">live projects</div></div>
+    <div class="hstat"><div class="hstat-val">11</div><div class="hstat-lbl">live projects</div></div>
   </div>
 </section>
 
@@ -302,6 +302,40 @@ footer p{font-family:var(--mono);font-size:11px;color:var(--dimmer);}
       </div>
     </div>
 
+    <div class="project-card fade-in">
+      <span class="project-num">10 — QUANTITATIVE FINANCE · MACHINE LEARNING · EQUITY RESEARCH</span>
+      <h3 class="project-title">Quant Edge — S&P 500 Prediction Engine</h3>
+      <p class="project-desc">End-to-end multi-stock ML system scoring all 503 S&P 500 constituents daily for 5-day directional probability. 6 years of OHLCV data via yfinance, 27 cross-sectional features (RSI, MACD, Bollinger Bands, ATR, momentum, sector ETF returns, VIX regime), HistGradientBoosting + Optuna + isotonic calibration. Walk-forward backtest with 10-day embargo prevents leakage. Strategy A (≥60% confidence) backtested with Sharpe ratio, max drawdown, win rate, and monthly P&L curves vs SPY benchmark.</p>
+      <div class="mini-label">Cumulative P&L — Strategy A vs SPY Benchmark</div>
+      <div class="mini-wrap"><canvas id="quantChart"></canvas></div>
+      <div class="project-stats">
+        <span class="stat-pill">503 Stocks</span><span class="stat-pill">27 Features</span><span class="stat-pill">Walk-Forward Backtest</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span><span class="stack-tag">HistGBM</span><span class="stack-tag">Optuna</span><span class="stack-tag">yfinance</span><span class="stack-tag">SQLite</span><span class="stack-tag">Chart.js</span>
+      </div>
+      <div class="project-links">
+        <a href="quant-edge/quant_edge_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card fade-in">
+      <span class="project-num">11 — HEALTHCARE ANALYTICS · MACHINE LEARNING · REVENUE INTELLIGENCE</span>
+      <h3 class="project-title">DermIQ — Clinic Intelligence Platform</h3>
+      <p class="project-desc">Full-stack dermatology analytics SaaS anchored to real CMS Medicare benchmarks. Synthetic 2,500-patient clinic dataset calibrated to national averages. XGBoost-equivalent no-show model (AUC 0.72) identifies $167K/yr revenue at risk with $43K recoverable via targeted reminders. RFM K-Means segmentation reveals VIP Cosmetic patients generate 4.6× the LTV of the average at-risk patient. LTV:CAC analysis shows doctor referrals outperform Instagram by 4× on lifetime value — actionable budget reallocation built in.</p>
+      <div class="mini-label">Monthly Revenue — Medical vs Cosmetic (36-Month Trend)</div>
+      <div class="mini-wrap"><canvas id="dermChart"></canvas></div>
+      <div class="project-stats">
+        <span class="stat-pill">2,500 Patients</span><span class="stat-pill">17K Appointments</span><span class="stat-pill">CMS Benchmarks</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span><span class="stack-tag">HistGBM</span><span class="stack-tag">K-Means</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Pandas</span><span class="stack-tag">Chart.js</span>
+      </div>
+      <div class="project-links">
+        <a href="dermiq/derm_dashboard.html" target="_blank" class="project-link demo">Live Dashboard ↗</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -400,6 +434,22 @@ options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend
 
 new Chart(document.getElementById('olistChart'),{type:'bar',data:{labels:['Health & Beauty','Watches & Gifts','Bed & Bath','Sports','Computers'],datasets:[{data:[1.41,1.26,1.23,1.12,1.03],backgroundColor:G+'bb',borderWidth:0,borderRadius:3}]},
 options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' R$'+c.raw+'M'}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1400}}});
+
+new Chart(document.getElementById('dermChart'),{type:'bar',data:{
+  labels:['Jan','Apr','Jul','Oct','Jan','Apr','Jul','Oct','Jan','Apr','Jul','Oct'],
+  datasets:[
+    {label:'Medical',data:[82,85,78,88,90,84,86,92,95,89,91,96],backgroundColor:'rgba(13,115,119,.65)',borderWidth:0,borderRadius:2},
+    {label:'Cosmetic',data:[38,42,35,55,40,44,38,58,45,48,42,62],backgroundColor:'rgba(244,162,97,.75)',borderWidth:0,borderRadius:2}
+  ]},
+options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1400}}});
+
+new Chart(document.getElementById('quantChart'),{type:'line',data:{
+  labels:['Jan','Apr','Jul','Oct','Jan','Apr','Jul','Oct','Jan','Apr','Jul','Oct','Jan'],
+  datasets:[
+    {label:'Strategy A',data:[100,108,115,109,121,133,128,142,138,155,162,170,178],borderColor:G,borderWidth:2,pointRadius:0,tension:.4,fill:true,backgroundColor:'rgba(74,222,128,.07)'},
+    {label:'SPY',data:[100,104,110,106,112,118,115,122,119,128,133,138,143],borderColor:MU,borderWidth:1.5,borderDash:[4,3],pointRadius:0,tension:.4,fill:false}
+  ]},
+options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1400}}});
 
 (function(){
   const fpr=[0,.03,.07,.11,.16,.21,.27,.34,.41,.5,.6,.7,.8,.9,1];

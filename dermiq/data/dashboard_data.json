@@ -1,0 +1,1532 @@
+{
+  "generated_at": "2026-04-22T22:03:03.819000Z",
+  "clinic_name": "DermCare Texas \u2014 Analytics Demo",
+  "date": "2026-04-22",
+  "kpis": {
+    "active_patients": 1157,
+    "total_patients": 2500,
+    "monthly_revenue": 144016.93,
+    "avg_monthly_revenue": 115226.49,
+    "noshow_rate": 13.7,
+    "avg_ltv": 1510.55,
+    "best_roas_channel": "doctor_referral",
+    "best_roas_value": 3.15,
+    "total_revenue_3yr": 3687247.53,
+    "appointments_ytd": 1438
+  },
+  "revenue_trend": [
+    {
+      "month": "2022-01",
+      "medical": 5897.24,
+      "cosmetic": 10419.82,
+      "total": 16317.06
+    },
+    {
+      "month": "2022-02",
+      "medical": 15074.76,
+      "cosmetic": 27422.87,
+      "total": 42497.63
+    },
+    {
+      "month": "2022-03",
+      "medical": 24247.43,
+      "cosmetic": 41467.75,
+      "total": 65715.18
+    },
+    {
+      "month": "2022-04",
+      "medical": 22410.4,
+      "cosmetic": 50697.79,
+      "total": 73108.19
+    },
+    {
+      "month": "2022-05",
+      "medical": 37927.99,
+      "cosmetic": 70785.72,
+      "total": 108713.71
+    },
+    {
+      "month": "2022-06",
+      "medical": 42734.1,
+      "cosmetic": 84953.86,
+      "total": 127687.96
+    },
+    {
+      "month": "2022-07",
+      "medical": 47018.44,
+      "cosmetic": 88631.64,
+      "total": 135650.08
+    },
+    {
+      "month": "2022-08",
+      "medical": 53971.52,
+      "cosmetic": 106404.1,
+      "total": 160375.62
+    },
+    {
+      "month": "2022-09",
+      "medical": 55612.16,
+      "cosmetic": 115246.56,
+      "total": 170858.72
+    },
+    {
+      "month": "2022-10",
+      "medical": 59556.85,
+      "cosmetic": 135456.02,
+      "total": 195012.87
+    },
+    {
+      "month": "2022-11",
+      "medical": 69504.43,
+      "cosmetic": 126737.2,
+      "total": 196241.63
+    },
+    {
+      "month": "2022-12",
+      "medical": 66596.15,
+      "cosmetic": 143068.9,
+      "total": 209665.05
+    },
+    {
+      "month": "2023-01",
+      "medical": 63182.19,
+      "cosmetic": 126385.18,
+      "total": 189567.37
+    },
+    {
+      "month": "2023-02",
+      "medical": 58900.94,
+      "cosmetic": 134027.13,
+      "total": 192928.07
+    },
+    {
+      "month": "2023-03",
+      "medical": 63615.18,
+      "cosmetic": 131166.44,
+      "total": 194781.62
+    },
+    {
+      "month": "2023-04",
+      "medical": 57014.85,
+      "cosmetic": 106191.47,
+      "total": 163206.32
+    },
+    {
+      "month": "2023-05",
+      "medical": 59315.08,
+      "cosmetic": 109339.69,
+      "total": 168654.77
+    },
+    {
+      "month": "2023-06",
+      "medical": 54834.15,
+      "cosmetic": 89901.43,
+      "total": 144735.58
+    },
+    {
+      "month": "2023-07",
+      "medical": 53642.64,
+      "cosmetic": 91984.81,
+      "total": 145627.45
+    },
+    {
+      "month": "2023-08",
+      "medical": 50043.76,
+      "cosmetic": 113299.24,
+      "total": 163343.0
+    },
+    {
+      "month": "2023-09",
+      "medical": 44429.67,
+      "cosmetic": 92302.06,
+      "total": 136731.73
+    },
+    {
+      "month": "2023-10",
+      "medical": 46947.37,
+      "cosmetic": 79328.28,
+      "total": 126275.65
+    },
+    {
+      "month": "2023-11",
+      "medical": 42894.66,
+      "cosmetic": 76992.14,
+      "total": 119886.8
+    },
+    {
+      "month": "2023-12",
+      "medical": 39442.44,
+      "cosmetic": 73565.56,
+      "total": 113008.0
+    },
+    {
+      "month": "2024-01",
+      "medical": 41807.21,
+      "cosmetic": 52227.56,
+      "total": 94034.77
+    },
+    {
+      "month": "2024-02",
+      "medical": 29300.78,
+      "cosmetic": 58487.42,
+      "total": 87788.2
+    },
+    {
+      "month": "2024-03",
+      "medical": 26870.52,
+      "cosmetic": 44889.3,
+      "total": 71759.82
+    },
+    {
+      "month": "2024-04",
+      "medical": 13660.04,
+      "cosmetic": 26211.48,
+      "total": 39871.52
+    },
+    {
+      "month": "2024-05",
+      "medical": 9728.07,
+      "cosmetic": 12488.59,
+      "total": 22216.66
+    },
+    {
+      "month": "2024-06",
+      "medical": 4209.11,
+      "cosmetic": 4866.51,
+      "total": 9075.62
+    },
+    {
+      "month": "2024-07",
+      "medical": 1717.81,
+      "cosmetic": 0.0,
+      "total": 1717.81
+    },
+    {
+      "month": "2024-08",
+      "medical": 193.07,
+      "cosmetic": 0.0,
+      "total": 193.07
+    }
+  ],
+  "segments": [
+    {
+      "name": "VIP Cosmetic",
+      "color": "#F4A261",
+      "icon": "\ud83d\udc8e",
+      "n": 306,
+      "avg_ltv": 5780.28,
+      "avg_visits": 8.9,
+      "avg_recency": 589.0,
+      "insurance_mix": {
+        "private": 42.5,
+        "medicare": 27.8,
+        "self_pay": 16.7,
+        "medicaid": 13.1
+      }
+    },
+    {
+      "name": "Loyal Medical",
+      "color": "#0D7377",
+      "icon": "\ud83c\udfe5",
+      "n": 455,
+      "avg_ltv": 1255.43,
+      "avg_visits": 12.3,
+      "avg_recency": 540.0,
+      "insurance_mix": {
+        "private": 44.6,
+        "medicare": 29.2,
+        "self_pay": 13.4,
+        "medicaid": 12.7
+      }
+    },
+    {
+      "name": "Lapsed",
+      "color": "#6C757D",
+      "icon": "\u23f8\ufe0f",
+      "n": 705,
+      "avg_ltv": 834.61,
+      "avg_visits": 4.0,
+      "avg_recency": 754.0,
+      "insurance_mix": {
+        "private": 43.3,
+        "medicare": 24.0,
+        "self_pay": 16.7,
+        "medicaid": 16.0
+      }
+    },
+    {
+      "name": "At-Risk",
+      "color": "#E76F51",
+      "icon": "\u26a0\ufe0f",
+      "n": 1034,
+      "avg_ltv": 733.91,
+      "avg_visits": 3.5,
+      "avg_recency": 369.0,
+      "insurance_mix": {
+        "private": 44.7,
+        "medicare": 26.3,
+        "medicaid": 14.8,
+        "self_pay": 14.2
+      }
+    }
+  ],
+  "cohort_retention": [
+    {
+      "cohort": "2022Q1",
+      "n_patients": 288,
+      "ret_6mo": 0.7396,
+      "ret_12mo": 0.4236,
+      "ret_18mo": 0.0868,
+      "ret_24mo": 0.0
+    },
+    {
+      "cohort": "2022Q2",
+      "n_patients": 290,
+      "ret_6mo": 0.7345,
+      "ret_12mo": 0.3552,
+      "ret_18mo": 0.0483,
+      "ret_24mo": 0.0
+    },
+    {
+      "cohort": "2022Q3",
+      "n_patients": 291,
+      "ret_6mo": 0.6942,
+      "ret_12mo": 0.2096,
+      "ret_18mo": 0.0069,
+      "ret_24mo": 0.0
+    },
+    {
+      "cohort": "2022Q4",
+      "n_patients": 278,
+      "ret_6mo": 0.7122,
+      "ret_12mo": 0.1763,
+      "ret_18mo": 0.0,
+      "ret_24mo": 0.0
+    },
+    {
+      "cohort": "2023Q1",
+      "n_patients": 285,
+      "ret_6mo": 0.5053,
+      "ret_12mo": 0.0842,
+      "ret_18mo": 0.0,
+      "ret_24mo": 0.0
+    },
+    {
+      "cohort": "2023Q2",
+      "n_patients": 278,
+      "ret_6mo": 0.6079,
+      "ret_12mo": 0.0432,
+      "ret_18mo": 0.0,
+      "ret_24mo": 0.0
+    },
+    {
+      "cohort": "2023Q3",
+      "n_patients": 268,
+      "ret_6mo": 0.4515,
+      "ret_12mo": 0.0,
+      "ret_18mo": 0.0,
+      "ret_24mo": 0.0
+    },
+    {
+      "cohort": "2023Q4",
+      "n_patients": 299,
+      "ret_6mo": 0.3445,
+      "ret_12mo": 0.0,
+      "ret_18mo": 0.0,
+      "ret_24mo": 0.0
+    },
+    {
+      "cohort": "2024Q1",
+      "n_patients": 223,
+      "ret_6mo": 0.139,
+      "ret_12mo": 0.0,
+      "ret_18mo": 0.0,
+      "ret_24mo": 0.0
+    }
+  ],
+  "noshow": {
+    "auc": 0.6234,
+    "accuracy": 0.8758,
+    "noshow_rate": 0.1367,
+    "confusion_matrix": [
+      [
+        2984,
+        0
+      ],
+      [
+        423,
+        0
+      ]
+    ],
+    "roc_curve": {
+      "fpr": [
+        0.0,
+        0.0131,
+        0.0204,
+        0.0288,
+        0.0439,
+        0.0643,
+        0.0737,
+        0.0891,
+        0.1025,
+        0.1193,
+        0.1354,
+        0.1491,
+        0.1652,
+        0.184,
+        0.2061,
+        0.2275,
+        0.252,
+        0.2741,
+        0.2885,
+        0.311,
+        0.3375,
+        0.3572,
+        0.374,
+        0.3975,
+        0.4068,
+        0.4212,
+        0.4487,
+        0.4732,
+        0.4983,
+        0.5168,
+        0.5379,
+        0.5553,
+        0.5834,
+        0.6015,
+        0.618,
+        0.6424,
+        0.6558,
+        0.6716,
+        0.6853,
+        0.7001,
+        0.7225,
+        0.7446,
+        0.7714,
+        0.7895,
+        0.8167,
+        0.8458,
+        0.8686,
+        0.8867,
+        0.9135,
+        0.9357,
+        0.9531,
+        0.9899
+      ],
+      "tpr": [
+        0.0,
+        0.0307,
+        0.0615,
+        0.0898,
+        0.1182,
+        0.1418,
+        0.1702,
+        0.1939,
+        0.2199,
+        0.2364,
+        0.2719,
+        0.3026,
+        0.3239,
+        0.3522,
+        0.3712,
+        0.3972,
+        0.4184,
+        0.4397,
+        0.4657,
+        0.4917,
+        0.5154,
+        0.5366,
+        0.5532,
+        0.5792,
+        0.6052,
+        0.6241,
+        0.6454,
+        0.6619,
+        0.6856,
+        0.695,
+        0.7092,
+        0.7234,
+        0.7376,
+        0.7447,
+        0.7636,
+        0.7825,
+        0.792,
+        0.8085,
+        0.8251,
+        0.8322,
+        0.8416,
+        0.8487,
+        0.8582,
+        0.8723,
+        0.8936,
+        0.9031,
+        0.9102,
+        0.9196,
+        0.9338,
+        0.9504,
+        0.9716,
+        0.9905
+      ]
+    },
+    "feature_importance": [
+      {
+        "feature": "insurance_enc",
+        "label": "Insurance Type",
+        "importance": 0.086012
+      },
+      {
+        "feature": "day_of_week",
+        "label": "Day of Week",
+        "importance": 0.024966
+      },
+      {
+        "feature": "reminder_sent",
+        "label": "Reminder Sent",
+        "importance": 0.017573
+      },
+      {
+        "feature": "prior_noshow_rate",
+        "label": "Prior No-Show Rate",
+        "importance": 0.008208
+      },
+      {
+        "feature": "days_booked_in_advance",
+        "label": "Days Booked in Advance",
+        "importance": 0.004935
+      },
+      {
+        "feature": "time_slot_enc",
+        "label": "Time Slot",
+        "importance": 0.002784
+      },
+      {
+        "feature": "is_new_patient",
+        "label": "New Patient",
+        "importance": 0.001935
+      },
+      {
+        "feature": "num_prior_appts",
+        "label": "# Prior Appointments",
+        "importance": 0.000811
+      },
+      {
+        "feature": "patient_age",
+        "label": "Patient Age",
+        "importance": 0.000574
+      },
+      {
+        "feature": "acquisition_channel_enc",
+        "label": "Acquisition Channel",
+        "importance": 0.000322
+      }
+    ],
+    "business_impact": {
+      "annual_appts": 5677,
+      "annual_noshow_count": 776,
+      "avg_revenue_per_appt": 216.49,
+      "annual_rev_at_risk": 167995.78,
+      "targeted_high_risk": 1135,
+      "recoverable_revenue": 23519.41,
+      "roi_narrative": "At 13.7% no-show rate on $167,996/year at risk, targeting the top 20% highest-risk appointments with double reminders could recover ~$23,519 annually."
+    },
+    "high_risk_today": [
+      {
+        "appt_id": "A016999",
+        "patient_id": "P02496",
+        "appt_date": "2023-01-20",
+        "appointment_type": "acne",
+        "insurance_type": "private",
+        "reminder_sent": 1
+      },
+      {
+        "appt_id": "A017002",
+        "patient_id": "P02497",
+        "appt_date": "2022-07-15",
+        "appointment_type": "psoriasis",
+        "insurance_type": "medicare",
+        "reminder_sent": 1
+      },
+      {
+        "appt_id": "A016998",
+        "patient_id": "P02496",
+        "appt_date": "2023-05-12",
+        "appointment_type": "acne",
+        "insurance_type": "private",
+        "reminder_sent": 1
+      },
+      {
+        "appt_id": "A017013",
+        "patient_id": "P02497",
+        "appt_date": "2022-05-14",
+        "appointment_type": "psoriasis",
+        "insurance_type": "medicare",
+        "reminder_sent": 1
+      },
+      {
+        "appt_id": "A017032",
+        "patient_id": "P02500",
+        "appt_date": "2022-08-03",
+        "appointment_type": "cosmetic",
+        "insurance_type": "medicaid",
+        "reminder_sent": 1
+      },
+      {
+        "appt_id": "A017018",
+        "patient_id": "P02497",
+        "appt_date": "2023-01-06",
+        "appointment_type": "psoriasis",
+        "insurance_type": "medicare",
+        "reminder_sent": 0
+      },
+      {
+        "appt_id": "A017016",
+        "patient_id": "P02497",
+        "appt_date": "2022-10-10",
+        "appointment_type": "psoriasis",
+        "insurance_type": "medicare",
+        "reminder_sent": 0
+      },
+      {
+        "appt_id": "A017001",
+        "patient_id": "P02497",
+        "appt_date": "2023-03-04",
+        "appointment_type": "psoriasis",
+        "insurance_type": "medicare",
+        "reminder_sent": 1
+      },
+      {
+        "appt_id": "A017015",
+        "patient_id": "P02497",
+        "appt_date": "2023-07-04",
+        "appointment_type": "psoriasis",
+        "insurance_type": "medicare",
+        "reminder_sent": 1
+      },
+      {
+        "appt_id": "A017030",
+        "patient_id": "P02500",
+        "appt_date": "2022-09-04",
+        "appointment_type": "cosmetic",
+        "insurance_type": "medicaid",
+        "reminder_sent": 1
+      }
+    ]
+  },
+  "marketing": {
+    "roas_by_channel": [
+      {
+        "channel": "doctor_referral",
+        "total_spend": 15168.13,
+        "total_patients": 350,
+        "total_rev_attributed": 47706.17,
+        "roas": 3.14,
+        "actual_cac": 43.34
+      },
+      {
+        "channel": "google_search",
+        "total_spend": 83232.51,
+        "total_patients": 667,
+        "total_rev_attributed": 49053.34,
+        "roas": 0.59,
+        "actual_cac": 124.79
+      },
+      {
+        "channel": "instagram",
+        "total_spend": 67659.06,
+        "total_patients": 353,
+        "total_rev_attributed": 16624.8,
+        "roas": 0.25,
+        "actual_cac": 191.67
+      },
+      {
+        "channel": "patient_referral",
+        "total_spend": 11260.53,
+        "total_patients": 181,
+        "total_rev_attributed": 21433.03,
+        "roas": 1.9,
+        "actual_cac": 62.21
+      },
+      {
+        "channel": "walk_in",
+        "total_spend": 1902.11,
+        "total_patients": 78,
+        "total_rev_attributed": 4604.03,
+        "roas": 2.42,
+        "actual_cac": 24.39
+      }
+    ],
+    "ltv_cac_by_channel": [
+      {
+        "channel": "walk_in",
+        "n_patients": 125,
+        "avg_ltv": 1311.89,
+        "cac": 20,
+        "ltv_cac_ratio": 65.59,
+        "ret_2yr": 0.48,
+        "benchmark_ltv": 1400
+      },
+      {
+        "channel": "doctor_referral",
+        "n_patients": 602,
+        "avg_ltv": 1430.65,
+        "cac": 40,
+        "ltv_cac_ratio": 35.77,
+        "ret_2yr": 0.74,
+        "benchmark_ltv": 3200
+      },
+      {
+        "channel": "patient_referral",
+        "n_patients": 513,
+        "avg_ltv": 1433.01,
+        "cac": 55,
+        "ltv_cac_ratio": 26.05,
+        "ret_2yr": 0.68,
+        "benchmark_ltv": 2800
+      },
+      {
+        "channel": "google_search",
+        "n_patients": 884,
+        "avg_ltv": 1530.47,
+        "cac": 120,
+        "ltv_cac_ratio": 12.75,
+        "ret_2yr": 0.55,
+        "benchmark_ltv": 1800
+      },
+      {
+        "channel": "instagram",
+        "n_patients": 376,
+        "avg_ltv": 1526.45,
+        "cac": 180,
+        "ltv_cac_ratio": 8.48,
+        "ret_2yr": 0.41,
+        "benchmark_ltv": 1100
+      }
+    ],
+    "monthly_trend": {
+      "months": [
+        "2023-12",
+        "2024-01",
+        "2024-02",
+        "2024-03",
+        "2024-04",
+        "2024-05",
+        "2024-06",
+        "2024-07",
+        "2024-08",
+        "2024-09",
+        "2024-10",
+        "2024-11"
+      ],
+      "spend": {
+        "google_search": [
+          2661.2,
+          2058.13,
+          2574.58,
+          2681.84,
+          2069.76,
+          2202.64,
+          2409.16,
+          2014.56,
+          1827.41,
+          2276.15,
+          2153.51,
+          3047.74
+        ],
+        "doctor_referral": [
+          576.27,
+          428.64,
+          451.29,
+          449.76,
+          381.42,
+          354.66,
+          420.47,
+          328.87,
+          338.46,
+          363.85,
+          418.95,
+          537.75
+        ],
+        "patient_referral": [
+          410.67,
+          270.74,
+          355.88,
+          320.04,
+          318.02,
+          314.92,
+          330.52,
+          229.08,
+          241.12,
+          332.44,
+          311.78,
+          429.82
+        ],
+        "instagram": [
+          2456.81,
+          1805.04,
+          2123.55,
+          2097.03,
+          1871.82,
+          1884.92,
+          1633.62,
+          1529.11,
+          1477.53,
+          1800.44,
+          1789.23,
+          2450.53
+        ],
+        "walk_in": [
+          66.76,
+          55.45,
+          65.83,
+          55.83,
+          55.92,
+          55.03,
+          46.1,
+          43.51,
+          42.46,
+          55.73,
+          44.97,
+          72.15
+        ]
+      },
+      "patients": {
+        "google_search": [
+          22,
+          19,
+          18,
+          23,
+          16,
+          18,
+          21,
+          15,
+          17,
+          16,
+          15,
+          22
+        ],
+        "doctor_referral": [
+          13,
+          9,
+          11,
+          10,
+          9,
+          9,
+          9,
+          7,
+          7,
+          9,
+          9,
+          12
+        ],
+        "patient_referral": [
+          6,
+          4,
+          6,
+          5,
+          6,
+          6,
+          5,
+          4,
+          3,
+          5,
+          4,
+          7
+        ],
+        "instagram": [
+          14,
+          10,
+          11,
+          11,
+          9,
+          10,
+          9,
+          7,
+          7,
+          10,
+          8,
+          14
+        ],
+        "walk_in": [
+          3,
+          2,
+          3,
+          2,
+          2,
+          2,
+          2,
+          1,
+          2,
+          3,
+          2,
+          3
+        ]
+      }
+    },
+    "budget_recommendation": {
+      "headline": "Reallocate 20% of instagram budget (CAC $180, LTV:CAC 8.5x) to walk_in (CAC $20, LTV:CAC 65.6x)",
+      "best_channel": "walk_in",
+      "worst_channel": "instagram",
+      "best_ltv_cac": 65.59,
+      "worst_ltv_cac": 8.48,
+      "insight": "Doctor referrals produce the highest LTV:CAC ratio and 74% 2-year retention \u2014 far exceeding Instagram (41% retention, 4.5x lower LTV). Investing $500/month into a referral program (gift cards, co-marketing with PCPs) generates more durable revenue than equivalent social spend."
+    },
+    "total_spend_3yr": 179222.34,
+    "total_patients_3yr": 1629,
+    "blended_cac": 110.02,
+    "blended_roas": 0.778
+  },
+  "revenue_forecast": {
+    "historical": [
+      {
+        "month": "2022-01",
+        "medical": 5897.24,
+        "cosmetic": 10419.82,
+        "total": 16317.06,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-02",
+        "medical": 15074.76,
+        "cosmetic": 27422.87,
+        "total": 42497.63,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-03",
+        "medical": 24247.43,
+        "cosmetic": 41467.75,
+        "total": 65715.18,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-04",
+        "medical": 22410.4,
+        "cosmetic": 50697.79,
+        "total": 73108.19,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-05",
+        "medical": 37927.99,
+        "cosmetic": 70785.72,
+        "total": 108713.71,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-06",
+        "medical": 42734.1,
+        "cosmetic": 84953.86,
+        "total": 127687.96,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-07",
+        "medical": 47018.44,
+        "cosmetic": 88631.64,
+        "total": 135650.08,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-08",
+        "medical": 53971.52,
+        "cosmetic": 106404.1,
+        "total": 160375.62,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-09",
+        "medical": 55612.16,
+        "cosmetic": 115246.56,
+        "total": 170858.72,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-10",
+        "medical": 59556.85,
+        "cosmetic": 135456.02,
+        "total": 195012.87,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-11",
+        "medical": 69504.43,
+        "cosmetic": 126737.2,
+        "total": 196241.63,
+        "is_forecast": false
+      },
+      {
+        "month": "2022-12",
+        "medical": 66596.15,
+        "cosmetic": 143068.9,
+        "total": 209665.05,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-01",
+        "medical": 63182.19,
+        "cosmetic": 126385.18,
+        "total": 189567.37,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-02",
+        "medical": 58900.94,
+        "cosmetic": 134027.13,
+        "total": 192928.07,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-03",
+        "medical": 63615.18,
+        "cosmetic": 131166.44,
+        "total": 194781.62,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-04",
+        "medical": 57014.85,
+        "cosmetic": 106191.47,
+        "total": 163206.32,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-05",
+        "medical": 59315.08,
+        "cosmetic": 109339.69,
+        "total": 168654.77,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-06",
+        "medical": 54834.15,
+        "cosmetic": 89901.43,
+        "total": 144735.58,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-07",
+        "medical": 53642.64,
+        "cosmetic": 91984.81,
+        "total": 145627.45,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-08",
+        "medical": 50043.76,
+        "cosmetic": 113299.24,
+        "total": 163343.0,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-09",
+        "medical": 44429.67,
+        "cosmetic": 92302.06,
+        "total": 136731.73,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-10",
+        "medical": 46947.37,
+        "cosmetic": 79328.28,
+        "total": 126275.65,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-11",
+        "medical": 42894.66,
+        "cosmetic": 76992.14,
+        "total": 119886.8,
+        "is_forecast": false
+      },
+      {
+        "month": "2023-12",
+        "medical": 39442.44,
+        "cosmetic": 73565.56,
+        "total": 113008.0,
+        "is_forecast": false
+      },
+      {
+        "month": "2024-01",
+        "medical": 41807.21,
+        "cosmetic": 52227.56,
+        "total": 94034.77,
+        "is_forecast": false
+      },
+      {
+        "month": "2024-02",
+        "medical": 29300.78,
+        "cosmetic": 58487.42,
+        "total": 87788.2,
+        "is_forecast": false
+      },
+      {
+        "month": "2024-03",
+        "medical": 26870.52,
+        "cosmetic": 44889.3,
+        "total": 71759.82,
+        "is_forecast": false
+      },
+      {
+        "month": "2024-04",
+        "medical": 13660.04,
+        "cosmetic": 26211.48,
+        "total": 39871.52,
+        "is_forecast": false
+      },
+      {
+        "month": "2024-05",
+        "medical": 9728.07,
+        "cosmetic": 12488.59,
+        "total": 22216.66,
+        "is_forecast": false
+      },
+      {
+        "month": "2024-06",
+        "medical": 4209.11,
+        "cosmetic": 4866.51,
+        "total": 9075.62,
+        "is_forecast": false
+      },
+      {
+        "month": "2024-07",
+        "medical": 1717.81,
+        "cosmetic": 0.0,
+        "total": 1717.81,
+        "is_forecast": false
+      },
+      {
+        "month": "2024-08",
+        "medical": 193.07,
+        "cosmetic": 0.0,
+        "total": 193.07,
+        "is_forecast": false
+      }
+    ],
+    "forecast": [
+      {
+        "month": "2024-09",
+        "medical": 17396.49,
+        "medical_lo": 0,
+        "medical_hi": 49580.89,
+        "cosmetic": 29408.28,
+        "cosmetic_lo": 0,
+        "cosmetic_hi": 95595.43,
+        "is_forecast": true
+      },
+      {
+        "month": "2024-10",
+        "medical": 16966.94,
+        "medical_lo": 0,
+        "medical_hi": 49151.34,
+        "cosmetic": 28395.65,
+        "cosmetic_lo": 0,
+        "cosmetic_hi": 94582.8,
+        "is_forecast": true
+      },
+      {
+        "month": "2024-11",
+        "medical": 16537.38,
+        "medical_lo": 0,
+        "medical_hi": 48721.78,
+        "cosmetic": 27383.02,
+        "cosmetic_lo": 0,
+        "cosmetic_hi": 93570.17,
+        "is_forecast": true
+      },
+      {
+        "month": "2024-12",
+        "medical": 16107.83,
+        "medical_lo": 0,
+        "medical_hi": 48292.23,
+        "cosmetic": 26370.4,
+        "cosmetic_lo": 0,
+        "cosmetic_hi": 92557.55,
+        "is_forecast": true
+      },
+      {
+        "month": "2025-01",
+        "medical": 15678.27,
+        "medical_lo": 0,
+        "medical_hi": 47862.68,
+        "cosmetic": 25357.77,
+        "cosmetic_lo": 0,
+        "cosmetic_hi": 91544.92,
+        "is_forecast": true
+      },
+      {
+        "month": "2025-02",
+        "medical": 15248.72,
+        "medical_lo": 0,
+        "medical_hi": 47433.12,
+        "cosmetic": 24345.14,
+        "cosmetic_lo": 0,
+        "cosmetic_hi": 90532.29,
+        "is_forecast": true
+      }
+    ],
+    "seasonality": {
+      "cosmetic": {
+        "Jan": 0.797,
+        "Feb": 0.927,
+        "Mar": 0.917,
+        "Apr": 0.772,
+        "May": 0.812,
+        "Jun": 0.758,
+        "Jul": 0.761,
+        "Aug": 0.926,
+        "Sep": 1.313,
+        "Oct": 1.358,
+        "Nov": 1.288,
+        "Dec": 1.37
+      },
+      "medical": {
+        "Jan": 0.902,
+        "Feb": 0.84,
+        "Mar": 0.934,
+        "Apr": 0.757,
+        "May": 0.87,
+        "Jun": 0.828,
+        "Jul": 0.833,
+        "Aug": 0.848,
+        "Sep": 1.221,
+        "Oct": 1.3,
+        "Nov": 1.372,
+        "Dec": 1.294
+      },
+      "cosmetic_peak_months": [
+        "November",
+        "December",
+        "February",
+        "May"
+      ],
+      "medical_stable_note": "Medical revenue is relatively stable with a mild summer dip (July-August)."
+    },
+    "cms_comparison": {
+      "clinic_avg_monthly_revenue": 115226.49,
+      "cms_implied_monthly_revenue": 164196.36,
+      "clinic_vs_benchmark_pct": -29.8,
+      "note": "Benchmark from CMS: 90 pts/week \u00d7 $106 avg Medicare payment \u00d7 4.3 weeks \u00d7 4 (Medicare=25%)"
+    },
+    "summary": {
+      "total_3yr_revenue": 3687247.53,
+      "avg_monthly_medical": 39446.91,
+      "avg_monthly_cosmetic": 75779.58,
+      "cosmetic_share_pct": 65.8
+    }
+  },
+  "cms_benchmarks": {
+    "our_avg_payment": 116.04,
+    "national_avg": 106.07,
+    "tx_avg": 111.88,
+    "clinic_vs_nat_pct": 9.4,
+    "our_procedure_mix": {
+      "11100": 1.5,
+      "11300": 10.6,
+      "11600": 1.4,
+      "17110": 17.7,
+      "17260": 1.4,
+      "17311": 1.5,
+      "96920": 12.2,
+      "99203": 10.9,
+      "99213": 27.4,
+      "99214": 15.4
+    },
+    "cosmetic_gap_note": "Medicare covers MEDICAL dermatology only. Cosmetic procedures (Botox, fillers, laser rejuvenation, chemical peels) are entirely cash-pay and NOT captured in CMS data. For a typical solo TX derm practice, cosmetic revenue represents 30-45% of total billings \u2014 this gap is modeled separately in the synthetic clinic data.",
+    "top20_national": [
+      {
+        "code": "99213",
+        "desc": "Office/outpatient visit, established pt, low complexity",
+        "avg_payment": 61.63,
+        "nat_volume": 13428
+      },
+      {
+        "code": "99214",
+        "desc": "Office/outpatient visit, established pt, moderate complexity",
+        "avg_payment": 90.07,
+        "nat_volume": 8833
+      },
+      {
+        "code": "99212",
+        "desc": "Office/outpatient visit, established pt, straightforward",
+        "avg_payment": 36.06,
+        "nat_volume": 6658
+      },
+      {
+        "code": "99203",
+        "desc": "Office/outpatient visit, new pt, low complexity",
+        "avg_payment": 89.19,
+        "nat_volume": 3764
+      },
+      {
+        "code": "11100",
+        "desc": "Biopsy of skin lesion, single",
+        "avg_payment": 84.16,
+        "nat_volume": 3063
+      },
+      {
+        "code": "17000",
+        "desc": "Destruction actinic keratosis, first lesion",
+        "avg_payment": 60.84,
+        "nat_volume": 2870
+      },
+      {
+        "code": "17110",
+        "desc": "Destruction benign lesions, 1-14 lesions",
+        "avg_payment": 80.69,
+        "nat_volume": 2563
+      },
+      {
+        "code": "17261",
+        "desc": "Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+        "avg_payment": 191.06,
+        "nat_volume": 2365
+      },
+      {
+        "code": "17260",
+        "desc": "Destruction malignant lesion, trunk/arm/leg, \u22640.5cm",
+        "avg_payment": 172.31,
+        "nat_volume": 2202
+      },
+      {
+        "code": "99204",
+        "desc": "Office/outpatient visit, new pt, moderate complexity",
+        "avg_payment": 130.17,
+        "nat_volume": 2201
+      }
+    ]
+  },
+  "raw_benchmarks": {
+    "source": "SYNTHETIC SAMPLE (replace with real CMS file per instructions above)",
+    "n_providers": 35,
+    "n_states": 15,
+    "mohs_avg_payment": 540.08,
+    "geographic_variation": {
+      "by_state": [
+        {
+          "state": "LA",
+          "n_providers": 2,
+          "avg_payment": 134.14,
+          "avg_stdz": 142.24,
+          "total_srvcs": 2646
+        },
+        {
+          "state": "SC",
+          "n_providers": 1,
+          "avg_payment": 129.27,
+          "avg_stdz": 137.13,
+          "total_srvcs": 1657
+        },
+        {
+          "state": "IL",
+          "n_providers": 3,
+          "avg_payment": 126.53,
+          "avg_stdz": 134.24,
+          "total_srvcs": 6622
+        },
+        {
+          "state": "MN",
+          "n_providers": 2,
+          "avg_payment": 116.98,
+          "avg_stdz": 124.11,
+          "total_srvcs": 4047
+        },
+        {
+          "state": "NC",
+          "n_providers": 2,
+          "avg_payment": 114.04,
+          "avg_stdz": 120.94,
+          "total_srvcs": 3505
+        },
+        {
+          "state": "TX",
+          "n_providers": 4,
+          "avg_payment": 111.88,
+          "avg_stdz": 118.76,
+          "total_srvcs": 5683
+        },
+        {
+          "state": "FL",
+          "n_providers": 2,
+          "avg_payment": 108.18,
+          "avg_stdz": 114.73,
+          "total_srvcs": 5832
+        },
+        {
+          "state": "CA",
+          "n_providers": 4,
+          "avg_payment": 105.13,
+          "avg_stdz": 111.66,
+          "total_srvcs": 8094
+        },
+        {
+          "state": "AZ",
+          "n_providers": 2,
+          "avg_payment": 100.74,
+          "avg_stdz": 106.94,
+          "total_srvcs": 4420
+        },
+        {
+          "state": "NY",
+          "n_providers": 6,
+          "avg_payment": 99.86,
+          "avg_stdz": 105.96,
+          "total_srvcs": 12895
+        },
+        {
+          "state": "PA",
+          "n_providers": 1,
+          "avg_payment": 98.82,
+          "avg_stdz": 104.98,
+          "total_srvcs": 1110
+        },
+        {
+          "state": "MA",
+          "n_providers": 2,
+          "avg_payment": 83.74,
+          "avg_stdz": 88.61,
+          "total_srvcs": 3752
+        },
+        {
+          "state": "VA",
+          "n_providers": 2,
+          "avg_payment": 82.49,
+          "avg_stdz": 87.65,
+          "total_srvcs": 4348
+        },
+        {
+          "state": "GA",
+          "n_providers": 1,
+          "avg_payment": 80.56,
+          "avg_stdz": 85.86,
+          "total_srvcs": 1869
+        },
+        {
+          "state": "OH",
+          "n_providers": 1,
+          "avg_payment": 77.73,
+          "avg_stdz": 82.51,
+          "total_srvcs": 1637
+        }
+      ],
+      "national_avg_payment": 106.07,
+      "tx_avg_payment": 111.88,
+      "tx_vs_national_pct": 5.5,
+      "n_tx_providers": 4
+    },
+    "procedure_mix_pct": {
+      "biopsy": 6.66,
+      "destruction": 13.71,
+      "destruction_mal": 6.7,
+      "em_new": 8.76,
+      "em_visit": 46.7,
+      "excision": 4.77,
+      "mohs": 5.17,
+      "other_proc": 2.61,
+      "phototherapy": 1.91,
+      "shave": 3.01
+    },
+    "high_value_procedures": [
+      {
+        "code": "17311",
+        "desc": "Mohs micrographic surgery, face/head/neck, 1st stage",
+        "avg_payment": 713.78
+      },
+      {
+        "code": "17315",
+        "desc": "Mohs micrographic surgery, trunk/arm/leg, 1st stage",
+        "avg_payment": 444.03
+      },
+      {
+        "code": "17312",
+        "desc": "Mohs micrographic surgery, face/head/neck, each add'l stage",
+        "avg_payment": 338.36
+      },
+      {
+        "code": "11601",
+        "desc": "Excision malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+        "avg_payment": 205.55
+      },
+      {
+        "code": "17261",
+        "desc": "Destruction malignant lesion, trunk/arm/leg, 0.6-1.0cm",
+        "avg_payment": 191.06
+      },
+      {
+        "code": "11600",
+        "desc": "Excision malignant lesion, trunk/arm/leg, \u22640.5cm",
+        "avg_payment": 173.24
+      },
+      {
+        "code": "17260",
+        "desc": "Destruction malignant lesion, trunk/arm/leg, \u22640.5cm",
+        "avg_payment": 172.31
+      },
+      {
+        "code": "11441",
+        "desc": "Excision benign lesion, face/ear/lid, 0.6-1.0cm",
+        "avg_payment": 145.58
+      },
+      {
+        "code": "99215",
+        "desc": "Office/outpatient visit, established pt, high complexity",
+        "avg_payment": 144.25
+      },
+      {
+        "code": "99204",
+        "desc": "Office/outpatient visit, new pt, moderate complexity",
+        "avg_payment": 130.17
+      }
+    ]
+  },
+  "patient_analytics": {
+    "avg_ltv": 1474.9,
+    "median_ltv": 777.6,
+    "revenue_concentration": {
+      "top_1pct_revenue_share": 0.0667,
+      "top_10pct_revenue_share": 0.4225,
+      "top_20pct_revenue_share": 0.6246,
+      "gini_coefficient": 0.5733
+    },
+    "churn_model": {
+      "auc": 0.8145,
+      "accuracy": 0.19,
+      "churn_rate": 0.4488,
+      "n_churned": 1122,
+      "n_active": 1378,
+      "feature_coefs": {
+        "frequency": 0.2762,
+        "monetary": 0.2916,
+        "age": 0.1486,
+        "insurance_enc": -0.1537,
+        "channel_enc": -0.0995
+      }
+    },
+    "ltv_by_channel": {
+      "doctor_referral": {
+        "avg_ltv": 1430.65,
+        "median_ltv": 801.17,
+        "n": 602
+      },
+      "google_search": {
+        "avg_ltv": 1530.47,
+        "median_ltv": 795.42,
+        "n": 884
+      },
+      "instagram": {
+        "avg_ltv": 1526.45,
+        "median_ltv": 778.86,
+        "n": 376
+      },
+      "patient_referral": {
+        "avg_ltv": 1433.01,
+        "median_ltv": 757.93,
+        "n": 513
+      },
+      "walk_in": {
+        "avg_ltv": 1311.89,
+        "median_ltv": 660.18,
+        "n": 125
+      }
+    }
+  }
+}

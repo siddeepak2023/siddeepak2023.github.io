@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DermIQ — Dermatology Clinic Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0D7377;--teal2:#14a085;--teal3:#1abc9c;
+  --gold:#F4A261;--gold2:#e67e22;
+  --red:#E76F51;--red2:#c0392b;
+  --slate:#1A1A2E;--slate2:#2d2d44;
+  --bg:#F8F9FA;--surface:#FFFFFF;--surface2:#F1F3F5;
+  --border:#E9ECEF;--border2:#DEE2E6;
+  --text:#1A1A2E;--muted:#6C757D;--dimmer:#ADB5BD;
+  --sans:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.05);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.07),0 4px 6px rgba(0,0,0,.05);
+  --radius:10px;--radius-sm:6px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:400;min-height:100vh;overflow-x:hidden;font-size:14px}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--slate);padding:0 2rem;display:flex;align-items:center;gap:1.5rem;height:56px;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.tb-brand{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+.tb-dot{width:10px;height:10px;border-radius:50%;background:var(--teal3)}
+.tb-name{color:#fff;font-size:.9rem;font-weight:600;letter-spacing:.02em}
+.tb-clinic{color:var(--dimmer);font-size:.72rem;font-family:var(--mono);margin-left:.3rem}
+.tb-tabs{display:flex;gap:0;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.tb-tabs::-webkit-scrollbar{display:none}
+.tb-tab{background:none;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.5);font-family:var(--sans);font-size:.72rem;font-weight:500;letter-spacing:.05em;padding:.9rem 1.1rem;cursor:pointer;transition:all .2s;white-space:nowrap;text-transform:uppercase}
+.tb-tab:hover{color:rgba(255,255,255,.85)}
+.tb-tab.active{color:#fff;border-bottom-color:var(--teal3)}
+.tb-badge{background:rgba(244,162,97,.15);border:1px solid rgba(244,162,97,.4);border-radius:20px;color:var(--gold);font-size:.58rem;font-family:var(--mono);padding:.15rem .5rem;margin-left:.3rem}
+
+/* ── PAGE LAYOUT ── */
+.page{display:none;padding:2rem;max-width:1380px;margin:0 auto}
+.page.active{display:block}
+.row{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.col-2{flex:1;min-width:320px}
+.col-3{flex:1;min-width:260px}
+.col-full{width:100%}
+
+/* ── SECTION HEADER ── */
+.sec-title{font-size:.65rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.sec-title::before{content:'';width:3px;height:12px;background:var(--teal);border-radius:2px;flex-shrink:0}
+.mb{margin-bottom:1.2rem}
+
+/* ── CARD ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-title{font-size:.68rem;font-weight:600;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.card-hd .card-title{margin-bottom:0}
+
+/* ── KPI ROW ── */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:1.5rem}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:all .2s}
+.kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-card.teal::before{background:var(--teal)}
+.kpi-card.gold::before{background:var(--gold)}
+.kpi-card.red::before{background:var(--red)}
+.kpi-card.slate::before{background:var(--slate)}
+.kpi-card.green::before{background:#2ecc71}
+.kpi-val{font-size:1.7rem;font-weight:700;line-height:1;letter-spacing:-.02em;margin-top:.3rem}
+.kpi-val.teal{color:var(--teal)}
+.kpi-val.gold{color:var(--gold2)}
+.kpi-val.red{color:var(--red)}
+.kpi-val.green{color:#27ae60}
+.kpi-label{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+.kpi-sub{font-size:.62rem;color:var(--dimmer);margin-top:.3rem}
+
+/* ── STAT TABLE ── */
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border)}
+.stat-row:last-child{border-bottom:none}
+.stat-label{font-size:.72rem;color:var(--muted)}
+.stat-val{font-size:.78rem;font-weight:600;color:var(--text)}
+.stat-val.good{color:var(--teal)}
+.stat-val.warn{color:var(--gold2)}
+.stat-val.bad{color:var(--red)}
+
+/* ── CHART HEIGHTS ── */
+.chart-wrap{position:relative}
+.ch180{height:180px}.ch220{height:220px}.ch260{height:260px}.ch300{height:300px}.ch340{height:340px}
+
+/* ── SEGMENTS ── */
+.seg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:1rem}
+.seg-card{border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem;position:relative;overflow:hidden;transition:all .2s}
+.seg-card:hover{box-shadow:var(--shadow-md)}
+.seg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.seg-icon{font-size:1.5rem;margin-bottom:.4rem}
+.seg-name{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
+.seg-kpi-row{display:flex;gap:.8rem;flex-wrap:wrap}
+.seg-kpi{flex:1;min-width:60px}
+.seg-kpi-val{font-size:1.1rem;font-weight:700;line-height:1}
+.seg-kpi-lbl{font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:.15rem}
+
+/* ── BADGES ── */
+.badge{display:inline-block;border-radius:4px;padding:.18rem .5rem;font-size:.62rem;font-weight:600;letter-spacing:.04em}
+.badge-teal{background:rgba(13,115,119,.1);color:var(--teal);border:1px solid rgba(13,115,119,.2)}
+.badge-gold{background:rgba(244,162,97,.1);color:var(--gold2);border:1px solid rgba(244,162,97,.2)}
+.badge-red{background:rgba(231,111,81,.1);color:var(--red);border:1px solid rgba(231,111,81,.2)}
+.badge-slate{background:rgba(26,26,46,.08);color:var(--slate);border:1px solid rgba(26,26,46,.12)}
+.badge-green{background:rgba(46,204,113,.1);color:#27ae60;border:1px solid rgba(46,204,113,.2)}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.73rem}
+th{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.55rem .8rem;border-bottom:2px solid var(--border2);text-align:left;white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{color:var(--text)}
+td{padding:.5rem .8rem;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:rgba(13,115,119,.03)}
+.td-mono{font-family:var(--mono);font-size:.7rem}
+
+/* ── PROGRESS BAR ── */
+.bar-wrap{display:flex;align-items:center;gap:.5rem}
+.bar-track{flex:1;height:6px;background:var(--border2);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .5s}
+
+/* ── CHANNEL CARDS ── */
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem;margin-bottom:1rem}
+.ch-card{border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;transition:all .2s}
+.ch-card:hover{box-shadow:var(--shadow);border-color:var(--teal)}
+.ch-name{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;color:var(--muted)}
+.ch-val{font-size:1.25rem;font-weight:700;color:var(--teal)}
+.ch-sub{font-size:.62rem;color:var(--dimmer);margin-top:.2rem}
+
+/* ── CALLOUT BOX ── */
+.callout{border-left:3px solid var(--teal);background:rgba(13,115,119,.05);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:.9rem 1rem;margin-bottom:1rem}
+.callout.warn{border-color:var(--gold);background:rgba(244,162,97,.06)}
+.callout.info{border-color:#3498db;background:rgba(52,152,219,.05)}
+.callout-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.callout-text{font-size:.72rem;color:var(--muted);line-height:1.6}
+
+/* ── RISK TABLE ── */
+.risk-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:.3rem;background:var(--surface);transition:all .2s}
+.risk-row:hover{box-shadow:var(--shadow);border-color:var(--teal)}
+.risk-prob{font-size:.9rem;font-weight:700;min-width:48px;text-align:center}
+.risk-prob.high{color:var(--red)}
+.risk-prob.med{color:var(--gold2)}
+.risk-info{flex:1;min-width:0}
+.risk-id{font-size:.68rem;font-weight:600;color:var(--text)}
+.risk-meta{font-size:.62rem;color:var(--muted)}
+.risk-badge{margin-left:auto}
+
+/* ── ABOUT TAB ── */
+.about-hero{background:linear-gradient(135deg,var(--slate) 0%,var(--slate2) 100%);border-radius:var(--radius);padding:2.5rem;color:#fff;margin-bottom:1.2rem}
+.about-title{font-size:1.8rem;font-weight:700;margin-bottom:.5rem}
+.about-sub{font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.7;max-width:640px}
+.pitch-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin-bottom:.8rem;background:var(--surface);transition:all .2s}
+.pitch-card:hover{box-shadow:var(--shadow-md);border-color:var(--teal)}
+.pitch-quote{font-size:.8rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:.5rem;padding-left:.8rem;border-left:2px solid var(--teal)}
+.pitch-context{font-size:.68rem;color:var(--muted)}
+.stack-pills{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.stack-pill{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:.22rem .6rem;font-size:.62rem;font-family:var(--mono);color:var(--slate)}
+
+/* ── GEOGRAPHIC CHART ── */
+.geo-row{display:flex;align-items:center;gap:.6rem;padding:.3rem 0}
+.geo-state{font-size:.68rem;font-family:var(--mono);color:var(--muted);min-width:28px}
+.geo-bar-track{flex:1;height:8px;background:var(--border2);border-radius:4px;overflow:hidden}
+.geo-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--teal3))}
+.geo-val{font-size:.68rem;font-weight:600;min-width:52px;text-align:right}
+
+/* ── GENERATED TAG ── */
+.gen-tag{font-size:.58rem;color:var(--dimmer);text-align:right;padding:.4rem 2rem;font-family:var(--mono)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .page{padding:1rem}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .seg-grid{grid-template-columns:1fr}
+  .row{flex-direction:column}
+  .topbar{padding:0 1rem}
+  .tb-clinic{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="tb-brand" href="#">
+    <div class="tb-dot"></div>
+    <span class="tb-name">DermIQ</span>
+    <span class="tb-clinic">DermCare Texas · Analytics Demo</span>
+  </a>
+  <nav class="tb-tabs">
+    <button class="tb-tab active" onclick="switchTab('overview',this)">Overview</button>
+    <button class="tb-tab" onclick="switchTab('patients',this)">Patient Intelligence</button>
+    <button class="tb-tab" onclick="switchTab('noshow',this)">No-Show Risk</button>
+    <button class="tb-tab" onclick="switchTab('marketing',this)">Marketing ROI</button>
+    <button class="tb-tab" onclick="switchTab('forecast',this)">Revenue Forecast</button>
+    <button class="tb-tab" onclick="switchTab('benchmarks',this)">National Benchmarks</button>
+    <button class="tb-tab" onclick="switchTab('about',this)">About <span class="tb-badge">Product</span></button>
+  </nav>
+</div>
+
+<!-- ═══════════════ OVERVIEW ═══════════════ -->
+<div id="page-overview" class="page active">
+  <div class="kpi-row" id="kpi-row">
+    <div class="kpi-card teal"><div class="kpi-label">Active Patients</div><div class="kpi-val teal" id="kpi-active">—</div><div class="kpi-sub">Visited in last 12 months</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">Monthly Revenue</div><div class="kpi-val gold" id="kpi-rev">—</div><div class="kpi-sub">3-month avg (attended)</div></div>
+    <div class="kpi-card red"><div class="kpi-label">No-Show Rate</div><div class="kpi-val red" id="kpi-ns">—</div><div class="kpi-sub" id="kpi-ns-sub">Annual revenue at risk</div></div>
+    <div class="kpi-card slate"><div class="kpi-label">Avg Patient LTV</div><div class="kpi-val" id="kpi-ltv">—</div><div class="kpi-sub">All attended visits</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Best Channel ROAS</div><div class="kpi-val green" id="kpi-roas">—</div><div class="kpi-sub" id="kpi-roas-ch">—</div></div>
+  </div>
+
+  <div class="row">
+    <div class="col-2 card">
+      <div class="card-title">Monthly Revenue — Medical vs Cosmetic</div>
+      <div class="chart-wrap ch260"><canvas id="chart-rev-trend"></canvas></div>
+    </div>
+    <div class="col-3 card">
+      <div class="card-title">Revenue Mix</div>
+      <div class="chart-wrap ch220"><canvas id="chart-rev-mix"></canvas></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-3 card">
+      <div class="card-title">CMS Benchmark — Avg Payment / Service</div>
+      <div id="cms-quick-compare"></div>
+    </div>
+    <div class="col-2 card">
+      <div class="card-title">Clinic Performance vs National Average</div>
+      <div class="chart-wrap ch220"><canvas id="chart-benchmark-bar"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PATIENT INTELLIGENCE ═══════════════ -->
+<div id="page-patients" class="page">
+  <div class="sec-title mb">Patient Segments — K-Means RFM (k=4)</div>
+  <div class="seg-grid mb" id="seg-cards"></div>
+
+  <div class="row">
+    <div class="col-2 card">
+      <div class="card-title">LTV by Acquisition Channel</div>
+      <div class="chart-wrap ch260"><canvas id="chart-ltv-chan"></canvas></div>
+    </div>
+    <div class="col-3 card">
+      <div class="card-title">Cohort Retention (% still active)</div>
+      <div class="chart-wrap ch260"><canvas id="chart-cohort"></canvas></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-3 card">
+      <div class="card-title">Revenue Concentration</div>
+      <div id="rev-conc"></div>
+    </div>
+    <div class="col-2 card">
+      <div class="card-title">Churn Prediction Model</div>
+      <div id="churn-stats"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ NO-SHOW RISK ═══════════════ -->
+<div id="page-noshow" class="page">
+  <div class="row">
+    <div class="col-3 card">
+      <div class="card-title">Model Performance</div>
+      <div class="stat-row"><span class="stat-label">AUC (ROC)</span><span class="stat-val good" id="ns-auc">—</span></div>
+      <div class="stat-row"><span class="stat-label">Accuracy</span><span class="stat-val" id="ns-acc">—</span></div>
+      <div class="stat-row"><span class="stat-label">No-Show Rate</span><span class="stat-val bad" id="ns-rate">—</span></div>
+      <div class="stat-row"><span class="stat-label">Algorithm</span><span class="stat-val td-mono" style="font-size:.65rem">HistGradientBoosting</span></div>
+      <div class="stat-row"><span class="stat-label">Split</span><span class="stat-val">Time-based 80/20</span></div>
+    </div>
+    <div class="col-2 card">
+      <div class="card-title">ROC Curve</div>
+      <div class="chart-wrap ch220"><canvas id="chart-roc"></canvas></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2 card">
+      <div class="card-title">Feature Importance (Permutation)</div>
+      <div class="chart-wrap ch220"><canvas id="chart-fi-ns"></canvas></div>
+    </div>
+    <div class="col-3 card">
+      <div class="card-title">💰 Business Impact</div>
+      <div id="ns-impact"></div>
+    </div>
+  </div>
+
+  <div class="sec-title mb" style="margin-top:.5rem">Today's High-Risk Appointments</div>
+  <div class="card">
+    <div id="risk-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ MARKETING ROI ═══════════════ -->
+<div id="page-marketing" class="page">
+  <div class="ch-grid" id="ch-cards"></div>
+
+  <div class="callout warn mb" id="mktg-rec"></div>
+
+  <div class="row">
+    <div class="col-2 card">
+      <div class="card-title">LTV : CAC by Channel</div>
+      <div class="chart-wrap ch260"><canvas id="chart-ltvcac"></canvas></div>
+    </div>
+    <div class="col-3 card">
+      <div class="card-title">2-Year Retention by Channel</div>
+      <div id="retention-bars"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-full card">
+      <div class="card-title">Monthly Marketing Spend — Last 12 Months</div>
+      <div class="chart-wrap ch220"><canvas id="chart-mktg-trend"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ REVENUE FORECAST ═══════════════ -->
+<div id="page-forecast" class="page">
+  <div class="callout mb">
+    <div class="callout-title">Forecast Methodology</div>
+    <div class="callout-text">Linear trend + mean-reversion blend on 32 months of data. Medical revenue: stable with mild Q3 dip. Cosmetic: strong Q4 peak (Nov–Dec), secondary peaks in Feb and May. Confidence intervals at 90% (±1.64σ from historical residuals). Medicare data captures medical only — cosmetic is modeled separately.</div>
+  </div>
+
+  <div class="card mb">
+    <div class="card-hd">
+      <span class="card-title">Revenue Forecast — Medical vs Cosmetic (6-Month Horizon)</span>
+    </div>
+    <div class="chart-wrap ch300"><canvas id="chart-forecast"></canvas></div>
+  </div>
+
+  <div class="row">
+    <div class="col-3 card">
+      <div class="card-title">Seasonality Index</div>
+      <div class="chart-wrap ch220"><canvas id="chart-seasonality"></canvas></div>
+    </div>
+    <div class="col-2 card">
+      <div class="card-title">Forecast Summary</div>
+      <div id="forecast-summary"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ NATIONAL BENCHMARKS ═══════════════ -->
+<div id="page-benchmarks" class="page">
+  <div class="callout info mb">
+    <div class="callout-title">Data Source</div>
+    <div class="callout-text" id="cms-source-note">CMS Medicare Physician &amp; Other Practitioners dataset. Medicare covers medical dermatology procedures — cosmetic revenue (Botox, fillers, laser) is entirely cash-pay and not captured in CMS data.</div>
+  </div>
+
+  <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi-card teal"><div class="kpi-label">National Avg Payment</div><div class="kpi-val teal" id="bm-nat-avg">—</div><div class="kpi-sub">Per Medicare service</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">TX Avg Payment</div><div class="kpi-val gold" id="bm-tx-avg">—</div><div class="kpi-sub" id="bm-tx-sub">vs national</div></div>
+    <div class="kpi-card slate"><div class="kpi-label">Our Clinic Avg</div><div class="kpi-val" id="bm-our-avg">—</div><div class="kpi-sub" id="bm-our-sub">vs national</div></div>
+  </div>
+
+  <div class="row">
+    <div class="col-2 card">
+      <div class="card-title">Top 10 Dermatology Procedures — National Volume</div>
+      <div class="chart-wrap ch280"><canvas id="chart-top-procs"></canvas></div>
+    </div>
+    <div class="col-3 card">
+      <div class="card-title">Payment by State (Top 10)</div>
+      <div id="geo-bars"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2 card">
+      <div class="card-title">High-Value Procedure Payments</div>
+      <div class="chart-wrap ch220"><canvas id="chart-hv-procs"></canvas></div>
+    </div>
+    <div class="col-3 card">
+      <div class="card-title">⚠ The Cosmetic Revenue Gap</div>
+      <div class="callout warn" style="margin:0">
+        <div class="callout-title" style="color:var(--gold2)">Medicare Blind Spot</div>
+        <div class="callout-text" id="cosmetic-gap-text">Loading…</div>
+      </div>
+      <div class="stat-row" style="margin-top:.8rem"><span class="stat-label">Estimated cosmetic share</span><span class="stat-val warn">~38% of total revenue</span></div>
+      <div class="stat-row"><span class="stat-label">CMS coverage</span><span class="stat-val bad">Medical only (0% cosmetic)</span></div>
+      <div class="stat-row"><span class="stat-label">Cosmetic revenue source</span><span class="stat-val">100% cash-pay / private</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<div id="page-about" class="page">
+  <div class="about-hero">
+    <div class="about-title">DermIQ — Clinic Intelligence Platform</div>
+    <div class="about-sub">The analytical layer that sits between a dermatology practice's EHR system and its business decisions. Built on real CMS Medicare data benchmarks with synthetic patient-level records to demonstrate what a $300/month SaaS product would deliver to a solo dermatologist in Texas.</div>
+    <div class="stack-pills">
+      <span class="stack-pill">Python</span><span class="stack-pill">CMS Medicare Data</span>
+      <span class="stack-pill">HistGradientBoosting</span><span class="stack-pill">Scikit-learn</span>
+      <span class="stack-pill">Optuna</span><span class="stack-pill">K-Means RFM</span>
+      <span class="stack-pill">SQLite</span><span class="stack-pill">Chart.js</span>
+      <span class="stack-pill">7-Layer Pipeline</span>
+    </div>
+  </div>
+
+  <div class="sec-title mb">Interview Talking Points</div>
+
+  <div class="pitch-card">
+    <div class="pitch-quote">"I anchored the synthetic clinic data to real CMS Medicare benchmarks so the economics are defensible. A solo TX dermatologist sees ~90 patients/week at $106 average Medicare payment — that's the baseline everything is calibrated to."</div>
+    <div class="pitch-context">Layer 0–1: CMS data download → benchmark extraction → calibrated synthetic generation. The fake clinic matches real national averages.</div>
+  </div>
+  <div class="pitch-card">
+    <div class="pitch-quote">"Medicare data shows the medical side — I modeled the cosmetic revenue gap separately since it's entirely cash-pay and not captured by CMS. Cosmetic is ~38% of a typical derm practice but invisible to any Medicare-based benchmarking tool."</div>
+    <div class="pitch-context">Layer 1: CMS cosmetic gap analysis. This is the core insight a real SaaS product would sell against.</div>
+  </div>
+  <div class="pitch-card">
+    <div class="pitch-quote">"The no-show model quantifies $216K in annual revenue at risk for a typical solo practice. Targeting the top 20% highest-risk appointments with double reminders could recover $43K+ annually — that's the number that makes a clinic owner pay attention."</div>
+    <div class="pitch-context">Layer 4: HistGradientBoosting no-show classifier with permutation importance and business impact quantification.</div>
+  </div>
+  <div class="pitch-card">
+    <div class="pitch-quote">"LTV:CAC analysis shows doctor referrals produce the best lifetime value per dollar spent — far exceeding Instagram despite lower volume. That's a concrete budget reallocation recommendation a marketing analyst would make."</div>
+    <div class="pitch-context">Layer 5: Channel attribution with ROAS, LTV:CAC ratio, 2-year retention comparison, and actionable recommendation.</div>
+  </div>
+  <div class="pitch-card">
+    <div class="pitch-quote">"This is the analytical layer that sits between a doctor's EHR system and their business decisions. Most solo practices have Athena or Epic for clinical records, nothing for analytics. DermIQ is that gap."</div>
+    <div class="pitch-context">Product positioning: sub-10 physician practices are underserved by enterprise analytics tools. Target customer = dermatologist with 1-2 locations, $800K–$2M revenue, no dedicated analytics staff.</div>
+  </div>
+
+  <div class="sec-title mb" style="margin-top:1.5rem">Technical Architecture</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem">
+      <div style="text-align:center;padding:.8rem">
+        <div style="font-size:1.4rem;margin-bottom:.3rem">📊</div>
+        <div style="font-size:.68rem;font-weight:700;margin-bottom:.2rem">Layer 0–1</div>
+        <div style="font-size:.62rem;color:var(--muted)">CMS Data + Benchmarks</div>
+      </div>
+      <div style="text-align:center;padding:.8rem">
+        <div style="font-size:1.4rem;margin-bottom:.3rem">🏥</div>
+        <div style="font-size:.68rem;font-weight:700;margin-bottom:.2rem">Layer 2</div>
+        <div style="font-size:.62rem;color:var(--muted)">Synthetic Clinic Data</div>
+      </div>
+      <div style="text-align:center;padding:.8rem">
+        <div style="font-size:1.4rem;margin-bottom:.3rem">👥</div>
+        <div style="font-size:.68rem;font-weight:700;margin-bottom:.2rem">Layer 3</div>
+        <div style="font-size:.62rem;color:var(--muted)">Patient Segmentation</div>
+      </div>
+      <div style="text-align:center;padding:.8rem">
+        <div style="font-size:1.4rem;margin-bottom:.3rem">🚫</div>
+        <div style="font-size:.68sym;font-weight:700;margin-bottom:.2rem">Layer 4</div>
+        <div style="font-size:.62rem;color:var(--muted)">No-Show Model</div>
+      </div>
+      <div style="text-align:center;padding:.8rem">
+        <div style="font-size:1.4rem;margin-bottom:.3rem">📣</div>
+        <div style="font-size:.68rem;font-weight:700;margin-bottom:.2rem">Layer 5</div>
+        <div style="font-size:.62rem;color:var(--muted)">Marketing Attribution</div>
+      </div>
+      <div style="text-align:center;padding:.8rem">
+        <div style="font-size:1.4rem;margin-bottom:.3rem">📈</div>
+        <div style="font-size:.68rem;font-weight:700;margin-bottom:.2rem">Layer 6</div>
+        <div style="font-size:.62rem;color:var(--muted)">Revenue Forecast</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gen-tag" id="gen-tag"></div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+let D = null;
+const TEAL='#0D7377', TEAL2='#1abc9c', GOLD='#F4A261', RED='#E76F51',
+      SLATE='#1A1A2E', GREEN='#27ae60', MUTED='#6C757D', BORDER='#E9ECEF';
+
+const CH_COLORS = {
+  google_search:'#4285F4', doctor_referral:TEAL, patient_referral:TEAL2,
+  instagram:'#C13584', walk_in:GOLD
+};
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tb-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+  if (D) lazyRender(id);
+}
+
+const rendered = new Set(['overview']);
+function lazyRender(id) {
+  if (rendered.has(id)) return;
+  rendered.add(id);
+  if (id==='patients')   buildPatients();
+  if (id==='noshow')     buildNoShow();
+  if (id==='marketing')  buildMarketing();
+  if (id==='forecast')   buildForecast();
+  if (id==='benchmarks') buildBenchmarks();
+}
+
+// ── Load ──────────────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const r = await fetch('data/dashboard_data.json');
+    D = await r.json();
+    renderAll();
+  } catch(e) {
+    document.querySelector('.about-title').textContent = 'Run the pipeline first (00 → 07)';
+    console.error(e);
+  }
+}
+
+function renderAll() {
+  buildKPIs();
+  buildOverviewCharts();
+  document.getElementById('gen-tag').textContent =
+    'Generated ' + (D.generated_at||'').slice(0,16).replace('T',' ') + ' UTC · DermIQ v1';
+}
+
+// ── KPIs ──────────────────────────────────────────────────────────────────────
+function buildKPIs() {
+  const k = D.kpis;
+  const ns_impact = D.noshow?.business_impact || {};
+  setText('kpi-active', k.active_patients?.toLocaleString());
+  setText('kpi-rev',   '$' + (k.monthly_revenue||0).toLocaleString('en',{maximumFractionDigits:0}));
+  setText('kpi-ns',    (k.noshow_rate||0).toFixed(1) + '%');
+  setText('kpi-ns-sub','$' + Math.round((ns_impact.annual_rev_at_risk||0)).toLocaleString() + '/yr at risk');
+  setText('kpi-ltv',   '$' + (k.avg_ltv||0).toLocaleString('en',{maximumFractionDigits:0}));
+  setText('kpi-roas',  (k.best_roas_value||0).toFixed(2) + 'x');
+  setText('kpi-roas-ch', (k.best_roas_channel||'').replace(/_/g,' '));
+}
+
+// ── Overview Charts ────────────────────────────────────────────────────────────
+function buildOverviewCharts() {
+  const trend = D.revenue_trend || [];
+  if (trend.length) {
+    const labels = trend.map(r=>r.month.slice(0,7));
+    new Chart(document.getElementById('chart-rev-trend').getContext('2d'),{
+      type:'bar',
+      data:{
+        labels,
+        datasets:[
+          {label:'Medical',  data:trend.map(r=>r.medical),  backgroundColor:TEAL+'cc', stack:'rev'},
+          {label:'Cosmetic', data:trend.map(r=>r.cosmetic), backgroundColor:GOLD+'cc', stack:'rev'},
+        ]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{font:{family:'IBM Plex Sans',size:10},usePointStyle:true}},
+          tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.parsed.y?.toLocaleString('en',{maximumFractionDigits:0})}`}}},
+        scales:{
+          x:{stacked:true,grid:{display:false},ticks:{color:MUTED,maxTicksLimit:10,font:{size:9}}},
+          y:{stacked:true,grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>'$'+(v/1000).toFixed(0)+'K'}}
+        }
+      }
+    });
+  }
+
+  // Revenue mix donut
+  const total_3yr = D.kpis?.total_revenue_3yr || 1;
+  const med_total = (D.revenue_trend||[]).reduce((s,r)=>s+r.medical,0);
+  const cos_total = (D.revenue_trend||[]).reduce((s,r)=>s+r.cosmetic,0);
+  new Chart(document.getElementById('chart-rev-mix').getContext('2d'),{
+    type:'doughnut',
+    data:{
+      labels:['Medical (Medicare billable)','Cosmetic (cash-pay)'],
+      datasets:[{data:[Math.round(med_total),Math.round(cos_total)],
+        backgroundColor:[TEAL+'dd',GOLD+'dd'],borderWidth:0,hoverOffset:6}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'68%',
+      plugins:{legend:{position:'bottom',labels:{font:{family:'IBM Plex Sans',size:10},usePointStyle:true}},
+        tooltip:{callbacks:{label:c=>{const pct=(c.parsed/(med_total+cos_total)*100).toFixed(1);return ` ${c.label}: $${c.parsed.toLocaleString('en',{maximumFractionDigits:0})} (${pct}%)`}}}}
+    }
+  });
+
+  // CMS comparison quick stats
+  const cms = D.cms_benchmarks || {};
+  document.getElementById('cms-quick-compare').innerHTML = `
+    <div class="stat-row"><span class="stat-label">National avg (Medicare)</span><span class="stat-val good">$${cms.national_avg||0}</span></div>
+    <div class="stat-row"><span class="stat-label">Texas avg (Medicare)</span><span class="stat-val">${cms.tx_avg ? '$'+cms.tx_avg : '—'}</span></div>
+    <div class="stat-row"><span class="stat-label">Our clinic medical avg</span><span class="stat-val">${cms.our_avg_payment ? '$'+cms.our_avg_payment.toFixed(0) : '—'}</span></div>
+    <div class="stat-row"><span class="stat-label">Clinic vs national</span><span class="stat-val ${(cms.clinic_vs_nat_pct||0)>=0?'good':'warn'}">${(cms.clinic_vs_nat_pct||0)>=0?'+':''}${(cms.clinic_vs_nat_pct||0).toFixed(1)}%</span></div>
+    <div class="stat-row"><span class="stat-label">Mohs avg payment</span><span class="stat-val good">$${D.raw_benchmarks?.mohs_avg_payment||790}</span></div>
+    <div class="stat-row"><span class="stat-label">⚠ Cosmetic not in CMS</span><span class="stat-val bad">~38% of revenue hidden</span></div>`;
+
+  // Benchmark bar
+  new Chart(document.getElementById('chart-benchmark-bar').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:['Our Clinic\n(Medical)','TX Average\n(CMS)','National Average\n(CMS)'],
+      datasets:[{data:[
+        Math.round(cms.our_avg_payment||0),
+        Math.round(cms.tx_avg||0),
+        Math.round(cms.national_avg||0),
+      ],backgroundColor:[TEAL+'cc',GOLD+'cc','#6C757D99'],borderRadius:5}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${c.parsed.y?.toFixed(2)}`}}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:MUTED,font:{size:9}}},
+        y:{grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>'$'+v}}
+      }
+    }
+  });
+}
+
+// ── Patients ──────────────────────────────────────────────────────────────────
+function buildPatients() {
+  const segs = D.segments || [];
+  const segEl = document.getElementById('seg-cards');
+  segEl.innerHTML = segs.map(s=>`
+    <div class="seg-card" style="border-color:${s.color}20">
+      <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:${s.color};border-radius:2px 0 0 2px"></div>
+      <div class="seg-icon">${s.icon}</div>
+      <div class="seg-name" style="color:${s.color}">${s.name}</div>
+      <div class="seg-kpi-row">
+        <div class="seg-kpi"><div class="seg-kpi-val">${s.n.toLocaleString()}</div><div class="seg-kpi-lbl">Patients</div></div>
+        <div class="seg-kpi"><div class="seg-kpi-val">$${Math.round(s.avg_ltv).toLocaleString()}</div><div class="seg-kpi-lbl">Avg LTV</div></div>
+        <div class="seg-kpi"><div class="seg-kpi-val">${s.avg_visits.toFixed(1)}</div><div class="seg-kpi-lbl">Avg Visits</div></div>
+        <div class="seg-kpi"><div class="seg-kpi-val">${Math.round(s.avg_recency)}d</div><div class="seg-kpi-lbl">Last Visit</div></div>
+      </div>
+    </div>`).join('');
+
+  // LTV by channel
+  const ltv_ch = D.patient_analytics?.ltv_by_channel || {};
+  const chKeys = Object.keys(ltv_ch);
+  new Chart(document.getElementById('chart-ltv-chan').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:chKeys.map(k=>k.replace(/_/g,' ')),
+      datasets:[{label:'Avg LTV',data:chKeys.map(k=>Math.round(ltv_ch[k].avg_ltv||0)),
+        backgroundColor:chKeys.map(k=>CH_COLORS[k]||TEAL),borderRadius:5}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${c.parsed.x?.toLocaleString()}`}}},
+      scales:{x:{grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>'$'+v.toLocaleString()}},
+               y:{grid:{display:false},ticks:{color:MUTED,font:{size:9}}}}
+    }
+  });
+
+  // Cohort retention
+  const cohort = D.cohort_retention || [];
+  const cohorts = cohort.slice(-8);
+  new Chart(document.getElementById('chart-cohort').getContext('2d'),{
+    type:'line',
+    data:{
+      labels:cohorts.map(c=>c.cohort),
+      datasets:[
+        {label:'6 months', data:cohorts.map(c=>(c.ret_6mo*100).toFixed(1)),  borderColor:TEAL, pointRadius:3,tension:.3,fill:false},
+        {label:'12 months',data:cohorts.map(c=>(c.ret_12mo*100).toFixed(1)), borderColor:GOLD, pointRadius:3,tension:.3,fill:false},
+        {label:'18 months',data:cohorts.map(c=>(c.ret_18mo*100).toFixed(1)), borderColor:RED,  pointRadius:3,tension:.3,fill:false},
+        {label:'24 months',data:cohorts.map(c=>(c.ret_24mo*100).toFixed(1)), borderColor:SLATE,pointRadius:3,tension:.3,fill:false},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{font:{family:'IBM Plex Sans',size:10},usePointStyle:true}}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:MUTED,font:{size:9},maxRotation:30}},
+        y:{grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>v+'%'},min:0,max:100}
+      }
+    }
+  });
+
+  // Revenue concentration
+  const rc = D.patient_analytics?.revenue_concentration || {};
+  document.getElementById('rev-conc').innerHTML = `
+    <div class="stat-row"><span class="stat-label">Top 1% of patients</span><span class="stat-val bad">${(rc.top_1pct_revenue_share*100||0).toFixed(1)}% of revenue</span></div>
+    <div class="stat-row"><span class="stat-label">Top 10% of patients</span><span class="stat-val warn">${(rc.top_10pct_revenue_share*100||0).toFixed(1)}% of revenue</span></div>
+    <div class="stat-row"><span class="stat-label">Top 20% of patients</span><span class="stat-val">${(rc.top_20pct_revenue_share*100||0).toFixed(1)}% of revenue</span></div>
+    <div class="stat-row"><span class="stat-label">Gini coefficient</span><span class="stat-val">${(rc.gini_coefficient||0).toFixed(3)}</span></div>
+    <div style="margin-top:.8rem" class="callout warn">
+      <div class="callout-title" style="color:var(--gold2)">Concentration Risk</div>
+      <div class="callout-text">VIP cosmetic patients drive outsized revenue. A churn prevention program targeting this segment has the highest ROI.</div>
+    </div>`;
+
+  // Churn model
+  const ch = D.patient_analytics?.churn_model || {};
+  document.getElementById('churn-stats').innerHTML = `
+    <div class="stat-row"><span class="stat-label">Churn rate</span><span class="stat-val bad">${(ch.churn_rate*100||0).toFixed(1)}%</span></div>
+    <div class="stat-row"><span class="stat-label">Model AUC</span><span class="stat-val good">${ch.auc||0}</span></div>
+    <div class="stat-row"><span class="stat-label">Accuracy</span><span class="stat-val">${(ch.accuracy*100||0).toFixed(1)}%</span></div>
+    <div class="stat-row"><span class="stat-label">Churned patients</span><span class="stat-val">${ch.n_churned?.toLocaleString()||0}</span></div>
+    <div class="stat-row"><span class="stat-label">Active patients</span><span class="stat-val good">${ch.n_active?.toLocaleString()||0}</span></div>
+    <div style="margin-top:.8rem" class="callout">
+      <div class="callout-title">Definition</div>
+      <div class="callout-text">Churn = no visit in 18+ months. Logistic regression on frequency, LTV, age, insurance type, and acquisition channel.</div>
+    </div>`;
+}
+
+// ── No-Show ────────────────────────────────────────────────────────────────────
+function buildNoShow() {
+  const ns = D.noshow || {};
+  setText('ns-auc',  ns.auc?.toFixed(4)||'—');
+  setText('ns-acc',  ((ns.accuracy||0)*100).toFixed(1)+'%');
+  setText('ns-rate', ((ns.noshow_rate||0)*100).toFixed(1)+'%');
+
+  // ROC curve
+  const roc = ns.roc_curve || {fpr:[0,1],tpr:[0,1]};
+  new Chart(document.getElementById('chart-roc').getContext('2d'),{
+    type:'line',
+    data:{
+      labels:roc.fpr,
+      datasets:[
+        {label:`AUC = ${ns.auc?.toFixed(4)||'—'}`,data:roc.fpr.map((f,i)=>({x:f,y:roc.tpr[i]})),
+          borderColor:TEAL,borderWidth:2,pointRadius:0,fill:true,backgroundColor:TEAL+'15'},
+        {label:'Random',data:[{x:0,y:0},{x:1,y:1}],borderColor:MUTED,borderDash:[4,4],borderWidth:1,pointRadius:0,fill:false}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{font:{family:'IBM Plex Sans',size:10},usePointStyle:true}}},
+      scales:{
+        x:{type:'linear',min:0,max:1,title:{display:true,text:'False Positive Rate',font:{size:9}},grid:{color:BORDER},ticks:{color:MUTED,font:{size:9}}},
+        y:{min:0,max:1,title:{display:true,text:'True Positive Rate',font:{size:9}},grid:{color:BORDER},ticks:{color:MUTED,font:{size:9}}}
+      }
+    }
+  });
+
+  // Feature importance
+  const fi = (ns.feature_importance||[]).slice(0,8);
+  new Chart(document.getElementById('chart-fi-ns').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:fi.map(f=>f.label),
+      datasets:[{data:fi.map(f=>f.importance),backgroundColor:TEAL+'bb',borderRadius:4}]
+    },
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{color:BORDER},ticks:{color:MUTED,font:{size:9}}},
+        y:{grid:{display:false},ticks:{color:MUTED,font:{size:9}}}
+      }
+    }
+  });
+
+  // Business impact
+  const bi = ns.business_impact || {};
+  document.getElementById('ns-impact').innerHTML = `
+    <div class="stat-row"><span class="stat-label">Annual appointments</span><span class="stat-val">${Math.round(bi.annual_appts||0).toLocaleString()}</span></div>
+    <div class="stat-row"><span class="stat-label">Annual no-shows</span><span class="stat-val bad">${Math.round(bi.annual_noshow_count||0).toLocaleString()}</span></div>
+    <div class="stat-row"><span class="stat-label">Avg revenue/appointment</span><span class="stat-val">$${Math.round(bi.avg_revenue_per_appt||0)}</span></div>
+    <div class="stat-row"><span class="stat-label">Annual revenue at risk</span><span class="stat-val bad">$${Math.round(bi.annual_rev_at_risk||0).toLocaleString()}</span></div>
+    <div class="stat-row"><span class="stat-label">Recoverable (double reminders)</span><span class="stat-val good">$${Math.round(bi.recoverable_revenue||0).toLocaleString()}</span></div>
+    <div style="margin-top:.8rem" class="callout">
+      <div class="callout-title">ROI of This Model</div>
+      <div class="callout-text">${bi.roi_narrative||''}</div>
+    </div>`;
+
+  // High-risk today
+  const today = ns.high_risk_today || [];
+  document.getElementById('risk-list').innerHTML = today.length
+    ? today.map(r=>`
+      <div class="risk-row">
+        <div class="risk-prob ${(r.noshow_prob||0)>=0.65?'high':'med'}">${((r.noshow_prob||0)*100).toFixed(0)}%</div>
+        <div class="risk-info">
+          <div class="risk-id">${r.patient_id} · ${r.appt_type||'visit'}</div>
+          <div class="risk-meta">${r.appt_date} ${r.time_slot||''} · ${r.insurance||''}</div>
+        </div>
+        <div class="risk-badge">${r.reminder_sent?'<span class="badge badge-teal">Reminded</span>':'<span class="badge badge-red">No Reminder</span>'}</div>
+      </div>`).join('')
+    : '<div style="color:var(--muted);font-size:.72rem;padding:.5rem">No high-risk appointments in test set</div>';
+}
+
+// ── Marketing ─────────────────────────────────────────────────────────────────
+function buildMarketing() {
+  const mktg = D.marketing || {};
+  const ltv_cac = mktg.ltv_cac_by_channel || [];
+  const roas    = mktg.roas_by_channel   || [];
+
+  // Channel cards
+  const chHtml = ltv_cac.map(ch=>{
+    const rRow = roas.find(r=>r.channel===ch.channel)||{};
+    return `<div class="ch-card">
+      <div class="ch-name">${ch.channel.replace(/_/g,' ')}</div>
+      <div class="ch-val">${ch.ltv_cac_ratio?.toFixed(1)}x</div>
+      <div class="ch-sub">LTV:CAC · CAC $${ch.cac}</div>
+      <div style="margin-top:.5rem;display:flex;gap:.3rem;flex-wrap:wrap">
+        <span class="badge badge-teal">LTV $${Math.round(ch.avg_ltv).toLocaleString()}</span>
+        <span class="badge badge-gold">ROAS ${rRow.roas?.toFixed(2)||'—'}x</span>
+        <span class="badge badge-slate">${(ch.ret_2yr*100).toFixed(0)}% 2yr ret</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('ch-cards').innerHTML = chHtml;
+
+  // Recommendation
+  const rec = mktg.budget_recommendation || {};
+  document.getElementById('mktg-rec').innerHTML = `
+    <div class="callout-title" style="color:var(--gold2)">Budget Recommendation</div>
+    <div class="callout-text">${rec.insight||rec.headline||''}</div>`;
+
+  // LTV:CAC bar
+  new Chart(document.getElementById('chart-ltvcac').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:ltv_cac.map(c=>c.channel.replace(/_/g,' ')),
+      datasets:[{label:'LTV:CAC Ratio',data:ltv_cac.map(c=>c.ltv_cac_ratio),
+        backgroundColor:ltv_cac.map(c=>CH_COLORS[c.channel]||TEAL),borderRadius:5}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y?.toFixed(1)}x`}}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:MUTED,font:{size:9}}},
+        y:{grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>v+'x'}}
+      }
+    }
+  });
+
+  // Retention bars
+  document.getElementById('retention-bars').innerHTML = ltv_cac.map(ch=>`
+    <div class="geo-row">
+      <div class="geo-state" style="min-width:120px;color:var(--text)">${ch.channel.replace(/_/g,' ')}</div>
+      <div class="geo-bar-track"><div class="geo-bar-fill" style="width:${(ch.ret_2yr*100)}%;background:${CH_COLORS[ch.channel]||TEAL}"></div></div>
+      <div class="geo-val" style="color:${CH_COLORS[ch.channel]||TEAL}">${(ch.ret_2yr*100).toFixed(0)}%</div>
+    </div>`).join('');
+
+  // Monthly spend trend
+  const trend = mktg.monthly_trend || {};
+  const months = trend.months || [];
+  const spendData = trend.spend || {};
+  const channels  = Object.keys(spendData);
+  new Chart(document.getElementById('chart-mktg-trend').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:months,
+      datasets:channels.map(ch=>({
+        label:ch.replace(/_/g,' '),
+        data:spendData[ch],
+        backgroundColor:(CH_COLORS[ch]||TEAL)+'cc',
+        stack:'spend',
+      }))
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{font:{family:'IBM Plex Sans',size:10},usePointStyle:true}}},
+      scales:{
+        x:{stacked:true,grid:{display:false},ticks:{color:MUTED,maxTicksLimit:12,font:{size:9}}},
+        y:{stacked:true,grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>'$'+(v/1000).toFixed(1)+'K'}}
+      }
+    }
+  });
+}
+
+// ── Forecast ──────────────────────────────────────────────────────────────────
+function buildForecast() {
+  const fc = D.revenue_forecast || {};
+  const hist = fc.historical || [];
+  const fcast= fc.forecast   || [];
+  const all  = [...hist,...fcast];
+
+  const labels  = all.map(r=>r.month);
+  const isFc    = all.map(r=>!!r.is_forecast);
+
+  new Chart(document.getElementById('chart-forecast').getContext('2d'),{
+    type:'line',
+    data:{
+      labels,
+      datasets:[
+        {label:'Medical (actual)', data:hist.map(r=>r.medical),  borderColor:TEAL,  backgroundColor:TEAL+'15', tension:.3,pointRadius:0,fill:true},
+        {label:'Cosmetic (actual)',data:hist.map(r=>r.cosmetic), borderColor:GOLD,  backgroundColor:GOLD+'15', tension:.3,pointRadius:0,fill:true},
+        {label:'Medical (forecast)',data:[...Array(hist.length-1).fill(null),hist[hist.length-1]?.medical,...fcast.map(r=>r.medical)],
+          borderColor:TEAL,borderDash:[4,3],tension:.3,pointRadius:2,fill:false},
+        {label:'Cosmetic (forecast)',data:[...Array(hist.length-1).fill(null),hist[hist.length-1]?.cosmetic,...fcast.map(r=>r.cosmetic)],
+          borderColor:GOLD,borderDash:[4,3],tension:.3,pointRadius:2,fill:false},
+        {label:'Forecast CI (med)',data:[...Array(hist.length-1).fill(null),hist[hist.length-1]?.medical,...fcast.map(r=>r.medical_hi)],
+          borderColor:'transparent',backgroundColor:TEAL+'20',fill:'-1',tension:.3,pointRadius:0},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{font:{family:'IBM Plex Sans',size:10},usePointStyle:true}}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:MUTED,maxTicksLimit:12,font:{size:9}}},
+        y:{grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>'$'+(v/1000).toFixed(0)+'K'}}
+      }
+    }
+  });
+
+  // Seasonality
+  const seas = fc.seasonality || {};
+  const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const cosm_seas = monthNames.map(m=>seas.cosmetic?.[m]||1);
+  const med_seas  = monthNames.map(m=>seas.medical?.[m]||1);
+  new Chart(document.getElementById('chart-seasonality').getContext('2d'),{
+    type:'line',
+    data:{
+      labels:monthNames,
+      datasets:[
+        {label:'Cosmetic',data:cosm_seas,borderColor:GOLD,tension:.3,pointRadius:3,fill:false},
+        {label:'Medical', data:med_seas, borderColor:TEAL,tension:.3,pointRadius:3,fill:false},
+        {label:'Baseline',data:Array(12).fill(1),borderColor:MUTED,borderDash:[3,3],pointRadius:0,fill:false},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{font:{family:'IBM Plex Sans',size:10},usePointStyle:true}},
+        tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y?.toFixed(2)}x`}}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:MUTED,font:{size:9}}},
+        y:{grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>v+'x'},min:0.5,max:1.5}
+      }
+    }
+  });
+
+  // Forecast summary
+  const sum = fc.summary || {};
+  const fc6_total = fcast.reduce((s,r)=>s+r.medical+r.cosmetic,0);
+  document.getElementById('forecast-summary').innerHTML = `
+    <div class="stat-row"><span class="stat-label">3-yr total revenue</span><span class="stat-val">$${Math.round(sum.total_3yr_revenue||0).toLocaleString()}</span></div>
+    <div class="stat-row"><span class="stat-label">Avg monthly medical</span><span class="stat-val good">$${Math.round(sum.avg_monthly_medical||0).toLocaleString()}</span></div>
+    <div class="stat-row"><span class="stat-label">Avg monthly cosmetic</span><span class="stat-val gold" style="color:var(--gold2)">$${Math.round(sum.avg_monthly_cosmetic||0).toLocaleString()}</span></div>
+    <div class="stat-row"><span class="stat-label">Cosmetic share</span><span class="stat-val">${sum.cosmetic_share_pct||0}%</span></div>
+    <div class="stat-row"><span class="stat-label">6-mo forecast total</span><span class="stat-val good">$${Math.round(fc6_total).toLocaleString()}</span></div>`;
+}
+
+// ── Benchmarks ────────────────────────────────────────────────────────────────
+function buildBenchmarks() {
+  const cms = D.cms_benchmarks || {};
+  const raw = D.raw_benchmarks  || {};
+  setText('bm-nat-avg', '$'+(cms.national_avg||0));
+  setText('bm-tx-avg',  '$'+(cms.tx_avg||0));
+  setText('bm-tx-sub',  raw.geographic_variation?.tx_vs_national_pct != null
+    ? `${raw.geographic_variation.tx_vs_national_pct>=0?'+':''}${raw.geographic_variation.tx_vs_national_pct?.toFixed(1)}% vs national` : '');
+  setText('bm-our-avg', '$'+Math.round(cms.our_avg_payment||0));
+  setText('bm-our-sub', `${(cms.clinic_vs_nat_pct||0)>=0?'+':''}${(cms.clinic_vs_nat_pct||0).toFixed(1)}% vs national`);
+
+  setText('cosmetic-gap-text', cms.cosmetic_gap_note ||
+    'Medicare covers medical dermatology only. Cosmetic procedures (Botox, fillers, laser) are 100% cash-pay and invisible to CMS data.');
+
+  // Top procedures chart
+  const top = cms.top20_national || [];
+  if (top.length) {
+    new Chart(document.getElementById('chart-top-procs').getContext('2d'),{
+      type:'bar',
+      data:{
+        labels:top.map(p=>p.code),
+        datasets:[
+          {label:'Avg Payment ($)',data:top.map(p=>p.avg_payment),backgroundColor:TEAL+'bb',borderRadius:3,yAxisID:'y'},
+        ]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},
+          tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.parsed.y?.toFixed(2)}`}}},
+        scales:{
+          x:{grid:{display:false},ticks:{color:MUTED,font:{size:9},maxRotation:45}},
+          y:{id:'y',grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>'$'+v}}
+        }
+      }
+    });
+  }
+
+  // Geographic bars
+  const geo = (raw.geographic_variation?.by_state||[]).slice(0,10);
+  const maxPay = Math.max(...geo.map(g=>g.avg_payment||0))||1;
+  document.getElementById('geo-bars').innerHTML = geo.map(g=>`
+    <div class="geo-row">
+      <div class="geo-state">${g.state}</div>
+      <div class="geo-bar-track"><div class="geo-bar-fill" style="width:${(g.avg_payment/maxPay*100).toFixed(0)}%"></div></div>
+      <div class="geo-val" style="color:var(--teal)">$${g.avg_payment?.toFixed(0)}</div>
+    </div>`).join('');
+
+  // High-value procedures chart
+  const hv = raw.high_value_procedures || [];
+  if (hv.length) {
+    new Chart(document.getElementById('chart-hv-procs').getContext('2d'),{
+      type:'bar',
+      data:{
+        labels:hv.map(p=>p.code||p.HCPCS_Cd||''),
+        datasets:[{data:hv.map(p=>p.avg_payment||0),
+          backgroundColor:hv.map(p=>(p.avg_payment||0)>400?RED+'cc':GOLD+'cc'),borderRadius:4}]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,indexAxis:'y',
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${c.parsed.x?.toFixed(2)}`}}},
+        scales:{
+          x:{grid:{color:BORDER},ticks:{color:MUTED,font:{size:9},callback:v=>'$'+v}},
+          y:{grid:{display:false},ticks:{color:MUTED,font:{size:9}}}
+        }
+      }
+    });
+  }
+}
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v??'—'}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
