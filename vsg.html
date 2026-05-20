@@ -33,7 +33,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── SCANLINES ──────────────────────────────────────────────── */
+/* ─── DOT GRID + SCANLINES ───────────────────────────────────── */
+body {
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
 body::before {
   content: '';
   position: fixed;
@@ -42,11 +48,109 @@ body::before {
     0deg,
     transparent,
     transparent 3px,
-    rgba(255,255,255,0.013) 3px,
-    rgba(255,255,255,0.013) 4px
+    rgba(255,255,255,0.011) 3px,
+    rgba(255,255,255,0.011) 4px
   );
   pointer-events: none;
   z-index: 9998;
+}
+
+/* ─── GLITCH ─────────────────────────────────────────────────── */
+@keyframes glitch-1 {
+  0%, 90%, 100% { clip-path: none; transform: none; }
+  91%  { clip-path: inset(20% 0 60% 0); transform: translateX(-4px); }
+  93%  { clip-path: inset(60% 0 10% 0); transform: translateX(4px); }
+  95%  { clip-path: inset(40% 0 40% 0); transform: translateX(-2px); }
+}
+@keyframes glitch-2 {
+  0%, 92%, 100% { clip-path: none; transform: none; opacity: 0; }
+  93%  { clip-path: inset(10% 0 70% 0); transform: translateX(6px); opacity: 0.6; color: var(--cream); }
+  96%  { clip-path: inset(70% 0 5% 0);  transform: translateX(-6px); opacity: 0.6; }
+  98%  { clip-path: none; opacity: 0; }
+}
+
+.hero-title {
+  position: relative;
+}
+.hero-title::before,
+.hero-title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  font-family: var(--syne);
+  font-size: inherit;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  pointer-events: none;
+}
+.hero-title::before { animation: glitch-1 8s infinite; }
+.hero-title::after  { animation: glitch-2 8s infinite; }
+
+/* ─── PRODUCT CARD CORNER BRACKETS ──────────────────────────── */
+.product-card {
+  position: relative;
+}
+.product-card::before,
+.product-card::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.product-card::before {
+  top: 10px; left: 10px;
+  border-top: 1.5px solid var(--cream);
+  border-left: 1.5px solid var(--cream);
+}
+.product-card::after {
+  bottom: 10px; right: 10px;
+  border-bottom: 1.5px solid var(--cream);
+  border-right: 1.5px solid var(--cream);
+}
+.product-card:hover::before,
+.product-card:hover::after { opacity: 1; }
+
+/* ─── NAV ACTIVE LINE ────────────────────────────────────────── */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--cream);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* ─── RED PULSE ON MARQUEE BAR ───────────────────────────────── */
+.marquee-bar {
+  border-bottom: 1px solid rgba(255,31,31,0.2) !important;
+}
+
+/* ─── HERO BOTTOM RED LINE ───────────────────────────────────── */
+.hero-meta-bar {
+  border-top: 1px solid rgba(255,31,31,0.25);
+}
+
+/* ─── SECTION TITLE RED UNDERLINE ───────────────────────────── */
+.section-title::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--cream);
+  margin-top: 6px;
+  box-shadow: 0 0 8px rgba(255,31,31,0.5);
 }
 
 a { color: inherit; text-decoration: none; }
@@ -291,11 +395,22 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   letter-spacing: 0.3em;
   text-transform: uppercase;
   padding: 13px 32px;
-  background: #fff;
-  color: var(--black);
-  transition: background 0.2s;
+  background: var(--cream);
+  color: #fff;
+  transition: background 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
 }
-.btn-primary:hover { background: rgba(255,255,255,0.88); }
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.btn-primary:hover { background: #e01010; box-shadow: 0 0 24px rgba(255,31,31,0.5); }
+.btn-primary:hover::after { transform: translateX(100%); }
 
 .btn-outline {
   font-family: var(--space);
@@ -304,12 +419,12 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   letter-spacing: 0.3em;
   text-transform: uppercase;
   padding: 13px 32px;
-  border: 1px solid rgba(255,255,255,0.6);
-  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.85);
   background: transparent;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
-.btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+.btn-outline:hover { border-color: var(--cream); color: #fff; box-shadow: 0 0 14px rgba(255,31,31,0.2); }
 
 .hero-content-right {
   display: flex;
@@ -1237,12 +1352,12 @@ footer {
   <video src="" autoplay muted loop playsinline></video>
   <div class="hero-video-placeholder">
     <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-    <span>Drop 01 — Hero video TBD</span>
+    <span>[ SIGNAL PENDING — DROP 01 ]</span>
   </div>
   <div class="hero-content">
     <div class="hero-content-left">
       <div class="hero-eyebrow">Austin, TX · Limited Release</div>
-      <h1 class="hero-title"><span class="accent-letter">P</span>rivate<br><span class="accent-letter">P</span>roblems<br><span class="accent-letter">A</span>rchive</h1>
+      <h1 class="hero-title" data-text="Private Problems Archive"><span class="accent-letter">P</span>rivate<br><span class="accent-letter">P</span>roblems<br><span class="accent-letter">A</span>rchive</h1>
       <div class="hero-buttons">
         <button class="btn-primary">Shop the Drop</button>
         <button class="btn-outline">View Lookbook</button>
@@ -1428,7 +1543,7 @@ function buildGrid() {
         <img src="" alt="${p.name} — ${p.colorway}">
         <div class="product-placeholder">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
-          <span>Upload photo</span>
+          <span>[ CLASSIFIED ]</span>
         </div>
         ${p.new ? '<span class="new-badge">New</span>' : ''}
         <div class="quick-add">Quick Add</div>
