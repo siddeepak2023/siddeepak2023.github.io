@@ -11,13 +11,13 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:         #F5F4F0;
-  --bg-2:       #EEECEA;
-  --black:      #0A0A0A;
-  --mid:        #6B6B6B;
-  --border:     rgba(10,10,10,0.1);
-  --cream:      #D42B2B;
-  --cream-warm: #AA1C1C;
+  --bg:         #080808;
+  --bg-2:       #111111;
+  --black:      #EDEDEB;
+  --mid:        #888888;
+  --border:     rgba(255,255,255,0.07);
+  --cream:      #FF1F1F;
+  --cream-warm: #CC0000;
   --syne:       'Syne', sans-serif;
   --space:      'Space Grotesk', sans-serif;
 }
@@ -31,6 +31,22 @@ body {
   font-weight: 300;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ─── SCANLINES ──────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(255,255,255,0.013) 3px,
+    rgba(255,255,255,0.013) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -103,10 +119,10 @@ nav .nav-cart:hover { color: #fff; }
 nav .cart-badge  { background: #fff; color: var(--black); }
 
 nav.scrolled {
-  background: rgba(245,244,240,0.95);
+  background: rgba(8,8,8,0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255,31,31,0.25);
 }
 
 nav.scrolled .nav-link    { color: var(--mid); }
@@ -140,6 +156,7 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   text-transform: uppercase;
   text-align: center;
   white-space: nowrap;
+  text-shadow: 0 0 18px rgba(255,31,31,0.25);
 }
 
 .nav-cart {
@@ -254,7 +271,7 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   color: #fff;
 }
 
-.accent-letter { color: var(--cream); }
+.accent-letter { color: var(--cream); text-shadow: 0 0 28px rgba(255,31,31,0.55); }
 
 .hero-title em {
   font-style: normal;
@@ -412,10 +429,9 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   letter-spacing: -0.01em;
   text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 1.5px var(--black);
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.25);
   flex-shrink: 0;
   padding: 0 48px;
-
 }
 
 .full-bleed-word.filled {
@@ -509,7 +525,7 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: rgba(10,10,10,0.2);
+  color: rgba(255,255,255,0.18);
 }
 
 .product-placeholder svg { width: 36px; height: 36px; fill: none; stroke: currentColor; stroke-width: 1; }
@@ -526,7 +542,7 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   top: 14px;
   left: 14px;
   background: var(--cream);
-  color: var(--black);
+  color: #fff;
   font-family: var(--space);
   font-size: 8px;
   font-weight: 500;
@@ -534,6 +550,7 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   text-transform: uppercase;
   padding: 5px 9px;
   z-index: 2;
+  box-shadow: 0 0 12px rgba(255,31,31,0.4);
 }
 
 .quick-add {
@@ -578,7 +595,7 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  border: 1px solid rgba(10,10,10,0.15);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
 .product-name {
@@ -668,7 +685,7 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(10,10,10,0.15);
+  color: rgba(255,255,255,0.15);
   font-family: var(--space);
   font-size: 9px;
   letter-spacing: 0.3em;
@@ -755,15 +772,15 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   letter-spacing: 0.3em;
   text-transform: uppercase;
   padding: 14px 40px;
-  background: var(--black);
-  color: var(--bg);
+  background: var(--cream);
+  color: #fff;
   cursor: pointer;
   border: none;
   width: fit-content;
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
   margin-top: 8px;
 }
-.email-btn:hover { background: #2a2a2a; }
+.email-btn:hover { background: #e01010; box-shadow: 0 0 20px rgba(255,31,31,0.4); }
 
 .email-success {
   font-family: var(--space);
@@ -780,7 +797,7 @@ nav.scrolled .cart-badge  { background: var(--black); color: var(--bg); }
   font-size: 9px;
   font-weight: 300;
   letter-spacing: 0.08em;
-  color: rgba(10,10,10,0.3);
+  color: rgba(255,255,255,0.22);
   line-height: 1.5;
 }
 
@@ -844,7 +861,7 @@ footer {
   font-size: 9px;
   font-weight: 300;
   letter-spacing: 0.12em;
-  color: rgba(10,10,10,0.35);
+  color: rgba(255,255,255,0.25);
 }
 
 .payment-icons {
@@ -855,15 +872,15 @@ footer {
 
 .pay-icon {
   height: 22px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 3px;
   padding: 2px 7px;
-  background: #fff;
+  background: rgba(255,255,255,0.05);
   font-family: var(--space);
   font-size: 7.5px;
   font-weight: 400;
   letter-spacing: 0.05em;
-  color: rgba(10,10,10,0.5);
+  color: rgba(255,255,255,0.4);
   display: flex;
   align-items: center;
 }
@@ -918,8 +935,8 @@ footer {
 .popup-visual-bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 60% 40%, rgba(90,120,220,0.3) 0%, transparent 65%),
-              radial-gradient(ellipse at 30% 70%, rgba(200,80,180,0.25) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 60% 40%, rgba(255,31,31,0.35) 0%, transparent 65%),
+              radial-gradient(ellipse at 30% 70%, rgba(160,0,0,0.25) 0%, transparent 60%);
 }
 
 .popup-visual-logo {
@@ -1067,15 +1084,15 @@ footer {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   padding: 14px;
-  background: var(--black);
-  color: var(--bg);
+  background: var(--cream);
+  color: #fff;
   border: none;
   cursor: pointer;
   width: 100%;
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
   margin-top: 4px;
 }
-.popup-submit:hover { background: #2a2a2a; }
+.popup-submit:hover { background: #e01010; box-shadow: 0 0 20px rgba(255,31,31,0.4); }
 
 .popup-success {
   font-family: var(--space);
@@ -1093,7 +1110,7 @@ footer {
   font-family: var(--space);
   font-size: 8.5px;
   font-weight: 300;
-  color: rgba(10,10,10,0.3);
+  color: rgba(255,255,255,0.22);
   letter-spacing: 0.05em;
   line-height: 1.5;
 }
@@ -1168,7 +1185,7 @@ footer {
       </div>
     </div>
     <div class="popup-content">
-      <div class="popup-eyebrow">Welcome to VSG</div>
+      <div class="popup-eyebrow">Welcome to PPA</div>
       <div class="popup-headline">Get 15% Off<br>Drop 01</div>
       <div class="popup-sub">Sign up for early access, exclusive drops, and your welcome discount.</div>
       <div class="popup-tabs">
@@ -1282,7 +1299,7 @@ footer {
 <!-- Editorial Strip -->
 <div class="editorial-strip">
   <div class="editorial-cell">
-    <img src="" alt="VSG Lookbook 01">
+    <img src="" alt="PPA Lookbook 01">
     <div class="editorial-placeholder">Lookbook image 01</div>
     <div class="editorial-label">
       <span class="editorial-label-eyebrow">Lookbook</span>
@@ -1290,7 +1307,7 @@ footer {
     </div>
   </div>
   <div class="editorial-cell">
-    <img src="" alt="VSG Lookbook 02">
+    <img src="" alt="PPA Lookbook 02">
     <div class="editorial-placeholder">Lookbook image 02</div>
     <div class="editorial-label">
       <span class="editorial-label-eyebrow">Drop 01</span>
@@ -1298,11 +1315,11 @@ footer {
     </div>
   </div>
   <div class="editorial-cell">
-    <img src="" alt="VSG Lookbook 03">
+    <img src="" alt="PPA Lookbook 03">
     <div class="editorial-placeholder">Lookbook image 03</div>
     <div class="editorial-label">
       <span class="editorial-label-eyebrow">Limited</span>
-      <span class="editorial-label-name">VSG Shell</span>
+      <span class="editorial-label-name">PPA Shell</span>
     </div>
   </div>
 </div>
@@ -1376,7 +1393,7 @@ function buildMarquee() {
 }
 buildMarquee();
 
-const bleedWords = ['VSG','Drop 01','Shell Jacket','Iridescent','Limited','VSG','Austin','New Drop'];
+const bleedWords = ['PPA','Drop 01','Shell Jacket','Archive','Limited','PPA','Austin','New Drop'];
 function buildBleed() {
   const inner = document.getElementById('bleedInner');
   let html = '';
@@ -1395,12 +1412,12 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 const products = [
-  { name: 'VSG Shell Jacket', colorway: 'Iridescent Blue',    dots: ['#3a68c8','#0d1a3a'], price: '$49.00 USD', new: true },
-  { name: 'VSG Shell Jacket', colorway: 'Chrome Silver',      dots: ['#c4c4c4','#1a1a1a'], price: '$49.00 USD', new: true },
-  { name: 'VSG Shell Jacket', colorway: 'Iridescent Pink',    dots: ['#e08ab0','#0d0d0d'], price: '$49.00 USD', new: true },
-  { name: 'VSG Shell Jacket', colorway: 'Olive / Iridescent', dots: ['#5b6344','#c0c0c0'], price: '$49.00 USD', new: true },
-  { name: 'VSG Shell Jacket', colorway: 'Cream / Iridescent', dots: ['#d4c5a0','#b8b8b8'], price: '$49.00 USD', new: true },
-  { name: 'VSG Shell Jacket', colorway: 'Black / Red',        dots: ['#0d0d0d','#b71c1c'], price: '$49.00 USD', new: true },
+  { name: 'PPA Shell Jacket', colorway: 'Iridescent Blue',    dots: ['#3a68c8','#0d1a3a'], price: '$49.00 USD', new: true },
+  { name: 'PPA Shell Jacket', colorway: 'Chrome Silver',      dots: ['#c4c4c4','#1a1a1a'], price: '$49.00 USD', new: true },
+  { name: 'PPA Shell Jacket', colorway: 'Iridescent Pink',    dots: ['#e08ab0','#0d0d0d'], price: '$49.00 USD', new: true },
+  { name: 'PPA Shell Jacket', colorway: 'Olive / Iridescent', dots: ['#5b6344','#c0c0c0'], price: '$49.00 USD', new: true },
+  { name: 'PPA Shell Jacket', colorway: 'Cream / Iridescent', dots: ['#d4c5a0','#b8b8b8'], price: '$49.00 USD', new: true },
+  { name: 'PPA Shell Jacket', colorway: 'Black / Red',        dots: ['#0d0d0d','#b71c1c'], price: '$49.00 USD', new: true },
 ];
 
 function buildGrid() {
@@ -1439,7 +1456,7 @@ function handleEmail(e) {
 
 (function () {
   const overlay = document.getElementById('popupOverlay');
-  const STORAGE_KEY = 'vsg_popup_dismissed';
+  const STORAGE_KEY = 'ppa_popup_dismissed';
 
   function openPopup() {
     if (sessionStorage.getItem(STORAGE_KEY)) return;
