@@ -35,7 +35,9 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--body);font-family:var(--sans);font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .3s,color .3s;}
+/* DUSK halftone paper — same textures as bizfalconai.com */
+body{background:url('textures/halftone-ink.png') repeat fixed 0 0/720px 720px,var(--bg);color:var(--body);font-family:var(--sans);font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .3s,color .3s;}
+[data-theme="dark"] body{background:url('textures/halftone-bone.png') repeat fixed 0 0/720px 720px,var(--bg);}
 /* DUSK grain — same feTurbulence texture as bizfalconai.com */
 body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:var(--grain);background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="300" height="300" filter="url(%23n)"/></svg>');background-size:300px 300px;mix-blend-mode:overlay;}
 .wrap{max-width:var(--mx);margin:0 auto;padding:0 32px;}
@@ -58,7 +60,7 @@ nav.scr{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:
 .nav-cta:hover{background:var(--brand2);}
 @media(max-width:760px){.nav-links{display:none;}}
 
-.hero{position:relative;padding:150px 0 70px;overflow:hidden;background:var(--bg);}
+.hero{position:relative;padding:150px 0 70px;overflow:hidden;}
 .hero-fx{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
 /* DUSK dot grid instead of line grid */
 .hero-fx .grid{position:absolute;inset:-2px;background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:26px 26px;mask-image:radial-gradient(72% 62% at 30% 32%,#000,transparent 80%);opacity:.9;}
@@ -109,6 +111,11 @@ section{padding:74px 0;}
 .p-link.go:hover{background:var(--brand2);}
 .mini-label{font-family:var(--mono);font-size:9.5px;color:var(--faint);letter-spacing:.05em;text-transform:uppercase;margin-top:4px;}
 .mini-wrap{width:100%;height:80px;position:relative;}
+/* DUSK dithered art — same observatory kit as bizfalconai.com */
+.art-wrap{width:100%;height:150px;position:relative;margin-top:4px;}
+.art-wrap canvas{position:absolute;inset:0;width:100%;height:100%;}
+.starfield-strip{height:120px;position:relative;overflow:hidden;margin-top:40px;}
+.starfield-strip canvas{position:absolute;inset:0;width:100%;height:100%;}
 
 .more{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;box-shadow:var(--sh-sm);}
 .more h3{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
@@ -204,6 +211,7 @@ footer p{font-family:var(--mono);font-size:12px;color:var(--muted);}
         <span class="p-num">01 — Founder · Shipped SaaS · Full-stack</span>
         <h3 class="p-title">BizFalcon AI — AI Analytics Company, Founded &amp; Shipped Solo</h3>
         <p class="p-desc">A real SaaS company I founded and built end-to-end — model, interface, billing, deployment. The flagship, <strong>Talon</strong>, is an AI data analyst that writes and runs Python on your full dataset in the browser: every number computed, never estimated, with the formula behind each figure one click away. The same engine ships as <strong>ProfitFalcon</strong> (e-commerce unit economics — per-SKU margins, discount-leak detection, reorder forecasting) and <strong>ClientFalcon</strong> (agency client reporting — prospect audits, portfolio health, branded reports), plus <a href="https://fledge.bizfalconai.com" target="_blank"><strong>Fledge</strong></a> for creator analytics. On top sits an operator layer that recommends the exact next move — cut this budget, reorder this SKU — waits for human approval, then scores every recommendation against what actually happened in a decision ledger. OAuth connectors (Meta, Google Ads, GA4, Shopify, Klaviyo), Stripe subscriptions, 9 industry metric packs, 400+ automated tests + CI.</p>
+        <div class="art-wrap"><canvas data-art="ghostchart" aria-hidden="true"></canvas></div>
         <div class="p-pills"><span class="pill acc">Founded &amp; shipped solo</span><span class="pill">Decision ledger — every rec scored vs outcome</span><span class="pill">9 metric packs</span><span class="pill">400+ tests · CI</span></div>
         <div class="p-stack"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Firebase</span><span class="tag">Pyodide</span><span class="tag">OpenAI · Anthropic · Gemini</span><span class="tag">Stripe</span></div>
         <div class="p-links"><a href="https://bizfalconai.com" target="_blank" class="p-link go">Company site ↗</a><a href="https://talon.bizfalconai.com" target="_blank" class="p-link">Talon ↗</a><a href="https://profit.bizfalconai.com" target="_blank" class="p-link">ProfitFalcon ↗</a><a href="https://client.bizfalconai.com" target="_blank" class="p-link">ClientFalcon ↗</a></div>
@@ -302,6 +310,7 @@ footer p{font-family:var(--mono);font-size:12px;color:var(--muted);}
   </div>
 </section>
 
+<div class="starfield-strip" aria-hidden="true"><canvas data-art="starfield"></canvas></div>
 <footer>
   <div class="foot-in">
     <p>© 2026 Siddharth Deepak</p>
@@ -318,7 +327,7 @@ footer p{font-family:var(--mono);font-size:12px;color:var(--muted);}
 (function(){
   const root=document.documentElement, btn=document.getElementById('themeBtn');
   const saved=localStorage.getItem('sd-theme'); if(saved) root.setAttribute('data-theme',saved);
-  btn.addEventListener('click',()=>{const t=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',t);localStorage.setItem('sd-theme',t);setTimeout(drawCharts,60);});
+  btn.addEventListener('click',()=>{const t=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',t);localStorage.setItem('sd-theme',t);setTimeout(()=>{drawCharts();if(window.renderArts)renderArts();},60);});
 })();
 const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('scr',scrollY>20));
@@ -377,6 +386,100 @@ addEventListener('scroll',()=>nav.classList.toggle('scr',scrollY>20));
 })();
 const io=new IntersectionObserver((es)=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*55);io.unobserve(e.target);}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* DUSK observatory art — ported from bizfalconai.com dusk-art.js
+   (ghostchart + starfield stills; fg/signal mapped to --ink/--accent) */
+(function(){
+  function hash2(a,b){const s=Math.sin(a*127.1+b*311.7)*43758.5453;return s-Math.floor(s);}
+  function n2(x,y){return Math.sin(x*1.7+Math.sin(y*0.8)*1.3)*Math.cos(y*1.1+Math.sin(x*0.6));}
+  function fbm(x,y,t){let v=0,a=0.55,f=1;for(let i=0;i<4;i++){v+=a*n2(x*f+t*0.25,y*f-t*0.18);f*=2.05;a*=0.5;}return v*0.5+0.5;}
+  function tok(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+  function prepArt(cv){
+    const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return null;
+    const dpr=Math.min(devicePixelRatio||1,2);
+    cv.width=w*dpr;cv.height=h*dpr;
+    const c2=cv.getContext('2d');if(!c2)return null;
+    c2.setTransform(dpr,0,0,dpr,0,0);c2.clearRect(0,0,w,h);
+    return{c2,w,h,fg:tok('--ink'),sg:tok('--accent')};
+  }
+  function dottedVGrid(c2,w,h,step,fg){
+    c2.fillStyle=fg;
+    for(let x=step/2;x<w;x+=step){
+      c2.globalAlpha=0.10;
+      for(let y=6;y<h-6;y+=7)c2.fillRect(x,y,1,1);
+      c2.globalAlpha=0.5;c2.fillRect(x-1,2,2,2);c2.fillRect(x-1,h-4,2,2);
+    }
+    c2.globalAlpha=1;
+  }
+  function drawGhostChart(cv){
+    const p=prepArt(cv);if(!p)return;
+    const{c2,w,h,fg,sg}=p;
+    dottedVGrid(c2,w,h,w/9,fg);
+    const SEED=4.7,COLSN=Math.max(200,Math.floor(w/1.6));
+    const curves=[{off:0,amp:1,a:1},{off:0.13,amp:0.82,a:0.55},{off:0.24,amp:0.66,a:0.3}];
+    function line(u,off,amp){return 0.72+off*0.85-amp*(0.40*u+0.13*Math.sin(u*5.2+1.2)*(1-u*0.4)+0.09*fbm(u*3.2,off*9,SEED));}
+    curves.forEach(function(cu,ci){
+      for(let q=0;q<=COLSN;q++){
+        const u=q/COLSN,cy=line(u,cu.off,cu.amp);
+        const thick=0.015+0.05*fbm(u*4.6,ci*3.1,SEED+2)+0.02*(1-u);
+        for(let s=0;s<22;s++){
+          const g=(hash2(q+ci*971,s)+hash2(q+13,s+ci*57)-1);
+          const v=cy+g*thick*2.2;
+          const a=Math.max(0,0.65-Math.abs(g)*0.9)*cu.a*(0.4+0.6*hash2(q,s+91));
+          if(a<0.03)continue;
+          c2.fillStyle=fg;c2.globalAlpha=Math.min(0.85,a);
+          const big=hash2(q+s,7)>0.93;
+          c2.fillRect(u*w,v*h,big?1.8:1.15,big?1.8:1.15);
+        }
+        if(ci===0&&(q*7)%149===0){c2.fillStyle=sg;c2.globalAlpha=0.85;c2.fillRect(u*w,cy*h,2,2);}
+      }
+    });
+    const au=0.66,ax=au*w,ay=(line(au,0,1)-0.16)*h;
+    c2.globalAlpha=0.2;c2.fillStyle=sg;c2.beginPath();c2.arc(ax,ay,8,0,7);c2.fill();
+    c2.globalAlpha=0.95;c2.fillRect(ax-1.5,ay-1.5,3,3);
+    c2.globalAlpha=0.3;
+    for(let yy=ay+7;yy<line(au,0,1)*h;yy+=5)c2.fillRect(ax-0.5,yy,1,2);
+    c2.globalAlpha=1;
+  }
+  function drawStarfield(cv){
+    const p=prepArt(cv);if(!p)return;
+    const{c2,w,h,fg,sg}=p;
+    const SEED=3.91,step=3;
+    for(let y=0;y<h;y+=step)for(let x=0;x<w;x+=step){
+      const u=x/w,v=y/h;
+      const n=Math.pow(fbm(u*3.4,v*3.4,SEED),2.6);
+      const a=n*0.55*(0.4+0.6*hash2(x,y));
+      if(a<0.03)continue;
+      const jx=(hash2(x+7,y)-0.5)*step*1.6,jy=(hash2(x,y+7)-0.5)*step*1.6;
+      c2.fillStyle=fg;c2.globalAlpha=Math.min(0.6,a);
+      c2.fillRect(x+jx,y+jy,1.2,1.2);
+    }
+    for(let i=0;i<130;i++){
+      const sx=hash2(i,51)*w,sy=hash2(i,53)*h,s=hash2(i,57);
+      c2.fillStyle=s>0.96?sg:fg;
+      c2.globalAlpha=0.25+0.65*s*s;
+      const sz=s>0.88?2.2:1.4;
+      c2.fillRect(sx,sy,sz,sz);
+      if(s>0.93){c2.globalAlpha=0.25;c2.fillRect(sx-3,sy+0.5,8,1);c2.fillRect(sx+0.5,sy-3,1,8);}
+    }
+    const cons=[[0.26,0.22],[0.42,0.3],[0.52,0.17],[0.68,0.26],[0.78,0.4]];
+    c2.strokeStyle=fg;c2.globalAlpha=0.2;c2.lineWidth=1;
+    c2.beginPath();
+    cons.forEach(function(uv,i){if(i===0)c2.moveTo(uv[0]*w,uv[1]*h);else c2.lineTo(uv[0]*w,uv[1]*h);});
+    c2.stroke();
+    cons.forEach(function(uv,i){c2.globalAlpha=0.75;c2.fillStyle=i===2?sg:fg;c2.fillRect(uv[0]*w-1.2,uv[1]*h-1.2,2.4,2.4);});
+    c2.globalAlpha=1;
+  }
+  window.renderArts=function(){
+    document.querySelectorAll('[data-art]').forEach(function(cv){
+      const kind=cv.getAttribute('data-art');
+      if(kind==='ghostchart')drawGhostChart(cv);
+      else if(kind==='starfield')drawStarfield(cv);
+    });
+  };
+  let rT;addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(renderArts,150);});
+  renderArts();
+})();
 
 let charts=[];
 function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
