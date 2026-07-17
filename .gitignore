@@ -1,0 +1,54 @@
+# ── PROTECTIVE .gitignore ──────────────────────────────────────────────
+# ~/Source is wired to the PUBLIC repo siddeepak2023.github.io.
+# Everything below is excluded so an accidental `git add -A` can NEVER
+# publish source code, secrets, data, or personal files to the public web.
+
+# Secrets — never publish
+**/.env
+**/.env.*
+**/*serviceAccount*.json
+**/*credentials*.json
+**/firebase-adminsdk*.json
+*.pem
+*.key
+
+# Product source code (has its own repos / secrets)
+BizFalconAI/
+clipforge/
+clipfalcon/
+Universe-Data-Visualization/
+HypeClip AI/
+
+# Data-analysis projects (raw data / not for public site)
+Netflix-Stock-Sales-Prediction/
+Olist_ecommerce_analysis/
+spotify_ab_test/
+tmobile_churn/
+Business Reccomendation Engine/
+Pirani/
+
+# Coursework / archives / personal
+CS1436/
+Java/
+LetterOrDigit/
+Deepak.Sid/
+Private Problems Archive/
+
+# Friday — personal AI OS. LOCAL-ONLY. Never publish (faith/health/people/journal).
+friday/
+
+# Personal documents
+*.pdf
+*.docx
+Siddharth_Deepak_Resume.*
+
+# Internal notes / specs (not for the public site — specs now live in BizFalconAI/ product dirs)
+LAUNCH-AND-DEPLOY.md
+
+# Build / OS junk
+node_modules/
+**/node_modules/
+.DS_Store
+**/.DS_Store
+dist/
+.claude/

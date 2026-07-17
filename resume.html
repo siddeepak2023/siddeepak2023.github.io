@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Siddharth Deepak — Resume</title>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    font-weight: 400;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.3;
+  }
+
+  .page {
+    max-width: 8.5in;
+    margin: 0 auto;
+    padding: 0.35in 0.55in 0.35in;
+  }
+
+  /* ── Header ── */
+  .name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22pt;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.01em;
+    margin-bottom: 5px;
+  }
+  .contact {
+    text-align: center;
+    font-size: 8pt;
+    color: #444;
+    line-height: 1.4;
+  }
+  .contact a { color: #1a56c4; text-decoration: none; }
+
+  /* ── Sections ── */
+  .section { margin-top: 6px; }
+  .section-title {
+    font-size: 9pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #1a56c4;
+    border-bottom: 1.2px solid #1a56c4;
+    padding-bottom: 2px;
+    margin-bottom: 6px;
+  }
+
+  /* ── Education ── */
+  .edu-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .edu-degree { font-weight: 600; font-size: 9.6pt; }
+  .edu-date { font-size: 9pt; color: #555; white-space: nowrap; }
+  .edu-school { font-style: italic; font-size: 9pt; color: #444; margin-top: 1px; }
+
+  /* ── Coursework ── */
+  .coursework { font-size: 9pt; color: #333; line-height: 1.55; }
+
+  /* ── Skills ── */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 20px; font-size: 9pt; }
+  .skill-row { display: flex; gap: 4px; }
+  .skill-label { font-weight: 600; white-space: nowrap; min-width: 72px; }
+  .skill-val { color: #333; }
+
+  /* ── Experience ── */
+  .exp-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+  .exp-org { font-weight: 600; font-size: 9.6pt; }
+  .exp-title { font-weight: 400; font-size: 9pt; }
+  .exp-date { font-size: 9pt; color: #555; white-space: nowrap; }
+  ul.bullets { padding-left: 14px; margin-top: 1px; }
+  ul.bullets li { margin-bottom: 1px; font-size: 8.5pt; color: #222; line-height: 1.3; }
+
+  /* ── Projects ── */
+  .project { margin-bottom: 3px; }
+  .project-hidden { display: none; }
+  .project-header { display: flex; justify-content: space-between; align-items: baseline; }
+  .project-name { font-weight: 600; font-size: 9.6pt; }
+  .project-link { font-size: 8.5pt; color: #1a56c4; font-style: italic; }
+  .project-link a { color: #1a56c4; text-decoration: none; }
+  .project-stack { font-size: 8.5pt; color: #555; font-style: italic; margin-bottom: 2px; }
+
+  /* ── Orgs ── */
+  .org-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1px; }
+  .org-name { font-weight: 600; font-size: 9.6pt; }
+  .org-date { font-size: 9pt; color: #555; }
+  .org-desc { font-size: 9pt; color: #333; margin-left: 14px; }
+
+  @media print {
+    body { font-size: 9.4pt; }
+    .page { padding: 0.4in 0.6in; max-width: 100%; }
+    a { color: #1a56c4 !important; }
+    @page { margin: 0; size: letter; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="name">Siddharth Deepak</div>
+  <div class="contact">
+    Leander, TX &bull; (737) 368-2120 &bull;
+    <a href="mailto:sid.deepak2023@gmail.com">sid.deepak2023@gmail.com</a> &bull;
+    <a href="https://linkedin.com/in/siddharth-deepak-3182b8219/">linkedin.com/in/siddharth-deepak-3182b8219</a> &bull;
+    <a href="https://github.com/siddeepak2023">github.com/siddeepak2023</a> &bull;
+    portfolio: <a href="https://siddeepak2023.github.io">siddeepak2023.github.io</a>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-title">Education</div>
+    <div class="edu-row">
+      <span class="edu-degree">B.S. in Business Analytics and AI &nbsp;|&nbsp; Concentration in Marketing and AI</span>
+      <span class="edu-date">Anticipated Graduation: Dec 2027</span>
+    </div>
+    <div class="edu-school">The University of Texas at Dallas – Naveen Jindal School of Management, Richardson, TX</div>
+  </div>
+
+  <!-- COURSEWORK -->
+  <div class="section">
+    <div class="section-title">Relevant Coursework</div>
+    <div class="coursework">Data Science for Business Applications, AI in Business, Business Analytics, Marketing Analytics, Foundations of Business Intelligence, Database Analytics, Object-Oriented Programming in Python, Quantitative Business Analysis, IT for Business, Managerial Methods in Decision Making</div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-title">Technical Skills</div>
+    <div class="skills-grid">
+      <div class="skill-row">
+        <span class="skill-label">Languages:</span>
+        <span class="skill-val">Python, SQL, R, HTML/JS/CSS, TypeScript</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">Libraries:</span>
+        <span class="skill-val">Pandas, NumPy, LightGBM, HistGBM, Optuna, Matplotlib, Seaborn</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">Tools:</span>
+        <span class="skill-val">Tableau, Power BI, Excel, Git, SQLite, Three.js, Chart.js, Firebase</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">Concepts:</span>
+        <span class="skill-val">ML Modeling, A/B Testing, Statistical Hypothesis Testing, Time-Series Forecasting, EDA, Data Cleaning, Walk-Forward Backtesting</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="section">
+    <div class="section-title">Professional Experience</div>
+    <div class="exp-header">
+      <span><span class="exp-org">BizFalcon AI</span> &mdash; <span class="exp-title">Founder &amp; Full-Stack Developer</span></span>
+      <span class="exp-date">Jan 2026 – Present</span>
+    </div>
+    <ul class="bullets">
+      <li>Designed, built, and shipped <strong>Talon</strong> (talon.bizfalconai.com), an AI data-analytics SaaS that writes and runs Python on a user's full dataset to deliver auditable, computed-not-estimated KPIs, trends, anomaly detection, A/B tests, and forecasts</li>
+      <li>Scaled the Talon engine into a <strong>4-product suite</strong> — three branded vertical SaaS spin-offs (<strong>Talonomic</strong> e-commerce unit economics, <strong>Talonmark</strong> agency client reporting, <strong>Fledge</strong> creator analytics) — each an installable PWA with OAuth data connectors (Meta, Google Ads, GA4, Shopify, YouTube, Klaviyo) and Stripe annual/monthly billing</li>
+      <li>Engineered the full stack solo: React/TypeScript PWA, Firebase (Auth/Firestore/Cloud Functions), in-browser Python (Pyodide), multi-LLM integration (OpenAI, Anthropic, Google), and <strong>Stripe subscriptions</strong>; shipped with <strong>200+ automated tests</strong> and CI</li>
+      <li>Built <strong>9 industry metric packs</strong> (SaaS, e-commerce, fintech, marketing, creator, agency) and <strong>11 statistical wizards</strong> (A/B testing, regression, cohort, forecasting) with deterministic full-data computation and automated outlier detection</li>
+    </ul>
+    <div class="exp-header">
+      <span><span class="exp-org">YMCA Central Texas</span> &mdash; <span class="exp-title">Summer Camp Counselor</span></span>
+      <span class="exp-date">May 2021 – Aug 2025</span>
+    </div>
+    <ul class="bullets">
+      <li>Led and mentored groups of 15–25 campers, fostering a safe and inclusive environment focused on growth and positivity</li>
+      <li>Trained and onboarded new counselors through structured shadowing programs, providing guidance on group management</li>
+      <li>Awarded Counselor of the Week (5&times;) and Rookie Counselor of the Year for leadership and impact on camper experience</li>
+    </ul>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-title">Projects</div>
+
+    <div class="project">
+      <div class="project-header">
+        <span class="project-name">Data Science &amp; AI Portfolio — 14 Live Projects</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io">siddeepak2023.github.io</a></span>
+      </div>
+      <div class="project-stack">HTML &nbsp;|&nbsp; CSS &nbsp;|&nbsp; JavaScript &nbsp;|&nbsp; Three.js &nbsp;|&nbsp; Chart.js &nbsp;|&nbsp; Canvas API</div>
+      <ul class="bullets">
+        <li>14 live projects: production AI SaaS apps, ML prediction engines (NBA, S&amp;P 500, flight delays), BI dashboards (dermatology, retail, e-commerce), sports betting analytics, A/B testing, and a real-time 3D universe explorer — all custom-built</li>
+      </ul>
+    </div>
+
+    <div class="project">
+      <div class="project-header">
+        <span class="project-name">HypeClip AI — AI Video Clipping SaaS</span>
+        <span class="project-link"><a href="https://hypeclip-ai--hypeclip-ai-6ce41.us-east4.hosted.app">Live App</a></span>
+      </div>
+      <div class="project-stack">Next.js 16 &nbsp;|&nbsp; TypeScript &nbsp;|&nbsp; Firebase &nbsp;|&nbsp; Stripe &nbsp;|&nbsp; Node.js &nbsp;|&nbsp; Cloud Functions &nbsp;|&nbsp; App Hosting</div>
+      <ul class="bullets">
+        <li>Production SaaS detecting viral moments in Twitch VODs and YouTube via chat velocity spikes; auto-cuts clips and generates captions, titles, and hashtags for TikTok, Shorts, Twitter/X, and Reels</li>
+        <li>Built end-to-end: Next.js 16 App Router on Firebase App Hosting, Firebase Auth/Firestore/Storage, Node.js Cloud Functions, and <strong>Stripe billing</strong> (Free / Creator / Pro) with auto-rollouts on git push</li>
+      </ul>
+    </div>
+
+    <div class="project">
+      <div class="project-header">
+        <span class="project-name">NBA Game Intelligence Dashboard</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io/nba_dashboard.html">Live Dashboard</a></span>
+      </div>
+      <div class="project-stack">Python &nbsp;|&nbsp; HistGBM &nbsp;|&nbsp; Optuna &nbsp;|&nbsp; nba_api &nbsp;|&nbsp; SQLite &nbsp;|&nbsp; ESPN API &nbsp;|&nbsp; Chart.js</div>
+      <ul class="bullets">
+        <li>Prediction pipeline on 9 seasons / 21,498 game logs; Elo, defensive rating, multi-window rolling features, EWMA; HistGBM + Optuna lifted AUC 0.631 → <strong>0.726</strong>; backtested: <strong>71.1% win rate, 35.8% ROI, $34,301 simulated profit</strong></li>
+      </ul>
+    </div>
+
+    <div class="project">
+      <div class="project-header">
+        <span class="project-name">U.S. Flight Delay Intelligence Engine</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io/flight_delay_dashboard.html">Live Dashboard</a></span>
+      </div>
+      <div class="project-stack">Python &nbsp;|&nbsp; LightGBM &nbsp;|&nbsp; BTS Data &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; Chart.js &nbsp;|&nbsp; HTML/JS</div>
+      <ul class="bullets">
+        <li>LightGBM classifier on <strong>72M+ BTS domestic flights</strong> (2015–2024); <strong>84.7% accuracy, AUC 0.891</strong>; route-level risk atlas across 5,248 O-D pairs with airline reliability index and airport bottleneck heatmap</li>
+      </ul>
+    </div>
+
+    <div class="project project-hidden">
+      <div class="project-header">
+        <span class="project-name">Quant Edge — S&amp;P 500 Prediction Engine</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io/quant-edge/quant_edge_dashboard.html">Live Dashboard</a></span>
+      </div>
+      <div class="project-stack">Python &nbsp;|&nbsp; HistGBM &nbsp;|&nbsp; Optuna &nbsp;|&nbsp; yfinance &nbsp;|&nbsp; SQLite &nbsp;|&nbsp; Isotonic Calibration &nbsp;|&nbsp; Chart.js</div>
+      <ul class="bullets">
+        <li>ML system scoring all <strong>503 S&amp;P 500 constituents</strong> daily on 5-day directional probability; 6 years of OHLCV + 27 features (RSI, MACD, ATR, VIX regime); walk-forward backtest with 10-day leakage embargo, benchmarked vs. SPY</li>
+      </ul>
+    </div>
+
+    <div class="project project-hidden">
+      <div class="project-header">
+        <span class="project-name">DermIQ — Clinic Intelligence Platform</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io/dermiq/derm_dashboard.html">Live Dashboard</a></span>
+      </div>
+      <div class="project-stack">Python &nbsp;|&nbsp; HistGBM &nbsp;|&nbsp; K-Means &nbsp;|&nbsp; Scikit-learn &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; CMS Benchmarks &nbsp;|&nbsp; Chart.js</div>
+      <ul class="bullets">
+        <li>Dermatology analytics SaaS on real CMS Medicare benchmarks; no-show model (AUC 0.72) flagged <strong>$167K/yr at risk</strong>; RFM K-Means showed VIP Cosmetic patients at <strong>4.6× LTV</strong>; doctor referrals outperform Instagram 4× on lifetime value</li>
+      </ul>
+    </div>
+
+    <div class="project project-hidden">
+      <div class="project-header">
+        <span class="project-name">Olist E-Commerce Revenue &amp; Sales Analysis</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io/olist_dashboard.html">Live Dashboard</a></span>
+      </div>
+      <div class="project-stack">Python &nbsp;|&nbsp; SQL &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; Tableau &nbsp;|&nbsp; Excel</div>
+      <ul class="bullets">
+        <li>Analyzed <strong>96K+ real e-commerce transactions</strong> across 9 relational tables using advanced SQL (CTEs, window functions, multi-table JOINs) — identified Health &amp; Beauty as the #1 revenue category at R$1.4M of R$15.4M total</li>
+        <li>Discovered a <strong>31% review score drop</strong> for orders with 21+ day delivery; built a 4-chart Tableau dashboard published live on Tableau Public</li>
+      </ul>
+    </div>
+
+    <div class="project project-hidden">
+      <div class="project-header">
+        <span class="project-name">T-Mobile Customer Churn Prediction</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io/churn_dashboard.html">Live Dashboard</a></span>
+      </div>
+      <div class="project-stack">Python &nbsp;|&nbsp; Scikit-learn &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; Plotly</div>
+      <ul class="bullets">
+        <li>Built logistic regression and random forest churn models achieving <strong>79% accuracy and 0.834 ROC-AUC</strong> on 7K+ telecom records; identified month-to-month contracts (42.7% churn) and new customers 0–12 months (47.7% churn) as top risk segments</li>
+        <li>Generated prioritized top-100 high-risk customer list with <strong>$334K+ revenue at risk</strong>, giving a retention team an actionable targeting list</li>
+      </ul>
+    </div>
+
+    <div class="project project-hidden">
+      <div class="project-header">
+        <span class="project-name">Spotify Email Campaign A/B Test Analysis</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io/spotify_ab_dashboard.html">Live Dashboard</a></span>
+      </div>
+      <div class="project-stack">Python &nbsp;|&nbsp; SciPy &nbsp;|&nbsp; Statsmodels &nbsp;|&nbsp; Plotly</div>
+      <ul class="bullets">
+        <li>Designed and analyzed an A/B test across <strong>10,000 users</strong> using two-proportion z-tests, finding statistically significant lifts of <strong>27.5% in open rate and 470% in conversion rate</strong> (p&lt;0.05) for the personalized subject line</li>
+        <li>Projected <strong>$83.9M additional annual Premium revenue</strong> if winning variant rolled out to 250M free users; presented in interactive Plotly dashboard</li>
+      </ul>
+    </div>
+
+    <div class="project project-hidden">
+      <div class="project-header">
+        <span class="project-name">Universe Data Visualization &amp; Analytics Dashboard</span>
+        <span class="project-link"><a href="https://siddeepak2023.github.io">Live Dashboard</a></span>
+      </div>
+      <div class="project-stack">Python &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; NumPy &nbsp;|&nbsp; Astropy &nbsp;|&nbsp; Three.js &nbsp;|&nbsp; HTML/JS</div>
+      <ul class="bullets">
+        <li>Built a real-time interactive 3D universe explorer visualizing <strong>1M+ real astronomical objects</strong> — 500K Gaia DR3 stars, 200K HyperLEDA galaxies, NASA exoplanets, and SDSS DR17 quasars — rendered in the browser using Three.js</li>
+        <li>Engineered a Python pipeline pulling from 6 live scientific APIs (ESA TAP, NASA Exoplanet Archive, SDSS, HyperLEDA, Planck, VizieR) converting raw coordinates (parallax, redshift, RA/Dec) to 3D Cartesian positions via Astropy</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ORGANIZATIONS -->
+  <div class="section">
+    <div class="section-title">Organizations</div>
+    <div class="org-row">
+      <span class="org-name">Delta Epsilon Psi &mdash; Social Chair, Recruitment Chair</span>
+      <span class="org-date">2023 – 2025</span>
+    </div>
+    <div class="org-desc">Organized social events and recruitment initiatives supporting chapter growth and member engagement</div>
+    <div style="margin-top:3px;">
+      <div class="org-row"><span class="org-name">UTD Focus &mdash; Member</span><span class="org-date">2026 – Present</span></div>
+      <div class="org-row"><span class="org-name">ANCHOR InterVarsity &mdash; Member</span><span class="org-date">2026 – Present</span></div>
+      <div class="org-row"><span class="org-name">Tabla Talim Sanstha &mdash; Member</span><span class="org-date">2015 – Present</span></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
