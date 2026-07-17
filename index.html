@@ -250,16 +250,19 @@ footer p{font-family:var(--mono);font-size:12px;color:var(--muted);}
         <div class="p-links"><a href="flight_delay_dashboard.html" target="_blank" class="p-link go">Live dashboard ↗</a><a href="https://github.com/siddeepak2023/flight-delay-intelligence" target="_blank" class="p-link">GitHub</a></div>
       </div>
 
+      <div class="card reveal">
+        <span class="p-num">06 — Data Viz · WebGL</span>
+        <h3 class="p-title">Universe Data Visualization</h3>
+        <p class="p-desc">A real-time interactive 3D explorer rendering <strong>1M+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy. A showcase of data engineering + visualization at scale.</p>
+        <div class="mini-label">Object distribution (1M+ records, thousands)</div>
+        <div class="mini-wrap"><canvas id="universeChart"></canvas></div>
+        <div class="p-pills"><span class="pill">1M+ real objects</span><span class="pill">6 scientific APIs</span><span class="pill">60 FPS WebGL</span></div>
+        <div class="p-stack"><span class="tag">Python</span><span class="tag">Astropy</span><span class="tag">Three.js</span><span class="tag">Pandas</span></div>
+        <div class="p-links"><a href="https://interactive3duniversemap.netlify.app/" target="_blank" class="p-link go">Live demo ↗</a><a href="https://github.com/siddeepak2023/universe-data-visualization-dashboard" target="_blank" class="p-link">GitHub</a></div>
+      </div>
+
     </div>
 
-    <div class="more reveal">
-      <h3>Also built</h3>
-      <div class="more-list">
-        <div class="more-row"><div><div class="mn">NBA Game Intelligence Dashboard</div><div class="md">21,498 games · Elo + rolling features · AUC 0.631 → 0.726 · walk-forward backtest</div></div><a href="nba_dashboard.html" target="_blank">View ↗</a></div>
-        <div class="more-row"><div><div class="mn">T-Mobile Customer Churn</div><div class="md">79% acc · 0.834 AUC · $334K+ at risk · top-100 targeting list</div></div><a href="churn_dashboard.html" target="_blank">View ↗</a></div>
-        <div class="more-row"><div><div class="mn">Universe Data Visualization</div><div class="md">1M+ real astronomical objects · 6 scientific APIs · 60 FPS WebGL</div></div><a href="https://interactive3duniversemap.netlify.app/" target="_blank">View ↗</a></div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -392,6 +395,7 @@ function drawCharts(){
 
   charts.push(new Chart(flightChart,{type:'line',data:{labels:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],datasets:[{data:[19.7,19.7,19.0,19.0,21.7,18.9,22.0,23.5,20.0,19.5],borderColor:BR,borderWidth:1.8,pointRadius:c=>[0,0,0,0,0,0,3,3,0,0][c.dataIndex]||0,pointBackgroundColor:AC,tension:.4,fill:true,backgroundColor:c=>grad(c,BR)}]},options:noAx}));
 
+  charts.push(new Chart(universeChart,{type:'bar',data:{labels:['Gaia Stars','HyperLEDA','Exoplanets','SDSS Quasars'],datasets:[{data:[500,200,5.5,0.5],backgroundColor:[BR,BR+'cc',AC+'cc',AC+'88'],borderWidth:0,borderRadius:3}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:600},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1200}}}));
 }
 drawCharts();
 </script>
