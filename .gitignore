@@ -52,3 +52,8 @@ node_modules/
 **/.DS_Store
 dist/
 .claude/
+
+# Product docs + scratch — never publish
+insightpilot/
+portfolio/
+.Rhistory
