@@ -1,319 +1,555 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F8F7F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)">
 <title>Siddharth Deepak — Business Analytics & AI</title>
-<meta name="description" content="Business Analytics & AI student at UT Dallas. I turn messy data into decisions — SQL, machine learning, BI dashboards, and a shipped AI SaaS suite, all with measurable business impact."/>
+<meta name="description" content="Business Analytics & AI student at UT Dallas. I turn messy data into decisions — SQL, machine learning, BI dashboards, and a shipped AI SaaS suite, all with measurable business impact.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%238E2A22'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='14' font-weight='700' fill='%23fff' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=Inter+Tight:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-/* DUSK Instrument tokens — same system as bizfalconai.com (paper/ink + oxblood signal) */
-:root{
-  --bg:#F8F7F3; --bg2:#F2F2EF; --card:#FFFFFF; --surface2:#F2F2EF;
-  --line:rgba(17,17,16,.16); --line2:rgba(17,17,16,.26);
-  --ink:#111110; --body:#3E3E3A; --muted:#5C5C57; --faint:#8F8F89;
-  --brand:#111110; --brand2:#333331; --on-brand:#F8F7F3;
-  --accent:#8E2A22; --accent2:#B0453B;
-  --brand-soft:rgba(17,17,16,.05); --accent-soft:rgba(142,42,34,.07);
-  --grid:rgba(17,17,16,.18); --grain:.04;
-  --sh-sm:0 1px 2px rgba(17,17,16,.04); --sh-md:0 4px 18px rgba(17,17,16,.06); --sh-lg:0 18px 50px rgba(17,17,16,.10);
-  --display:'Instrument Sans','Hanken Grotesk',system-ui,sans-serif; --sans:'Hanken Grotesk',system-ui,-apple-system,sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
-  --mx:1120px;
+/* ============ TOKENS — DUSK Instrument, same system as bizfalconai.com ============ */
+:root, [data-theme="light"]{
+  --bg:#F8F7F3;
+  --bg2:#F2F2EF;
+  --fg:#111110;
+  --mut:#5C5C57;
+  --line:rgba(17,17,16,.16);
+  --line-soft:rgba(17,17,16,.08);
+  --signal:#8E2A22;
+  --signal-ink:#FFFFFF;
+  --card:#FFFFFF;
+  --grain:.04;
+  --dot:rgba(17,17,16,.18);
+  color-scheme:light;
 }
 [data-theme="dark"]{
-  --bg:#0A0A0B; --bg2:#0F0F11; --card:#0D0D0F; --surface2:#0F0F11;
-  --line:rgba(237,236,232,.14); --line2:rgba(237,236,232,.24);
-  --ink:#EDECE8; --body:#B9B8B2; --muted:#8F8F89; --faint:#5C5C57;
-  --brand:#EDECE8; --brand2:#FFFFFF; --on-brand:#0A0A0B;
-  --accent:#B0453B; --accent2:#C56A5B;
-  --brand-soft:rgba(237,236,232,.05); --accent-soft:rgba(176,69,59,.10);
-  --grid:rgba(237,236,232,.16); --grain:.055;
-  --sh-sm:0 1px 2px rgba(0,0,0,.3); --sh-md:0 4px 18px rgba(0,0,0,.35); --sh-lg:0 18px 50px rgba(0,0,0,.5);
+  --bg:#0A0A0B;
+  --bg2:#0F0F11;
+  --fg:#EDECE8;
+  --mut:#8F8F89;
+  --line:rgba(237,236,232,.14);
+  --line-soft:rgba(237,236,232,.07);
+  --signal:#B0453B;
+  --signal-ink:#FFFFFF;
+  --card:#0D0D0F;
+  --grain:.055;
+  --dot:rgba(237,236,232,.16);
+  color-scheme:dark;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-/* DUSK halftone paper — same textures as bizfalconai.com */
-body{background:url('textures/halftone-ink.png') repeat fixed 0 0/720px 720px,var(--bg);color:var(--body);font-family:var(--sans);font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .3s,color .3s;}
-[data-theme="dark"] body{background:url('textures/halftone-bone.png') repeat fixed 0 0/720px 720px,var(--bg);}
-/* DUSK grain — same feTurbulence texture as bizfalconai.com */
-body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:var(--grain);background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="300" height="300" filter="url(%23n)"/></svg>');background-size:300px 300px;mix-blend-mode:overlay;}
-.wrap{max-width:var(--mx);margin:0 auto;padding:0 32px;}
-a{color:inherit;text-decoration:none;}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:transparent;border-bottom:1px solid transparent;transition:background .3s,border-color .3s;}
-nav.scr{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line);}
-.nav-in{max-width:var(--mx);margin:0 auto;padding:15px 32px;display:flex;align-items:center;justify-content:space-between;}
-.brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink);}
-.brand .mk{width:30px;height:30px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800;}
-.nav-right{display:flex;align-items:center;gap:22px;}
-.nav-links{display:flex;gap:24px;}
-.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .15s;}
-.nav-links a:hover{color:var(--ink);}
-.theme-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--body);display:grid;place-items:center;cursor:pointer;transition:border-color .2s,color .2s;}
-.theme-btn:hover{border-color:var(--line2);color:var(--ink);}
-.theme-btn svg{width:16px;height:16px;}
-.theme-btn .sun{display:none;} [data-theme="dark"] .theme-btn .sun{display:block;} [data-theme="dark"] .theme-btn .moon{display:none;}
-.nav-cta{font-size:13.5px;font-weight:600;color:var(--on-brand);background:var(--brand);padding:9px 16px;border-radius:9px;display:inline-flex;align-items:center;gap:7px;transition:background .2s;}
-.nav-cta:hover{background:var(--brand2);}
-@media(max-width:760px){.nav-links{display:none;}}
+/* ============ BASE ============ */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:url('textures/halftone-ink.png') repeat fixed 0 0/720px 720px,var(--bg);
+  color:var(--fg);
+  font-family:"Hanken Grotesk",system-ui,sans-serif;
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  transition:background .35s ease,color .35s ease;
+}
+[data-theme="dark"] body{background:url('textures/halftone-bone.png') repeat fixed 0 0/720px 720px,var(--bg)}
+body::after{
+  content:"";position:fixed;inset:0;z-index:90;pointer-events:none;
+  opacity:var(--grain);
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="300" height="300" filter="url(%23n)"/></svg>');
+  background-size:300px 300px;
+  mix-blend-mode:overlay;
+}
+::selection{background:var(--fg);color:var(--bg)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
 
-.hero{position:relative;padding:150px 0 70px;overflow:hidden;}
-.hero-fx{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
-/* DUSK dot grid instead of line grid */
-.hero-fx .grid{position:absolute;inset:-2px;background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:26px 26px;mask-image:radial-gradient(72% 62% at 30% 32%,#000,transparent 80%);opacity:.9;}
-/* SD particle monogram — dots assemble into initials on load */
-.hero-fx #sdMono{position:absolute;top:96px;right:16px;width:480px;height:406px;opacity:.75;}
-@media(max-width:900px){.hero-fx #sdMono{display:none;}}
-.hero-fx .glow{position:absolute;top:-10%;right:-6%;width:560px;height:560px;background:radial-gradient(circle,var(--accent-soft),transparent 66%);}
-.hero-in{position:relative;z-index:2;}
-.eye{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.02em;margin-bottom:22px;}
-.eye::before{content:'';width:26px;height:1px;background:var(--accent);}
-.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7vw,76px);line-height:1.04;letter-spacing:-.025em;color:var(--ink);margin-bottom:22px;}
-.hero h1 .hl{color:var(--accent);}
-.hero-sub{font-size:18px;color:var(--body);line-height:1.65;max-width:600px;margin-bottom:34px;}
-.hero-cta{display:flex;gap:13px;flex-wrap:wrap;align-items:center;}
-.btn{font-size:14.5px;font-weight:600;padding:12px 20px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;transition:all .2s;white-space:nowrap;}
-.btn-p{background:var(--brand);color:var(--on-brand);}
-.btn-p:hover{background:var(--brand2);transform:translateY(-1px);}
-.btn-s{border:1px solid var(--line2);color:var(--body);background:var(--card);}
-.btn-s:hover{border-color:var(--brand);color:var(--ink);transform:translateY(-1px);}
-.hero-meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:34px;font-family:var(--mono);font-size:12.5px;color:var(--muted);}
-.hero-meta b{color:var(--ink);font-weight:600;}
-.hero-meta .sep{width:1px;height:15px;background:var(--line2);align-self:center;}
+h1,h2,h3{font-family:"Instrument Sans","Hanken Grotesk",sans-serif;font-weight:600;letter-spacing:-.03em;line-height:1.05}
+.mono{font-family:"JetBrains Mono",monospace}
 
-section{padding:74px 0;}
-.sec-head{max-width:660px;margin-bottom:38px;}
-.sec-label{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.02em;margin-bottom:14px;}
-.sec-label::before{content:'';width:22px;height:1px;background:var(--accent);}
-.sec-h{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,36px);line-height:1.1;letter-spacing:-.02em;color:var(--ink);}
-.sec-sub{font-size:16px;color:var(--body);line-height:1.6;margin-top:12px;}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 24px;min-width:0}
+section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 
-.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
-@media(max-width:820px){.pgrid{grid-template-columns:1fr;}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px;box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:12px;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;overflow:hidden;}
-.card:hover{transform:translateY(-3px);box-shadow:var(--sh-md);border-color:var(--line2);}
-.card.feat{grid-column:1 / -1;background:linear-gradient(140deg,var(--brand-soft),var(--card));}
-.p-num{font-family:var(--mono);font-size:10.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;}
-.p-title{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.01em;color:var(--ink);line-height:1.25;}
-.p-desc{font-size:13.5px;color:var(--body);line-height:1.7;flex:1;}
-.p-pills{display:flex;flex-wrap:wrap;gap:7px;}
-.pill{font-family:var(--mono);font-size:10px;color:var(--brand);background:var(--brand-soft);border:1px solid var(--line);padding:4px 9px;border-radius:20px;letter-spacing:.02em;}
-.card.feat .pill,.pill.acc{color:var(--accent);background:var(--accent-soft);}
-.p-stack{display:flex;flex-wrap:wrap;gap:6px;}
-.tag{font-family:var(--mono);font-size:10px;color:var(--muted);background:var(--surface2);border:1px solid var(--line);padding:3px 8px;border-radius:5px;}
-.p-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
-.p-link{font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--body);border:1px solid var(--line);padding:7px 13px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;transition:all .18s;}
-.p-link:hover{color:var(--ink);border-color:var(--line2);}
-.p-link.go{color:var(--on-brand);background:var(--brand);border-color:transparent;}
-.p-link.go:hover{background:var(--brand2);}
-.mini-label{font-family:var(--mono);font-size:9.5px;color:var(--faint);letter-spacing:.05em;text-transform:uppercase;margin-top:4px;}
-.mini-wrap{width:100%;height:80px;position:relative;}
-/* DUSK dithered art — same observatory kit as bizfalconai.com */
-.art-wrap{width:100%;height:150px;position:relative;margin-top:4px;}
-.art-wrap canvas{position:absolute;inset:0;width:100%;height:100%;}
-.starfield-strip{height:120px;position:relative;overflow:hidden;margin-top:40px;}
-.starfield-strip canvas{position:absolute;inset:0;width:100%;height:100%;}
+/* eyebrow + chips */
+.eyebrow{
+  font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--mut);
+  display:flex;align-items:center;gap:10px;margin-bottom:22px;
+}
+.eyebrow::before{content:"";display:block;width:22px;height:1px;background:var(--signal)}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  background:transparent;color:var(--fg);border:1px solid var(--line);
+  padding:5px 10px;
+}
+.chip .pulse{width:6px;height:6px;background:var(--signal)}
+.chip--sig{color:var(--signal)}
 
-.more{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;box-shadow:var(--sh-sm);}
-.more h3{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
-.more-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 24px;}
-@media(max-width:640px){.more-list{grid-template-columns:1fr;}}
-.more-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--line);}
-.more-row .mn{font-family:var(--display);font-weight:600;font-size:14px;color:var(--ink);}
-.more-row .md{font-size:12px;color:var(--muted);margin-top:2px;}
-.more-row a{font-family:var(--mono);font-size:11px;color:var(--body);border:1px solid var(--line);padding:5px 10px;border-radius:7px;white-space:nowrap;transition:all .18s;}
-.more-row a:hover{color:var(--ink);border-color:var(--line2);}
+/* buttons — Instrument Sans interactive voice (editorial pass) */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:"Instrument Sans","Hanken Grotesk",sans-serif;
+  font-size:14.5px;font-weight:600;letter-spacing:.005em;
+  padding:14px 24px;min-height:44px;cursor:pointer;
+  transition:background .2s ease,color .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.btn--primary{background:var(--fg);color:var(--bg)}
+.btn--primary:hover{background:var(--fg);color:var(--bg);box-shadow:inset 0 -2px 0 var(--signal)}
+.btn--ghost{border:1px solid var(--line);color:var(--fg)}
+.btn--ghost:hover{border-color:var(--signal);color:var(--signal)}
 
-.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
-@media(max-width:820px){.sgrid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:520px){.sgrid{grid-template-columns:1fr;}}
-.scell{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--sh-sm);}
-.scat{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
-.stags{display:flex;flex-wrap:wrap;gap:7px;}
-.stag{font-family:var(--mono);font-size:11.5px;color:var(--body);background:var(--surface2);border:1px solid var(--line);padding:4px 10px;border-radius:6px;transition:all .15s;}
-.stag:hover{color:var(--ink);border-color:var(--line2);}
+/* scroll reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:none}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
 
-.agrid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;}
-@media(max-width:820px){.agrid{grid-template-columns:1fr;}}
-.acell{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:30px;box-shadow:var(--sh-sm);}
-.acell h3{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
-.acell p{font-size:15px;color:var(--body);line-height:1.8;}
-.edu-t{font-family:var(--display);font-weight:600;font-size:19px;color:var(--ink);margin-bottom:4px;}
-.edu-c{font-family:var(--mono);font-size:12.5px;color:var(--accent);margin-bottom:12px;}
-.edu-m{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.9;}
-.clink{font-family:var(--mono);font-size:13px;color:var(--body);display:block;padding:5px 0;transition:color .18s;}
-.clink:hover{color:var(--accent);}
+/* corner brackets */
+.frame{position:relative}
+.frame i{position:absolute;width:14px;height:14px;border:0 solid var(--fg);opacity:.6}
+.frame i:nth-child(1){top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.frame i:nth-child(2){top:-1px;right:-1px;border-top-width:1px;border-right-width:1px}
+.frame i:nth-child(3){bottom:-1px;left:-1px;border-bottom-width:1px;border-left-width:1px}
+.frame i:nth-child(4){bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px}
 
-footer{border-top:1px solid var(--line);padding:36px 0;}
-.foot-in{max-width:var(--mx);margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
-footer p{font-family:var(--mono);font-size:12px;color:var(--muted);}
-.foot-links{display:flex;gap:20px;}
-.foot-links a{font-family:var(--mono);font-size:12px;color:var(--muted);transition:color .18s;}
-.foot-links a:hover{color:var(--accent);}
+/* ============ NAV ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  border-bottom:1px solid var(--line-soft);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+}
+.nav-in{max-width:1180px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:32px}
+.brand{display:flex;align-items:center;gap:11px;font-family:"Inter Tight","Helvetica Neue",Arial,sans-serif;font-size:16px;font-weight:800;letter-spacing:-.01em}
+.brand .mk{width:28px;height:28px;background:var(--signal);color:#fff;display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700}
+.nav-links{display:flex;gap:28px;margin-left:12px}
+.nav-links a{
+  font-family:"Instrument Sans","Hanken Grotesk",sans-serif;
+  font-size:13.5px;font-weight:500;letter-spacing:.01em;
+  color:var(--mut);transition:color .2s ease;
+}
+.nav-links a:hover{color:var(--signal)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.theme-btn{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);transition:border-color .2s ease,color .2s ease;
+}
+.theme-btn:hover{border-color:var(--signal);color:var(--signal)}
+.theme-btn svg{width:16px;height:16px}
+[data-theme="light"] .icon-sun{display:none}
+[data-theme="dark"] .icon-moon{display:none}
+.nav .btn{padding:11px 20px;min-height:0}
 
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
-.reveal.vis{opacity:1;transform:translateY(0);}
-@media(max-width:600px){.foot-in{flex-direction:column;text-align:center;}}
+/* ============ HERO ============ */
+.hero{min-height:100svh;padding:0;border-top:none;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.hero-canvas{position:absolute;left:0;right:0;bottom:0;height:56%;width:100%;display:block;pointer-events:none;
+  -webkit-mask-image:linear-gradient(transparent,#000 26%);mask-image:linear-gradient(transparent,#000 26%)}
+#sdMono{position:absolute;top:110px;right:12px;width:460px;height:390px;opacity:.55;pointer-events:none;z-index:1}
+@media(max-width:1000px){#sdMono{display:none}}
+.hero-in{position:relative;z-index:2;padding-top:150px}
+.hero-chip{margin-bottom:30px;display:inline-flex}
+.hero h1{font-size:clamp(2.9rem,7vw,5.4rem);max-width:15ch}
+.hero h1 .sig{color:var(--signal)}
+.hero h1 .ser{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.hero-sub{max-width:54ch;color:var(--mut);font-size:18px;margin:28px 0 40px}
+.hero-sub strong{color:var(--fg);font-weight:600}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+
+/* telemetry side rails */
+.rail{
+  position:absolute;top:170px;z-index:2;
+  font-family:"JetBrains Mono",monospace;font-size:9.5px;line-height:2.1;
+  letter-spacing:.08em;color:var(--mut);text-transform:uppercase;
+}
+.rail b{color:var(--fg);font-weight:500}
+.rail .sig{color:var(--signal)}
+.rail--l{left:24px}
+.rail--r{right:24px;text-align:right}
+.rail hr{border:none;border-top:1px solid var(--line-soft);margin:10px 0}
+@media(max-width:1500px){.rail{display:none}}
+
+/* ============ SECTION HEADERS ============ */
+.sec-head{margin-bottom:70px;max-width:640px}
+.sec-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+.sec-row .sec-head{margin-bottom:70px}
+.sec-head h2{font-size:clamp(2rem,4.4vw,3.2rem);margin-bottom:18px}
+.sec-head p{color:var(--mut)}
+.art{display:block}
+.art--sphere{width:190px;height:190px;flex:none;margin-bottom:70px}
+@media(max-width:920px){.art--sphere{display:none}}
+.art--sphere,.art--hero{
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);
+  mask-composite:intersect}
+
+/* ============ WORK GRID ============ */
+.dotbg{background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:26px 26px}
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.prod-grid > *{min-width:0}
+.prod{
+  border:1px solid var(--line);background:var(--card);padding:34px;
+  position:relative;transition:border-color .25s ease;
+  display:flex;flex-direction:column;min-width:0;
+}
+.prod > *{min-width:0}
+.mini,.mini-canvas{min-width:0}
+.prod:hover{border-color:var(--fg)}
+.prod--hero{grid-column:1 / -1;display:grid;grid-template-columns:1.1fr 1fr;gap:44px;align-items:center}
+.prod-idx{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;gap:14px;margin-bottom:26px}
+.prod-idx .sig{color:var(--signal)}
+.prod h3{font-size:26px;margin-bottom:12px}
+.prod p{color:var(--mut);font-size:15.5px}
+.prod p strong{color:var(--fg);font-weight:600}
+.prod-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.stack-line{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:18px;line-height:2.2}
+.stack-line b{color:var(--fg);font-weight:500}
+.prod-links{display:flex;flex-wrap:wrap;gap:22px;margin-top:24px}
+.prod-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--fg);transition:color .2s ease;
+}
+.prod-link::after{content:"→";transition:transform .2s ease}
+.prod-link:hover{color:var(--signal)}
+.prod-link:hover::after{transform:translateX(4px)}
+.prod-link--sig{color:var(--signal)}
+
+/* card mini charts — instrument readouts */
+.mini{margin-top:26px;border:1px solid var(--line-soft);background:var(--bg);padding:14px 14px 10px;flex:1;display:flex;flex-direction:column;min-height:150px}
+.mini-canvas{position:relative;flex:1;min-height:96px}
+.mini-note{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--mut);text-transform:uppercase;margin-top:10px}
+.mini-note em{color:var(--signal);font-style:normal}
+.art--hero{width:100%;height:280px}
+@media(max-width:920px){.art--hero{height:200px}}
+
+/* ============ TOOLKIT ============ */
+.kit{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.kitcol{border-top:1px solid var(--line);padding-top:26px}
+.kitcol h3{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--signal);margin-bottom:18px}
+.kitcol ul{list-style:none}
+.kitcol li{font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:2.15;color:var(--mut)}
+.kitcol li b{color:var(--fg);font-weight:500}
+
+/* ============ ABOUT ============ */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.about-copy p{color:var(--mut);margin-bottom:20px}
+.about-copy p strong{color:var(--fg);font-weight:600}
+.ledger{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mut);border:1px solid var(--line-soft);padding:13px 16px;margin-top:30px;
+  display:flex;gap:22px;flex-wrap:wrap;
+}
+.ledger b{color:var(--fg);font-weight:500}
+.edu{border:1px solid var(--line);background:var(--card);padding:30px}
+.edu .prod-idx{margin-bottom:20px}
+.edu h3{font-size:22px;margin-bottom:6px}
+.edu .conc{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--signal);margin-bottom:16px}
+.edu .meta{font-family:"JetBrains Mono",monospace;font-size:12px;line-height:2.1;color:var(--mut)}
+.edu .meta b{color:var(--fg);font-weight:500}
+.edu hr{border:none;border-top:1px solid var(--line-soft);margin:22px 0}
+.contact-links{display:flex;flex-direction:column;gap:10px}
+.contact-links a{
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--fg);opacity:.82;
+  transition:color .2s ease,opacity .2s ease;
+}
+.contact-links a:hover{color:var(--signal);opacity:1}
+@media(max-width:920px){.about-grid{grid-template-columns:1fr;gap:40px}}
+
+/* ============ OBS STRIP (starfield) ============ */
+.obs{position:relative;height:340px;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);overflow:hidden}
+.obs canvas{width:100%;height:100%;display:block}
+.obs-label{
+  position:absolute;font-family:"JetBrains Mono",monospace;font-size:9.5px;line-height:1.9;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--mut);
+}
+.obs-label b{color:var(--fg);font-weight:500}
+.obs-label .sig{color:var(--signal)}
+.obs-label--tl{top:18px;left:18px}
+.obs-label--tr{top:18px;right:18px;text-align:right}
+.obs-label--br{bottom:14px;right:18px;text-align:right;font-size:15px;color:var(--fg);font-family:"Instrument Serif",serif;font-style:italic;letter-spacing:0;text-transform:none}
+.obs-label--bl{bottom:14px;left:18px}
+@media(max-width:700px){.obs{height:220px}.obs-label--tr,.obs-label--bl{display:none}}
+
+/* ============ FOOTER ============ */
+.footer{border-top:1px solid var(--line-soft);padding:44px 0}
+.foot-in{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot-in,.foot-links a{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.foot-links{display:flex;gap:26px}
+.foot-links a:hover{color:var(--signal)}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:920px){
+  .prod--hero{grid-template-columns:1fr}
+  .prod-grid{grid-template-columns:1fr}
+  .kit{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  section{padding:90px 0}
+}
+@media(max-width:480px){
+  body{font-size:16px}
+  .hero-in{padding-top:120px}
+  .prod{padding:24px}
+  .kit{grid-template-columns:1fr}
+  .nav-in{gap:14px;padding:0 16px}
+  .nav .btn{white-space:nowrap;padding:9px 13px;font-size:12.5px}
+  .brand{font-size:14px}
+}
+
+/* ============ REDUCED MOTION ============ */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  .chip .pulse{animation:none}
+  *{transition-duration:.01ms!important}
+}
+.chip .pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 </style>
 </head>
 <body>
 
-<nav id="nav">
+<nav class="nav">
   <div class="nav-in">
     <a href="#top" class="brand"><span class="mk">SD</span>Siddharth Deepak</a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#toolkit">Toolkit</a>
+      <a href="#about">About</a>
+    </div>
     <div class="nav-right">
-      <div class="nav-links"><a href="#work">Work</a><a href="#skills">Skills</a><a href="#about">About</a></div>
-      <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg>
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
-      <a href="Siddharth_Deepak_Resume.pdf" target="_blank" class="nav-cta">Résumé ↗</a>
+      <a href="Siddharth_Deepak_Resume.pdf" target="_blank" class="btn btn--primary">Résumé ↗</a>
     </div>
   </div>
 </nav>
 
 <header class="hero" id="top">
-  <div class="hero-fx" aria-hidden="true">
-    <div class="grid"></div>
-    <canvas id="sdMono"></canvas>
-    <div class="glow"></div>
+  <canvas class="hero-canvas" id="terrain" aria-hidden="true"></canvas>
+  <canvas id="sdMono" aria-hidden="true"></canvas>
+
+  <div class="rail rail--l" aria-hidden="true">
+    Student<br>
+    <b>B.S. Business Analytics &amp; AI</b><br>
+    UT Dallas · Jindal School<br>
+    <hr>
+    Class of <b>Dec 2027</b><br>
+    Leander, TX
   </div>
+  <div class="rail rail--r" aria-hidden="true">
+    Portfolio<br>
+    <b>6 projects</b> · all live<br>
+    <hr>
+    <span class="sig">BizFalcon AI</span><br>
+    founded &amp; shipped solo
+  </div>
+
   <div class="wrap hero-in">
-    <p class="eye">Business Analytics &amp; AI · UT Dallas · Naveen Jindal School of Management</p>
-    <h1>I turn messy data<br>into decisions <span class="hl">businesses act on.</span></h1>
-    <p class="hero-sub">Business analytics student building end-to-end data products — from complex SQL and machine-learning models to BI dashboards and a shipped AI SaaS suite — always tied to measurable business impact.</p>
-    <div class="hero-cta">
-      <a href="#work" class="btn btn-p">View my work →</a>
-      <a href="Siddharth_Deepak_Resume.pdf" target="_blank" class="btn btn-s">Résumé ↗</a>
-      <a href="https://github.com/siddeepak2023" target="_blank" class="btn btn-s">GitHub</a>
-      <a href="https://linkedin.com/in/siddharth-deepak-3182b8219" target="_blank" class="btn btn-s">LinkedIn</a>
-    </div>
-    <div class="hero-meta">
-      <span><b>BizFalcon AI</b> — SaaS company founded &amp; shipped solo</span><span class="sep"></span>
-      <span><b>Dec 2027</b> graduation</span>
+    <span class="chip hero-chip rv"><span class="pulse"></span>Open to business-analytics internships · Summer 2026</span>
+    <h1 class="rv d1">I turn messy data into decisions businesses <span class="sig">act on</span>.</h1>
+    <p class="hero-sub rv d2">Business analytics student building end-to-end data products — from <strong>complex SQL</strong> and <strong>machine-learning models</strong> to <strong>BI dashboards</strong> and a <strong>shipped AI SaaS suite</strong> — always tied to measurable business impact.</p>
+    <div class="hero-ctas rv d3">
+      <a href="#work" class="btn btn--primary">View my work →</a>
+      <a href="Siddharth_Deepak_Resume.pdf" target="_blank" class="btn btn--ghost">Résumé ↗</a>
+      <a href="https://github.com/siddeepak2023" target="_blank" class="btn btn--ghost">GitHub</a>
+      <a href="https://linkedin.com/in/siddharth-deepak-3182b8219" target="_blank" class="btn btn--ghost">LinkedIn</a>
     </div>
   </div>
 </header>
 
-<section id="work">
+<section id="work" class="dotbg">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="sec-label">Selected work</span>
-      <h2 class="sec-h">SQL, statistics, ML, and a shipped AI SaaS — with the business impact quantified.</h2>
-      <p class="sec-sub">Every project runs on real data and ends in a decision: revenue at risk, a lift, a segment to target, a forecast to act on.</p>
-    </div>
-    <div class="pgrid">
-
-      <div class="card feat reveal">
-        <span class="p-num">01 — Founder · Shipped SaaS · Full-stack</span>
-        <h3 class="p-title">BizFalcon AI — AI Analytics Company, Founded &amp; Shipped Solo</h3>
-        <p class="p-desc">A real SaaS company I founded and built end-to-end — model, interface, billing, deployment. The flagship, <strong>Talon</strong>, is an AI data analyst that writes and runs Python on your full dataset in the browser: every number computed, never estimated, with the formula behind each figure one click away. The same engine ships as <strong>ProfitFalcon</strong> (e-commerce unit economics — per-SKU margins, discount-leak detection, reorder forecasting) and <strong>ClientFalcon</strong> (agency client reporting — prospect audits, portfolio health, branded reports), plus <a href="https://fledge.bizfalconai.com" target="_blank"><strong>Fledge</strong></a> for creator analytics. On top sits an operator layer that recommends the exact next move — cut this budget, reorder this SKU — waits for human approval, then scores every recommendation against what actually happened in a decision ledger. OAuth connectors (Meta, Google Ads, GA4, Shopify, Klaviyo), Stripe subscriptions, 9 industry metric packs, 400+ automated tests + CI.</p>
-        <div class="art-wrap"><canvas data-art="ghostchart" aria-hidden="true"></canvas></div>
-        <div class="p-pills"><span class="pill acc">Founded &amp; shipped solo</span><span class="pill">Decision ledger — every rec scored vs outcome</span><span class="pill">9 metric packs</span><span class="pill">400+ tests · CI</span></div>
-        <div class="p-stack"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Firebase</span><span class="tag">Pyodide</span><span class="tag">OpenAI · Anthropic · Gemini</span><span class="tag">Stripe</span></div>
-        <div class="p-links"><a href="https://bizfalconai.com" target="_blank" class="p-link go">Company site ↗</a><a href="https://talon.bizfalconai.com" target="_blank" class="p-link">Talon ↗</a><a href="https://profit.bizfalconai.com" target="_blank" class="p-link">ProfitFalcon ↗</a><a href="https://client.bizfalconai.com" target="_blank" class="p-link">ClientFalcon ↗</a></div>
+    <div class="sec-row">
+      <div class="sec-head rv">
+        <p class="eyebrow">Selected work</p>
+        <h2>SQL, statistics, ML — and a shipped AI SaaS.</h2>
+        <p>Every project runs on real data and ends in a decision: revenue at risk, a lift, a segment to target, a forecast to act on.</p>
       </div>
-
-      <div class="card reveal">
-        <span class="p-num">02 — Customer Analytics · Segmentation</span>
-        <h3 class="p-title">Retail Customer Intelligence Platform</h3>
-        <p class="p-desc">End-to-end customer analytics on 805K real transactions (2009–2011, 38 countries). RFM segmentation splits the base into 5 actionable tiers; a churn model hits 75.4% accuracy (0.834 ROC-AUC) and flags <strong>£1.46M of revenue at risk</strong>. Market-basket association rules power a recommendation engine — packaged so an operator can act without an analyst.</p>
-        <div class="mini-label">Monthly revenue trend — £17.74M total</div>
-        <div class="mini-wrap"><canvas id="retailChart"></canvas></div>
-        <div class="p-pills"><span class="pill acc">£1.46M at risk</span><span class="pill">805K transactions</span><span class="pill">RFM · churn · market basket</span></div>
-        <div class="p-stack"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">RFM</span></div>
-        <div class="p-links"><a href="retail_dashboard.html" target="_blank" class="p-link go">Live dashboard ↗</a></div>
-      </div>
-      <div class="card reveal">
-        <span class="p-num">03 — Statistics · A/B Testing</span>
-        <h3 class="p-title">Spotify Email Campaign A/B Test</h3>
-        <p class="p-desc">Designed and analyzed an email A/B test across 10,000 users using two-proportion z-tests. Found statistically significant lifts of 27.5% in open rate and 470% in conversion rate (p &lt; 0.05), and projected <strong>$83.9M</strong> in additional annual Premium revenue if the winning variant rolled out to 250M users.</p>
-        <div class="mini-label">Funnel — Variant A vs B</div>
-        <div class="mini-wrap"><canvas id="spotifyChart"></canvas></div>
-        <div class="p-pills"><span class="pill">10K users</span><span class="pill">p &lt; 0.05</span><span class="pill acc">$83.9M projected lift</span></div>
-        <div class="p-stack"><span class="tag">Python</span><span class="tag">SciPy</span><span class="tag">Statsmodels</span><span class="tag">Plotly</span></div>
-        <div class="p-links"><a href="spotify_ab_dashboard.html" target="_blank" class="p-link go">Live dashboard ↗</a><a href="https://github.com/siddeepak2023/spotify-email-ab-test" target="_blank" class="p-link">GitHub</a></div>
-      </div>
-      <div class="card reveal">
-        <span class="p-num">04 — SQL · Business Intelligence</span>
-        <h3 class="p-title">Olist E-Commerce Revenue Analysis</h3>
-        <p class="p-desc">End-to-end BI on 96K+ real Brazilian e-commerce transactions across 9 relational tables using advanced SQL — CTEs, window functions, multi-table JOINs. Found Health &amp; Beauty as the #1 category at R$1.4M and a 31% review-score drop for orders with 21+ day delivery. Published as a live Tableau dashboard.</p>
-        <div class="mini-label">Revenue by top 5 categories (R$M)</div>
-        <div class="mini-wrap"><canvas id="olistChart"></canvas></div>
-        <div class="p-pills"><span class="pill">96K+ transactions</span><span class="pill">9 relational tables</span><span class="pill">CTEs · window fns</span></div>
-        <div class="p-stack"><span class="tag">SQL</span><span class="tag">Python</span><span class="tag">Tableau</span><span class="tag">Pandas</span><span class="tag">Excel</span></div>
-        <div class="p-links"><a href="olist_dashboard.html" target="_blank" class="p-link go">Live dashboard ↗</a><a href="https://public.tableau.com/views/OlistE-CommercePerformanceAnalysis2016-2018/OlistE-CommercePerformanceAnalysis20162018" target="_blank" class="p-link">Tableau ↗</a><a href="https://github.com/siddeepak2023/olist-e-commerce-analysis-sql" target="_blank" class="p-link">GitHub</a></div>
-      </div>
-      <div class="card reveal">
-        <span class="p-num">05 — Predictive ML · Big Data</span>
-        <h3 class="p-title">U.S. Flight Delay Intelligence Engine</h3>
-        <p class="p-desc">A LightGBM classifier on <strong>72M+ real BTS domestic flights</strong> (2015–2024) predicting delay risk at 84.7% accuracy and AUC 0.891. Route-level risk atlas across 5,248 O-D pairs, airline reliability index, airport bottleneck heatmap, and a live predictor — proof of handling data at real scale.</p>
-        <div class="mini-label">Annual delay rate 2015–2024 — 72M flights</div>
-        <div class="mini-wrap"><canvas id="flightChart"></canvas></div>
-        <div class="p-pills"><span class="pill">72M+ flights</span><span class="pill">84.7% accuracy</span><span class="pill">AUC 0.891</span></div>
-        <div class="p-stack"><span class="tag">Python</span><span class="tag">LightGBM</span><span class="tag">BTS Data</span><span class="tag">Chart.js</span></div>
-        <div class="p-links"><a href="flight_delay_dashboard.html" target="_blank" class="p-link go">Live dashboard ↗</a><a href="https://github.com/siddeepak2023/flight-delay-intelligence" target="_blank" class="p-link">GitHub</a></div>
-      </div>
-
-      <div class="card reveal">
-        <span class="p-num">06 — Data Viz · WebGL</span>
-        <h3 class="p-title">Universe Data Visualization</h3>
-        <p class="p-desc">A real-time interactive 3D explorer rendering <strong>1M+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy. A showcase of data engineering + visualization at scale.</p>
-        <div class="mini-label">Object distribution (1M+ records, thousands)</div>
-        <div class="mini-wrap"><canvas id="universeChart"></canvas></div>
-        <div class="p-pills"><span class="pill">1M+ real objects</span><span class="pill">6 scientific APIs</span><span class="pill">60 FPS WebGL</span></div>
-        <div class="p-stack"><span class="tag">Python</span><span class="tag">Astropy</span><span class="tag">Three.js</span><span class="tag">Pandas</span></div>
-        <div class="p-links"><a href="https://interactive3duniversemap.netlify.app/" target="_blank" class="p-link go">Live demo ↗</a><a href="https://github.com/siddeepak2023/universe-data-visualization-dashboard" target="_blank" class="p-link">GitHub</a></div>
-      </div>
-
+      <canvas class="art art--sphere rv d1" data-art="glitchsphere" aria-hidden="true"></canvas>
     </div>
 
+    <div class="prod-grid">
+
+      <article class="prod prod--hero rv">
+        <div>
+          <div class="prod-idx"><span>01 · Founder — shipped SaaS</span><span class="sig">Live</span></div>
+          <h3>BizFalcon AI</h3>
+          <p>A real SaaS company I founded and built end-to-end — model, interface, billing, deployment. The flagship, <strong>Talon</strong>, is an AI data analyst that writes and runs Python on your full dataset in the browser: every number computed, never estimated, with the formula behind each figure one click away. The same engine ships as <strong>ProfitFalcon</strong> (e-commerce unit economics) and <strong>ClientFalcon</strong> (agency client reporting), plus <strong>Fledge</strong> for creator analytics. On top sits an operator layer that recommends the exact next move, waits for human approval, then scores every recommendation against what actually happened in a decision ledger.</p>
+          <div class="prod-chips">
+            <span class="chip chip--sig">Founded &amp; shipped solo</span>
+            <span class="chip">Decision ledger</span>
+            <span class="chip">9 metric packs</span>
+            <span class="chip">400+ tests · CI</span>
+          </div>
+          <p class="stack-line"><b>React</b> · <b>TypeScript</b> · <b>Firebase</b> · <b>Pyodide</b> · <b>OpenAI / Anthropic / Gemini</b> · <b>Stripe</b></p>
+          <div class="prod-links">
+            <a href="https://bizfalconai.com" target="_blank" class="prod-link prod-link--sig">Company site</a>
+            <a href="https://talon.bizfalconai.com" target="_blank" class="prod-link">Talon</a>
+            <a href="https://profit.bizfalconai.com" target="_blank" class="prod-link">ProfitFalcon</a>
+            <a href="https://client.bizfalconai.com" target="_blank" class="prod-link">ClientFalcon</a>
+            <a href="https://fledge.bizfalconai.com" target="_blank" class="prod-link">Fledge</a>
+          </div>
+        </div>
+        <div class="frame"><i></i><i></i><i></i><i></i>
+          <canvas class="art art--hero" data-art="ghostchart" aria-hidden="true"></canvas>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <div class="prod-idx"><span>02 · Customer analytics</span><span>Segmentation</span></div>
+        <h3>Retail Customer Intelligence</h3>
+        <p>End-to-end customer analytics on <strong>805K real transactions</strong> (38 countries). RFM segmentation splits the base into 5 actionable tiers; a churn model hits 75.4% accuracy (0.834 ROC-AUC) and flags <strong>£1.46M of revenue at risk</strong>. Market-basket rules power a recommendation engine an operator can act on without an analyst.</p>
+        <div class="mini">
+          <div class="mini-canvas"><canvas id="retailChart"></canvas></div>
+          <p class="mini-note">Monthly revenue · £17.74M total · <em>£1.46M at risk</em></p>
+        </div>
+        <p class="stack-line"><b>Python</b> · <b>Scikit-learn</b> · <b>Pandas</b> · <b>RFM</b></p>
+        <div class="prod-links">
+          <a href="retail_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
+        </div>
+      </article>
+
+      <article class="prod rv d1">
+        <div class="prod-idx"><span>03 · Statistics</span><span>A/B testing</span></div>
+        <h3>Spotify Email A/B Test</h3>
+        <p>Designed and analyzed an email A/B test across <strong>10,000 users</strong> using two-proportion z-tests. Statistically significant lifts of 27.5% in open rate and 470% in conversion (p &lt; 0.05); projected <strong>$83.9M</strong> additional annual Premium revenue at a 250M-user rollout.</p>
+        <div class="mini">
+          <div class="mini-canvas"><canvas id="spotifyChart"></canvas></div>
+          <p class="mini-note">Funnel · variant A vs B · <em>p &lt; 0.05</em></p>
+        </div>
+        <p class="stack-line"><b>Python</b> · <b>SciPy</b> · <b>Statsmodels</b> · <b>Plotly</b></p>
+        <div class="prod-links">
+          <a href="spotify_ab_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
+          <a href="https://github.com/siddeepak2023/spotify-email-ab-test" target="_blank" class="prod-link">GitHub</a>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <div class="prod-idx"><span>04 · SQL</span><span>Business intelligence</span></div>
+        <h3>Olist E-Commerce Analysis</h3>
+        <p>End-to-end BI on <strong>96K+ real Brazilian e-commerce transactions</strong> across 9 relational tables — CTEs, window functions, multi-table joins. Health &amp; Beauty leads at R$1.4M; orders delivered in 21+ days show a <strong>31% review-score drop</strong>. Published as a live Tableau dashboard.</p>
+        <div class="mini">
+          <div class="mini-canvas"><canvas id="olistChart"></canvas></div>
+          <p class="mini-note">Revenue by top 5 categories · <em>R$M</em></p>
+        </div>
+        <p class="stack-line"><b>SQL</b> · <b>Python</b> · <b>Tableau</b> · <b>Pandas</b> · <b>Excel</b></p>
+        <div class="prod-links">
+          <a href="olist_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
+          <a href="https://public.tableau.com/views/OlistE-CommercePerformanceAnalysis2016-2018/OlistE-CommercePerformanceAnalysis20162018" target="_blank" class="prod-link">Tableau</a>
+          <a href="https://github.com/siddeepak2023/olist-e-commerce-analysis-sql" target="_blank" class="prod-link">GitHub</a>
+        </div>
+      </article>
+
+      <article class="prod rv d1">
+        <div class="prod-idx"><span>05 · Predictive ML</span><span>Big data</span></div>
+        <h3>U.S. Flight Delay Intelligence</h3>
+        <p>A LightGBM classifier on <strong>72M+ real BTS domestic flights</strong> (2015–2024) predicting delay risk at 84.7% accuracy, AUC 0.891. Route-level risk atlas across 5,248 O-D pairs, airline reliability index, airport bottleneck heatmap, and a live predictor — data at real scale.</p>
+        <div class="mini">
+          <div class="mini-canvas"><canvas id="flightChart"></canvas></div>
+          <p class="mini-note">Annual delay rate 2015–2024 · <em>72M flights</em></p>
+        </div>
+        <p class="stack-line"><b>Python</b> · <b>LightGBM</b> · <b>BTS data</b> · <b>Chart.js</b></p>
+        <div class="prod-links">
+          <a href="flight_delay_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
+          <a href="https://github.com/siddeepak2023/flight-delay-intelligence" target="_blank" class="prod-link">GitHub</a>
+        </div>
+      </article>
+
+      <article class="prod rv">
+        <div class="prod-idx"><span>06 · Data viz</span><span>WebGL</span></div>
+        <h3>Universe Data Visualization</h3>
+        <p>A real-time interactive 3D explorer rendering <strong>1M+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser at 60 FPS. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy.</p>
+        <div class="mini">
+          <div class="mini-canvas"><canvas id="universeChart"></canvas></div>
+          <p class="mini-note">Object distribution · thousands · <em>6 live APIs</em></p>
+        </div>
+        <p class="stack-line"><b>Python</b> · <b>Astropy</b> · <b>Three.js</b> · <b>Pandas</b></p>
+        <div class="prod-links">
+          <a href="https://interactive3duniversemap.netlify.app/" target="_blank" class="prod-link prod-link--sig">Live demo</a>
+          <a href="https://github.com/siddeepak2023/universe-data-visualization-dashboard" target="_blank" class="prod-link">GitHub</a>
+        </div>
+      </article>
+
+    </div>
   </div>
 </section>
 
-<section id="skills">
+<section id="toolkit">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-label">Toolkit</span><h2 class="sec-h">The stack behind the work.</h2></div>
-    <div class="sgrid">
-      <div class="scell reveal"><p class="scat">Languages</p><div class="stags"><span class="stag">Python</span><span class="stag">SQL</span><span class="stag">R</span><span class="stag">TypeScript</span><span class="stag">HTML/JS</span></div></div>
-      <div class="scell reveal"><p class="scat">Libraries</p><div class="stags"><span class="stag">Pandas</span><span class="stag">NumPy</span><span class="stag">Scikit-learn</span><span class="stag">LightGBM</span><span class="stag">HistGBM</span><span class="stag">Optuna</span><span class="stag">Prophet</span><span class="stag">Plotly</span></div></div>
-      <div class="scell reveal"><p class="scat">Tools &amp; AI</p><div class="stags"><span class="stag">Tableau</span><span class="stag">Power BI</span><span class="stag">Excel</span><span class="stag">Git</span><span class="stag">Firebase</span><span class="stag">OpenAI · Anthropic · Gemini</span><span class="stag">Pyodide</span></div></div>
-      <div class="scell reveal"><p class="scat">Concepts</p><div class="stags"><span class="stag">ML Modeling</span><span class="stag">A/B Testing</span><span class="stag">Hypothesis Testing</span><span class="stag">Time-Series</span><span class="stag">RFM / Segmentation</span><span class="stag">BI Dashboarding</span><span class="stag">SQL Window Functions</span></div></div>
+    <div class="sec-head rv">
+      <p class="eyebrow">Toolkit</p>
+      <h2>The stack behind the work.</h2>
+    </div>
+    <div class="kit">
+      <div class="kitcol rv">
+        <h3>Languages</h3>
+        <ul><li><b>Python</b></li><li><b>SQL</b></li><li>R</li><li>TypeScript</li><li>HTML / JS</li></ul>
+      </div>
+      <div class="kitcol rv d1">
+        <h3>Libraries</h3>
+        <ul><li><b>Pandas</b> · NumPy</li><li><b>Scikit-learn</b></li><li>LightGBM · HistGBM</li><li>Optuna · Prophet</li><li>Plotly</li></ul>
+      </div>
+      <div class="kitcol rv d2">
+        <h3>Tools &amp; AI</h3>
+        <ul><li><b>Tableau</b> · Power BI</li><li>Excel · Git</li><li>Firebase</li><li>OpenAI · Anthropic · Gemini</li><li>Pyodide</li></ul>
+      </div>
+      <div class="kitcol rv d3">
+        <h3>Concepts</h3>
+        <ul><li><b>ML modeling</b></li><li><b>A/B &amp; hypothesis testing</b></li><li>Time-series</li><li>RFM / segmentation</li><li>BI dashboarding · window fns</li></ul>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="about">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-label">About</span><h2 class="sec-h">Analytics that connects to the business, not just the numbers.</h2></div>
-    <div class="agrid">
-      <div class="acell reveal">
-        <h3>Background</h3>
-        <p>Junior at UT Dallas building end-to-end data projects — from writing complex SQL and cleaning raw datasets to deploying interactive dashboards and shipping full AI products — with a focus on measurable business impact.<br><br>My concentration in Marketing &amp; AI gives me an edge for roles where the analysis has to connect to customer behavior and strategy, not just the math. Based in Leander, TX. Actively seeking business analytics internships.</p>
+    <div class="sec-head rv">
+      <p class="eyebrow">About</p>
+      <h2>Analytics that connects to the business, not just the numbers.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-copy rv">
+        <p>Junior at UT Dallas building end-to-end data projects — from writing complex SQL and cleaning raw datasets to deploying interactive dashboards and <strong>shipping full AI products</strong> — with a focus on measurable business impact.</p>
+        <p>My concentration in <strong>Marketing &amp; AI</strong> gives me an edge for roles where the analysis has to connect to customer behavior and strategy, not just the math. Based in Leander, TX. Actively seeking business analytics internships.</p>
+        <div class="ledger"><span><b>6</b> live projects</span><span><b>72M+</b> rows at peak</span><span><b>400+</b> automated tests</span><span><b>1</b> shipped company</span></div>
       </div>
-      <div class="acell reveal">
-        <h3>Education</h3>
-        <div class="edu-t">B.S. Business Analytics &amp; AI</div>
-        <div class="edu-c">Concentration: Marketing &amp; AI</div>
-        <div class="edu-m">University of Texas at Dallas<br>Naveen Jindal School of Management<br>Anticipated December 2027</div>
-        <div style="margin-top:26px;">
-          <h3>Contact</h3>
-          <a href="mailto:sid.deepak2023@gmail.com" class="clink">sid.deepak2023@gmail.com</a>
-          <a href="https://linkedin.com/in/siddharth-deepak-3182b8219" target="_blank" class="clink">linkedin.com/in/siddharth-deepak</a>
-          <a href="https://github.com/siddeepak2023" target="_blank" class="clink">github.com/siddeepak2023</a>
+      <div class="edu rv d1">
+        <div class="prod-idx"><span>Education</span><span class="sig">Dec 2027</span></div>
+        <h3>B.S. Business Analytics &amp; AI</h3>
+        <p class="conc">Concentration · Marketing &amp; AI</p>
+        <p class="meta"><b>University of Texas at Dallas</b><br>Naveen Jindal School of Management<br>Anticipated December 2027</p>
+        <hr>
+        <div class="prod-idx"><span>Contact</span></div>
+        <div class="contact-links">
+          <a href="mailto:sid.deepak2023@gmail.com">sid.deepak2023@gmail.com</a>
+          <a href="https://linkedin.com/in/siddharth-deepak-3182b8219" target="_blank">linkedin.com/in/siddharth-deepak</a>
+          <a href="https://github.com/siddeepak2023" target="_blank">github.com/siddeepak2023</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="starfield-strip" aria-hidden="true"><canvas data-art="starfield"></canvas></div>
-<footer>
-  <div class="foot-in">
-    <p>© 2026 Siddharth Deepak</p>
+<div class="obs" aria-hidden="true">
+  <canvas data-art="starfield"></canvas>
+  <div class="obs-label obs-label--tl">Field 06<br><b>Gaia DR3 · HyperLEDA · SDSS</b></div>
+  <div class="obs-label obs-label--tr"><span class="sig">1,000,000+</span> objects<br>6 live scientific APIs</div>
+  <div class="obs-label obs-label--bl">60 FPS · WebGL</div>
+  <div class="obs-label obs-label--br">The universe, computed.</div>
+</div>
+
+<footer class="footer">
+  <div class="wrap foot-in">
+    <span>© 2026 Siddharth Deepak</span>
     <div class="foot-links">
       <a href="https://github.com/siddeepak2023" target="_blank">GitHub</a>
       <a href="https://linkedin.com/in/siddharth-deepak-3182b8219" target="_blank">LinkedIn</a>
@@ -325,182 +561,297 @@ footer p{font-family:var(--mono);font-size:12px;color:var(--muted);}
 
 <script>
 (function(){
-  const root=document.documentElement, btn=document.getElementById('themeBtn');
-  const saved=localStorage.getItem('sd-theme'); if(saved) root.setAttribute('data-theme',saved);
-  btn.addEventListener('click',()=>{const t=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',t);localStorage.setItem('sd-theme',t);setTimeout(()=>{drawCharts();if(window.renderArts)renderArts();},60);});
-})();
-const nav=document.getElementById('nav');
-addEventListener('scroll',()=>nav.classList.toggle('scr',scrollY>20));
+"use strict";
+var reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+var root = document.documentElement;
 
-/* SD particle monogram — dots sampled from the glyphs assemble on load.
-   Reads theme colors from CSS vars each frame; reduced-motion renders static. */
-(function(){
-  const cv=document.getElementById('sdMono'); if(!cv) return;
-  const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const DPR=Math.min(2,devicePixelRatio||1);
-  const W=520,H=440; cv.width=W*DPR; cv.height=H*DPR;
-  const ctx=cv.getContext('2d'); ctx.scale(DPR,DPR);
+/* ---------- THEME (light default; sd-theme persists) ---------- */
+var stored = null;
+try { stored = localStorage.getItem("sd-theme"); } catch(e){}
+if (stored === "dark") root.setAttribute("data-theme","dark");
+document.getElementById("themeToggle").addEventListener("click", function(){
+  var dark = root.getAttribute("data-theme") === "dark";
+  root.setAttribute("data-theme", dark ? "light" : "dark");
+  try { localStorage.setItem("sd-theme", dark ? "light" : "dark"); } catch(e){}
+  syncColors();
+});
 
-  // Sample "SD" from an offscreen canvas
-  const off=document.createElement('canvas'); off.width=W; off.height=H;
-  const o=off.getContext('2d');
-  o.font='700 300px "Instrument Sans", sans-serif';
-  o.textAlign='center'; o.textBaseline='middle';
-  o.fillText('SD',W/2,H/2+14);
-  const img=o.getImageData(0,0,W,H).data;
-  const pts=[]; const GAP=7;
-  for(let y=0;y<H;y+=GAP)for(let x=0;x<W;x+=GAP){
-    if(img[(y*W+x)*4+3]>128) pts.push({tx:x,ty:y,x:Math.random()*W,y:Math.random()*H,d:Math.random()*0.6+0.4,ph:Math.random()*Math.PI*2});
-  }
-  const cs=()=>getComputedStyle(document.documentElement);
-  let t0=null;
-  function draw(ts){
-    if(t0===null)t0=ts;
-    const k=still?1:Math.min(1,(ts-t0)/1800);
-    const ease=1-Math.pow(1-k,3);
-    const ink=cs().getPropertyValue('--ink').trim(), acc=cs().getPropertyValue('--accent').trim();
-    ctx.clearRect(0,0,W,H);
-    const time=ts/1000;
-    for(let i=0;i<pts.length;i++){
-      const p=pts[i];
-      const wob=k>=1&&!still?Math.sin(time*0.8+p.ph)*1.2:0;
-      const x=p.x+(p.tx-p.x)*ease+wob, y=p.y+(p.ty-p.y)*ease+wob*0.6;
-      ctx.globalAlpha=(0.10+0.16*p.d)*ease+0.04;
-      ctx.fillStyle=i%11===0?acc:ink;
-      ctx.beginPath(); ctx.arc(x,y,i%11===0?1.8:1.3,0,7); ctx.fill();
-    }
-    ctx.globalAlpha=1;
-    if(!still) requestAnimationFrame(draw);
-  }
-  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>{
-    // resample with the real font once loaded
-    o.clearRect(0,0,W,H); o.font='700 300px "Instrument Sans", sans-serif';
-    o.fillText('SD',W/2,H/2+14);
-    const d2=o.getImageData(0,0,W,H).data; let j=0;
-    const fresh=[];
-    for(let y=0;y<H;y+=GAP)for(let x=0;x<W;x+=GAP){ if(d2[(y*W+x)*4+3]>128) fresh.push([x,y]); }
-    for(;j<Math.min(pts.length,fresh.length);j++){ pts[j].tx=fresh[j][0]; pts[j].ty=fresh[j][1]; }
-    pts.length=Math.min(pts.length,fresh.length);
-    requestAnimationFrame(draw);
-  });} else { requestAnimationFrame(draw); }
-})();
-const io=new IntersectionObserver((es)=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*55);io.unobserve(e.target);}}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+/* ---------- SHARED MATH (dusk-art parity) ---------- */
+function hash2(a,b){var s=Math.sin(a*127.1+b*311.7)*43758.5453;return s-Math.floor(s);}
+function n2(x,y){return Math.sin(x*1.7+Math.sin(y*0.8)*1.3)*Math.cos(y*1.1+Math.sin(x*0.6));}
+function fbm(x,y,t){var v=0,a=0.55,f=1;for(var i=0;i<4;i++){v+=a*n2(x*f+t*0.25,y*f-t*0.18);f*=2.05;a*=0.5;}return v*0.5+0.5;}
+function cssVar(n){return getComputedStyle(root).getPropertyValue(n).trim();}
 
-/* DUSK observatory art — ported from bizfalconai.com dusk-art.js
-   (ghostchart + starfield stills; fg/signal mapped to --ink/--accent) */
-(function(){
-  function hash2(a,b){const s=Math.sin(a*127.1+b*311.7)*43758.5453;return s-Math.floor(s);}
-  function n2(x,y){return Math.sin(x*1.7+Math.sin(y*0.8)*1.3)*Math.cos(y*1.1+Math.sin(x*0.6));}
-  function fbm(x,y,t){let v=0,a=0.55,f=1;for(let i=0;i<4;i++){v+=a*n2(x*f+t*0.25,y*f-t*0.18);f*=2.05;a*=0.5;}return v*0.5+0.5;}
-  function tok(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
-  function prepArt(cv){
-    const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return null;
-    const dpr=Math.min(devicePixelRatio||1,2);
-    cv.width=w*dpr;cv.height=h*dpr;
-    const c2=cv.getContext('2d');if(!c2)return null;
-    c2.setTransform(dpr,0,0,dpr,0,0);c2.clearRect(0,0,w,h);
-    return{c2,w,h,fg:tok('--ink'),sg:tok('--accent')};
-  }
-  function dottedVGrid(c2,w,h,step,fg){
-    c2.fillStyle=fg;
-    for(let x=step/2;x<w;x+=step){
-      c2.globalAlpha=0.10;
-      for(let y=6;y<h-6;y+=7)c2.fillRect(x,y,1,1);
-      c2.globalAlpha=0.5;c2.fillRect(x-1,2,2,2);c2.fillRect(x-1,h-4,2,2);
-    }
-    c2.globalAlpha=1;
-  }
-  function drawGhostChart(cv){
-    const p=prepArt(cv);if(!p)return;
-    const{c2,w,h,fg,sg}=p;
-    dottedVGrid(c2,w,h,w/9,fg);
-    const SEED=4.7,COLSN=Math.max(200,Math.floor(w/1.6));
-    const curves=[{off:0,amp:1,a:1},{off:0.13,amp:0.82,a:0.55},{off:0.24,amp:0.66,a:0.3}];
-    function line(u,off,amp){return 0.72+off*0.85-amp*(0.40*u+0.13*Math.sin(u*5.2+1.2)*(1-u*0.4)+0.09*fbm(u*3.2,off*9,SEED));}
-    curves.forEach(function(cu,ci){
-      for(let q=0;q<=COLSN;q++){
-        const u=q/COLSN,cy=line(u,cu.off,cu.amp);
-        const thick=0.015+0.05*fbm(u*4.6,ci*3.1,SEED+2)+0.02*(1-u);
-        for(let s=0;s<22;s++){
-          const g=(hash2(q+ci*971,s)+hash2(q+13,s+ci*57)-1);
-          const v=cy+g*thick*2.2;
-          const a=Math.max(0,0.65-Math.abs(g)*0.9)*cu.a*(0.4+0.6*hash2(q,s+91));
-          if(a<0.03)continue;
-          c2.fillStyle=fg;c2.globalAlpha=Math.min(0.85,a);
-          const big=hash2(q+s,7)>0.93;
-          c2.fillRect(u*w,v*h,big?1.8:1.15,big?1.8:1.15);
-        }
-        if(ci===0&&(q*7)%149===0){c2.fillStyle=sg;c2.globalAlpha=0.85;c2.fillRect(u*w,cy*h,2,2);}
-      }
-    });
-    const au=0.66,ax=au*w,ay=(line(au,0,1)-0.16)*h;
-    c2.globalAlpha=0.2;c2.fillStyle=sg;c2.beginPath();c2.arc(ax,ay,8,0,7);c2.fill();
-    c2.globalAlpha=0.95;c2.fillRect(ax-1.5,ay-1.5,3,3);
-    c2.globalAlpha=0.3;
-    for(let yy=ay+7;yy<line(au,0,1)*h;yy+=5)c2.fillRect(ax-0.5,yy,1,2);
-    c2.globalAlpha=1;
-  }
-  function drawStarfield(cv){
-    const p=prepArt(cv);if(!p)return;
-    const{c2,w,h,fg,sg}=p;
-    const SEED=3.91,step=3;
-    for(let y=0;y<h;y+=step)for(let x=0;x<w;x+=step){
-      const u=x/w,v=y/h;
-      const n=Math.pow(fbm(u*3.4,v*3.4,SEED),2.6);
-      const a=n*0.55*(0.4+0.6*hash2(x,y));
-      if(a<0.03)continue;
-      const jx=(hash2(x+7,y)-0.5)*step*1.6,jy=(hash2(x,y+7)-0.5)*step*1.6;
-      c2.fillStyle=fg;c2.globalAlpha=Math.min(0.6,a);
-      c2.fillRect(x+jx,y+jy,1.2,1.2);
-    }
-    for(let i=0;i<130;i++){
-      const sx=hash2(i,51)*w,sy=hash2(i,53)*h,s=hash2(i,57);
-      c2.fillStyle=s>0.96?sg:fg;
-      c2.globalAlpha=0.25+0.65*s*s;
-      const sz=s>0.88?2.2:1.4;
-      c2.fillRect(sx,sy,sz,sz);
-      if(s>0.93){c2.globalAlpha=0.25;c2.fillRect(sx-3,sy+0.5,8,1);c2.fillRect(sx+0.5,sy-3,1,8);}
-    }
-    const cons=[[0.26,0.22],[0.42,0.3],[0.52,0.17],[0.68,0.26],[0.78,0.4]];
-    c2.strokeStyle=fg;c2.globalAlpha=0.2;c2.lineWidth=1;
-    c2.beginPath();
-    cons.forEach(function(uv,i){if(i===0)c2.moveTo(uv[0]*w,uv[1]*h);else c2.lineTo(uv[0]*w,uv[1]*h);});
-    c2.stroke();
-    cons.forEach(function(uv,i){c2.globalAlpha=0.75;c2.fillStyle=i===2?sg:fg;c2.fillRect(uv[0]*w-1.2,uv[1]*h-1.2,2.4,2.4);});
-    c2.globalAlpha=1;
-  }
-  window.renderArts=function(){
-    document.querySelectorAll('[data-art]').forEach(function(cv){
-      const kind=cv.getAttribute('data-art');
-      if(kind==='ghostchart')drawGhostChart(cv);
-      else if(kind==='starfield')drawStarfield(cv);
-    });
-  };
-  let rT;addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(renderArts,150);});
-  renderArts();
-})();
-
-let charts=[];
-function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
-function grad(c,hex){const g=c.chart.ctx.createLinearGradient(0,0,0,80);g.addColorStop(0,hex+'2e');g.addColorStop(1,hex+'00');return g;}
-function drawCharts(){
-  charts.forEach(c=>c.destroy()); charts=[];
-  const BR=css('--brand'), AC=css('--accent'), MU=css('--muted'), LN=css('--line'), FN="'JetBrains Mono'";
-  Chart.defaults.color=MU; Chart.defaults.borderColor=LN;
-  const noAx={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1200}};
-
-  charts.push(new Chart(olistChart,{type:'bar',data:{labels:['Health & Beauty','Watches','Bed & Bath','Sports','Computers'],datasets:[{data:[1.41,1.26,1.23,1.12,1.03],backgroundColor:BR+'cc',borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' R$'+c.raw+'M'}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1200}}}));
-
-  charts.push(new Chart(retailChart,{type:'line',data:{labels:Array.from({length:24},(_,i)=>i),datasets:[{data:[687,557,506,700,595,600,639,592,604,832,1037,1172,885,569,447,596,469,679,661,600,645,953,1039,518],borderColor:BR,borderWidth:1.8,pointRadius:0,tension:.4,fill:true,backgroundColor:c=>grad(c,BR)}]},options:noAx}));
-
-  charts.push(new Chart(spotifyChart,{type:'bar',data:{labels:['Open rate','Click rate','Conversion'],datasets:[{label:'Variant A',data:[25.2,1.70,0.06],backgroundColor:MU+'55',borderWidth:0,borderRadius:3},{label:'Variant B',data:[32.1,3.71,0.34],backgroundColor:AC,borderWidth:0,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{family:FN,size:9},color:MU,boxWidth:8,boxHeight:8,padding:10,usePointStyle:true}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{display:false}},barPercentage:.65,categoryPercentage:.7,animation:{duration:1200}}}));
-
-  charts.push(new Chart(flightChart,{type:'line',data:{labels:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],datasets:[{data:[19.7,19.7,19.0,19.0,21.7,18.9,22.0,23.5,20.0,19.5],borderColor:BR,borderWidth:1.8,pointRadius:c=>[0,0,0,0,0,0,3,3,0,0][c.dataIndex]||0,pointBackgroundColor:AC,tension:.4,fill:true,backgroundColor:c=>grad(c,BR)}]},options:noAx}));
-
-  charts.push(new Chart(universeChart,{type:'bar',data:{labels:['Gaia Stars','HyperLEDA','Exoplanets','SDSS Quasars'],datasets:[{data:[500,200,5.5,0.5],backgroundColor:[BR,BR+'cc',AC+'cc',AC+'88'],borderWidth:0,borderRadius:3}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:600},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1200}}}));
+/* ---------- ANIMATED HERO TERRAIN ---------- */
+var terrain = document.getElementById("terrain");
+var tctx = terrain ? terrain.getContext("2d") : null;
+var TW = 0, TH = 0, heroVisible = true;
+var DPRc = Math.min(devicePixelRatio || 1, 2);
+function resizeTerrain(){
+  if (!terrain) return;
+  TW = terrain.clientWidth; TH = terrain.clientHeight;
+  terrain.width = TW * DPRc; terrain.height = TH * DPRc;
+  tctx.setTransform(DPRc, 0, 0, DPRc, 0, 0);
 }
-drawCharts();
+function drawTerrain(t){
+  if (!tctx || !TW || !TH) return;
+  tctx.clearRect(0, 0, TW, TH);
+  var fg = cssVar("--fg"), sg = cssVar("--signal");
+  var ROWS = 26, COLS = Math.max(90, Math.floor(TW / 11));
+  for (var r = 0; r < ROWS; r++) {
+    var d = r / (ROWS - 1);
+    var base = TH * (0.30 + d * 0.66);
+    for (var q = 0; q <= COLS; q++) {
+      var u = q / COLS;
+      var hh = fbm(u * 3.1, d * 2.2, t * 0.6);
+      var y = base - hh * TH * 0.34 * (0.35 + 0.65 * d);
+      var a = (0.05 + Math.pow(hh, 1.5) * 0.5) * (0.3 + 0.7 * d);
+      if (a < 0.03) continue;
+      if (hh > 0.72 && ((q * 7 + r * 13) % 97) === 0) {
+        tctx.fillStyle = sg; tctx.globalAlpha = 0.85; tctx.fillRect(u * TW, y, 2, 2);
+      } else {
+        tctx.fillStyle = fg; tctx.globalAlpha = a; tctx.fillRect(u * TW, y, 1.3, 1.3);
+      }
+    }
+  }
+  tctx.globalAlpha = 1;
+}
+function loop(ts){
+  if (heroVisible) drawTerrain(ts / 1000);
+  requestAnimationFrame(loop);
+}
+
+/* ---------- SD PARTICLE MONOGRAM ---------- */
+(function(){
+  var cv = document.getElementById("sdMono"); if (!cv) return;
+  var W = 520, H = 440, DPR = Math.min(2, devicePixelRatio || 1);
+  cv.width = W * DPR; cv.height = H * DPR;
+  var ctx = cv.getContext("2d"); ctx.scale(DPR, DPR);
+  var off = document.createElement("canvas"); off.width = W; off.height = H;
+  var o = off.getContext("2d");
+  function sample(){
+    o.clearRect(0, 0, W, H);
+    o.font = '700 300px "Instrument Sans", sans-serif';
+    o.textAlign = "center"; o.textBaseline = "middle";
+    o.fillText("SD", W / 2, H / 2 + 14);
+    var img = o.getImageData(0, 0, W, H).data, out = [], GAP = 7;
+    for (var y = 0; y < H; y += GAP) for (var x = 0; x < W; x += GAP)
+      if (img[(y * W + x) * 4 + 3] > 128) out.push([x, y]);
+    return out;
+  }
+  var pts = sample().map(function(p){
+    return { tx: p[0], ty: p[1], x: Math.random() * W, y: Math.random() * H, d: Math.random() * 0.6 + 0.4, ph: Math.random() * Math.PI * 2 };
+  });
+  var t0 = null;
+  function draw(ts){
+    if (t0 === null) t0 = ts;
+    var k = reduceMotion ? 1 : Math.min(1, (ts - t0) / 1800);
+    var ease = 1 - Math.pow(1 - k, 3);
+    var ink = cssVar("--fg"), acc = cssVar("--signal");
+    ctx.clearRect(0, 0, W, H);
+    var time = ts / 1000;
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i];
+      var wob = (k >= 1 && !reduceMotion) ? Math.sin(time * 0.8 + p.ph) * 1.2 : 0;
+      var x = p.x + (p.tx - p.x) * ease + wob, y = p.y + (p.ty - p.y) * ease + wob * 0.6;
+      ctx.globalAlpha = (0.10 + 0.16 * p.d) * ease + 0.04;
+      ctx.fillStyle = i % 11 === 0 ? acc : ink;
+      ctx.beginPath(); ctx.arc(x, y, i % 11 === 0 ? 1.8 : 1.3, 0, 7); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if (!reduceMotion) requestAnimationFrame(draw);
+  }
+  function refit(){
+    var fresh = sample(), j;
+    for (j = 0; j < Math.min(pts.length, fresh.length); j++) { pts[j].tx = fresh[j][0]; pts[j].ty = fresh[j][1]; }
+    pts.length = Math.min(pts.length, fresh.length);
+    requestAnimationFrame(draw);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+  else requestAnimationFrame(draw);
+})();
+
+/* ---------- OBSERVATORY STILLS (ghostchart / glitchsphere / starfield) ---------- */
+var BAYER = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+function bayer(x,y){return (BAYER[y % 4][x % 4] + 0.5) / 16;}
+function ditherField(cv, field, cell){
+  var w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
+  cv.width = w; cv.height = h;
+  var c2 = cv.getContext("2d");
+  c2.clearRect(0, 0, w, h);
+  c2.fillStyle = cssVar("--fg");
+  for (var y = 0; y < h; y += cell) for (var x = 0; x < w; x += cell) {
+    var b = field(x / w, y / h);
+    if (b > bayer((x / cell) | 0, (y / cell) | 0)) c2.fillRect(x, y, cell - 1, cell - 1);
+  }
+}
+function sphereField(u,v){
+  var dx = u - 0.5, dy = v - 0.5;
+  var r = Math.sqrt(dx * dx + dy * dy);
+  if (r > 0.47) return 0;
+  var z = Math.sqrt(Math.max(0, 0.47 * 0.47 - r * r)) / 0.47;
+  var lum = Math.max(0, (-dx / 0.47) * -0.45 + (-dy / 0.47) * 0.55 + z * 0.72);
+  return Math.pow(lum, 1.6) * 0.95;
+}
+function prepArt(cv){
+  var w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return null;
+  var dpr = Math.min(devicePixelRatio || 1, 2);
+  cv.width = w * dpr; cv.height = h * dpr;
+  var c2 = cv.getContext("2d"); if (!c2) return null;
+  c2.setTransform(dpr, 0, 0, dpr, 0, 0);
+  c2.clearRect(0, 0, w, h);
+  return { c2: c2, w: w, h: h, fg: cssVar("--fg"), sg: cssVar("--signal") };
+}
+function dottedVGrid(c2,w,h,step,fg){
+  c2.fillStyle = fg;
+  for (var x = step / 2; x < w; x += step) {
+    c2.globalAlpha = 0.10;
+    for (var y = 6; y < h - 6; y += 7) c2.fillRect(x, y, 1, 1);
+    c2.globalAlpha = 0.5; c2.fillRect(x - 1, 2, 2, 2); c2.fillRect(x - 1, h - 4, 2, 2);
+  }
+  c2.globalAlpha = 1;
+}
+function drawGhostChart(cv){
+  var p = prepArt(cv); if (!p) return;
+  var c2 = p.c2, w = p.w, h = p.h, fg = p.fg, sg = p.sg;
+  dottedVGrid(c2, w, h, w / 9, fg);
+  var SEED = 4.7, COLSN = Math.max(200, Math.floor(w / 1.6));
+  var curves = [{off:0,amp:1,a:1},{off:0.13,amp:0.82,a:0.55},{off:0.24,amp:0.66,a:0.3}];
+  function line(u,off,amp){return 0.72 + off * 0.85 - amp * (0.40 * u + 0.13 * Math.sin(u * 5.2 + 1.2) * (1 - u * 0.4) + 0.09 * fbm(u * 3.2, off * 9, SEED));}
+  curves.forEach(function(cu,ci){
+    for (var q = 0; q <= COLSN; q++) {
+      var u = q / COLSN, cy = line(u, cu.off, cu.amp);
+      var thick = 0.015 + 0.05 * fbm(u * 4.6, ci * 3.1, SEED + 2) + 0.02 * (1 - u);
+      for (var s = 0; s < 22; s++) {
+        var g = (hash2(q + ci * 971, s) + hash2(q + 13, s + ci * 57) - 1);
+        var v = cy + g * thick * 2.2;
+        var a = Math.max(0, 0.65 - Math.abs(g) * 0.9) * cu.a * (0.4 + 0.6 * hash2(q, s + 91));
+        if (a < 0.03) continue;
+        c2.fillStyle = fg; c2.globalAlpha = Math.min(0.85, a);
+        var big = hash2(q + s, 7) > 0.93;
+        c2.fillRect(u * w, v * h, big ? 1.8 : 1.15, big ? 1.8 : 1.15);
+      }
+      if (ci === 0 && (q * 7) % 149 === 0) { c2.fillStyle = sg; c2.globalAlpha = 0.85; c2.fillRect(u * w, cy * h, 2, 2); }
+    }
+  });
+  var au = 0.66, ax = au * w, ay = (line(au, 0, 1) - 0.16) * h;
+  c2.globalAlpha = 0.2; c2.fillStyle = sg; c2.beginPath(); c2.arc(ax, ay, 8, 0, 7); c2.fill();
+  c2.globalAlpha = 0.95; c2.fillRect(ax - 1.5, ay - 1.5, 3, 3);
+  c2.globalAlpha = 0.3;
+  for (var yy = ay + 7; yy < line(au, 0, 1) * h; yy += 5) c2.fillRect(ax - 0.5, yy, 1, 2);
+  c2.globalAlpha = 1;
+}
+function drawGlitchSphere(cv){
+  var w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
+  ditherField(cv, sphereField, 3);
+  var c2 = cv.getContext("2d"); if (!c2) return;
+  var fg = cssVar("--fg"), sg = cssVar("--signal");
+  for (var i = 0; i < 3; i++) {
+    var sy = Math.round(h * (0.3 + 0.4 * hash2(i, 3)));
+    var dx = Math.round((hash2(i, 9) > 0.5 ? 1 : -1) * (6 + hash2(i, 9) * 8));
+    var band = c2.getImageData(0, sy, cv.width, 2);
+    c2.clearRect(0, sy, cv.width, 2);
+    c2.putImageData(band, dx, sy);
+  }
+  c2.strokeStyle = fg; c2.globalAlpha = 0.45; c2.lineWidth = 1;
+  c2.setLineDash([2, 4]);
+  c2.beginPath(); c2.ellipse(w / 2, h / 2, w * 0.60, h * 0.20, -0.35, 0, 7); c2.stroke();
+  c2.setLineDash([]);
+  c2.fillStyle = sg; c2.globalAlpha = 0.95;
+  c2.beginPath(); c2.arc(w / 2 + w * 0.5, h / 2 - h * 0.155, 2.4, 0, 7); c2.fill();
+  c2.globalAlpha = 1;
+}
+function drawStarfield(cv){
+  var p = prepArt(cv); if (!p) return;
+  var c2 = p.c2, w = p.w, h = p.h, fg = p.fg, sg = p.sg;
+  var SEED = 3.91, step = 3;
+  for (var y = 0; y < h; y += step) for (var x = 0; x < w; x += step) {
+    var u = x / w, v = y / h;
+    var n = Math.pow(fbm(u * 3.4, v * 3.4, SEED), 2.6);
+    var a = n * 0.55 * (0.4 + 0.6 * hash2(x, y));
+    if (a < 0.03) continue;
+    var jx = (hash2(x + 7, y) - 0.5) * step * 1.6;
+    var jy = (hash2(x, y + 7) - 0.5) * step * 1.6;
+    c2.fillStyle = fg; c2.globalAlpha = Math.min(0.6, a);
+    c2.fillRect(x + jx, y + jy, 1.2, 1.2);
+  }
+  for (var i = 0; i < 130; i++) {
+    var sx = hash2(i, 51) * w, sy = hash2(i, 53) * h, s = hash2(i, 57);
+    c2.fillStyle = s > 0.96 ? sg : fg;
+    c2.globalAlpha = 0.25 + 0.65 * s * s;
+    var sz = s > 0.88 ? 2.2 : 1.4;
+    c2.fillRect(sx, sy, sz, sz);
+    if (s > 0.93) { c2.globalAlpha = 0.25; c2.fillRect(sx - 3, sy + 0.5, 8, 1); c2.fillRect(sx + 0.5, sy - 3, 1, 8); }
+  }
+  var cons = [[0.26,0.22],[0.42,0.3],[0.52,0.17],[0.68,0.26],[0.78,0.4]];
+  c2.strokeStyle = fg; c2.globalAlpha = 0.2; c2.lineWidth = 1;
+  c2.beginPath();
+  cons.forEach(function(uv,i){ if (i === 0) c2.moveTo(uv[0]*w, uv[1]*h); else c2.lineTo(uv[0]*w, uv[1]*h); });
+  c2.stroke();
+  cons.forEach(function(uv,i){
+    c2.globalAlpha = 0.75; c2.fillStyle = i === 2 ? sg : fg;
+    c2.fillRect(uv[0]*w - 1.2, uv[1]*h - 1.2, 2.4, 2.4);
+  });
+  c2.globalAlpha = 1;
+}
+function renderArts(){
+  document.querySelectorAll("[data-art]").forEach(function(cv){
+    var kind = cv.getAttribute("data-art");
+    if (kind === "ghostchart") drawGhostChart(cv);
+    else if (kind === "glitchsphere") drawGlitchSphere(cv);
+    else if (kind === "starfield") drawStarfield(cv);
+  });
+}
+
+/* ---------- CHART.JS MINIS (real data, token-driven) ---------- */
+var charts = [];
+function grad(c,hex){var g=c.chart.ctx.createLinearGradient(0,0,0,96);g.addColorStop(0,hex+"2e");g.addColorStop(1,hex+"00");return g;}
+function hexish(v){ return v; } /* tokens are hex already */
+function drawCharts(){
+  if (typeof Chart === "undefined") return;
+  charts.forEach(function(c){ c.destroy(); }); charts = [];
+  var FG = cssVar("--fg"), SG = cssVar("--signal"), MU = cssVar("--mut"), LN = cssVar("--line"), FN = "'JetBrains Mono'";
+  Chart.defaults.color = MU; Chart.defaults.borderColor = LN;
+  var noAx = {responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1200}};
+
+  charts.push(new Chart(olistChart,{type:"bar",data:{labels:["H&B","Watch","Bed","Sport","Comp"],datasets:[{data:[1.41,1.26,1.23,1.12,1.03],backgroundColor:FG+"cc",borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " R$"+c.raw+"M";}}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1200}}}));
+
+  charts.push(new Chart(retailChart,{type:"line",data:{labels:Array.from({length:24},function(_,i){return i;}),datasets:[{data:[687,557,506,700,595,600,639,592,604,832,1037,1172,885,569,447,596,469,679,661,600,645,953,1039,518],borderColor:FG,borderWidth:1.6,pointRadius:0,tension:.4,fill:true,backgroundColor:function(c){return grad(c,hexish(FG));}}]},options:noAx}));
+
+  charts.push(new Chart(spotifyChart,{type:"bar",data:{labels:["Open","Click","Conv"],datasets:[{label:"A",data:[25.2,1.70,0.06],backgroundColor:MU+"55",borderWidth:0},{label:"B",data:[32.1,3.71,0.34],backgroundColor:SG,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:"top",align:"end",labels:{font:{family:FN,size:9},color:MU,boxWidth:8,boxHeight:8,padding:8,usePointStyle:false}},tooltip:{callbacks:{label:function(c){return " "+c.dataset.label+": "+c.raw+"%";}}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{display:false}},barPercentage:.65,categoryPercentage:.7,animation:{duration:1200}}}));
+
+  charts.push(new Chart(flightChart,{type:"line",data:{labels:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],datasets:[{data:[19.7,19.7,19.0,19.0,21.7,18.9,22.0,23.5,20.0,19.5],borderColor:FG,borderWidth:1.6,pointRadius:function(c){return [0,0,0,0,0,0,3,3,0,0][c.dataIndex]||0;},pointBackgroundColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,hexish(FG));}}]},options:noAx}));
+
+  charts.push(new Chart(universeChart,{type:"bar",data:{labels:["Gaia","HyperLEDA","Exopl.","Quasars"],datasets:[{data:[500,200,5.5,0.5],backgroundColor:[FG,FG+"cc",SG+"cc",SG+"88"],borderWidth:0}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:600},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1200}}}));
+}
+
+/* ---------- COLOR SYNC / INIT ---------- */
+function syncColors(){
+  renderArts();
+  drawCharts();
+  if (terrain) drawTerrain(0);
+}
+window.addEventListener("resize", function(){ resizeTerrain(); renderArts(); });
+resizeTerrain();
+syncColors();
+if (terrain && !reduceMotion) {
+  new IntersectionObserver(function(en){ heroVisible = en[0].isIntersecting; }).observe(terrain);
+  requestAnimationFrame(loop);
+}
+
+/* ---------- SCROLL REVEALS ---------- */
+var rvs = document.querySelectorAll(".rv");
+if ("IntersectionObserver" in window && !reduceMotion) {
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add("on"); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  rvs.forEach(function(el){ io.observe(el); });
+  /* safety: anything still hidden 2.5s after load reveals itself */
+  setTimeout(function(){ rvs.forEach(function(el){ el.classList.add("on"); }); }, 2500);
+} else {
+  rvs.forEach(function(el){ el.classList.add("on"); });
+}
+})();
 </script>
 </body>
 </html>
