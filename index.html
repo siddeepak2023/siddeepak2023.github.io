@@ -261,19 +261,6 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 .contact-links a:hover{color:var(--signal);opacity:1}
 @media(max-width:920px){.about-grid{grid-template-columns:1fr;gap:40px}}
 
-/* ============ OBS STRIP (starfield) ============ */
-.obs{position:relative;height:340px;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);overflow:hidden}
-.obs canvas{width:100%;height:100%;display:block}
-.obs-label{
-  position:absolute;font-family:"JetBrains Mono",monospace;font-size:9.5px;line-height:1.9;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--mut);
-}
-.obs-label b{color:var(--fg);font-weight:500}
-.obs-label .sig{color:var(--signal)}
-.obs-label--tl{top:18px;left:18px}
-.obs-label--tr{top:18px;right:18px;text-align:right}
-.obs-label--br{bottom:14px;right:18px;text-align:right;font-size:15px;color:var(--fg);font-family:"Instrument Serif",serif;font-style:italic;letter-spacing:0;text-transform:none}
-.obs-label--bl{bottom:14px;left:18px}
 @media(max-width:700px){.obs{height:220px}.obs-label--tr,.obs-label--bl{display:none}}
 
 /* ============ FOOTER ============ */
@@ -490,7 +477,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
     <div class="kit">
       <div class="kitcol rv">
         <h3>Languages</h3>
-        <ul><li><b>Python</b></li><li><b>SQL</b></li><li>R</li><li>TypeScript</li><li>HTML / JS</li></ul>
+        <ul><li><b>Python</b></li><li><b>SQL</b></li><li>TypeScript</li><li>HTML / JS</li><li>Familiar with R</li></ul>
       </div>
       <div class="kitcol rv d1">
         <h3>Libraries</h3>
@@ -536,14 +523,6 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
     </div>
   </div>
 </section>
-
-<div class="obs" aria-hidden="true">
-  <canvas data-art="starfield"></canvas>
-  <div class="obs-label obs-label--tl">Field 06<br><b>Gaia DR3 · HyperLEDA · SDSS</b></div>
-  <div class="obs-label obs-label--tr"><span class="sig">1,000,000+</span> objects<br>6 live scientific APIs</div>
-  <div class="obs-label obs-label--bl">60 FPS · WebGL</div>
-  <div class="obs-label obs-label--br">The universe, computed.</div>
-</div>
 
 <footer class="footer">
   <div class="wrap foot-in">
