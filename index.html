@@ -180,9 +180,10 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 .sec-head h2{font-size:clamp(2rem,4.4vw,3.2rem);margin-bottom:18px}
 .sec-head p{color:var(--mut)}
 .art{display:block}
-.art--sphere{width:190px;height:190px;flex:none;margin-bottom:70px}
-@media(max-width:920px){.art--sphere{display:none}}
-.art--sphere,.art--hero{
+.art--sphere{width:190px;height:190px;flex:none;align-self:center}
+.art--inline{width:360px;height:200px;flex:none;align-self:center}
+@media(max-width:920px){.art--sphere,.art--inline{display:none}}
+.art--sphere,.art--hero,.art--inline{
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);
   -webkit-mask-composite:source-in;
   mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);
@@ -225,8 +226,8 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 .mini-canvas{position:relative;flex:1;min-height:96px}
 .mini-note{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--mut);text-transform:uppercase;margin-top:10px}
 .mini-note em{color:var(--signal);font-style:normal}
-.art--hero{width:100%;height:300px}
-@media(max-width:920px){.art--hero{height:210px}}
+.art--hero{width:100%;aspect-ratio:1190/933;height:auto}
+@media(max-width:920px){.art--hero{aspect-ratio:1190/933;height:auto}}
 
 /* ============ TOOLKIT ============ */
 .kit{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
@@ -305,8 +306,9 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
   <div class="nav-in">
     <a href="#top" class="brand"><span class="mk">SD</span>Siddharth Deepak</a>
     <div class="nav-links">
-      <a href="#work">Work</a>
-      <a href="#toolkit">Toolkit</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#stack">Stack</a>
       <a href="#about">About</a>
     </div>
     <div class="nav-right">
@@ -343,7 +345,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
     <h1 class="rv d1">From raw data to <span class="ser sig">shipped product</span>.</h1>
     <p class="hero-sub rv d2" data-dock>Senior in Business Analytics &amp; AI at UT Dallas, focused on <strong>data and business-analyst work</strong>. I turn raw data into decisions — <strong>SQL</strong>, statistics, and <strong>ML on real datasets</strong>, each project below ending in a quantified business call. Along the way I founded and shipped <strong>BizFalcon AI</strong> solo — a live analytics SaaS where I build <strong>agentic AI that recommends the next move and waits for approval</strong>.</p>
     <div class="hero-ctas rv d3">
-      <a href="#work" class="btn btn--primary">View my work →</a>
+      <a href="#projects" class="btn btn--primary">View my projects →</a>
       <a href="Siddharth_Deepak_Resume.pdf" target="_blank" class="btn btn--ghost">Résumé ↗</a>
       <a href="https://github.com/siddeepak2023" target="_blank" class="btn btn--ghost">GitHub</a>
       <a href="https://linkedin.com/in/siddharth-deepak-3182b8219" target="_blank" class="btn btn--ghost">LinkedIn</a>
@@ -351,7 +353,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
   </div>
 </section>
 
-<section id="work" class="dotbg">
+<section id="projects" class="dotbg">
   <div class="wrap">
     <div class="sec-head rv">
       <p class="eyebrow">Selected work</p>
@@ -465,14 +467,33 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
   </div>
 </section>
 
-<section id="toolkit">
+<section id="skills">
   <div class="wrap">
     <div class="sec-row">
       <div class="sec-head rv">
-        <p class="eyebrow">Toolkit</p>
-        <h2>The stack behind the work.</h2>
+        <p class="eyebrow">Skills</p>
+        <h2>What I do with data.</h2>
       </div>
-      <canvas class="art art--sphere rv d1" data-art="glitchsphere" aria-hidden="true"></canvas>
+      <canvas class="art art--sphere rv d1" data-art="oort" aria-hidden="true"></canvas>
+    </div>
+    <div class="kit">
+      <div class="kitcol rv">
+        <h3>Analysis</h3>
+        <ul><li><b>ML modeling</b></li><li><b>A/B &amp; hypothesis testing</b></li><li>Time-series</li></ul>
+      </div>
+      <div class="kitcol rv d1">
+        <h3>Methods</h3>
+        <ul><li>RFM / segmentation</li><li>BI dashboarding</li><li>SQL window functions</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Stack</p>
+      <h2>The tools behind the work.</h2>
     </div>
     <div class="kit">
       <div class="kitcol rv">
@@ -487,24 +508,23 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
         <h3>Tools &amp; AI</h3>
         <ul><li><b>Tableau</b> · Power BI</li><li>Excel · Git</li><li>Firebase</li><li>OpenAI · Anthropic · Gemini</li><li>Pyodide</li></ul>
       </div>
-      <div class="kitcol rv d3">
-        <h3>Concepts</h3>
-        <ul><li><b>ML modeling</b></li><li><b>A/B &amp; hypothesis testing</b></li><li>Time-series</li><li>RFM / segmentation</li><li>BI dashboarding · window fns</li></ul>
-      </div>
     </div>
   </div>
 </section>
 
 <section id="about">
   <div class="wrap">
-    <div class="sec-head rv">
-      <p class="eyebrow">About</p>
-      <h2>Analytics that connects to the business, not just the numbers.</h2>
+    <div class="sec-row">
+      <div class="sec-head rv">
+        <p class="eyebrow">About</p>
+        <h2>Analytics that connects to the business, not just the numbers.</h2>
+      </div>
+      <canvas class="art art--sphere rv d1" data-art="bust" aria-hidden="true"></canvas>
     </div>
     <div class="about-grid">
       <div class="about-copy rv">
         <p>Senior at UT Dallas building end-to-end data products — from SQL (joins, CTEs, window functions) and cleaning raw datasets to deploying interactive dashboards and <strong>shipping full-stack AI products to production</strong> — with a focus on measurable business impact.</p>
-        <p>My concentration in <strong>Marketing &amp; AI</strong> gives me an edge for roles where the analysis has to connect to customer behavior and strategy, not just the math. Where I'm headed: <strong>agentic AI for business analysis</strong> — systems that turn manual reporting and analysis into reviewed, one-click actions, cutting the workflow overhead for teams too lean to hire an analyst. Based in Leander, TX. Actively seeking business analytics internships.</p>
+        <p>My concentration in <strong>Marketing &amp; AI</strong> suits roles where the analysis has to connect to customer behavior and strategy. I'm especially interested in <strong>applied AI for analytics</strong> — turning manual reporting into reviewed, one-click workflows. Based in Leander, TX; seeking data or business analytics internships for summer 2027.</p>
         <div class="ledger"><span><b>6</b> live projects</span><span><b>72M+</b> rows at peak</span><span><b>400+</b> automated tests</span><span><b>1</b> shipped company</span></div>
       </div>
       <div class="edu rv d1">
