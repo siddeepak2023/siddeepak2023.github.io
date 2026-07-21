@@ -512,56 +512,57 @@ function drawCurveFam(cv){
 function drawEclipse(cv){
   var p = prepArt(cv); if (!p) return;
   var c2 = p.c2, w = p.w, h = p.h, fg = p.fg, sg = p.sg;
-  var cxp = w / 2, cyp = h * 0.5, R = Math.min(w, h) * 0.16, SEED = 2.44;
+  var HORIZON = h * 0.62, SEED = 2.44;
+  var cxp = w / 2, cyp = HORIZON + h * 0.06, R = h * 0.42;
   function dot(x, y, a, i){
-    if (a < 0.03 || y < 0 || y > h) return;
-    c2.fillStyle = hash2(i, 73) > 0.995 ? sg : fg;
+    if (a < 0.03 || y < 0 || y > h || x < 0 || x > w) return;
+    c2.fillStyle = hash2(i, 73) > 0.994 ? sg : fg;
     c2.globalAlpha = Math.min(0.85, a);
     var big = hash2(i, 77) > 0.92;
     c2.fillRect(x, y, big ? 1.8 : 1.15, big ? 1.8 : 1.15);
   }
-  var ROWS = 46, COLSN = Math.max(200, Math.floor(w / 2.4)), stepX = w / COLSN;
+  function env(u){ return Math.min(1, 0.45 + Math.exp(-Math.pow(Math.abs(u - 0.5) / 0.3, 2))); }
+  function rise(u){ return h * (0.20 + 0.10 * Math.exp(-Math.pow(Math.abs(u - 0.5) / 0.22, 2))); }
+  function surf(u){ return HORIZON - Math.pow(fbm(u * 6.2, 0.32, SEED + 5), 1.15) * env(u) * rise(u) * 0.9; }
+  c2.save();
+  c2.beginPath();
+  c2.moveTo(0, 0); c2.lineTo(0, surf(0));
+  var STEPS = 160, si;
+  for (si = 1; si <= STEPS; si++) { var uu = si / STEPS; c2.lineTo(uu * w, surf(uu)); }
+  c2.lineTo(w, 0); c2.closePath(); c2.clip();
+  c2.strokeStyle = fg; c2.lineWidth = 2.5;
+  c2.shadowColor = fg; c2.shadowBlur = 20;
+  c2.beginPath(); c2.arc(cxp, cyp, R, 0, 7); c2.stroke();
+  c2.shadowBlur = 38; c2.globalAlpha = 0.5;
+  c2.beginPath(); c2.arc(cxp, cyp, R, 0, 7); c2.stroke();
+  c2.shadowBlur = 0; c2.globalAlpha = 1;
+  c2.restore();
+  var ROWS = 56, COLSN = Math.max(240, Math.floor(w / 2.2)), stepX = w / COLSN;
   for (var r = 0; r < ROWS; r++) {
     var d = r / (ROWS - 1);
     for (var q = 0; q <= COLSN; q++) {
-      var jx = (hash2(q, r) - 0.5) * stepX * 1.8;
+      var jx = (hash2(q + 401, r) - 0.5) * stepX * 1.8;
       var u = (q + jx / stepX) / COLSN;
-      var cx = Math.abs(u - 0.5);
-      var env = Math.min(1, Math.exp(-Math.pow(cx / 0.34, 2)) + 0.3);
-      var hh = Math.pow(fbm(u * 5.8, d * 3.6, SEED), 1.2) * env;
+      var hh = Math.pow(fbm(u * 6.2, 0.32 + d * 3.6, SEED + 5), 1.15) * env(u);
       if (hh < 0.02) continue;
-      var reach = h * (0.34 - 0.16 * Math.exp(-Math.pow(cx / 0.2, 2)));
-      var y = d * reach * (0.35 + 0.65 * hh) + (hash2(q + 57, r + 91) - 0.5) * 5;
-      dot(u * w, y, (0.05 + Math.pow(hh, 1.25) * 1.3) * (0.3 + 0.7 * d), q * 31 + r);
+      var base = HORIZON + d * (h - HORIZON) * 0.9;
+      var y = base - hh * rise(u) * (0.55 + 0.45 * d) + (hash2(q + 91, r + 17) - 0.5) * 5;
+      dot(u * w, y, (0.06 + Math.pow(hh, 1.2) * 1.6) * (0.35 + 0.65 * d), q * 17 + r * 3);
     }
   }
-  for (r = 0; r < ROWS + 14; r++) {
-    d = r / (ROWS + 13);
-    for (q = 0; q <= COLSN; q++) {
-      jx = (hash2(q + 401, r) - 0.5) * stepX * 1.8;
-      u = (q + jx / stepX) / COLSN;
-      cx = Math.abs(u - 0.5);
-      env = Math.min(1, 0.5 + Math.exp(-Math.pow(cx / 0.3, 2)));
-      hh = Math.pow(fbm(u * 6.2, d * 4.0, SEED + 5), 1.15) * env;
-      if (hh < 0.02) continue;
-      var base = h * (0.62 + d * 0.36);
-      var rise = h * (0.2 + 0.1 * Math.exp(-Math.pow(cx / 0.22, 2)));
-      y = base - hh * rise + (hash2(q + 91, r + 17) - 0.5) * 5;
-      if (Math.sqrt((u * w - cxp) * (u * w - cxp) + (y - cyp) * (y - cyp)) < R * 1.5) continue;
-      dot(u * w, y, (0.05 + Math.pow(hh, 1.25) * 1.5) * (0.3 + 0.7 * d), q * 17 + r * 3);
-    }
+  for (var i2 = 0; i2 < 300; i2++) {
+    var gy = Math.pow(hash2(i2, 15), 1.3);
+    var yy = HORIZON + gy * (h - HORIZON) * 0.85;
+    var spread = 0.02 + gy * 0.06;
+    var gx = (hash2(i2, 5) + hash2(i2, 9) - 1) * spread;
+    dot((0.5 + gx) * w, yy, 0.55 * Math.exp(-gy * 2.4) * (0.35 + 0.65 * hash2(i2, 21)), i2 * 3 + 1);
   }
-  for (var i = 0; i < 700; i++) {
-    var x = hash2(i, 61) * w, yv = hash2(i, 67) * h;
-    if (Math.sqrt((x - cxp) * (x - cxp) + (yv - cyp) * (yv - cyp)) < R * 1.6) continue;
-    dot(x, yv, 0.05 + 0.3 * Math.pow(hash2(i, 71), 3), i);
+  for (var i3 = 0; i3 < 420; i3++) {
+    var x3 = hash2(i3, 61) * w, y3 = hash2(i3, 67) * HORIZON;
+    if (Math.sqrt((x3 - cxp) * (x3 - cxp) + (y3 - cyp) * (y3 - cyp)) < R * 1.12) continue;
+    dot(x3, y3, (0.04 + 0.24 * Math.pow(hash2(i3, 71), 3)) * (0.35 + 0.65 * (y3 / HORIZON)), i3);
   }
-  c2.globalAlpha = 1; c2.strokeStyle = fg; c2.lineWidth = 2;
-  c2.shadowColor = fg; c2.shadowBlur = 16;
-  c2.beginPath(); c2.arc(cxp, cyp, R, 0, 7); c2.stroke();
-  c2.shadowBlur = 30; c2.globalAlpha = 0.5;
-  c2.beginPath(); c2.arc(cxp, cyp, R, 0, 7); c2.stroke();
-  c2.shadowBlur = 0; c2.globalAlpha = 1;
+  c2.globalAlpha = 1;
 }
 
 
