@@ -185,7 +185,8 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 /* bust (face) + oort (particle sphere): PF proportions, NO fade mask, scaled up */
 .art--bust{width:320px;height:253px;flex:none;align-self:center}
 .art--oort{width:100%;max-width:380px;aspect-ratio:1/1;height:auto;justify-self:center;align-self:center}
-@media(max-width:920px){.art--sphere,.art--inline,.art--bust{display:none}}
+.art--diamond{width:220px;height:220px;flex:none;align-self:center}
+@media(max-width:920px){.art--sphere,.art--inline,.art--bust,.art--diamond{display:none}}
 .art--sphere,.art--hero,.art--inline{
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);
   -webkit-mask-composite:source-in;
@@ -340,7 +341,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
   </div>
   <div class="rail rail--r" aria-hidden="true">
     Portfolio<br>
-    <b>6 projects</b> · all live<br>
+    <b>5 projects</b> · all live<br>
     <hr>
     <span class="sig">BizFalcon AI</span><br>
     founded &amp; shipped solo
@@ -409,22 +410,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       </article>
 
       <article class="prod rv d1">
-        <div class="prod-idx"><span>03 · Statistics</span><span>A/B testing</span></div>
-        <h3>Spotify Email A/B Test</h3>
-        <p>Designed and analyzed an email A/B test across <strong>10,000 users</strong> using two-proportion z-tests. Statistically significant lifts of 27.5% in open rate and 470% in conversion (p &lt; 0.05); projected <strong>$83.9M</strong> additional annual Premium revenue at a 250M-user rollout.</p>
-        <div class="mini">
-          <div class="mini-canvas"><canvas id="spotifyChart"></canvas></div>
-          <p class="mini-note">Funnel · variant A vs B · <em>p &lt; 0.05</em></p>
-        </div>
-        <p class="stack-line"><b>Python</b> · <b>SciPy</b> · <b>Statsmodels</b> · <b>Plotly</b></p>
-        <div class="prod-links">
-          <a href="spotify_ab_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
-          <a href="https://github.com/siddeepak2023/spotify-email-ab-test" target="_blank" class="prod-link">GitHub</a>
-        </div>
-      </article>
-
-      <article class="prod rv">
-        <div class="prod-idx"><span>04 · SQL</span><span>Business intelligence</span></div>
+        <div class="prod-idx"><span>03 · SQL</span><span>Business intelligence</span></div>
         <h3>Olist E-Commerce Analysis</h3>
         <p>End-to-end BI on <strong>96K+ real Brazilian e-commerce transactions</strong> across 9 relational tables — CTEs, window functions, multi-table joins. Health &amp; Beauty leads at R$1.4M; orders delivered in 21+ days show a <strong>31% review-score drop</strong>. Published as a live Tableau dashboard.</p>
         <div class="mini">
@@ -440,7 +426,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       </article>
 
       <article class="prod rv d1">
-        <div class="prod-idx"><span>05 · Predictive ML</span><span>Big data</span></div>
+        <div class="prod-idx"><span>04 · Predictive ML</span><span>Big data</span></div>
         <h3>U.S. Flight Delay Intelligence</h3>
         <p>A LightGBM classifier on <strong>72M+ real BTS domestic flights</strong> (2015–2024) predicting delay risk, turned into a route-level risk atlas across 5,248 O-D pairs, airline reliability index, airport bottleneck heatmap, and a live predictor — data at real scale.</p>
         <div class="mini">
@@ -456,7 +442,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 
       <article class="prod prod--hero rv">
         <div>
-          <div class="prod-idx"><span>06 · Data viz</span><span>WebGL</span></div>
+          <div class="prod-idx"><span>05 · Data viz</span><span>WebGL</span></div>
           <h3>Universe Data Visualization</h3>
           <p>A real-time interactive 3D explorer rendering <strong>1M+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser at 60 FPS. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy.</p>
           <div class="mini">
@@ -480,9 +466,12 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 
 <section id="skills">
   <div class="wrap">
-    <div class="sec-head rv">
-      <p class="eyebrow">Skills</p>
-      <h2>SQL, statistics, and applied ML.</h2>
+    <div class="sec-row">
+      <div class="sec-head rv">
+        <p class="eyebrow">Skills</p>
+        <h2>SQL, statistics, and applied ML.</h2>
+      </div>
+      <canvas class="art art--diamond rv d1" data-art="diamond" aria-hidden="true"></canvas>
     </div>
     <div class="kit kit--skills">
       <div class="kitcol rv">
@@ -490,7 +479,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
         <ul><li><b>SQL</b> — joins · CTEs · window fns</li><li>Data cleaning</li><li>Excel</li></ul>
       </div>
       <div class="kitcol rv d1">
-        <h3>Statistics</h3>
+        <h3>Statistics &amp; Experimentation</h3>
         <ul><li><b>Hypothesis testing</b></li><li>A/B testing</li><li>Regression</li><li>Cohort analysis</li></ul>
       </div>
       <div class="kitcol rv d2">
@@ -499,7 +488,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       </div>
       <div class="kitcol rv d1">
         <h3>Visualization</h3>
-        <ul><li><b>Tableau</b> · Power BI</li><li>Chart.js · Plotly</li><li>Dashboards</li></ul>
+        <ul><li><b>Tableau</b> · Power BI</li><li>Chart.js</li></ul>
       </div>
       <div class="kitcol rv d2">
         <h3>Engineering</h3>
@@ -567,6 +556,10 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
   </div>
 </section>
 
+<div class="wrap" style="border-top:1px solid var(--line-soft);padding-top:8px">
+  <canvas class="art art--eclipse rv" data-art="eclipse" aria-hidden="true"></canvas>
+</div>
+
 <footer class="footer">
   <div class="wrap foot-in">
     <span>© 2026 Siddharth Deepak</span>
@@ -608,8 +601,6 @@ function drawCharts(){
   charts.push(new Chart(olistChart,{type:"bar",data:{labels:["H&B","Watch","Bed","Sport","Comp"],datasets:[{data:[1.41,1.26,1.23,1.12,1.03],backgroundColor:FG+"cc",borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " R$"+c.raw+"M";}}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1200}}}));
 
   charts.push(new Chart(retailChart,{type:"line",data:{labels:Array.from({length:24},function(_,i){return i;}),datasets:[{data:[687,557,506,700,595,600,639,592,604,832,1037,1172,885,569,447,596,469,679,661,600,645,953,1039,518],borderColor:FG,borderWidth:1.6,pointRadius:0,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:noAx}));
-
-  charts.push(new Chart(spotifyChart,{type:"bar",data:{labels:["Open","Click","Conv"],datasets:[{label:"A",data:[25.2,1.70,0.06],backgroundColor:MU+"55",borderWidth:0},{label:"B",data:[32.1,3.71,0.34],backgroundColor:SG,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:"top",align:"end",labels:{font:{family:FN,size:9},color:MU,boxWidth:8,boxHeight:8,padding:8,usePointStyle:false}},tooltip:{callbacks:{label:function(c){return " "+c.dataset.label+": "+c.raw+"%";}}}},scales:{x:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}},y:{display:false}},barPercentage:.65,categoryPercentage:.7,animation:{duration:1200}}}));
 
   charts.push(new Chart(flightChart,{type:"line",data:{labels:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],datasets:[{data:[19.7,19.7,19.0,19.0,21.7,18.9,22.0,23.5,20.0,19.5],borderColor:FG,borderWidth:1.6,pointRadius:function(c){return [0,0,0,0,0,0,3,3,0,0][c.dataIndex]||0;},pointBackgroundColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:noAx}));
 
