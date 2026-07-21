@@ -395,38 +395,38 @@ function dottedVGrid(c2, w, h, step, fg){
   }
   c2.globalAlpha = 1;
 }
-function drawGhostChart(cv){
+function routeMassif(cv, SEED){
   var p = prepArt(cv); if (!p) return;
   var c2 = p.c2, w = p.w, h = p.h, fg = p.fg, sg = p.sg;
-  dottedVGrid(c2, w, h, w / 9, fg);
-  var SEED = 4.7, COLSN = Math.max(200, Math.floor(w / 1.6));
-  var curves = [{off:0,amp:1,a:1},{off:0.13,amp:0.82,a:0.55},{off:0.24,amp:0.66,a:0.3}];
-  function line(u, off, amp){
-    return 0.72 + off * 0.85 - amp * (0.40 * u + 0.13 * Math.sin(u * 5.2 + 1.2) * (1 - u * 0.4) + 0.09 * fbm(u * 3.2, off * 9, SEED));
-  }
-  curves.forEach(function(cu, ci){
+  var ROWS = 88, COLSN = Math.max(150, Math.floor(w / 2.6));
+  var horizon = h * 0.16, spread = h * 0.76, maxHh = h * 0.95, stepX = w / COLSN;
+  function env(u){ return Math.min(1, Math.exp(-Math.pow((u - 0.68) / 0.22, 2)) + 0.38 * Math.exp(-Math.pow((u - 0.3) / 0.13, 2))); }
+  for (var r = 0; r < ROWS; r++) {
+    var d = r / (ROWS - 1), base = horizon + d * spread;
     for (var q = 0; q <= COLSN; q++) {
-      var u = q / COLSN, cy = line(u, cu.off, cu.amp);
-      var thick = 0.015 + 0.05 * fbm(u * 4.6, ci * 3.1, SEED + 2) + 0.02 * (1 - u);
-      for (var s = 0; s < 22; s++) {
-        var g = (hash2(q + ci * 971, s) + hash2(q + 13, s + ci * 57) - 1);
-        var v = cy + g * thick * 2.2;
-        var a = Math.max(0, 0.65 - Math.abs(g) * 0.9) * cu.a * (0.4 + 0.6 * hash2(q, s + 91));
-        if (a < 0.03) continue;
-        c2.fillStyle = fg; c2.globalAlpha = Math.min(0.85, a);
-        var big = hash2(q + s, 7) > 0.93;
-        c2.fillRect(u * w, v * h, big ? 1.8 : 1.15, big ? 1.8 : 1.15);
-      }
-      if (ci === 0 && (q * 7) % 149 === 0) { c2.fillStyle = sg; c2.globalAlpha = 0.85; c2.fillRect(u * w, cy * h, 2, 2); }
+      var jx = (hash2(q, r) - 0.5) * stepX * 1.8;
+      var jy = (hash2(q + 57, r + 91) - 0.5) * 6;
+      var u = (q + jx / stepX) / COLSN;
+      var hh = Math.pow(fbm(u * 6.5, d * 4.2, SEED), 1.15) * env(u);
+      if (hh < 0.02) continue;
+      var y = base - hh * maxHh * (0.3 + 0.7 * d) + jy;
+      if (y < 0) continue;
+      var alpha = Math.min(0.95, 0.04 + Math.pow(hh, 1.3) * 1.7) * (0.28 + 0.72 * d);
+      if (hh > 0.6 && ((q * 7 + r * 13) % 131) === 0) { c2.fillStyle = sg; c2.globalAlpha = 0.85; c2.fillRect(u * w, y, 2, 2); }
+      else { c2.fillStyle = fg; c2.globalAlpha = alpha; c2.fillRect(u * w, y, 1.3, 1.3); }
     }
+  }
+  function route(u){ return h * (0.84 - 0.58 * Math.exp(-Math.pow((u - 0.68) / 0.30, 2)) + 0.015 * Math.sin(u * 21)); }
+  for (var uu = 0.08; uu < 0.72; uu += 0.008) { c2.fillStyle = fg; c2.globalAlpha = 0.6; c2.fillRect(uu * w, route(uu), 1.6, 1.6); }
+  [0.12, 0.42, 0.68].forEach(function(u, i, arr){
+    var y = route(u), last = i === arr.length - 1;
+    c2.fillStyle = last ? sg : fg; c2.globalAlpha = last ? 0.95 : 0.85;
+    c2.fillRect(u * w - 2.5, y - 2.5, 5, 5);
+    c2.globalAlpha = 0.35; c2.fillStyle = fg; c2.fillRect(u * w - 0.5, y + 6, 1, 9);
   });
-  var au = 0.66, ax = au * w, ay = (line(au, 0, 1) - 0.16) * h;
-  c2.globalAlpha = 0.2; c2.fillStyle = sg; c2.beginPath(); c2.arc(ax, ay, 8, 0, 7); c2.fill();
-  c2.globalAlpha = 0.95; c2.fillRect(ax - 1.5, ay - 1.5, 3, 3);
-  c2.globalAlpha = 0.3;
-  for (var yy = ay + 7; yy < line(au, 0, 1) * h; yy += 5) c2.fillRect(ax - 0.5, yy, 1, 2);
   c2.globalAlpha = 1;
 }
+function drawGhostChart(cv){ routeMassif(cv, 5.62); }
 function drawGlitchSphere(cv){
   var w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
   ditherField(cv, sphereField, 3);

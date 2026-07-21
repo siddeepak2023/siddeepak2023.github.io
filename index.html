@@ -182,7 +182,10 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 .art{display:block}
 .art--sphere{width:190px;height:190px;flex:none;align-self:center}
 .art--inline{width:360px;height:200px;flex:none;align-self:center}
-@media(max-width:920px){.art--sphere,.art--inline{display:none}}
+/* bust (face) + oort (particle sphere): PF proportions, NO fade mask, scaled up */
+.art--bust{width:320px;height:253px;flex:none;align-self:center}
+.art--oort{width:100%;max-width:380px;aspect-ratio:1/1;height:auto;justify-self:center;align-self:center}
+@media(max-width:920px){.art--sphere,.art--inline,.art--bust{display:none}}
 .art--sphere,.art--hero,.art--inline{
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);
   -webkit-mask-composite:source-in;
@@ -451,18 +454,23 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
         </div>
       </article>
 
-      <article class="prod rv">
-        <div class="prod-idx"><span>06 · Data viz</span><span>WebGL</span></div>
-        <h3>Universe Data Visualization</h3>
-        <p>A real-time interactive 3D explorer rendering <strong>1M+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser at 60 FPS. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy.</p>
-        <div class="mini">
-          <div class="mini-canvas"><canvas id="universeChart"></canvas></div>
-          <p class="mini-note">Object distribution · thousands · <em>6 live APIs</em></p>
+      <article class="prod prod--hero rv">
+        <div>
+          <div class="prod-idx"><span>06 · Data viz</span><span>WebGL</span></div>
+          <h3>Universe Data Visualization</h3>
+          <p>A real-time interactive 3D explorer rendering <strong>1M+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser at 60 FPS. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy.</p>
+          <div class="mini">
+            <div class="mini-canvas"><canvas id="universeChart"></canvas></div>
+            <p class="mini-note">Object distribution · thousands · <em>6 live APIs</em></p>
+          </div>
+          <p class="stack-line"><b>Python</b> · <b>Astropy</b> · <b>Three.js</b> · <b>Pandas</b></p>
+          <div class="prod-links">
+            <a href="https://interactive3duniversemap.netlify.app/" target="_blank" class="prod-link prod-link--sig">Live demo</a>
+            <a href="https://github.com/siddeepak2023/universe-data-visualization-dashboard" target="_blank" class="prod-link">GitHub</a>
+          </div>
         </div>
-        <p class="stack-line"><b>Python</b> · <b>Astropy</b> · <b>Three.js</b> · <b>Pandas</b></p>
-        <div class="prod-links">
-          <a href="https://interactive3duniversemap.netlify.app/" target="_blank" class="prod-link prod-link--sig">Live demo</a>
-          <a href="https://github.com/siddeepak2023/universe-data-visualization-dashboard" target="_blank" class="prod-link">GitHub</a>
+        <div class="frame"><i></i><i></i><i></i><i></i>
+          <canvas class="art art--oort" data-art="oort" aria-hidden="true"></canvas>
         </div>
       </article>
 
@@ -472,12 +480,9 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 
 <section id="skills">
   <div class="wrap">
-    <div class="sec-row">
-      <div class="sec-head rv">
-        <p class="eyebrow">Skills</p>
-        <h2>SQL, statistics, and applied ML.</h2>
-      </div>
-      <canvas class="art art--sphere rv d1" data-art="oort" aria-hidden="true"></canvas>
+    <div class="sec-head rv">
+      <p class="eyebrow">Skills</p>
+      <h2>SQL, statistics, and applied ML.</h2>
     </div>
     <div class="kit kit--skills">
       <div class="kitcol rv">
@@ -537,7 +542,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
         <p class="eyebrow">About</p>
         <h2>Analytics that connects to the business, not just the numbers.</h2>
       </div>
-      <canvas class="art art--sphere rv d1" data-art="bust" aria-hidden="true"></canvas>
+      <canvas class="art art--bust rv d1" data-art="bust" aria-hidden="true"></canvas>
     </div>
     <div class="about-grid">
       <div class="about-copy rv">
