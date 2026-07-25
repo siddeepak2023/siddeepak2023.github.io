@@ -184,10 +184,11 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 .art--inline{width:360px;height:200px;flex:none;align-self:center}
 /* bust (face) + oort (particle sphere): PF proportions, NO fade mask, scaled up */
 .art--bust{width:320px;height:253px;flex:none;align-self:center}
-.art--oort{width:100%;max-width:380px;aspect-ratio:1/1;height:auto;justify-self:center;align-self:center}
+/* oort now sits in the Skills sec-row (flex), so it needs fixed square dims */
+.art--oort{width:260px;height:260px;flex:none;align-self:center}
 .art--diamond{width:360px;height:200px;flex:none;align-self:center}
-@media(max-width:920px){.art--sphere,.art--inline,.art--bust,.art--diamond{display:none}}
-.art--sphere,.art--hero,.art--inline{
+@media(max-width:920px){.art--sphere,.art--inline,.art--bust,.art--diamond,.art--oort{display:none}}
+.art--sphere,.art--hero,.art--inline,.art--dome{
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);
   -webkit-mask-composite:source-in;
   mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);
@@ -236,7 +237,10 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 /* ============ TOOLKIT ============ */
 .kit{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 .kit--skills{grid-template-columns:repeat(auto-fit,minmax(175px,1fr))}
-.art--eclipse{width:100%;max-width:1040px;height:360px;margin:84px auto 0;display:block;animation:eclipse-pulse 5.5s ease-in-out infinite}
+/* PF parity: dome band 250px @44px offset; #about trims its bottom padding so
+   the page doesn't end on a tall empty gap. */
+.art--eclipse{width:100%;max-width:1040px;height:250px;margin:32px auto 0;display:block;animation:eclipse-pulse 5.5s ease-in-out infinite}
+#about{padding-bottom:48px}
 @keyframes eclipse-pulse{0%,100%{opacity:.82}50%{opacity:1}}
 @media(prefers-reduced-motion:reduce){.art--eclipse{animation:none}}
 .kitcol{border-top:1px solid var(--line);padding-top:26px}
@@ -441,23 +445,18 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
         </div>
       </article>
 
-      <article class="prod prod--hero rv">
-        <div>
-          <div class="prod-idx"><span>05 · Data viz</span><span>WebGL</span></div>
-          <h3>Universe Data Visualization</h3>
-          <p>A real-time interactive 3D explorer rendering <strong>1M+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser at 60 FPS. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy.</p>
-          <div class="mini">
-            <div class="mini-canvas"><canvas id="universeChart"></canvas></div>
-            <p class="mini-note">Object distribution · thousands · <em>6 live APIs</em></p>
-          </div>
-          <p class="stack-line"><b>Python</b> · <b>Astropy</b> · <b>Three.js</b> · <b>Pandas</b></p>
-          <div class="prod-links">
-            <a href="https://interactive3duniversemap.netlify.app/" target="_blank" class="prod-link prod-link--sig">Live demo</a>
-            <a href="https://github.com/siddeepak2023/universe-data-visualization-dashboard" target="_blank" class="prod-link">GitHub</a>
-          </div>
+      <article class="prod rv">
+        <div class="prod-idx"><span>05 · Data viz</span><span>WebGL</span></div>
+        <h3>Universe Data Visualization</h3>
+        <p>A real-time interactive 3D explorer rendering <strong>700K+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser at 60 FPS. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy.</p>
+        <div class="mini">
+          <div class="mini-canvas"><canvas id="universeChart"></canvas></div>
+          <p class="mini-note">Object distribution · thousands · <em>6 live APIs</em></p>
         </div>
-        <div class="frame"><i></i><i></i><i></i><i></i>
-          <canvas class="art art--oort" data-art="oort" aria-hidden="true"></canvas>
+        <p class="stack-line"><b>Python</b> · <b>Astropy</b> · <b>Three.js</b> · <b>Pandas</b></p>
+        <div class="prod-links">
+          <a href="https://interactive3duniversemap.netlify.app/" target="_blank" class="prod-link prod-link--sig">Live demo</a>
+          <a href="https://github.com/siddeepak2023/universe-data-visualization-dashboard" target="_blank" class="prod-link">GitHub</a>
         </div>
       </article>
 
@@ -472,7 +471,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
         <p class="eyebrow">Skills</p>
         <h2>SQL, statistics, and applied ML.</h2>
       </div>
-      <canvas class="art art--diamond rv d1" data-art="diamond" aria-hidden="true"></canvas>
+      <canvas class="art art--oort rv d1" data-art="oort" aria-hidden="true"></canvas>
     </div>
     <div class="kit kit--skills">
       <div class="kitcol rv">
@@ -601,11 +600,15 @@ function drawCharts(){
 
   charts.push(new Chart(olistChart,{type:"bar",data:{labels:["H&B","Watch","Bed","Sport","Comp"],datasets:[{data:[1.41,1.26,1.23,1.12,1.03],backgroundColor:FG+"cc",borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " R$"+c.raw+"M";}}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1200}}}));
 
-  charts.push(new Chart(retailChart,{type:"line",data:{labels:Array.from({length:24},function(_,i){return i;}),datasets:[{data:[687,557,506,700,595,600,639,592,604,832,1037,1172,885,569,447,596,469,679,661,600,645,953,1039,518],borderColor:FG,borderWidth:1.6,pointRadius:0,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:noAx}));
+  /* Real monthly revenue (£K) from the project's own dataset, Dec 2009 – Dec 2011.
+     All 25 months — sums to £17.74M, matching the total in the caption. */
+  var RETAIL_M = ["Dec 09","Jan 10","Feb 10","Mar 10","Apr 10","May 10","Jun 10","Jul 10","Aug 10","Sep 10","Oct 10","Nov 10","Dec 10","Jan 11","Feb 11","Mar 11","Apr 11","May 11","Jun 11","Jul 11","Aug 11","Sep 11","Oct 11","Nov 11","Dec 11"];
+  var RETAIL_V = [687,557,506,700,595,600,639,592,604,832,1037,1172,885,569,447,596,469,679,661,600,645,953,1039,1162,518];
+  charts.push(new Chart(retailChart,{type:"line",data:{labels:RETAIL_M,datasets:[{data:RETAIL_V,borderColor:FG,borderWidth:1.6,pointRadius:function(c){return c.dataIndex===23?3:0;},pointBackgroundColor:SG,pointBorderColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{displayColors:false,titleFont:{family:FN,size:9},bodyFont:{family:FN,size:9},callbacks:{label:function(c){return " £"+c.raw+"K";}}}},scales:{x:{display:false},y:{display:false}},animation:{duration:1200}}}));
 
   charts.push(new Chart(flightChart,{type:"line",data:{labels:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],datasets:[{data:[19.7,19.7,19.0,19.0,21.7,18.9,22.0,23.5,20.0,19.5],borderColor:FG,borderWidth:1.6,pointRadius:function(c){return [0,0,0,0,0,0,3,3,0,0][c.dataIndex]||0;},pointBackgroundColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:noAx}));
 
-  charts.push(new Chart(universeChart,{type:"bar",data:{labels:["Gaia","HyperLEDA","Exopl.","Quasars"],datasets:[{data:[500,200,5.5,0.5],backgroundColor:[FG,FG+"cc",SG+"cc",SG+"88"],borderWidth:0}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:600},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1200}}}));
+  charts.push(new Chart(universeChart,{type:"bar",data:{labels:[["Gaia","500K"],["HyperLEDA","200K"],["Exopl.","5.5K"],["Quasars","500"]],datasets:[{data:[500,200,5.5,0.5],backgroundColor:[FG,FG+"cc",SG+"cc",SG+"88"],borderWidth:0}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:600},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1200}}}));
 }
 drawCharts();
 
