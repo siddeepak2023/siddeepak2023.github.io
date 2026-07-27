@@ -155,7 +155,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(7,9,13,0.92);backdrop-filt
   <div class="two-col">
     <div class="card"><h3>PCA Cluster Scatter</h3><div class="cdesc">800 sampled customers · PC1+PC2 = 95.1% variance</div><div style="position:relative;height:290px"><canvas id="pcaChart"></canvas></div></div>
     <div class="card">
-      <h3>Revenue Share by Segment</h3><div class="cdesc">Champions = 20% of customers → 65% of revenue</div>
+      <h3>Revenue Share by Segment</h3><div class="cdesc">Champions = 22% of segmented customers &rarr; 73% of segmented revenue</div>
       <div style="position:relative;height:145px"><canvas id="segRevChart"></canvas></div>
       <h3 style="margin-top:16px">Churn Risk by Segment</h3><div class="cdesc">Lost customers: 80% probability</div>
       <div style="position:relative;height:110px"><canvas id="churnSegChart"></canvas></div>
@@ -232,7 +232,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(7,9,13,0.92);backdrop-filt
   </div>
   <div class="insight" style="margin-top:14px">
     <div class="ins-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-    <div><h4>What Makes This Project Stand Out</h4><p>Most analytics projects do one thing. This pipeline does <strong>four connected things</strong>: SQL-based RFM analysis feeds K-Means clustering; cluster labels enrich the churn model's features; churn scores inform retention priority; association rules produce per-segment recommendations. The <strong>time-based train/test split</strong> prevents data leakage — the most common mistake in student churn models that inflates accuracy to 99%+. Real performance on this dataset: <strong>75.4% accuracy, 0.824 AUC.</strong></p></div>
+    <div><h4>What Makes This Project Stand Out</h4><p>Most analytics projects do one thing. This pipeline does <strong>four connected things</strong>: RFM analysis feeds K-Means clustering; cluster labels enrich the churn model's features; churn scores inform retention priority; association rules produce per-segment recommendations. The churn label is built <strong>forward in time</strong> — features come only from transactions before 1 Sep 2011, and the label is whether the customer bought in the Sep–Dec 2011 window that follows. That ordering is what prevents the leakage that inflates student churn models to 99%+; the model is then evaluated on a random 20% of held-out customers. Real performance on this dataset: <strong>75.4% accuracy, 0.824 AUC — against a 55.3% majority-class base rate.</strong></p></div>
   </div>
   <div class="pfooter"><span class="pftext">UCI Online Retail II · 805K transactions · 5,878 customers · 4,631 products · 38 countries</span>
     <div class="pfpills"><span class="pfpill">Python</span><span class="pfpill">pandas</span><span class="pfpill">scikit-learn</span><span class="pfpill">mlxtend</span><span class="pfpill">K-Means</span><span class="pfpill">Random Forest</span><span class="pfpill">Apriori</span><span class="pfpill">PCA</span><span class="pfpill">SQLite</span></div>
@@ -379,7 +379,7 @@ function bSegments(){
 function bChurn(){
   const M=DATA.model_metrics,K=DATA.kpis;
   document.getElementById('churnKpis').innerHTML=
-    kpi('Accuracy',Math.round(M.accuracy*1000)/10+'%','g','time-based holdout')+
+    kpi('Accuracy',Math.round(M.accuracy*1000)/10+'%','g','held-out customers')+
     kpi('ROC-AUC',M.roc_auc,'b','random forest')+
     kpi('Test Set Size',M.test_size.toLocaleString(),'b','held-out customers')+
     kpi('Churn Rate',Math.round(M.churn_rate*100)+'%','a','in training period');
@@ -482,7 +482,7 @@ function bPipeline(){
   const steps=[
     {n:'01',t:'Cleaning & EDA',f:'01_cleaning_eda.py',tools:'pandas · SQLite · window functions',out:'online_retail_clean.csv · rfm_raw.csv',col:B},
     {n:'02',t:'Segmentation',f:'02_segmentation.py',tools:'K-Means · PCA · StandardScaler',out:'rfm_segmented.csv',col:G},
-    {n:'03',t:'Churn Model',f:'03_churn_model.py',tools:'Random Forest · time-based split',out:'customer_features.csv · model_metrics.json',col:A},
+    {n:'03',t:'Churn Model',f:'03_churn_model.py',tools:'Random Forest · forward-looking label',out:'customer_features.csv · model_metrics.json',col:A},
     {n:'04',t:'Recommendations',f:'04_recommendations.py',tools:'Apriori · mlxtend · association rules',out:'association_rules.json · segment_recs.json',col:P},
     {n:'05',t:'Export Dashboard',f:'05_export_dashboard.py',tools:'pandas · json compilation',out:'dashboard_data.json',col:R},
   ];

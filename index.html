@@ -403,7 +403,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       <article class="prod rv">
         <div class="prod-idx"><span>02 · Customer analytics</span><span>Segmentation</span></div>
         <h3>Retail Customer Intelligence</h3>
-        <p>End-to-end customer analytics on <strong>805K real transactions</strong> (38 countries). RFM segmentation splits the base into 5 actionable tiers; a churn model flags <strong>£1.46M of revenue at risk</strong>. Market-basket rules power a recommendation engine an operator can act on without an analyst.</p>
+        <p>End-to-end customer analytics on <strong>805K real transactions</strong> (38 countries). K-means RFM segmentation splits the base into 4 actionable tiers; a random-forest churn model hits <strong>0.824 ROC-AUC against a 55.3% base rate</strong> and flags <strong>£1.46M of customer value at risk</strong>. Market-basket rules power a recommendation engine an operator can act on without an analyst.</p>
         <div class="mini">
           <div class="mini-canvas"><canvas id="retailChart"></canvas></div>
           <p class="mini-note">Monthly revenue · £17.74M total · <em>£1.46M at risk</em></p>
@@ -417,7 +417,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       <article class="prod rv d1">
         <div class="prod-idx"><span>03 · SQL</span><span>Business intelligence</span></div>
         <h3>Olist E-Commerce Analysis</h3>
-        <p>End-to-end BI on <strong>96K+ real Brazilian e-commerce transactions</strong> across 9 relational tables — CTEs, window functions, multi-table joins. Health &amp; Beauty leads at R$1.4M; orders delivered in 21+ days show a <strong>31% review-score drop</strong>. Published as a live Tableau dashboard.</p>
+        <p>End-to-end BI on <strong>96,478 real Brazilian e-commerce orders</strong> — 9 source tables joined into a star-schema flat table, then analysed in SQLite with CTEs and window functions. Health &amp; Beauty leads at R$1.4M of R$15.4M; deliveries past 21 days average <strong>31% lower review scores</strong> than sub-7-day ones. Published as a live Tableau dashboard.</p>
         <div class="mini">
           <div class="mini-canvas"><canvas id="olistChart"></canvas></div>
           <p class="mini-note">Revenue by top 5 categories · <em>R$M</em></p>
@@ -431,18 +431,14 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       </article>
 
       <article class="prod rv d1">
-        <div class="prod-idx"><span>04 · Predictive ML</span><span>Big data</span></div>
-        <h3>U.S. Flight Delay Intelligence</h3>
-        <p>A LightGBM classifier on <strong>72M+ real BTS domestic flights</strong> (2015–2024) predicting delay risk, turned into a route-level risk atlas across 5,248 O-D pairs, airline reliability index, airport bottleneck heatmap, and a live predictor — data at real scale.</p>
+        <div class="prod-idx"><span>04 · Predictive ML</span><span>Calibrated</span></div>
+        <h3>NBA Game Outcome Model</h3>
+        <p>A gradient-boosted classifier on <strong>10,624 real games</strong> (9 seasons, nba_api). Held out the entire unseen 2024-25 season: <strong>66.3% accuracy vs a 54.4% always-home baseline</strong>, AUC 0.726, isotonic-calibrated probabilities. Bubble-season games are down-weighted — home advantage measurably collapsed in 2020.</p>
         <div class="mini">
-          <div class="mini-canvas"><canvas id="flightChart"></canvas></div>
-          <p class="mini-note">Annual delay rate 2015–2024 · <em>72M flights</em></p>
+          <div class="mini-canvas"><canvas id="nbaChart"></canvas></div>
+          <p class="mini-note">Home win rate by season · <em>bubble years flagged</em></p>
         </div>
-        <p class="stack-line"><b>Python</b> · <b>LightGBM</b> · <b>BTS data</b> · <b>Chart.js</b></p>
-        <div class="prod-links">
-          <a href="flight_delay_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
-          <a href="https://github.com/siddeepak2023/flight-delay-intelligence" target="_blank" class="prod-link">GitHub</a>
-        </div>
+        <p class="stack-line"><b>Python</b> · <b>HistGradientBoosting</b> · <b>Optuna</b> · <b>SQLite</b></p>
       </article>
 
       <article class="prod rv">
@@ -537,7 +533,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       <div class="about-copy rv">
         <p>Senior at UT Dallas building end-to-end data products — from SQL (joins, CTEs, window functions) and cleaning raw datasets to deploying interactive dashboards and <strong>shipping full-stack AI products to production</strong> — with a focus on measurable business impact.</p>
         <p>My concentration in <strong>Marketing &amp; AI</strong> suits roles where the analysis has to connect to customer behavior and strategy. I'm especially interested in <strong>applied AI for analytics</strong> — turning manual reporting into reviewed, one-click workflows. Based in Leander, TX; seeking data or business analytics internships for summer 2027.</p>
-        <div class="ledger"><span><b>6</b> live projects</span><span><b>72M+</b> rows at peak</span><span><b>400+</b> automated tests</span><span><b>1</b> shipped company</span></div>
+        <div class="ledger"><span><b>5</b> live projects</span><span><b>1M+</b> rows analysed</span><span><b>400+</b> automated tests</span><span><b>1</b> shipped company</span></div>
       </div>
       <div class="edu rv d1">
         <div class="prod-idx"><span>Education</span><span class="sig">Dec 2027</span></div>
@@ -606,7 +602,12 @@ function drawCharts(){
   var RETAIL_V = [687,557,506,700,595,600,639,592,604,832,1037,1172,885,569,447,596,469,679,661,600,645,953,1039,1162,518];
   charts.push(new Chart(retailChart,{type:"line",data:{labels:RETAIL_M,datasets:[{data:RETAIL_V,borderColor:FG,borderWidth:1.6,pointRadius:function(c){return c.dataIndex===23?3:0;},pointBackgroundColor:SG,pointBorderColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{displayColors:false,titleFont:{family:FN,size:9},bodyFont:{family:FN,size:9},callbacks:{label:function(c){return " £"+c.raw+"K";}}}},scales:{x:{display:false},y:{display:false}},animation:{duration:1200}}}));
 
-  charts.push(new Chart(flightChart,{type:"line",data:{labels:[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],datasets:[{data:[19.7,19.7,19.0,19.0,21.7,18.9,22.0,23.5,20.0,19.5],borderColor:FG,borderWidth:1.6,pointRadius:function(c){return [0,0,0,0,0,0,3,3,0,0][c.dataIndex]||0;},pointBackgroundColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:noAx}));
+  /* Real home-win rate per season, computed from the project's own features.csv
+     (10,624 games). The 19-20 / 20-21 dip is the bubble — why those games are
+     down-weighted in training. */
+  var NBA_S = ["16-17","17-18","18-19","19-20","20-21","21-22","22-23","23-24","24-25"];
+  var NBA_V = [58.5,57.9,59.3,55.2,54.4,54.4,58.1,54.3,54.4];
+  charts.push(new Chart(nbaChart,{type:"line",data:{labels:NBA_S,datasets:[{data:NBA_V,borderColor:FG,borderWidth:1.6,pointRadius:function(c){return (c.dataIndex===3||c.dataIndex===4)?3:0;},pointBackgroundColor:SG,pointBorderColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{displayColors:false,titleFont:{family:FN,size:9},bodyFont:{family:FN,size:9},callbacks:{label:function(c){return " "+c.raw+"% home wins";}}}},scales:{x:{display:false},y:{display:false}},animation:{duration:1200}}}));
 
   charts.push(new Chart(universeChart,{type:"bar",data:{labels:[["Gaia","500K"],["HyperLEDA","200K"],["Exopl.","5.5K"],["Quasars","500"]],datasets:[{data:[500,200,5.5,0.5],backgroundColor:[FG,FG+"cc",SG+"cc",SG+"88"],borderWidth:0}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:600},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1200}}}));
 }

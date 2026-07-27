@@ -187,18 +187,18 @@
       </div>
       <div class="project-stack">Python &nbsp;|&nbsp; Scikit-learn &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; RFM &nbsp;|&nbsp; Market-Basket Analysis</div>
       <ul class="bullets">
-        <li>End-to-end customer analytics on 805K real transactions (38 countries): RFM segmentation into 5 actionable tiers; a churn model flagging <strong>£1.46M of revenue at risk</strong>; market-basket association rules powering a recommendation engine</li>
+        <li>End-to-end customer analytics on 805K real transactions (38 countries): K-means RFM segmentation into 4 actionable tiers; a random-forest churn model at <strong>75.4% accuracy / 0.824 ROC-AUC against a 55.3% base rate</strong>, flagging <strong>£1.46M of customer value at risk</strong>; market-basket association rules (top pair lift 24.0) powering a recommendation engine</li>
       </ul>
     </div>
 
     <div class="project">
       <div class="project-header">
-        <span class="project-name">U.S. Flight Delay Intelligence Engine</span>
-        <span class="project-link"><a href="https://siddharthdeepak.bizfalconai.com/flight_delay_dashboard.html">Live Dashboard</a></span>
+        <span class="project-name">NBA Game Outcome Prediction Model</span>
+        <span class="project-link"><a href="https://siddharthdeepak.bizfalconai.com">Portfolio</a></span>
       </div>
-      <div class="project-stack">Python &nbsp;|&nbsp; LightGBM &nbsp;|&nbsp; BTS Data &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; Chart.js &nbsp;|&nbsp; HTML/JS</div>
+      <div class="project-stack">Python &nbsp;|&nbsp; HistGradientBoosting &nbsp;|&nbsp; Optuna &nbsp;|&nbsp; SQLite &nbsp;|&nbsp; nba_api</div>
       <ul class="bullets">
-        <li>Built a delay-risk model on <strong>72M+ BTS domestic flights</strong> (2015–2024) with LightGBM, turned into a route-level risk atlas across 5,248 O-D pairs with an airline reliability index and airport-bottleneck heatmap</li>
+        <li>Trained a gradient-boosted classifier on <strong>10,624 real NBA games</strong> (9 seasons via nba_api) and validated on the fully held-out 2024-25 season: <strong>66.3% accuracy against a 54.4% always-home baseline</strong> (AUC 0.726, Brier 0.211), with isotonic-calibrated probabilities and 2020 bubble games down-weighted after measuring the collapse in home-court advantage</li>
       </ul>
     </div>
 
@@ -209,7 +209,7 @@
       </div>
       <div class="project-stack">Python &nbsp;|&nbsp; SQL &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; Tableau &nbsp;|&nbsp; Excel</div>
       <ul class="bullets">
-        <li>Analyzed <strong>96K+ e-commerce transactions</strong> across 9 relational tables in SQL (CTEs, window functions, multi-table JOINs); found Health &amp; Beauty led revenue at R$1.4M of R$15.4M and that 21+ day delivery drove a <strong>31% review-score drop</strong> — published as a live 4-chart Tableau dashboard</li>
+        <li>Analyzed <strong>96,478 e-commerce orders</strong> from 9 source tables, joined into a star-schema table and queried in SQLite with CTEs and window functions; found Health &amp; Beauty led revenue at R$1.4M of R$15.4M and that deliveries past 21 days averaged a <strong>31% lower review score</strong> than sub-7-day deliveries — published as a live 4-chart Tableau dashboard</li>
       </ul>
     </div>
 

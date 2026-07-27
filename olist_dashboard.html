@@ -353,7 +353,7 @@ footer {
   <div>
     <div class="eyebrow">SQL + Python + Tableau · E-Commerce Analytics</div>
     <h1>Olist <em>E-Commerce</em><br>Performance Analysis</h1>
-    <p class="hdesc">9 relational tables joined via SQLite · 96,478 delivered orders · R$15.4M revenue across Brazil · 2016–2018</p>
+    <p class="hdesc">9 source tables, 8 loaded into SQLite · 96,478 delivered orders · R$15.4M revenue across Brazil · 2016–2018</p>
   </div>
   <div class="header-right">
     <span class="pill pill-green">● 96,478 orders analyzed</span>
@@ -438,45 +438,45 @@ footer {
     <!-- DELIVERY VS REVIEWS -->
     <div class="card">
       <h3>Delivery Speed vs Customer Rating</h3>
-      <div class="card-desc">Fast deliveries (≤7d) score 4.22★ · very slow (&gt;21d) drop to 2.55★ — a 1.67-point gap</div>
+      <div class="card-desc">Fast deliveries (≤7d) average 4.33★ · very slow (&gt;21d) fall to 2.97★ — a 1.36-point gap</div>
 
       <div style="margin-bottom: 8px;">
         <div class="score-row">
           <div class="score-label">Fast (≤ 7 days)</div>
           <div class="score-track">
-            <div class="score-fill" style="width:0%;background:var(--green);color:#fff;" data-w="84.4">4.22 ★</div>
+            <div class="score-fill" style="width:0%;background:var(--green);color:#fff;" data-w="86.6">4.33 ★</div>
           </div>
-          <div class="score-val" style="color:var(--green);">4.22</div>
-          <div class="score-orders">26,803</div>
+          <div class="score-val" style="color:var(--green);">4.33</div>
+          <div class="score-orders">38,706</div>
         </div>
         <div class="score-row">
           <div class="score-label">Normal (8–14 days)</div>
           <div class="score-track">
-            <div class="score-fill" style="width:0%;background:#52B788;color:#fff;" data-w="82.2">4.11 ★</div>
+            <div class="score-fill" style="width:0%;background:#52B788;color:#fff;" data-w="84.0">4.20 ★</div>
           </div>
-          <div class="score-val" style="color:#52B788;">4.11</div>
-          <div class="score-orders">42,891</div>
+          <div class="score-val" style="color:#52B788;">4.20</div>
+          <div class="score-orders">41,671</div>
         </div>
         <div class="score-row">
           <div class="score-label">Slow (15–21 days)</div>
           <div class="score-track">
-            <div class="score-fill" style="width:0%;background:var(--amber);color:#fff;" data-w="72.2">3.61 ★</div>
+            <div class="score-fill" style="width:0%;background:var(--amber);color:#fff;" data-w="80.4">4.02 ★</div>
           </div>
-          <div class="score-val" style="color:var(--amber);">3.61</div>
-          <div class="score-orders">16,843</div>
+          <div class="score-val" style="color:var(--amber);">4.02</div>
+          <div class="score-orders">17,495</div>
         </div>
         <div class="score-row">
           <div class="score-label">Very Slow (&gt; 21 days)</div>
           <div class="score-track">
-            <div class="score-fill" style="width:0%;background:var(--red);color:#fff;" data-w="51">2.55 ★</div>
+            <div class="score-fill" style="width:0%;background:var(--red);color:#fff;" data-w="59.4">2.97 ★</div>
           </div>
-          <div class="score-val" style="color:var(--red);">2.55</div>
-          <div class="score-orders">11,203</div>
+          <div class="score-val" style="color:var(--red);">2.97</div>
+          <div class="score-orders">12,133</div>
         </div>
       </div>
 
       <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:6px;">
-        Score axis: 1.0 (worst) → 5.0 (best) · bar width proportional to score
+        Score axis: 1.0 (worst) → 5.0 (best) · counts are order items, and averages are item-weighted
       </div>
     </div>
 
@@ -503,10 +503,7 @@ footer {
       <h4>Key Finding: Delivery Speed Directly Drives Revenue Quality</h4>
       <p>
         São Paulo (SP) achieves an <strong>8.3-day avg delivery</strong> and accounts for <strong>37% of all revenue (R$5.77M)</strong>.
-        States with &gt;15-day delivery like Bahia (18.8d) and Espírito Santo (15.2d) show
-        proportionally lower repeat purchase rates. The data suggests logistics investment in
-        underserved states could unlock significant revenue — the <strong>delivery-to-review score
-        correlation (r ≈ −0.94)</strong> is the most actionable finding in this dataset.
+        States with &gt;15-day average delivery like Bahia (18.8d) and Espírito Santo (15.2d) sit well above the 12.0-day national average, and the review-score gap by delivery bucket below is the clearest lever in this dataset. This is an unadjusted comparison — delivery time is confounded with state, category mix and freight cost, so it is not yet a causal estimate.
       </p>
     </div>
   </div>

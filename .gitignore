@@ -57,3 +57,15 @@ dist/
 insightpilot/
 portfolio/
 .Rhistory
+
+# Flight-delay project: pipeline generates synthetic data, so the "72M real BTS
+# flights" framing is not supportable. Kept locally, excluded from the public site
+# until it is rebuilt on real BTS data.
+flight-delay-intelligence/
+flight_delay_dashboard.html
+
+# NBA project: lives in its own repo (github.com/siddeepak2023/nba-intelligence).
+# The old dashboard + backtest layer priced every game at a constant -110, so its
+# ROI figures were computed against a market that does not exist. Excluded here.
+nba-intelligence/
+nba_dashboard.html
