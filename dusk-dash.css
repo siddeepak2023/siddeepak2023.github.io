@@ -1,0 +1,257 @@
+/* ============================================================================
+   dusk-dash.css — shared shell for the project dashboards
+   ----------------------------------------------------------------------------
+   One frame, four case studies. Type, grid, KPI structure, texture and nav are
+   IDENTICAL across dashboards — that shared chrome is what makes the set read as
+   one person's work. Per-project identity comes from --accent and from content,
+   never from a different colour scheme per page.
+
+   Chart SERIES colours are a separate concern from --accent: they come from the
+   validated categorical ramp below (--c1..--c5) and are the same everywhere, so
+   chart grammar stays consistent. Do not substitute --accent for a series colour.
+
+   Tokens mirror ~/Source/index.html (DUSK Instrument) exactly. :root is light;
+   [data-theme="dark"] overrides. Do not invent token values.
+   ========================================================================== */
+
+:root{
+  --bg:#F8F7F3;
+  --bg2:#F2F2EF;
+  --fg:#111110;
+  --mut:#5C5C57;
+  --line:rgba(17,17,16,.16);
+  --line-soft:rgba(17,17,16,.08);
+  --signal:#8E2A22;
+  --signal-ink:#FFFFFF;
+  --card:#FFFFFF;
+  --dot:rgba(17,17,16,.18);
+
+  /* Per-project chrome accent. Overridden per page; defaults to DUSK signal. */
+  --accent:var(--signal);
+
+  /* ---- Validated categorical ramp — light, surface #FFFFFF ----------------
+     node scripts/validate_palette.js "#8E2A22,#0072B2,#B07F12,#009E73" \
+       --mode light --surface "#FFFFFF" --pairs all   -> ALL CHECKS PASS
+     Slot 5 (#CC79A7) adds a deutan dE 7.6 pair, legal ONLY with secondary
+     encoding (direct labels / surface gaps) — which this shell always ships.
+     Assign in fixed order. Never cycle. A 6th category folds into "Other". */
+  --c1:#8E2A22;   /* = DUSK --signal */
+  --c2:#0072B2;
+  --c3:#B07F12;
+  --c4:#009E73;
+  --c5:#CC79A7;
+
+  /* Status — RESERVED. Never reused as a series colour. */
+  --ok:#1D7A4C;
+  --warn:#B07F12;
+  --bad:#A32E22;
+
+  --grid:rgba(17,17,16,.09);
+  --chart-surface:#FFFFFF;
+}
+
+[data-theme="dark"]{
+  --bg:#0A0A0B;
+  --bg2:#0F0F11;
+  --fg:#EDECE8;
+  --mut:#8F8F89;
+  --line:rgba(237,236,232,.14);
+  --line-soft:rgba(237,236,232,.07);
+  --signal:#B0453B;
+  --signal-ink:#FFFFFF;
+  --card:#0D0D0F;
+  --dot:rgba(237,236,232,.16);
+
+  /* ---- Validated categorical ramp — dark, surface #0D0D0F ----------------
+     Dark is SELECTED, not an automatic flip: its own steps, validated against
+     the dark surface.
+     node scripts/validate_palette.js "#B0453B,#2E86C4,#C08A1E,#0E9E78" \
+       --mode dark --surface "#0D0D0F" --pairs all    -> ALL CHECKS PASS */
+  --c1:#B0453B;   /* = DUSK dark --signal */
+  --c2:#2E86C4;
+  --c3:#C08A1E;
+  --c4:#0E9E78;
+  --c5:#D98CB8;
+
+  --ok:#3FA96F;
+  --warn:#C08A1E;
+  --bad:#C0554A;
+
+  --grid:rgba(237,236,232,.10);
+  --chart-surface:#0D0D0F;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+
+body{
+  background:url('textures/halftone-bone.png') repeat fixed 0 0/720px 720px,var(--bg);
+  color:var(--fg);
+  font-family:"Hanken Grotesk",system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+[data-theme="dark"] body{
+  background:url('textures/halftone-ink.png') repeat fixed 0 0/720px 720px,var(--bg);
+}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
+.dnav{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid var(--line-soft);
+}
+.dnav-in{max-width:1240px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:22px}
+.dnav-back{
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mut);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;transition:color .2s ease;
+}
+.dnav-back:hover{color:var(--fg)}
+.dnav-title{
+  font-family:"Instrument Sans",sans-serif;font-weight:600;font-size:14px;
+  margin-left:auto;color:var(--fg);
+}
+.dnav-tools{display:flex;gap:8px;align-items:center}
+.dnav-btn{
+  border:1px solid var(--line);background:transparent;color:var(--fg);
+  width:36px;height:36px;display:grid;place-items:center;cursor:pointer;
+  transition:border-color .2s ease,background .2s ease;
+}
+.dnav-btn:hover{border-color:var(--fg)}
+.dnav-btn svg{width:16px;height:16px}
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+.dhero{padding:74px 0 40px}
+.eyebrow{
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--mut);
+  display:flex;align-items:center;gap:14px;margin-bottom:26px;
+}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--accent);flex:none}
+
+h1.dtitle{
+  font-family:"Inter Tight","Instrument Sans",sans-serif;
+  font-weight:800;letter-spacing:-.022em;line-height:1.02;
+  font-size:clamp(34px,5.4vw,60px);margin-bottom:22px;
+}
+h1.dtitle em{
+  font-family:"Instrument Serif",Georgia,serif;font-style:italic;
+  font-weight:400;color:var(--accent);letter-spacing:-.01em;
+}
+.dek{font-size:17px;color:var(--mut);max-width:64ch}
+.dek strong{color:var(--fg);font-weight:600}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mut);
+  border:1px solid var(--line);padding:7px 11px;
+}
+.chip--sig{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+
+/* ── Section label ───────────────────────────────────────────────────────── */
+.slabel{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--mut);
+  display:flex;align-items:center;gap:16px;margin:56px 0 18px;
+}
+.slabel::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+
+/* ── KPI grid ────────────────────────────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{border:1px solid var(--line);background:var(--card);padding:22px}
+.kpi-k{
+  font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mut);margin-bottom:12px;
+}
+.kpi-v{
+  font-family:"Inter Tight","Instrument Sans",sans-serif;font-weight:700;
+  font-size:31px;letter-spacing:-.02em;line-height:1;
+}
+.kpi-v.accent{color:var(--accent)}
+.kpi-s{font-size:12.5px;color:var(--mut);margin-top:9px}
+
+/* ── Card / chart frame ──────────────────────────────────────────────────── */
+.card{border:1px solid var(--line);background:var(--card);padding:26px}
+.card h3{
+  font-family:"Instrument Sans",sans-serif;font-weight:600;font-size:17px;
+  letter-spacing:-.008em;margin-bottom:5px;
+}
+.card-desc{font-size:13.5px;color:var(--mut);margin-bottom:20px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.plot{position:relative;width:100%}
+
+/* Takeaway — the sentence the chart is evidence for. */
+.takeaway{
+  border-left:2px solid var(--accent);padding:2px 0 2px 15px;
+  margin-top:20px;font-size:14px;color:var(--fg);
+}
+.takeaway b{font-weight:600}
+
+/* Caveat — stated, never buried. */
+.caveat{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;line-height:1.65;
+  letter-spacing:.02em;color:var(--mut);margin-top:16px;
+  border-top:1px solid var(--line-soft);padding-top:13px;
+}
+
+/* ── Table view ──────────────────────────────────────────────────────────────
+   Required relief: the ochre slot carries a sub-3:1 contrast WARN, which
+   obligates a table view + visible labels. Never gate the numbers behind hover. */
+.tabtoggle{
+  font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mut);background:none;
+  border:1px solid var(--line);padding:6px 10px;cursor:pointer;margin-top:16px;
+}
+.tabtoggle:hover{border-color:var(--fg);color:var(--fg)}
+.tabwrap{overflow-x:auto;margin-top:14px}
+.tabwrap[hidden]{display:none}
+table.dt{width:100%;border-collapse:collapse;font-size:13px}
+table.dt th,table.dt td{
+  text-align:right;padding:8px 12px;border-bottom:1px solid var(--line-soft);
+  font-variant-numeric:tabular-nums;
+}
+table.dt th:first-child,table.dt td:first-child{text-align:left}
+table.dt th{
+  font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--mut);font-weight:400;
+}
+/* Identity comes from a swatch beside the label — never from coloured text. */
+.sw{display:inline-block;width:9px;height:9px;margin-right:8px;vertical-align:baseline}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.dfoot{
+  margin-top:84px;border-top:1px solid var(--line-soft);
+  padding:30px 0 60px;font-size:13px;color:var(--mut);
+  display:flex;flex-wrap:wrap;gap:18px;align-items:center;
+}
+.dfoot a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line)}
+.dfoot a:hover{border-bottom-color:var(--fg)}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media(max-width:980px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .wrap,.dnav-in{padding-left:18px;padding-right:18px}
+  .dhero{padding:46px 0 30px}
+  .kpis{grid-template-columns:1fr}
+  .card{padding:19px}
+  .dnav-title{display:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+
+@media print{
+  body{background:#fff}
+  .dnav,.tabtoggle{display:none}
+  .tabwrap[hidden]{display:block!important}
+  .card,.kpi{border-color:#ccc}
+}

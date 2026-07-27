@@ -433,14 +433,15 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       <article class="prod rv d1">
         <div class="prod-idx"><span>04 · Predictive ML</span><span>Calibrated</span></div>
         <h3>NBA Game Outcome Model</h3>
-        <p>A gradient-boosted classifier on <strong>10,624 real games</strong> (9 seasons, nba_api). Held out the entire unseen 2024-25 season: <strong>66.3% accuracy vs a 54.4% always-home baseline</strong>, AUC 0.726, isotonic-calibrated probabilities. Bubble-season games are down-weighted — home advantage measurably collapsed in 2020.</p>
+        <p>A gradient-boosted classifier on <strong>10,624 real games</strong> (9 seasons, nba_api). Held out the entire unseen 2024-25 season: <strong>66.4% accuracy vs a 54.4% always-home baseline</strong>, AUC 0.727, isotonic-calibrated. Then I ablated the feature set — <strong>Elo differential alone reaches AUC 0.710, so the other 70 features are worth +0.015</strong>, inside my own CV noise. Bubble games are down-weighted; home advantage measurably collapsed in 2020.</p>
         <div class="mini">
           <div class="mini-canvas"><canvas id="nbaChart"></canvas></div>
           <p class="mini-note">Home win rate by season · <em>bubble years flagged</em></p>
         </div>
         <p class="stack-line"><b>Python</b> · <b>HistGradientBoosting</b> · <b>Optuna</b> · <b>SQLite</b></p>
         <div class="prod-links">
-          <a href="https://github.com/siddeepak2023/nba-intelligence" target="_blank" class="prod-link prod-link--sig">GitHub</a>
+          <a href="nba_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
+          <a href="https://github.com/siddeepak2023/nba-intelligence" target="_blank" class="prod-link">GitHub</a>
         </div>
       </article>
 

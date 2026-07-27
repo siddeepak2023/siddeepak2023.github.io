@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NBA Game Outcome Model — Siddharth Deepak</title>
+<meta name="description" content="Gradient-boosted NBA win model validated on a fully held-out season, with a feature ablation measuring what each layer of the feature set actually earns.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=Inter+Tight:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dusk-dash.css">
+<style>:root{--accent:#B07F12}[data-theme="dark"]{--accent:#C08A1E}</style>
+</head>
+<body data-palette="#8E2A22,#0072B2,#B07F12,#009E73">
+
+<nav class="dnav"><div class="dnav-in">
+  <a class="dnav-back" href="index.html">&larr; Portfolio</a>
+  <span class="dnav-title">NBA Game Outcome Model</span>
+  <div class="dnav-tools">
+    <button class="dnav-btn" id="themeBtn" aria-label="Toggle light and dark theme" title="Toggle theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
+    </button>
+  </div>
+</div></nav>
+
+<div class="wrap">
+  <header class="dhero">
+    <div class="eyebrow">Real NBA data &middot; 10,624 games &middot; 9 seasons</div>
+    <h1 class="dtitle">Predicting NBA games, and <em>measuring what the features earn</em>.</h1>
+    <p class="dek">A gradient-boosted classifier trained on eight seasons and evaluated on the
+    <strong>entire 2024-25 season</strong>, held out and never touched during development. The headline
+    is not the accuracy &mdash; it is that the accuracy is <strong>reported against a baseline</strong>, and that
+    every layer of the 71-feature set was <strong>ablated to see what it actually contributes</strong>.</p>
+    <div class="chips">
+      <span class="chip chip--sig">Temporal holdout</span>
+      <span class="chip">Isotonic calibration</span>
+      <span class="chip">Seeded &amp; reproducible</span>
+      <span class="chip">nba_api &middot; SQLite</span>
+    </div>
+  </header>
+
+  <div class="slabel">Held-out season &mdash; 2024-25</div>
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-k">Accuracy</div><div class="kpi-v accent">66.4%</div><div class="kpi-s">n=1,230 games</div></div>
+    <div class="kpi"><div class="kpi-k">Always-home baseline</div><div class="kpi-v">54.4%</div><div class="kpi-s">the dumb comparator</div></div>
+    <div class="kpi"><div class="kpi-k">ROC-AUC</div><div class="kpi-v">0.727</div><div class="kpi-s">train 0.727 &mdash; not overfit</div></div>
+    <div class="kpi"><div class="kpi-k">Brier score</div><div class="kpi-v">0.211</div><div class="kpi-s">calibrated probabilities</div></div>
+  </div>
+  <p class="takeaway"><b>12.0 percentage points</b> of accuracy over always picking the home
+  team. An accuracy figure without its baseline is uninterpretable, so the baseline ships beside it.</p>
+
+  <div class="slabel">What each layer of the feature set earns</div>
+  <div class="card">
+    <h3>Holdout ROC-AUC by feature set</h3>
+    <div class="card-desc">Same split, same tuning budget, progressively larger feature sets.
+      Always-home is a constant predictor, so it sits exactly on chance &mdash; it cannot rank at
+      all. The axis starts near chance because the whole question is how far above 0.50 each set gets.</div>
+    <div class="plot" style="height:300px"><canvas id="ablChart"></canvas></div>
+    <button class="tabtoggle" id="ablBtn">Table view</button>
+    <div class="tabwrap" id="ablTable" hidden></div>
+    <p class="takeaway">One feature &mdash; the Elo differential &mdash; reaches
+      <b>AUC 0.7098</b>. All 71 reach <b>0.7250</b>. The other 70 features are worth
+      <b>+0.0152 AUC</b>, which is <b>smaller than the &plusmn;0.021 spread between my own
+      cross-validation folds</b>.</p>
+    <p class="caveat">Read that as a reason to prefer the simpler model, not as proof the features are
+      useless: the Brier score does improve with rolling form (0.2166 &rarr; 0.2112), so the
+      extra features buy calibration rather than ranking. Ablation variants are tuned at 30 Optuna
+      trials each for comparability; the headline model above uses 60, which is why its AUC differs
+      slightly from the "all 71" row here.</p>
+  </div>
+
+  <div class="slabel">Why 2020 games are down-weighted</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Home win rate by season</h3>
+      <div class="card-desc">Home-court advantage measurably collapsed when games were played
+        without crowds. Highlighted: 2019-20 and 2020-21.</div>
+      <div class="plot" style="height:250px"><canvas id="hwChart"></canvas></div>
+      <p class="takeaway">Bubble-era games carry a <b>0.6 sample weight</b> in training &mdash; a domain
+        judgement, made because the target's base rate genuinely shifted.</p>
+    </div>
+    <div class="card">
+      <h3>Permutation importance</h3>
+      <div class="card-desc">Top 10 of 71, measured on the <em>test</em> set over 10 repeats
+        &mdash; not gain-based, which is biased toward high-cardinality splits.</div>
+      <div class="plot" style="height:250px"><canvas id="impChart"></canvas></div>
+      <p class="caveat">Permutation importance under-credits correlated features, and this set is
+        collinear by construction (home / away / diff for ~12 stats). That is exactly why the
+        ablation above measures the layers directly instead of trusting this chart alone.</p>
+    </div>
+  </div>
+
+  <div class="slabel">Method</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>How leakage is prevented</h3>
+      <div class="card-desc">The single most important line in the project.</div>
+      <p style="font-size:14.5px">Every rolling and EWM window is computed <strong>after</strong> a
+      <code>.shift(1)</code>, so a game's features can never contain that game's own result:</p>
+      <pre style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.7;overflow-x:auto;margin-top:14px;color:var(--mut)">shifted = grp[stat_cols].shift(1)
+roll    = shifted.rolling(window, min_periods=3).mean()</pre>
+      <p class="takeaway">Validation is a <b>temporal holdout</b> &mdash; train seasons 1&ndash;8, test
+      season 9 &mdash; with <b>TimeSeriesSplit(7)</b> for tuning, so no fold ever trains on its own future.
+      Cross-validated AUC 0.682 &plusmn; 0.021.</p>
+    </div>
+    <div class="card">
+      <h3>Known limitations</h3>
+      <div class="card-desc">Stated, not buried.</div>
+      <ol style="font-size:14px;padding-left:20px;line-height:1.75">
+        <li>The feature set is <strong>wider than the evidence justifies</strong> &mdash; see the ablation.</li>
+        <li>Optuna tunes on <strong>unweighted</strong> CV folds while the final fit applies the bubble
+            sample weights. A small train/tune inconsistency.</li>
+        <li><code>CalibratedClassifierCV</code> uses <strong>stratified</strong> internal folds, so
+            calibration peeks across time even though the outer holdout does not.</li>
+        <li>The natural next test is the completed <strong>2025-26 season</strong> as a genuine
+            out-of-time holdout &mdash; data that did not exist when this model was designed.</li>
+      </ol>
+      <p class="caveat">An earlier version of this project included a wagering backtest reporting
+        +35.8% ROI. It was deleted rather than repaired: it priced every game at a constant &minus;110
+        instead of real market odds, so the "edge" was measured against a market that does not exist.
+        The model is the asset; that layer was not true.</p>
+    </div>
+  </div>
+
+  <footer class="dfoot">
+    <span>Built 2026-07-27 from the pipeline &mdash; every figure on this page is interpolated at build time.</span>
+    <a href="https://github.com/siddeepak2023/nba-intelligence">Source</a>
+    <a href="index.html">Portfolio</a>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="dash-charts.js"></script>
+<script>
+var D = {"generated":"2026-07-27","model":{"cv_auc":0.6821,"cv_std":0.0205,"test_auc":0.727,"test_acc":0.6642,"test_brier":0.211,"n_test":1230,"train_auc":0.7273,"train_acc":0.6662,"n_train":9394,"n_features":71,"params":{"max_iter":395,"max_depth":3,"learning_rate":0.010130673850631546,"min_samples_leaf":19,"l2_reg":0.20745545309085922}},"baseline":{"test_acc":0.5439,"test_auc":0.5,"note":"A constant predictor. AUC is 0.5 by definition \u2014 it cannot rank."},"seasons":["2016-17","2017-18","2018-19","2019-20","2020-21","2021-22","2022-23","2023-24","2024-25"],"home_win":[58.4,57.9,59.3,55.1,54.4,54.4,58.0,54.3,54.4],"n_games":10624,"ablation":{"labels":["Elo differential only","All Elo columns","+ rest / back-to-back","+ rolling form","All 71 features"],"n_feat":[1,4,10,68,71],"auc":[0.7098,0.7096,0.7127,0.7248,0.725],"acc":[0.6593,0.6691,0.6675,0.6683,0.6699],"brier":[0.2166,0.2167,0.2155,0.2109,0.2112],"lift":0.0152},"importance":{"labels":["elo_diff","diff_roll20_net_rtg","home_roll20_net_rtg","diff_is_b2b","diff_roll_ts","diff_roll_net_rtg","away_roll_ts","away_ewm_net_rtg","away_roll_tov","home_roll_def_rtg"],"values":[0.05697,0.00437,0.00231,0.00205,0.00155,0.0013,0.00129,0.00114,0.00075,0.00066]}};
+Dash.initTheme(document.getElementById('themeBtn'));
+
+/* Ablation — one series, one colour. No value-ramp on the bars. */
+var ablLabels = ["Always pick home"].concat(D.ablation.labels);
+var ablAuc    = [D.baseline.test_auc].concat(D.ablation.auc);
+var ablAcc    = [D.baseline.test_acc].concat(D.ablation.acc);
+var ablFeat   = [0].concat(D.ablation.n_feat);
+/* Dot plot, not bars: every value sits between 0.50 and 0.73, so bars anchored at
+   zero would compress the differences that matter into invisibility — and a bar
+   axis cannot honestly be clipped. Dots carry no area, so clipping to [0.48, 0.75]
+   is legitimate, and the dashed line marks chance. */
+Dash.dots(document.getElementById('ablChart'), {
+  labels: ablLabels,
+  series: [{label: "Holdout ROC-AUC", data: ablAuc}],
+  xMin: 0.48, xMax: 0.75,
+  refLine: 0.5, refLabel: "Chance (0.50)",
+  legend: false,
+  xTick: function (v) { return v.toFixed(2); },
+  tooltip: {label: function (c) {
+    var i = c.dataIndex;
+    if (c.datasetIndex === 1) return " chance = 0.50";
+    return " AUC " + ablAuc[i].toFixed(4) + "  ·  acc " + (ablAcc[i]*100).toFixed(1) + "%  ·  " + ablFeat[i] + " features";
+  }}
+});
+document.getElementById('ablTable').innerHTML = Dash.tableFor(ablLabels, [
+  {label: "Features", data: ablFeat, color: "transparent"},
+  {label: "ROC-AUC",  data: ablAuc},
+  {label: "Accuracy", data: ablAcc}
+], {dimension: "Feature set", format: function (v) { return v < 1 ? v.toFixed(4) : String(v); }});
+Dash.wireTable(document.getElementById('ablBtn'), document.getElementById('ablTable'));
+
+/* Home win rate — highlight the two bubble seasons. */
+var bubble = D.seasons.reduce(function (acc, s, i) {
+  if (s === "2019-20" || s === "2020-21") acc.push(i); return acc;
+}, []);
+Dash.line(document.getElementById('hwChart'), {
+  labels: D.seasons.map(function (s) { return s.replace("20", ""); }),
+  series: [{label: "Home win %", data: D.home_win}],
+  beginAtZero: false,
+  yTick: function (v) { return v + "%"; },
+  tooltip: {label: function (c) { return " " + c.raw + "% home wins"; }},
+  pointIndices: bubble
+});
+
+/* Permutation importance — one series, one colour, descending. */
+Dash.bar(document.getElementById('impChart'), {
+  horizontal: true,
+  labels: D.importance.labels,
+  series: [{label: "Importance", data: D.importance.values}],
+  yTick: function (v) { return v.toFixed(3); },
+  tooltip: {label: function (c) { return " " + c.raw.toFixed(5); }}
+});
+</script>
+</body>
+</html>
