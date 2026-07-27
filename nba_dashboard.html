@@ -90,6 +90,50 @@
     </div>
   </div>
 
+  <div class="slabel">Can the probabilities be trusted?</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Calibration</h3>
+      <div class="card-desc">Predicted win probability against the rate that actually happened,
+        by decile of prediction. Equal-count bins, so no bin is decided by a handful of games.</div>
+      <div class="plot" style="height:260px"><canvas id="calChart"></canvas></div>
+      <p class="takeaway">Worst decile sits <b>8.4 percentage points</b> off the diagonal.
+        This is what the Brier score summarises &mdash; plotted, you can see whether &ldquo;70%
+        confident&rdquo; really means 70%.</p>
+    </div>
+    <div class="card">
+      <h3>Accuracy by confidence</h3>
+      <div class="card-desc">A model should be near chance on coin-flip games and strong on
+        mismatches. If it is flat, the probabilities carry no information.</div>
+      <div class="plot" style="height:260px"><canvas id="confChart"></canvas></div>
+      <p class="takeaway">On the 254 games it called closest to a coin flip it scores
+        <b>49.6%</b> &mdash; chance, correctly. On the 377 it called clear
+        favourites, <b>80.9%</b>. <b>It knows when it does not know.</b></p>
+    </div>
+  </div>
+
+  <div class="slabel">Where it is wrong, and what drives it</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Season wins &mdash; actual minus expected</h3>
+      <div class="card-desc">Summing win probability across all 82 games gives each team an
+        expected win total. Residual is what they actually did, minus that.</div>
+      <div class="plot" style="height:420px"><canvas id="teamChart"></canvas></div>
+      <button class="tabtoggle" id="teamBtn">Table view</button>
+      <div class="tabwrap" id="teamTable" hidden></div>
+      <p class="takeaway">Mean absolute error <b>4.3 wins</b> per team over 82 games.
+        Biggest miss: <b>OKC</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Elo through the season</h3>
+      <div class="card-desc">Two best and two worst teams by actual wins. Elo is the feature the
+        ablation showed carries the model, so this is what it is mostly reading.</div>
+      <div class="plot" style="height:420px"><canvas id="eloChart"></canvas></div>
+      <p class="caveat">Weekly means on one shared axis. Elo is computed forward through the
+        season, so a rating on any given week uses only games before it.</p>
+    </div>
+  </div>
+
   <div class="slabel">Method</div>
   <div class="two-col">
     <div class="card">
@@ -132,7 +176,7 @@ roll    = shifted.rolling(window, min_periods=3).mean()</pre>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="dash-charts.js"></script>
 <script>
-var D = {"generated":"2026-07-27","model":{"cv_auc":0.6821,"cv_std":0.0205,"test_auc":0.727,"test_acc":0.6642,"test_brier":0.211,"n_test":1230,"train_auc":0.7273,"train_acc":0.6662,"n_train":9394,"n_features":71,"params":{"max_iter":395,"max_depth":3,"learning_rate":0.010130673850631546,"min_samples_leaf":19,"l2_reg":0.20745545309085922}},"baseline":{"test_acc":0.5439,"test_auc":0.5,"note":"A constant predictor. AUC is 0.5 by definition \u2014 it cannot rank."},"seasons":["2016-17","2017-18","2018-19","2019-20","2020-21","2021-22","2022-23","2023-24","2024-25"],"home_win":[58.4,57.9,59.3,55.1,54.4,54.4,58.0,54.3,54.4],"n_games":10624,"ablation":{"labels":["Elo differential only","All Elo columns","+ rest / back-to-back","+ rolling form","All 71 features"],"n_feat":[1,4,10,68,71],"auc":[0.7098,0.7096,0.7127,0.7248,0.725],"acc":[0.6593,0.6691,0.6675,0.6683,0.6699],"brier":[0.2166,0.2167,0.2155,0.2109,0.2112],"lift":0.0152},"importance":{"labels":["elo_diff","diff_roll20_net_rtg","home_roll20_net_rtg","diff_is_b2b","diff_roll_ts","diff_roll_net_rtg","away_roll_ts","away_ewm_net_rtg","away_roll_tov","home_roll_def_rtg"],"values":[0.05697,0.00437,0.00231,0.00205,0.00155,0.0013,0.00129,0.00114,0.00075,0.00066]}};
+var D = {"generated":"2026-07-27","model":{"cv_auc":0.6821,"cv_std":0.0205,"test_auc":0.727,"test_acc":0.6642,"test_brier":0.211,"n_test":1230,"train_auc":0.7273,"train_acc":0.6662,"n_train":9394,"n_features":71,"params":{"max_iter":395,"max_depth":3,"learning_rate":0.010130673850631546,"min_samples_leaf":19,"l2_reg":0.20745545309085922}},"baseline":{"test_acc":0.5439,"test_auc":0.5,"note":"A constant predictor. AUC is 0.5 by definition \u2014 it cannot rank."},"seasons":["2016-17","2017-18","2018-19","2019-20","2020-21","2021-22","2022-23","2023-24","2024-25"],"home_win":[58.4,57.9,59.3,55.1,54.4,54.4,58.0,54.3,54.4],"n_games":10624,"ablation":{"labels":["Elo differential only","All Elo columns","+ rest / back-to-back","+ rolling form","All 71 features"],"n_feat":[1,4,10,68,71],"auc":[0.7098,0.7096,0.7127,0.7248,0.725],"acc":[0.6593,0.6691,0.6675,0.6683,0.6699],"brier":[0.2166,0.2167,0.2155,0.2109,0.2112],"lift":0.0152},"importance":{"labels":["elo_diff","diff_roll20_net_rtg","home_roll20_net_rtg","diff_is_b2b","diff_roll_ts","diff_roll_net_rtg","away_roll_ts","away_ewm_net_rtg","away_roll_tov","home_roll_def_rtg"],"values":[0.05697,0.00437,0.00231,0.00205,0.00155,0.0013,0.00129,0.00114,0.00075,0.00066]},"diag":{"test_season":"2024-25","n_games":1230,"calibration":{"mean_pred":[0.2467,0.3414,0.431,0.5014,0.5392,0.5775,0.6384,0.691,0.7464,0.8592],"actual":[0.2143,0.3333,0.3468,0.4677,0.5492,0.582,0.629,0.6885,0.8211,0.813],"n":[126,120,124,124,122,122,124,122,123,123],"max_gap":0.0842},"confidence":{"labels":["coin flip (<0.55)","0.55\u20130.60","0.60\u20130.65","0.65\u20130.70","clear favourite (>0.70)"],"acc":[0.4961,0.6132,0.6879,0.6463,0.809],"n":[254,212,141,246,377]},"team_error":{"teams":["OKC","CLE","BOS","HOU","NYK","LAC","DEN","LAL","IND","MIN","MIL","MEM","GSW","DET","ORL","SAC","ATL","DAL","CHI","MIA","PHX","POR","SAS","TOR","BKN","PHI","NOP","CHA","WAS","UTA"],"expected":[56.8,54.3,58.2,46.6,49.7,45.5,49.4,46.9,47.0,48.7,46.7,43.2,47.2,37.3,39.8,43.5,38.9,43.2,39.5,42.7,42.2,30.0,36.0,29.3,29.9,35.1,30.5,25.7,21.1,25.1],"actual":[68,64,61,52,51,50,50,50,50,49,48,48,48,44,41,40,40,39,39,37,36,36,34,30,26,24,21,19,18,17],"resid":[11.2,9.7,2.8,5.4,1.3,4.5,0.6,3.1,3.0,0.3,1.3,4.8,0.8,6.7,1.2,-3.5,1.1,-4.2,-0.5,-5.7,-6.2,6.0,-2.0,0.7,-3.9,-11.1,-9.5,-6.7,-3.1,-8.1],"mae":4.31,"worst":"OKC"},"elo_paths":{"weeks":["Oct 27","Nov 03","Nov 10","Nov 17","Nov 24","Dec 01","Dec 08","Dec 15","Dec 22","Dec 29","Jan 05","Jan 12","Jan 19","Jan 26","Feb 02","Feb 09","Feb 16","Feb 23","Mar 02","Mar 09","Mar 16","Mar 23","Mar 30","Apr 06","Apr 13"],"series":{"OKC":[1641.6,1657.5,1667.7,1667.1,1657.0,1662.6,1663.4,1675.0,1689.2,1702.2,1721.5,1734.3,1738.8,1730.6,1715.9,1720.2,1734.7,1724.5,1722.7,1733.3,1742.4,1753.6,1764.3,1773.8,1756.9],"CLE":[1533.9,1558.0,1594.4,1623.0,1632.5,1621.9,1627.4,1622.2,1630.2,1644.4,1665.3,1686.6,1680.0,1677.5,1656.1,1664.8,1669.9,1682.3,1701.7,1717.9,1730.7,1695.8,1677.2,1683.2,1672.7],"WAS":[1272.5,1283.1,1289.6,1272.1,1252.6,1243.2,1238.9,1246.0,1249.8,1255.7,1264.9,1254.7,1242.9,1232.2,1220.8,1249.0,1250.0,1242.9,1245.2,1259.3,1276.8,1292.0,1278.2,1274.7,1268.4],"UTA":[1381.9,1363.5,1355.8,1370.9,1362.3,1361.8,1351.8,1351.6,1347.3,1358.8,1343.8,1358.4,1354.5,1334.5,1319.8,1331.4,1332.6,1337.0,1347.5,1333.8,1307.2,1296.5,1292.7,1276.8,1275.6]}}}};
 Dash.initTheme(document.getElementById('themeBtn'));
 
 /* Ablation — one series, one colour. No value-ramp on the bars. */
@@ -175,6 +219,79 @@ Dash.line(document.getElementById('hwChart'), {
   yTick: function (v) { return v + "%"; },
   tooltip: {label: function (c) { return " " + c.raw + "% home wins"; }},
   pointIndices: bubble
+});
+
+/* Calibration — two series: observed vs the perfect-calibration diagonal. */
+var cal = D.diag.calibration;
+Dash.curve(document.getElementById('calChart'), {
+  series: [
+    /* The diagonal is a reference, not a second entity, so the real series keeps
+       the project accent instead of being demoted to slot 2 of the shared ramp. */
+    {label: "Observed", color: Dash.theme().accent,
+     points: cal.mean_pred.map(function (x, i) { return {x: x, y: cal.actual[i]}; })},
+    {label: "Perfect calibration", points: [{x: 0.2, y: 0.2}, {x: 0.9, y: 0.9}], dashed: true, color: Dash.theme().mut}
+  ],
+  xMin: 0.2, xMax: 0.9, yMin: 0.2, yMax: 0.9,
+  xTitle: "Predicted win probability", yTitle: "Actual win rate",
+  xTick: function (v) { return v.toFixed(1); }, yTick: function (v) { return v.toFixed(1); },
+  tooltip: {label: function (c) {
+    if (c.datasetIndex === 1) return " perfect calibration";
+    var i = c.dataIndex;
+    return " predicted " + (cal.mean_pred[i]*100).toFixed(0) + "%  ·  actual " +
+           (cal.actual[i]*100).toFixed(0) + "%  ·  n=" + cal.n[i];
+  }}
+});
+/* Observed points need to be visible — curve() draws lines, so re-show markers. */
+(function () {
+  var c = Dash._charts[Dash._charts.length - 1].chart;
+  c.data.datasets[0].pointRadius = 4.5;
+  c.data.datasets[0].pointBackgroundColor = Dash.theme().accent;
+  c.data.datasets[0].pointBorderColor = Dash.theme().surface;
+  c.data.datasets[0].pointBorderWidth = 2;
+  c.update('none');
+})();
+
+/* Accuracy by confidence — one series, project accent. */
+var cf = D.diag.confidence;
+Dash.bar(document.getElementById('confChart'), {
+  horizontal: true, labels: cf.labels,
+  series: [{label: "Accuracy", data: cf.acc.map(function (v) { return v * 100; })}],
+  yTick: function (v) { return v + "%"; },
+  tooltip: {label: function (c) {
+    return " " + c.raw.toFixed(1) + "% correct  ·  n=" + cf.n[c.dataIndex];
+  }}
+});
+
+/* Win residual per team — dot plot with a zero reference. Residual is the
+   quantity of interest, so plot it directly rather than two bars to compare. */
+var teN = D.diag.team_error;
+Dash.dots(document.getElementById('teamChart'), {
+  labels: teN.teams,
+  series: [{label: "Actual − expected wins", data: teN.resid}],
+  refLine: 0, refLabel: "As expected", legend: false,
+  xTick: function (v) { return (v > 0 ? "+" : "") + v; },
+  tooltip: {label: function (c) {
+    if (c.datasetIndex === 1) return " matches expectation";
+    var i = c.dataIndex;
+    return " " + teN.teams[i] + ": " + teN.actual[i] + " actual vs " +
+           teN.expected[i] + " expected  (" + (teN.resid[i] > 0 ? "+" : "") + teN.resid[i] + ")";
+  }}
+});
+document.getElementById('teamTable').innerHTML = Dash.tableFor(teN.teams, [
+  {label: "Actual",   data: teN.actual,   color: "transparent"},
+  {label: "Expected", data: teN.expected, color: "transparent"},
+  {label: "Residual", data: teN.resid}
+], {dimension: "Team", format: function (v) { return String(v); }});
+Dash.wireTable(document.getElementById('teamBtn'), document.getElementById('teamTable'));
+
+/* Elo paths — four series, so the shared validated ramp in fixed order. */
+var ep = D.diag.elo_paths;
+Dash.line(document.getElementById('eloChart'), {
+  labels: ep.weeks,
+  series: Object.keys(ep.series).map(function (t) { return {label: t, data: ep.series[t], fill: false}; }),
+  beginAtZero: false,
+  yTick: function (v) { return Math.round(v); },
+  tooltip: {label: function (c) { return " " + c.dataset.label + "  Elo " + Math.round(c.raw); }}
 });
 
 /* Permutation importance — one series, one colour, descending. */

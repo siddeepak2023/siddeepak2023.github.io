@@ -269,6 +269,9 @@
       border: { display: false },
       ticks: {
         color: t.mut, font: { family: FONT, size: 11.5 }, padding: 8,
+        // A dot plot's whole point is per-entity comparison, so never let
+        // autoSkip drop half the categories — an unlabelled dot says nothing.
+        autoSkip: false,
         callback: function (v) { return this.getLabelForValue(v); }
       }
     };
