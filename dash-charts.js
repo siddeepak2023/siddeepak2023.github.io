@@ -39,6 +39,12 @@
     };
   }
 
+  /** A series colour may be a hex OR a function, so it can be re-resolved when the
+      theme changes — a captured hex would keep a light step on a dark surface. */
+  function resolveColor(c) {
+    return typeof c === "function" ? c() : c;
+  }
+
   /** Series colour by fixed slot index. Past slot 5, fold into "Other". */
   function seriesColor(i) {
     var s = theme().series;
@@ -145,7 +151,7 @@
       // One series has no identity problem, so it wears the PROJECT accent — that
       // is what gives each dashboard its own character. Two or more series switch
       // to the shared validated ramp so chart grammar stays consistent everywhere.
-      var c = s.color || (spec.series.length === 1 ? t.accent : seriesColor(i));
+      var c = resolveColor(s.color) || (spec.series.length === 1 ? t.accent : seriesColor(i));
       var markAt = s.markIndex;
       return {
         label: s.label,
@@ -179,7 +185,7 @@
     var horiz = spec.horizontal === true;
     var stacked = spec.stacked === true;
     var sets = spec.series.map(function (s, i) {
-      var c = s.color || (spec.series.length === 1 ? t.accent : seriesColor(i));
+      var c = resolveColor(s.color) || (spec.series.length === 1 ? t.accent : seriesColor(i));
       return {
         label: s.label,
         data: s.data,
@@ -224,7 +230,7 @@
     var t = theme();
     var n = spec.labels.length;
     var sets = spec.series.map(function (s, i) {
-      var c = s.color || (spec.series.length === 1 ? t.accent : seriesColor(i));
+      var c = resolveColor(s.color) || (spec.series.length === 1 ? t.accent : seriesColor(i));
       return {
         label: s.label,
         data: s.data,
@@ -286,7 +292,7 @@
   function curve(canvas, spec) {
     var t = theme();
     var sets = spec.series.map(function (s, i) {
-      var c = s.color || seriesColor(i);
+      var c = resolveColor(s.color) || seriesColor(i);
       return {
         label: s.label,
         data: s.points,
@@ -385,7 +391,7 @@
     charts.forEach(function (rec) {
       var c = rec.chart, i = 0;
       c.data.datasets.forEach(function (ds) {
-        var col = (rec.spec.series[i] && rec.spec.series[i].color) ||
+        var col = resolveColor(rec.spec.series[i] && rec.spec.series[i].color) ||
                   (rec.spec.series.length === 1 ? t.accent : seriesColor(i));
         if (!Array.isArray(ds.backgroundColor) || rec.kind !== "bar") {
           ds.borderColor = col;
