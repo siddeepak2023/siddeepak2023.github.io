@@ -25,6 +25,16 @@ spotify_ab_test/
 tmobile_churn/
 Pirani/
 
+# Cut projects — unpublished 2026-07-27. These were reachable by URL on the live
+# site with nothing linking to them, still carrying claims the portfolio dropped.
+# Files stay on disk; they must not go back to the public web.
+#   Spotify A/B  — synthetic data behind a "$83.9M projected annual revenue" figure
+#   NFL betting  — payload pulled earlier, the dashboard was left behind
+#   DermIQ       — dropped for good; generated/synthetic clinic data
+/spotify_ab_dashboard.html
+/sports_betting_dashboard.html
+dermiq/
+
 # Olist + Retail: CODE is public (see each dir's README), DATA is not. Both source
 # datasets are third-party downloads with their own redistribution terms, and the
 # Olist master table alone is 36 MB. Each project's README documents how to fetch
