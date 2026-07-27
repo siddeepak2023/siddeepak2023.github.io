@@ -58,6 +58,14 @@ Siddharth_Deepak_Resume.*
 # Internal notes / specs (not for the public site — specs now live in BizFalconAI/ product dirs)
 LAUNCH-AND-DEPLOY.md
 
+# Python environments + bytecode. The venv is hundreds of MB and is one
+# `git add -A` away from the public site, so it is ignored explicitly rather
+# than relied upon to stay untracked.
+.venv/
+venv/
+**/__pycache__/
+*.pyc
+
 # Build / OS junk
 node_modules/
 **/node_modules/
