@@ -1,0 +1,11 @@
+# Olist e-commerce SQL analysis
+# Python 3.11+.  Install:  pip install -r requirements.txt
+
+pandas>=2.0
+
+# Required by pd.ExcelWriter to write the .xlsx outputs. Never imported directly.
+openpyxl>=3.1
+
+# sqlite3 is standard library — the whole analysis runs on stdlib SQLite, no
+# SQLAlchemy and no server database.
+# numpy is imported in 01_cleaning.py but never used; pandas pulls it in anyway.

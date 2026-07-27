@@ -141,7 +141,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(7,9,13,0.92);backdrop-filt
     <div style="position:relative;height:230px"><canvas id="monthlyChart"></canvas></div>
   </div>
   <div class="two-col" style="margin-top:13px">
-    <div class="card"><h3>Revenue by Country</h3><div class="cdesc">UK = 92% of total · top 8 shown</div><div style="position:relative;height:210px"><canvas id="countryChart"></canvas></div></div>
+    <div class="card"><h3>Revenue by Country</h3><div class="cdesc">UK = 83% of total · top 8 shown</div><div style="position:relative;height:210px"><canvas id="countryChart"></canvas></div></div>
     <div class="card"><h3>Top Products by Revenue</h3><div class="cdesc">Gift-ware dominates · top 8 shown</div><div style="position:relative;height:210px"><canvas id="prodChart"></canvas></div></div>
   </div>
 </div>
@@ -153,7 +153,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(7,9,13,0.92);backdrop-filt
   <div class="seg-grid" id="segCards"></div>
   <div class="slabel" style="margin-top:20px">Segment explorer</div>
   <div class="two-col">
-    <div class="card"><h3>PCA Cluster Scatter</h3><div class="cdesc">800 sampled customers · PC1+PC2 = 95.1% variance</div><div style="position:relative;height:290px"><canvas id="pcaChart"></canvas></div></div>
+    <div class="card"><h3>PCA Cluster Scatter</h3><div class="cdesc">800 sampled customers · PC1+PC2 projection</div><div style="position:relative;height:290px"><canvas id="pcaChart"></canvas></div></div>
     <div class="card">
       <h3>Revenue Share by Segment</h3><div class="cdesc">Champions = 22% of segmented customers &rarr; 73% of segmented revenue</div>
       <div style="position:relative;height:145px"><canvas id="segRevChart"></canvas></div>
@@ -228,7 +228,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(7,9,13,0.92);backdrop-filt
   <div class="card" style="margin-bottom:13px"><h3>Data Flow</h3><div class="cdesc">Raw Excel → Clean CSV → Segment → Predict → Recommend → Dashboard</div><div class="pipe-grid" id="pipeGrid"></div></div>
   <div class="two-col">
     <div class="card"><h3>Dataset Statistics</h3><div class="cdesc">UCI Online Retail II · real UK gift-ware retailer · 2009–2011</div><div class="stat-list" id="dataStats"></div></div>
-    <div class="card"><h3>Model Performance</h3><div class="cdesc">All metrics on held-out test set — no data leakage</div><div class="stat-list" id="modelStats"></div></div>
+    <div class="card"><h3>Model Performance</h3><div class="cdesc">Random 20% customer holdout · features computed strictly before the label window</div><div class="stat-list" id="modelStats"></div></div>
   </div>
   <div class="insight" style="margin-top:14px">
     <div class="ins-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
@@ -280,7 +280,7 @@ function bOverview(){
     kpi('Unique Products',K.total_products.toLocaleString(),'b','gift-ware catalog')+
     kpi('Avg Order Value','£'+Math.round(K.avg_order_value).toLocaleString(),'g','per invoice');
   document.getElementById('kpiRow2').innerHTML=
-    kpi('Churn Rate',K.churn_rate+'%','a','90-day prediction window')+
+    kpi('Churn Rate',K.churn_rate+'%','a','Sep–Dec 2011 label window')+
     kpi('High-Risk Customers',K.high_risk_customers.toLocaleString(),'r','churn prob > 65%')+
     kpi('Revenue at Risk',fmtM(K.revenue_at_risk),'r','from high-risk segment')+
     kpi('Model ROC-AUC',DATA.model_metrics.roc_auc,'g','75.4% accuracy');

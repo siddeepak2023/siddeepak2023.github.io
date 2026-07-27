@@ -1,0 +1,17 @@
+# Retail Customer Intelligence pipeline
+# Python 3.11+.  Install:  pip install -r requirements.txt
+
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+
+# Apriori / association_rules. 04_recommendations.py:37 passes num_itemsets=,
+# which only exists in mlxtend 0.24+ — older releases raise TypeError.
+mlxtend>=0.24.0
+
+# Required by pd.read_excel to open online_retail_II.xlsx. Never imported
+# directly, so it is easy to miss.
+openpyxl>=3.1
+
+# sqlite3, json, os and warnings are standard library — intentionally absent.
+# The dashboard loads Chart.js 4.4.1 from a CDN and needs network access to draw.

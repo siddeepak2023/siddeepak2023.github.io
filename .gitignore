@@ -21,11 +21,24 @@ HypeClip AI/
 
 # Data-analysis projects (raw data / not for public site)
 Netflix-Stock-Sales-Prediction/
-Olist_ecommerce_analysis/
 spotify_ab_test/
 tmobile_churn/
-Business Reccomendation Engine/
 Pirani/
+
+# Olist + Retail: CODE is public (see each dir's README), DATA is not. Both source
+# datasets are third-party downloads with their own redistribution terms, and the
+# Olist master table alone is 36 MB. Each project's README documents how to fetch
+# the raw data and regenerate every intermediate.
+Olist_ecommerce_analysis/*.csv
+Olist_ecommerce_analysis/*.xlsx
+Olist_ecommerce_analysis/*.db
+Business Reccomendation Engine/*.csv
+Business Reccomendation Engine/*.xlsx
+Business Reccomendation Engine/*.db
+Business Reccomendation Engine/dashboard_data.json
+Business Reccomendation Engine/model_metrics.json
+Business Reccomendation Engine/association_rules.json
+Business Reccomendation Engine/segment_recommendations.json
 
 # Coursework / archives / personal
 CS1436/
@@ -69,3 +82,17 @@ flight_delay_dashboard.html
 # ROI figures were computed against a market that does not exist. Excluded here.
 nba-intelligence/
 nba_dashboard.html
+
+# NBA betting payload: strategy_a/strategy_b price every game at a constant -110,
+# so the +35.8% ROI and $34K P&L figures are computed against a market that does not
+# exist. The dashboard and backtest script were pulled on 2026-07-26; this payload was
+# missed and stayed publicly fetchable at /dashboard_data.json. Kept locally only.
+# Anchored with a leading slash — dermiq/data/ and quant-edge/data/ have legitimate
+# tracked files of the same name.
+/dashboard_data.json
+
+# The two data projects each keep a local copy of their dashboard. The PUBLISHED
+# copies are the ones at repo root, and only those get corrections applied — so
+# never publish the in-project duplicates or they will contradict the live pages.
+Olist_ecommerce_analysis/olist_dashboard.html
+Business Reccomendation Engine/retail_dashboard.html
