@@ -1,0 +1,17 @@
+# Quant Edge pipeline
+# Python 3.11+.  Install:  pip install -r requirements.txt
+
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+
+# Market data. Yahoo changes its endpoints without notice — if 01_data_pipeline.py
+# returns empty frames, upgrade this first before debugging anything else.
+yfinance>=0.2.40
+
+# Hyperparameter search in 03_model.py. Note create_study() is called without a
+# sampler seed, so best_params is not reproducible across runs.
+optuna>=3.4
+
+# datetime, json, logging, pickle, sqlite3, time and warnings are standard library.
+# The dashboard loads its chart library from a CDN and needs network access.

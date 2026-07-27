@@ -205,7 +205,7 @@ tr:hover td{background:rgba(0,230,118,.03)}
       <div class="hero-badges">
         <span class="hbadge">503 Stocks</span>
         <span class="hbadge">6 Years History</span>
-        <span class="hbadge">27 Features</span>
+        <span class="hbadge">28 Features</span>
         <span class="hbadge">Walk-Forward Backtest</span>
         <span class="hbadge">Sector ETFs + VIX</span>
       </div>
@@ -256,10 +256,31 @@ tr:hover td{background:rgba(0,230,118,.03)}
 
 <!-- ═══════════════ BACKTEST ═══════════════ -->
 <div id="page-backtest" class="page">
+  <div class="card mb" style="border-left:3px solid var(--red,#c0392b)">
+    <div class="card-title">Why the return, Sharpe and drawdown figures are withheld</div>
+    <div class="cdesc" style="line-height:1.65">
+      The equity curve below compounds a <strong>5-day</strong> forward return once per
+      <strong>calendar day</strong>, so every return is counted five times. The
+      <code>total_return</code> statistic itself evaluated to <code>NaN</code> and was
+      back-filled from the curve's last point, and the Sharpe ratio annualises at 252/5
+      periods on a series that has ~252 observations per year. No commission, spread or
+      slippage is modelled, against roughly 200 entries per day. The universe is
+      <em>today's</em> S&P 500 membership backtested through 2020, so every delisting is
+      invisible. Hyperparameters were also selected by maximising AUC over almost the
+      same span the backtest measures, so no P&amp;L number here is out-of-sample.
+      Corrected for the overlap alone, this data returns roughly +50% against SPY's +76%
+      over the identical window — it loses to buy-and-hold.
+      <br><br>
+      The result that <em>is</em> clean is on the Model tab: an out-of-time holdout AUC of
+      <strong>0.5047</strong>, with 3 of 12 walk-forward folds below coin-flip. It was
+      never touched by the tuning search. It says this model has no predictive edge, and
+      that is the honest finding of the project.
+    </div>
+  </div>
   <div class="sec-hd">Cumulative P&L Curves</div>
   <div class="card mb">
     <div class="card-hd">
-      <span class="card-title">Strategy A vs B vs SPY (Normalised to 100)</span>
+      <span class="card-title">Strategy A vs B vs SPY (Normalised to 100) — strategy curves are gross and overlap-inflated; not comparable to SPY</span>
     </div>
     <div class="chart-wrap ch340"><canvas id="chart-curves"></canvas></div>
   </div>
@@ -458,25 +479,32 @@ function render() {
 
   const stA = bt.strategy_a || {};
   const stB = bt.strategy_b || {};
-  setText('ov-sharpe-a', fmt2(stA.sharpe));
-  setText('ov-ret-a',    pct(stA.total_return));
-  setText('ov-wr-a',     pct(stA.win_rate));
-  setText('ov-dd-a',     pct(stA.max_drawdown));
-  setText('ov-sharpe-b', fmt2(stB.sharpe));
-  setText('ov-ret-b',    pct(stB.total_return));
+  // Return, Sharpe and drawdown are WITHHELD rather than displayed. The P&L curve
+  // they derive from compounds a 5-day forward return once per calendar day
+  // (03_model.py:167,181), so every return is counted five times; `total_return`
+  // itself evaluated to NaN and was back-filled from the last chart point
+  // (05_export_dashboard.py:206-213); Sharpe annualises at 252/5 periods on a
+  // ~252-observation series; and no commission, spread or slippage is modelled
+  // anywhere. De-overlapped, the same data gives roughly +50% against SPY's +76%
+  // over the identical window. The honest, uncontaminated result is the out-of-time
+  // holdout AUC of 0.5047, already shown on the Model tab.
+  const WITHHELD = 'withheld';
+  setText('ov-sharpe-a', WITHHELD);
+  setText('ov-ret-a',    WITHHELD);
+  setText('ov-wr-a',     pct(stA.win_rate) + ' gross');
+  setText('ov-dd-a',     WITHHELD);
+  setText('ov-sharpe-b', WITHHELD);
+  setText('ov-ret-b',    WITHHELD);
   setText('ov-trades',   stA.total_trades);
 
-  colorizeVal('ov-ret-a',    stA.total_return >= 0);
-  colorizeVal('ov-ret-b',    stB.total_return >= 0);
-
   // Backtest stats
-  setText('bt-a-sharpe', fmt2(stA.sharpe));
-  setText('bt-a-ret',    pct(stA.total_return));
-  setText('bt-a-wr',     pct(stA.win_rate));
-  setText('bt-a-dd',     pct(stA.max_drawdown));
+  setText('bt-a-sharpe', WITHHELD);
+  setText('bt-a-ret',    WITHHELD);
+  setText('bt-a-wr',     pct(stA.win_rate) + ' gross');
+  setText('bt-a-dd',     WITHHELD);
   setText('bt-a-trades', stA.total_trades);
-  setText('bt-b-sharpe', fmt2(stB.sharpe));
-  setText('bt-b-ret',    pct(stB.total_return));
+  setText('bt-b-sharpe', WITHHELD);
+  setText('bt-b-ret',    WITHHELD);
 
   buildFeatureImportance();
   buildFoldAucs();
