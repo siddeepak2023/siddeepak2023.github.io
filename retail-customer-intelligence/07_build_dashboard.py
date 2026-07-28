@@ -290,7 +290,7 @@ TEMPLATE = """<!DOCTYPE html>
 
   <footer class="dfoot">
     <span>Built __GENERATED__ from the pipeline &mdash; every figure interpolated at build time.</span>
-    <a href="https://github.com/siddeepak2023/retail-customer-intelligence">Source</a>
+    <a href="https://github.com/siddeepak2023/siddeepak2023.github.io/tree/main/retail-customer-intelligence">Source</a>
     <a href="index.html">Portfolio</a>
   </footer>
 </div>
