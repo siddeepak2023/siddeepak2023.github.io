@@ -42,13 +42,13 @@ dermiq/
 Olist_ecommerce_analysis/*.csv
 Olist_ecommerce_analysis/*.xlsx
 Olist_ecommerce_analysis/*.db
-Business Reccomendation Engine/*.csv
-Business Reccomendation Engine/*.xlsx
-Business Reccomendation Engine/*.db
-Business Reccomendation Engine/dashboard_data.json
-Business Reccomendation Engine/model_metrics.json
-Business Reccomendation Engine/association_rules.json
-Business Reccomendation Engine/segment_recommendations.json
+retail-customer-intelligence/*.csv
+retail-customer-intelligence/*.xlsx
+retail-customer-intelligence/*.db
+retail-customer-intelligence/dashboard_data.json
+retail-customer-intelligence/model_metrics.json
+retail-customer-intelligence/association_rules.json
+retail-customer-intelligence/segment_recommendations.json
 
 # Coursework / archives / personal
 CS1436/
@@ -114,8 +114,16 @@ nba-intelligence/
 # copies are the ones at repo root, and only those get corrections applied — so
 # never publish the in-project duplicates or they will contradict the live pages.
 Olist_ecommerce_analysis/olist_dashboard.html
-Business Reccomendation Engine/retail_dashboard.html
+retail-customer-intelligence/retail_dashboard.html
 
 # Shell reference page for dusk-dash.css / dash-charts.js — dev aid, not a
 # published page. Kept so the mark specs stay eyeball-checkable.
 _shelltest.html
+
+# Netflix forecast dashboard — unpublished 2026-07-28. Real data, but no baseline
+# (a naive random walk beats Prophet on daily equities) and a live bug: the holdout is
+# fixed at 90 days in app.py:152 while forecast length comes from a UI slider, so
+# merge_asof(direction='nearest') scores uncovered test days against a stale constant
+# and the displayed RMSE changes when the user moves a slider that cannot affect it.
+netflix_dashboard.html
+

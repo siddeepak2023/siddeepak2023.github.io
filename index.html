@@ -411,6 +411,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
         <p class="stack-line"><b>Python</b> · <b>Scikit-learn</b> · <b>Pandas</b> · <b>RFM</b></p>
         <div class="prod-links">
           <a href="retail_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
+          <a href="https://github.com/siddeepak2023/siddeepak2023.github.io/tree/main/retail-customer-intelligence" target="_blank" class="prod-link">GitHub</a>
         </div>
       </article>
 
@@ -426,7 +427,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
         <div class="prod-links">
           <a href="olist_dashboard.html" target="_blank" class="prod-link prod-link--sig">Live dashboard</a>
           <a href="https://public.tableau.com/views/OlistE-CommercePerformanceAnalysis2016-2018/OlistE-CommercePerformanceAnalysis20162018" target="_blank" class="prod-link">Tableau</a>
-          <a href="https://github.com/siddeepak2023/olist-e-commerce-analysis-sql" target="_blank" class="prod-link">GitHub</a>
+          <a href="https://github.com/siddeepak2023/Olist-E-Commerce-Analysis-SQL" target="_blank" class="prod-link">GitHub</a>
         </div>
       </article>
 
@@ -447,11 +448,11 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 
       <article class="prod rv">
         <div class="prod-idx"><span>05 · Data viz</span><span>WebGL</span></div>
-        <h3>Universe Data Visualization</h3>
-        <p>A real-time interactive 3D explorer rendering <strong>700K+ real astronomical objects</strong> — Gaia DR3 stars, HyperLEDA galaxies, NASA exoplanets, SDSS quasars — in the browser at 60 FPS. A Python pipeline pulls from 6 live scientific APIs and converts raw coordinates to 3D positions with Astropy.</p>
+        <h3>Cosmos — Universe Data Visualization</h3>
+        <p>An interactive 3D map of <strong>849,918 real astronomical objects</strong> — Gaia DR3 stars, 2MRS/HyperLEDA galaxies, SDSS quasars, NASA exoplanet hosts — plus the cosmic web as <strong>260,178 filament segments</strong> across 15,421 filaments (Tempel et al. 2014, SDSS). Five catalogue APIs feed a Python pipeline; Astropy turns parallax or redshift into 3D positions. The renderer quantizes each point to <strong>8 bytes</strong> and walks an <strong>octree LOD</strong>, so it draws what is on screen instead of the whole catalogue — 16.0 MB of geometry down to 6.5 MB on the wire. Fly it with WASD.</p>
         <div class="mini">
           <div class="mini-canvas"><canvas id="universeChart"></canvas></div>
-          <p class="mini-note">Object distribution · thousands · <em>6 live APIs</em></p>
+          <p class="mini-note">Objects per layer · thousands · <em>849,918 total</em></p>
         </div>
         <p class="stack-line"><b>Python</b> · <b>Astropy</b> · <b>Three.js</b> · <b>Pandas</b></p>
         <div class="prod-links">
@@ -614,7 +615,13 @@ function drawCharts(){
   var NBA_V = [58.5,57.9,59.3,55.2,54.4,54.4,58.1,54.3,54.4];
   charts.push(new Chart(nbaChart,{type:"line",data:{labels:NBA_S,datasets:[{data:NBA_V,borderColor:FG,borderWidth:1.6,pointRadius:function(c){return (c.dataIndex===3||c.dataIndex===4)?3:0;},pointBackgroundColor:SG,pointBorderColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{displayColors:false,titleFont:{family:FN,size:9},bodyFont:{family:FN,size:9},callbacks:{label:function(c){return " "+c.raw+"% home wins";}}}},scales:{x:{display:false},y:{display:false}},animation:{duration:1200}}}));
 
-  charts.push(new Chart(universeChart,{type:"bar",data:{labels:[["Gaia","500K"],["HyperLEDA","200K"],["Exopl.","5.5K"],["Quasars","500"]],datasets:[{data:[500,200,5.5,0.5],backgroundColor:[FG,FG+"cc",SG+"cc",SG+"88"],borderWidth:0}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:600},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1200}}}));
+  /* Point counts read from the shipped CSM3 binaries' headers, not from memory:
+     stars 500,000 · quasars 300,000 · galaxies 43,507 · exoplanet hosts 6,411.
+     The earlier version of this chart claimed HyperLEDA 200K and Quasars 500 —
+     both wrong, one by 4.6x and one by 600x. Filaments are line segments, not
+     objects, so they are stated in the card text and deliberately kept off this
+     bar rather than summed into an object count. */
+  charts.push(new Chart(universeChart,{type:"bar",data:{labels:[["Gaia stars","500,000"],["Quasars","300,000"],["Galaxies","43,507"],["Exopl. hosts","6,411"]],datasets:[{data:[500,300,43.507,6.411],backgroundColor:[FG,FG+"cc",SG+"cc",SG+"88"],borderWidth:0}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,max:560},y:{ticks:{font:{family:FN,size:9},color:MU},grid:{display:false},border:{display:false}}},animation:{duration:1200}}}));
 }
 drawCharts();
 
