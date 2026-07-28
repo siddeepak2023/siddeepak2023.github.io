@@ -127,3 +127,9 @@ _shelltest.html
 # and the displayed RMSE changes when the user moves a slider that cannot affect it.
 netflix_dashboard.html
 
+
+# T-Mobile churn dashboard: real project with its own repo, but orphaned — linked from
+# nowhere on the portfolio while LinkedIn advertised its 79%/0.834/$334K figures. Those
+# numbers have never been through the audit the other projects went through, so it is
+# unpublished until they are verified. Same treatment as netflix_dashboard.html.
+churn_dashboard.html
