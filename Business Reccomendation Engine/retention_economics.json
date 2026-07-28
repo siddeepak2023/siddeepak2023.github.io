@@ -1,0 +1,230 @@
+{
+  "cutoff": "2011-09-01",
+  "contact_cost_gbp": 3.0,
+  "holdout": {
+    "n_customers": 1047,
+    "churn_base_rate": 0.553,
+    "auc": 0.7962
+  },
+  "value_definition": "Forward revenue observed after the cutoff. For a customer the model flags who did churn, the recoverable amount is estimated as the median forward revenue of RETAINED customers in the same segment \u2014 a churned customer's own observed forward revenue is zero by definition.",
+  "segment_median_forward_revenue": {
+    "At-Risk": 311.05,
+    "Champions": 979.93,
+    "Lost": 75.68,
+    "Loyal Customers": 418.06
+  },
+  "curve": [
+    {
+      "k": 50,
+      "precision": 0.88,
+      "hits": 44,
+      "recoverable": 3329.92,
+      "cost": 150.0,
+      "breakeven_save_rate": 0.045
+    },
+    {
+      "k": 100,
+      "precision": 0.9,
+      "hits": 90,
+      "recoverable": 7495.96,
+      "cost": 300.0,
+      "breakeven_save_rate": 0.04
+    },
+    {
+      "k": 150,
+      "precision": 0.88,
+      "hits": 132,
+      "recoverable": 11701.66,
+      "cost": 450.0,
+      "breakeven_save_rate": 0.0385
+    },
+    {
+      "k": 200,
+      "precision": 0.87,
+      "hits": 174,
+      "recoverable": 15907.36,
+      "cost": 600.0,
+      "breakeven_save_rate": 0.0377
+    },
+    {
+      "k": 250,
+      "precision": 0.852,
+      "hits": 213,
+      "recoverable": 21255.54,
+      "cost": 750.0,
+      "breakeven_save_rate": 0.0353
+    },
+    {
+      "k": 300,
+      "precision": 0.8367,
+      "hits": 251,
+      "recoverable": 27212.8,
+      "cost": 900.0,
+      "breakeven_save_rate": 0.0331
+    },
+    {
+      "k": 350,
+      "precision": 0.8086,
+      "hits": 283,
+      "recoverable": 30319.32,
+      "cost": 1050.0,
+      "breakeven_save_rate": 0.0346
+    },
+    {
+      "k": 400,
+      "precision": 0.805,
+      "hits": 322,
+      "recoverable": 37037.02,
+      "cost": 1200.0,
+      "breakeven_save_rate": 0.0324
+    },
+    {
+      "k": 450,
+      "precision": 0.7889,
+      "hits": 355,
+      "recoverable": 44327.78,
+      "cost": 1350.0,
+      "breakeven_save_rate": 0.0305
+    },
+    {
+      "k": 500,
+      "precision": 0.78,
+      "hits": 390,
+      "recoverable": 50742.76,
+      "cost": 1500.0,
+      "breakeven_save_rate": 0.0296
+    },
+    {
+      "k": 550,
+      "precision": 0.76,
+      "hits": 418,
+      "recoverable": 56970.36,
+      "cost": 1650.0,
+      "breakeven_save_rate": 0.029
+    },
+    {
+      "k": 600,
+      "precision": 0.7467,
+      "hits": 448,
+      "recoverable": 64034.08,
+      "cost": 1800.0,
+      "breakeven_save_rate": 0.0281
+    },
+    {
+      "k": 650,
+      "precision": 0.7308,
+      "hits": 475,
+      "recoverable": 73952.18,
+      "cost": 1950.0,
+      "breakeven_save_rate": 0.0264
+    },
+    {
+      "k": 700,
+      "precision": 0.71,
+      "hits": 497,
+      "recoverable": 81095.22,
+      "cost": 2100.0,
+      "breakeven_save_rate": 0.0259
+    },
+    {
+      "k": 750,
+      "precision": 0.6947,
+      "hits": 521,
+      "recoverable": 88732.0,
+      "cost": 2250.0,
+      "breakeven_save_rate": 0.0254
+    },
+    {
+      "k": 800,
+      "precision": 0.6687,
+      "hits": 535,
+      "recoverable": 93557.7,
+      "cost": 2400.0,
+      "breakeven_save_rate": 0.0257
+    },
+    {
+      "k": 850,
+      "precision": 0.6494,
+      "hits": 552,
+      "recoverable": 99979.96,
+      "cost": 2550.0,
+      "breakeven_save_rate": 0.0255
+    },
+    {
+      "k": 900,
+      "precision": 0.6256,
+      "hits": 563,
+      "recoverable": 104578.62,
+      "cost": 2700.0,
+      "breakeven_save_rate": 0.0258
+    },
+    {
+      "k": 950,
+      "precision": 0.6021,
+      "hits": 572,
+      "recoverable": 108341.16,
+      "cost": 2850.0,
+      "breakeven_save_rate": 0.0263
+    },
+    {
+      "k": 1000,
+      "precision": 0.578,
+      "hits": 578,
+      "recoverable": 112535.13,
+      "cost": 3000.0,
+      "breakeven_save_rate": 0.0267
+    }
+  ],
+  "profit_optimum": {
+    "save_rate_10": {
+      "best_k": 1000,
+      "profit_gbp": 8253.51,
+      "precision_at_best_k": 0.578,
+      "recoverable_gbp": 112535.13,
+      "cost_gbp": 3000.0
+    },
+    "save_rate_15": {
+      "best_k": 1000,
+      "profit_gbp": 13880.27,
+      "precision_at_best_k": 0.578,
+      "recoverable_gbp": 112535.13,
+      "cost_gbp": 3000.0
+    },
+    "save_rate_20": {
+      "best_k": 1000,
+      "profit_gbp": 19507.03,
+      "precision_at_best_k": 0.578,
+      "recoverable_gbp": 112535.13,
+      "cost_gbp": 3000.0
+    }
+  },
+  "capacity_view": {
+    "100": {
+      "precision": 0.9,
+      "churners_reached": 90,
+      "recoverable_gbp": 7495.96,
+      "profit_at_15pct_save": 824.39
+    },
+    "250": {
+      "precision": 0.852,
+      "churners_reached": 213,
+      "recoverable_gbp": 21255.54,
+      "profit_at_15pct_save": 2438.33
+    },
+    "500": {
+      "precision": 0.78,
+      "churners_reached": 390,
+      "recoverable_gbp": 50742.76,
+      "profit_at_15pct_save": 6111.41
+    }
+  },
+  "cost_is_not_binding": "Median forward value of a retained customer is ~176x the \u00a33 contact cost, so expected profit keeps rising with reach and the profit-maximising k is effectively the whole flagged base. The binding constraint is contact capacity, not cost.",
+  "supersedes": {
+    "old_figure_gbp": 1457904.6,
+    "why_wrong": [
+      "Scored in-sample: predict_proba was run on the full matrix, so ~80% of those customers were in the model's own training set.",
+      "Backward-looking: summed Monetary, which is revenue already booked before the cutoff, not revenue at risk of being lost.",
+      "Arbitrary threshold: ChurnProb > 0.65 with no cost model."
+    ]
+  }
+}

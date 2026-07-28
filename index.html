@@ -403,10 +403,10 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       <article class="prod rv">
         <div class="prod-idx"><span>02 · Customer analytics</span><span>Segmentation</span></div>
         <h3>Retail Customer Intelligence</h3>
-        <p>End-to-end customer analytics on <strong>805K real transactions</strong> (38 countries). K-means RFM segmentation splits the base into 4 actionable tiers; a random-forest churn model hits <strong>0.824 ROC-AUC against a 55.3% base rate</strong> and flags <strong>£1.46M of customer value at risk</strong>. Market-basket rules power a recommendation engine an operator can act on without an analyst.</p>
+        <p>Customer analytics on <strong>802,712 real transactions</strong> (41 countries, £17.45M). K-means RFM segmentation into 4 tiers; a churn model scored <strong>out-of-sample</strong> at <strong>0.796 ROC-AUC against a 55.3% base rate</strong>. The retention call list is sized with a <strong>precision@k curve</strong> — top 100 are 90% real churners — and a cost model that shows capacity, not contact cost, is the binding constraint. Apriori rules lift 24×.</p>
         <div class="mini">
           <div class="mini-canvas"><canvas id="retailChart"></canvas></div>
-          <p class="mini-note">Monthly revenue · £17.74M total · <em>£1.46M at risk</em></p>
+          <p class="mini-note">Monthly revenue · £17.45M total · <em>25 months</em></p>
         </div>
         <p class="stack-line"><b>Python</b> · <b>Scikit-learn</b> · <b>Pandas</b> · <b>RFM</b></p>
         <div class="prod-links">
@@ -600,11 +600,12 @@ function drawCharts(){
 
   charts.push(new Chart(olistChart,{type:"bar",data:{labels:["H&B","Watch","Bed","Sport","Comp"],datasets:[{data:[1.41,1.26,1.23,1.12,1.03],backgroundColor:FG+"cc",borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " R$"+c.raw+"M";}}}},scales:{x:{ticks:{font:{family:FN,size:8},color:MU,maxRotation:0},grid:{display:false},border:{display:false}},y:{display:false}},animation:{duration:1200}}}));
 
-  /* Real monthly revenue (£K) from the project's own dataset, Dec 2009 – Dec 2011.
-     All 25 months — sums to £17.74M, matching the total in the caption. */
-  var RETAIL_M = ["Dec 09","Jan 10","Feb 10","Mar 10","Apr 10","May 10","Jun 10","Jul 10","Aug 10","Sep 10","Oct 10","Nov 10","Dec 10","Jan 11","Feb 11","Mar 11","Apr 11","May 11","Jun 11","Jul 11","Aug 11","Sep 11","Oct 11","Nov 11","Dec 11"];
-  var RETAIL_V = [687,557,506,700,595,600,639,592,604,832,1037,1172,885,569,447,596,469,679,661,600,645,953,1039,1162,518];
-  charts.push(new Chart(retailChart,{type:"line",data:{labels:RETAIL_M,datasets:[{data:RETAIL_V,borderColor:FG,borderWidth:1.6,pointRadius:function(c){return c.dataIndex===23?3:0;},pointBackgroundColor:SG,pointBorderColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{displayColors:false,titleFont:{family:FN,size:9},bodyFont:{family:FN,size:9},callbacks:{label:function(c){return " £"+c.raw+"K";}}}},scales:{x:{display:false},y:{display:false}},animation:{duration:1200}}}));
+  /* Real monthly revenue (£K), regenerated from the pipeline against the canonical
+     UCI Online Retail II file. 25 months, Dec 2009 – Dec 2011, summing to £17.45M —
+     matching the caption and the dashboard, both now generated from the same run. */
+  var RETAIL_M = ["2009-12", "2010-01", "2010-02", "2010-03", "2010-04", "2010-05", "2010-06", "2010-07", "2010-08", "2010-09", "2010-10", "2010-11", "2010-12", "2011-01", "2011-02", "2011-03", "2011-04", "2011-05", "2011-06", "2011-07", "2011-08", "2011-09", "2011-10", "2011-11", "2011-12"];
+  var RETAIL_V = [681, 539, 500, 669, 588, 595, 632, 583, 597, 808, 1015, 1162, 877, 564, 443, 585, 455, 660, 654, 593, 637, 943, 1009, 1147, 515];
+  charts.push(new Chart(retailChart,{type:"line",data:{labels:RETAIL_M,datasets:[{data:RETAIL_V,borderColor:FG,borderWidth:1.6,pointRadius:function(c){return c.raw===Math.max.apply(null,RETAIL_V)?3:0;},pointBackgroundColor:SG,pointBorderColor:SG,tension:.4,fill:true,backgroundColor:function(c){return grad(c,FG);}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{displayColors:false,titleFont:{family:FN,size:9},bodyFont:{family:FN,size:9},callbacks:{label:function(c){return " £"+c.raw+"K";}}}},scales:{x:{display:false},y:{display:false}},animation:{duration:1200}}}));
 
   /* Real home-win rate per season, computed from the project's own features.csv
      (10,624 games). The 19-20 / 20-21 dip is the bubble — why those games are
