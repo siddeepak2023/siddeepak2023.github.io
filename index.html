@@ -418,7 +418,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       <article class="prod rv d1">
         <div class="prod-idx"><span>03 · SQL</span><span>Business intelligence</span></div>
         <h3>Olist E-Commerce Analysis</h3>
-        <p>End-to-end BI on <strong>96,478 real Brazilian e-commerce orders</strong> — 9 source tables joined into a star-schema flat table, then analysed in SQLite with CTEs and window functions. Health &amp; Beauty leads at R$1.4M of R$15.4M; deliveries past 21 days average <strong>2.97★ against 4.33★</strong> for sub-7-day ones — a 1.36-star gap, measured across order items rather than orders. Published as a live Tableau dashboard.</p>
+        <p>End-to-end BI on <strong>96,478 real Brazilian e-commerce orders</strong> — 9 source tables joined into a star-schema flat table, then analysed in SQLite with CTEs and window functions. Health &amp; Beauty leads at R$1.4M of R$15.4M; at <strong>order grain</strong>, deliveries past 21 days average <strong>3.01★ against 4.41★</strong> for sub-7-day ones. A logistic regression controlling for state, category and freight puts a one-week delivery slip at <strong>1.78× the odds of a ≤3-star review</strong> (OR 1.085/day, CI 1.083–1.088, n=95,824) — the adjusted effect is <em>stronger</em> than the raw one, so confounders were masking it. Published as a live Tableau dashboard.</p>
         <div class="mini">
           <div class="mini-canvas"><canvas id="olistChart"></canvas></div>
           <p class="mini-note">Revenue by top 5 categories · <em>R$M</em></p>

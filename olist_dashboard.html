@@ -438,45 +438,45 @@ footer {
     <!-- DELIVERY VS REVIEWS -->
     <div class="card">
       <h3>Delivery Speed vs Customer Rating</h3>
-      <div class="card-desc">Fast deliveries (≤7d) average 4.33★ · very slow (&gt;21d) fall to 2.97★ — a 1.36-point gap</div>
+      <div class="card-desc">At <strong>order grain</strong>: fast (≤7d) average 4.41★, very slow (&gt;21d) fall to 3.01★ — a 1.40-star gap</div>
 
       <div style="margin-bottom: 8px;">
         <div class="score-row">
           <div class="score-label">Fast (≤ 7 days)</div>
           <div class="score-track">
-            <div class="score-fill" style="width:0%;background:var(--green);color:#fff;" data-w="86.6">4.33 ★</div>
+            <div class="score-fill" style="width:0%;background:var(--green);color:#fff;" data-w="88.2">4.41 ★</div>
           </div>
-          <div class="score-val" style="color:var(--green);">4.33</div>
-          <div class="score-orders">38,706</div>
+          <div class="score-val" style="color:var(--green);">4.41</div>
+          <div class="score-orders">33,539</div>
         </div>
         <div class="score-row">
           <div class="score-label">Normal (8–14 days)</div>
           <div class="score-track">
-            <div class="score-fill" style="width:0%;background:#52B788;color:#fff;" data-w="84.0">4.20 ★</div>
+            <div class="score-fill" style="width:0%;background:#52B788;color:#fff;" data-w="85.8">4.29 ★</div>
           </div>
-          <div class="score-val" style="color:#52B788;">4.20</div>
-          <div class="score-orders">41,671</div>
+          <div class="score-val" style="color:#52B788;">4.29</div>
+          <div class="score-orders">36,190</div>
         </div>
         <div class="score-row">
           <div class="score-label">Slow (15–21 days)</div>
           <div class="score-track">
-            <div class="score-fill" style="width:0%;background:var(--amber);color:#fff;" data-w="80.4">4.02 ★</div>
+            <div class="score-fill" style="width:0%;background:var(--amber);color:#fff;" data-w="82.0">4.10 ★</div>
           </div>
-          <div class="score-val" style="color:var(--amber);">4.02</div>
-          <div class="score-orders">17,495</div>
+          <div class="score-val" style="color:var(--amber);">4.10</div>
+          <div class="score-orders">15,264</div>
         </div>
         <div class="score-row">
           <div class="score-label">Very Slow (&gt; 21 days)</div>
           <div class="score-track">
-            <div class="score-fill" style="width:0%;background:var(--red);color:#fff;" data-w="59.4">2.97 ★</div>
+            <div class="score-fill" style="width:0%;background:var(--red);color:#fff;" data-w="60.1">3.01 ★</div>
           </div>
-          <div class="score-val" style="color:var(--red);">2.97</div>
-          <div class="score-orders">12,133</div>
+          <div class="score-val" style="color:var(--red);">3.01</div>
+          <div class="score-orders">10,831</div>
         </div>
       </div>
 
       <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:6px;">
-        Score axis: 1.0 (worst) → 5.0 (best) · counts are order items, and averages are item-weighted
+        Score axis: 1.0 (worst) → 5.0 (best) · one row per ORDER (95,824 with a review), reviews averaged per order before joining. Adjusted for state, category and freight, each extra delivery day multiplies the odds of a ≤3-star review by 1.0854 (95% CI 1.083–1.088, n=95,824) — a one-week slip is 1.77×. Unadjusted it is 1.0770/day, so controlling for confounders makes the effect stronger, not weaker.
       </div>
     </div>
 

@@ -1,0 +1,82 @@
+{
+  "grain": {
+    "item_rows": 110197,
+    "distinct_orders": 96478,
+    "orders_with_review": 95824
+  },
+  "order_grain_buckets": [
+    {
+      "bucket": "Fast (7 days or less)",
+      "orders": 33539,
+      "mean_score": 4.409
+    },
+    {
+      "bucket": "Normal (8 to 14 days)",
+      "orders": 36190,
+      "mean_score": 4.289
+    },
+    {
+      "bucket": "Slow (15 to 21 days)",
+      "orders": 15264,
+      "mean_score": 4.102
+    },
+    {
+      "bucket": "Very slow (over 21 days)",
+      "orders": 10831,
+      "mean_score": 3.006
+    }
+  ],
+  "item_grain_buckets_for_comparison": [
+    {
+      "bucket": "Fast (7 days or less)",
+      "item_rows": 38529,
+      "mean_score": 4.331
+    },
+    {
+      "bucket": "Normal (8 to 14 days)",
+      "item_rows": 41414,
+      "mean_score": 4.199
+    },
+    {
+      "bucket": "Slow (15 to 21 days)",
+      "item_rows": 17354,
+      "mean_score": 4.023
+    },
+    {
+      "bucket": "Very slow (over 21 days)",
+      "item_rows": 12065,
+      "mean_score": 2.97
+    }
+  ],
+  "star_gap": {
+    "order_grain": 1.403,
+    "item_grain": 1.36,
+    "note": "Report the gap in STARS. The old '31% drop' divided two means on an ordinal 1-5 scale, which is not a percentage of anything."
+  },
+  "logit_p_review_le_3": {
+    "unadjusted": {
+      "odds_ratio_per_day": 1.077,
+      "ci95": [
+        1.075,
+        1.0789
+      ],
+      "p_value": 0.0,
+      "n": 95824
+    },
+    "adjusted_for_state_category_freight": {
+      "odds_ratio_per_day": 1.0854,
+      "ci95": [
+        1.0831,
+        1.0876
+      ],
+      "p_value": 0.0,
+      "n": 95824
+    },
+    "adjusted_odds_ratio_per_week": 1.775,
+    "controls": {
+      "states": 13,
+      "categories": 16,
+      "freight": "log1p(order freight)"
+    }
+  }
+}
