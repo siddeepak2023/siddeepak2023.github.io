@@ -37,25 +37,34 @@ python 05_export_dashboard.py# → dashboard_data.json
 
 ## Results
 
+Regenerated against the canonical UCI Online Retail II file. An earlier version of this
+README published 0.824 / £17.74M / £1.46M; those figures were not reproducible from the
+public dataset and are superseded — see *Limitations*.
+
 | Metric | Value |
 |---|---|
-| ROC-AUC (churn) | **0.824** |
-| Accuracy | 75.4% |
-| Base rate (majority class) | 55.3% — so accuracy alone overstates the lift; read the AUC |
-| Customers modelled | 5,249 (4,199 train / 1,050 holdout) |
-| Top feature | Recency, 27.4% importance |
-| Total revenue in dataset | £17.74M |
-| Revenue held by high-risk customers | £1.46M |
+| ROC-AUC (churn), held-out | **0.796** |
+| Accuracy, held-out | 73.3% |
+| Base rate (majority class) | 55.3% — accuracy alone overstates the lift; read the AUC |
+| Customers modelled | 5,233 (4,186 train / 1,047 holdout) |
+| Total revenue in dataset | £17.45M |
+| Transactions after cleaning | 802,712 |
+| Countries | 41 |
+| precision@k, top 100 contacts | 90.0% |
 
 ## Limitations — read these before quoting any number
 
 These are stated because they materially change how the results should be read.
 
-**£1.46M is exposure, not savings.** It is the sum of *already-earned, historical*
-revenue belonging to the 2,290 customers whose predicted churn probability exceeds 0.65
-(`05_export_dashboard.py:29`). It is not a forecast, not money recovered, not
-incremental, and not a slice of the £17.74M total — the `Monetary` values behind it are
-computed over Dec 2009 – Aug 2011 only, a different denominator.
+**£1.46M is retired, not restated.** The old figure summed *already-earned, historical*
+revenue for customers scored above 0.65 — and scored them with a model that had trained on
+80% of them. It was an in-sample total of money already booked, described as money at risk.
+`06_retention_economics.py` replaces it: held-out customers only, model refit on the training
+split, value defined as forward revenue observed *after* the cutoff. The artifact records the
+supersession (`retention_economics.json → supersedes.old_figure_gbp`). Sizing now comes from a
+precision@k curve — 90.0% of the top 100 are real churners, 78.0% of the top 500 — and the
+useful result is that median forward value is ~176× the £3 contact cost, so **capacity, not
+cost, is the binding constraint.** The save rate is assumed, not measured.
 
 **The evaluation holdout is random, not out-of-time.** The *labelling* is temporal —
 features come strictly from before the 2011-09-01 cutoff and the label window is after
@@ -63,9 +72,9 @@ it, so there is no target leakage. But the train/test split is a random stratifi
 across customers (`03_churn_model.py:72`), not a second time-based cutoff. There is no
 rolling-origin backtest. Metrics are therefore in-period.
 
-**Risk tiers are partly in-sample.** `predict_proba` is applied to all 5,249 customers,
-training rows included (`03_churn_model.py:91`), so roughly 80% of the risk scores — and
-the £1.46M that derives from them — are fitted rather than held out.
+**Risk tiers in the legacy dashboard payload are partly in-sample.** `03_churn_model.py:91`
+applies `predict_proba` to all customers, training rows included. That is why the retention
+economics are computed separately in `06_retention_economics.py`, which scores the holdout only.
 
 **Recency partly restates the label.** Recency is the highest-importance feature and is
 measured at the cutoff. A customer whose last purchase was long before the cutoff is
