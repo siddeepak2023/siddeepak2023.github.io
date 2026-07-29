@@ -198,8 +198,9 @@
       </div>
       <div class="project-stack">Python &nbsp;|&nbsp; HistGradientBoosting &nbsp;|&nbsp; Optuna &nbsp;|&nbsp; SQLite &nbsp;|&nbsp; nba_api</div>
       <ul class="bullets">
-        <li>Trained a gradient-boosted classifier on <strong>10,624 real NBA games</strong> (9 seasons via nba_api) and validated on the fully held-out 2024-25 season: <strong>66.4% accuracy against a 54.4% always-home baseline</strong> (AUC 0.727, Brier 0.211), using isotonic-calibrated probabilities, a temporal holdout with TimeSeriesSplit, and 2020 bubble games down-weighted after measuring the collapse in home-court advantage</li>
-        <li>Ran a <strong>feature ablation</strong> to test whether the 71-feature set earned its complexity: Elo differential alone reaches AUC 0.710, so the remaining 70 features add only <strong>+0.015 AUC — less than the &plusmn;0.021 spread across cross-validation folds</strong>, though they do improve calibration (Brier 0.217 &rarr; 0.211)</li>
+        <li>Trained a gradient-boosted classifier on <strong>10,624 real NBA games</strong> (9 seasons via nba_api) and validated on the fully held-out 2024-25 season: <strong>66.4% accuracy against a 54.4% always-home baseline</strong> (AUC 0.727, Brier 0.211), with isotonic-calibrated probabilities, TimeSeriesSplit, and 2020 bubble games down-weighted after measuring the home-court collapse</li>
+        <li>Ran a <strong>feature ablation</strong> on the 71-feature set: Elo differential alone reaches AUC 0.710, so the other 70 add only <strong>+0.015 AUC — under the &plusmn;0.021 spread across CV folds</strong>, improving calibration but not ranking</li>
+        <li>Re-tested on the <strong>complete 2025-26 season</strong> (1,230 unseen games, independent source): AUC held at <strong>0.718</strong> but did not beat a closed-form Elo formula (0.718 vs 0.718), winning only on calibration (<strong>Brier 0.212 vs 0.215</strong>) — the value is probability quality, not ranking</li>
       </ul>
     </div>
 
@@ -210,7 +211,7 @@
       </div>
       <div class="project-stack">Python &nbsp;|&nbsp; SQL &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; Tableau &nbsp;|&nbsp; Excel</div>
       <ul class="bullets">
-        <li>Analyzed <strong>96,478 e-commerce orders</strong> from 9 source tables, joined into a star-schema table and queried in SQLite with CTEs and window functions; found Health &amp; Beauty led revenue at R$1.4M of R$15.4M and, at order grain, that deliveries past 21 days averaged <strong>3.01★ vs 4.41★</strong> for sub-7-day ones; a logistic regression controlling for state, category and freight put a one-week slip at <strong>1.78&times; the odds of a &le;3-star review</strong> (OR 1.085/day, 95% CI 1.083&ndash;1.088, n=95,824), a larger effect than the unadjusted comparison — published as a live 4-chart Tableau dashboard</li>
+        <li>Analyzed <strong>96,478 e-commerce orders</strong> across 9 source tables, joined into a star schema and queried in SQLite with CTEs and window functions; Health &amp; Beauty led revenue at R$1.4M of R$15.4M. At order grain, a logistic regression controlling for state, category and freight put a one-week delivery slip at <strong>1.78&times; the odds of a &le;3-star review</strong> (OR 1.085/day, 95% CI 1.083&ndash;1.088, n=95,824) — a larger effect than the raw 3.01★ vs 4.41★ gap implies. Published as a live Tableau dashboard.</li>
       </ul>
     </div>
 
