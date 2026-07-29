@@ -87,17 +87,25 @@ sampler seed, so `best_params` is not reproducible across runs.
 
 ## Known smaller defects
 
-- `04_screener.py:171` writes a field named `rsi_14` whose values have already been
-  cross-sectionally z-scored at `:96` — `data/screener.json` therefore contains z-scores
-  labelled as RSI. Not rendered, but wrong in a published artifact.
+- **`rsi_14` published z-scores under an RSI label — cause fixed, artifact not yet
+  regenerated.** The export read `rsi_14_raw`, but nothing ever created that column, so the
+  `.get()` fell through to the cross-sectionally z-scored `rsi_14`. The committed
+  `data/screener.json` therefore holds values like `1.1, 0.9, -0.4` under a key that reads
+  as an RSI on a 0–100 scale. `04_screener.py` now snapshots `rsi_14` and `vol_20d` into
+  `*_raw` before normalisation, and the export prefers those, so a re-run emits real RSI.
+  `vol_20d` had the same defect and is fixed the same way. The published JSON still carries
+  the old values — regenerating it requires re-running `01_data_pipeline.py` against six
+  years of `yfinance` history, which would move every number in the repo, so it is
+  deliberately deferred rather than done as a side effect of a labelling fix.
 - Strategy A cannot short. The frame is filtered to `prob >= 0.60` and `pred` is
   therefore always 1, making the `else -fwd_ret_5d` branch dead code. The dashboard's
   "Strong Sell (≤35%)" tier is displayed but never traded.
 - `fwd_ret_5d` is a log return but is compounded as a simple return.
 - "21-Day Sector Performance" uses `Timedelta(days=21)` — 21 calendar days, ~14 trading
   days — and scales arithmetically rather than geometrically.
-- `05_export_dashboard.py:123` carries a stale comment reading "Synthetic decile table";
-  the function body returns real per-fold AUCs. Nothing synthetic is generated anywhere.
+- ~~`05_export_dashboard.py:123` carries a stale comment reading "Synthetic decile table"~~
+  — **fixed.** The function body always returned real per-fold AUCs; nothing synthetic is
+  generated anywhere in this repository. The comment was wrong, not the code.
 - "Signals Today" is dated from the last pipeline run, not the current date.
 
 ## To make the backtest quotable

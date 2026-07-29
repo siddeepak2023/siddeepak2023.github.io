@@ -91,6 +91,14 @@ def get_latest_features(conn, feat_cols):
 
     combined = pd.concat(rows, ignore_index=True)
 
+    # Preserve the display-facing raw values BEFORE normalisation. The export at
+    # :171 reads rsi_14_raw; without this it silently fell back to the z-scored
+    # rsi_14 and published z-scores under an "rsi_14" key, which reads as an RSI
+    # on a 0-100 scale.
+    for _col in ("rsi_14", "vol_20d"):
+        if _col in combined.columns:
+            combined[f"{_col}_raw"] = combined[_col]
+
     # Cross-sectional z-score on latest date
     cross_section_zscore = fm.cross_section_zscore
     combined = cross_section_zscore(combined, NORM_COLS)
@@ -169,7 +177,7 @@ def main():
             "ret_5d_pct": row.get("ret_5d_pct"),
             "sparkline":  row.get("sparkline", []),
             "rsi_14":     round(float(row.get("rsi_14_raw", row.get("rsi_14", 50))), 1) if "rsi_14" in row else None,
-            "vol_20d":    round(float(row.get("vol_20d", 0)), 4) if "vol_20d" in row else None,
+            "vol_20d":    round(float(row.get("vol_20d_raw", row.get("vol_20d", 0))), 4) if "vol_20d" in row else None,
         })
 
     # Sector breakdown of top signals

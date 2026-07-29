@@ -120,8 +120,10 @@ def build_feature_importance(metrics):
 # ── Historical accuracy by decile ─────────────────────────────────────────────
 def build_decile_accuracy(features_path, metrics):
     """Use backtest folds to show accuracy by probability decile."""
-    # Synthetic decile table from backtest stats if preds not saved separately
-    # We'll show expected calibration curve
+    # Real per-fold AUCs from the walk-forward backtest — nothing here is
+    # generated. (An earlier comment called this a "synthetic decile table";
+    # that was never true of the code below and is a bad word to leave in a
+    # repo whose point is that its numbers are checkable.)
     backtest = metrics.get("backtest", {})
     fold_aucs = backtest.get("fold_aucs", [])
     if not fold_aucs:
