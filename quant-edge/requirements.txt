@@ -3,7 +3,13 @@
 
 pandas>=2.0
 numpy>=1.24
-scikit-learn>=1.3
+# PINNED, deliberately. data/model.pkl was pickled under 1.8.0 and carries
+# sklearn._loss.* internals; loading it under 1.9.0 dies with
+# "ModuleNotFoundError: No module named '_loss'". Unpinning means 04_screener.py
+# cannot load the committed model, and regenerating the screener would require a
+# retrain — which optuna's unseeded study makes non-reproducible. Bump only
+# together with a fresh model.pkl.
+scikit-learn==1.8.0
 
 # Market data. Yahoo changes its endpoints without notice — if 01_data_pipeline.py
 # returns empty frames, upgrade this first before debugging anything else.
