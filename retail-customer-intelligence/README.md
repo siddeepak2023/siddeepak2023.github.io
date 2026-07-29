@@ -1,7 +1,7 @@
 # Retail Customer Intelligence — RFM Segmentation, Churn Risk, Market Basket
 
 Five-stage pandas/scikit-learn pipeline over the **UCI Online Retail II** dataset
-(~805K transactions, Dec 2009 – Dec 2011, a UK gift-ware wholesaler). Produces customer
+(802,712 transactions after cleaning, Dec 2009 – Dec 2011, a UK gift-ware wholesaler). Produces customer
 segments, a churn-risk model, association rules, and a single JSON payload that drives
 [`retail_dashboard.html`](../retail_dashboard.html).
 

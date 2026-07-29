@@ -6,6 +6,7 @@ Stores OHLCV in SQLite at data/quant.db.
 Run:  python3 01_data_pipeline.py
 """
 
+import io
 import sqlite3
 import logging
 import time
@@ -68,8 +69,10 @@ def get_sp500_tickers():
         url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, context=ctx) as resp:
-            html = resp.read()
-        tables = pd.read_html(html, header=0)
+            html = resp.read().decode("utf-8", errors="replace")
+        # StringIO, not the raw markup: pandas >= 2.1 treats a bytes/str argument
+        # as a path and raises FileNotFoundError with the whole page in the message.
+        tables = pd.read_html(io.StringIO(html), header=0)
         df = tables[0]
         df.columns = [c.strip() for c in df.columns]
         symbol_col = next(c for c in df.columns if "symbol" in c.lower() or "ticker" in c.lower())
@@ -81,8 +84,16 @@ def get_sp500_tickers():
         log.info("S&P 500 tickers loaded: %d", len(df))
         return df[["ticker", "name", "sector"]].drop_duplicates("ticker")
     except Exception as e:
-        log.error("Failed to fetch S&P 500 list: %s", e)
-        return pd.DataFrame(columns=["ticker", "name", "sector"])
+        # Do NOT degrade quietly. Returning an empty frame here still let the run
+        # finish with SPY + 12 sector ETFs and print "Pipeline complete", which is
+        # how data/screener.json came to hold 503 stale rows while a rebuild
+        # produced 13. A universe this size failing is a hard error.
+        log.error("Failed to fetch S&P 500 list: %s: %s", type(e).__name__, e)
+        raise SystemExit(
+            "S&P 500 constituent fetch failed — refusing to build a 13-ticker "
+            "universe that looks like a successful run. Fix the fetch (lxml is "
+            "required by pandas.read_html) and re-run."
+        )
 
 
 def already_have(conn, ticker, min_rows=200):

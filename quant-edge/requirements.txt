@@ -9,6 +9,12 @@ scikit-learn>=1.3
 # returns empty frames, upgrade this first before debugging anything else.
 yfinance>=0.2.40
 
+# Required by pandas.read_html in get_sp500_tickers(). Without it the constituent
+# fetch raises ImportError, the except branch returns an empty frame, and the
+# pipeline finishes "successfully" with only SPY + the 12 sector ETFs — 13 tickers
+# instead of 503. It was missing from this file, so a clean install reproduced that.
+lxml>=5.0
+
 # Hyperparameter search in 03_model.py. Note create_study() is called without a
 # sampler seed, so best_params is not reproducible across runs.
 optuna>=3.4

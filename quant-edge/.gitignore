@@ -1,4 +1,5 @@
 data/features.csv
 data/quant.db
+data/quant.db-journal
 __pycache__/
 *.pyc
