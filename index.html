@@ -434,7 +434,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       <article class="prod rv d1">
         <div class="prod-idx"><span>04 · Predictive ML</span><span>Calibrated</span></div>
         <h3>NBA Game Outcome Model</h3>
-        <p>A gradient-boosted classifier on <strong>10,624 real games</strong> (9 seasons, nba_api). Held out the entire unseen 2024-25 season: <strong>66.4% accuracy vs a 54.4% always-home baseline</strong>, AUC 0.727, isotonic-calibrated. Then I ablated the feature set — <strong>Elo differential alone reaches AUC 0.710, so the other 70 features are worth +0.015</strong>, inside my own CV noise. Bubble games are down-weighted; home advantage measurably collapsed in 2020.</p>
+        <p>A gradient-boosted classifier on <strong>10,624 real games</strong> (9 seasons, nba_api). Held out the entire unseen 2024-25 season: <strong>66.4% accuracy vs a 54.4% always-home baseline</strong>, AUC 0.727, isotonic-calibrated. Then I ablated the feature set — <strong>Elo differential alone reaches AUC 0.710, so the other 70 features are worth +0.015</strong>, inside my own CV noise. A second check on the <strong>complete 2025-26 season</strong> — 1,230 games that postdate every design choice here — holds at <strong>AUC 0.718</strong>, and shows the booster does not out-rank the closed-form Elo formula (0.718 vs 0.718); what it earns is calibration, <strong>Brier 0.212 vs 0.215</strong>. That check is Elo-only: 2025-26 box scores are not obtainable, so scores come from Basketball-Reference. Bubble games are down-weighted; home advantage measurably collapsed in 2020.</p>
         <div class="mini">
           <div class="mini-canvas"><canvas id="nbaChart"></canvas></div>
           <p class="mini-note">Home win rate by season · <em>bubble years flagged</em></p>
@@ -489,7 +489,7 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       </div>
       <div class="kitcol rv d1">
         <h3>Visualization</h3>
-        <ul><li><b>Tableau</b> · Power BI</li><li>Chart.js</li></ul>
+        <ul><li><b>Tableau</b></li><li>Chart.js</li><li>Power BI <em>(familiar)</em></li></ul>
       </div>
       <div class="kitcol rv d2">
         <h3>Engineering</h3>
@@ -515,11 +515,16 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       </div>
       <div class="kitcol rv d1">
         <h3>Libraries</h3>
-        <ul><li><b>Pandas</b> · NumPy</li><li><b>Scikit-learn</b></li><li>LightGBM · HistGBM</li><li>Optuna · Prophet</li><li>Plotly</li></ul>
+        <!-- Kept in step with the résumé's rule: a library stays only if a retained
+             project imports it in its own code. LightGBM, Prophet and Plotly were
+             removed on that test — grep found them only inside venvs. statsmodels is
+             backed by Olist_ecommerce_analysis/04_delivery_reviews.py, Optuna by
+             nba-intelligence/03_model.py and 07_ablation.py. -->
+        <ul><li><b>Pandas</b> · NumPy</li><li><b>Scikit-learn</b></li><li>statsmodels</li><li>HistGBM · Optuna</li><li>Chart.js</li></ul>
       </div>
       <div class="kitcol rv d2">
         <h3>Tools &amp; AI</h3>
-        <ul><li><b>Tableau</b> · Power BI</li><li>Excel · Git</li><li>Firebase</li><li>OpenAI · Anthropic · Gemini</li><li>Pyodide</li></ul>
+        <ul><li><b>Tableau</b> · Power BI <em>(familiar)</em></li><li>Excel · Git</li><li>Firebase</li><li>OpenAI · Anthropic · Gemini</li><li>Pyodide</li></ul>
       </div>
     </div>
   </div>
