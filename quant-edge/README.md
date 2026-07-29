@@ -87,16 +87,26 @@ sampler seed, so `best_params` is not reproducible across runs.
 
 ## Known smaller defects
 
-- **`rsi_14` published z-scores under an RSI label — cause fixed, artifact not yet
-  regenerated.** The export read `rsi_14_raw`, but nothing ever created that column, so the
-  `.get()` fell through to the cross-sectionally z-scored `rsi_14`. The committed
-  `data/screener.json` therefore holds values like `1.1, 0.9, -0.4` under a key that reads
-  as an RSI on a 0–100 scale. `04_screener.py` now snapshots `rsi_14` and `vol_20d` into
-  `*_raw` before normalisation, and the export prefers those, so a re-run emits real RSI.
-  `vol_20d` had the same defect and is fixed the same way. The published JSON still carries
-  the old values — regenerating it requires re-running `01_data_pipeline.py` against six
-  years of `yfinance` history, which would move every number in the repo, so it is
-  deliberately deferred rather than done as a side effect of a labelling fix.
+- ~~**`rsi_14` published z-scores under an RSI label.**~~ — **fixed, artifact regenerated.**
+  The export read `rsi_14_raw`, but nothing created that column, so the `.get()` fell through
+  to the cross-sectionally z-scored `rsi_14` and the committed JSON held values like
+  `1.1, 0.9, -0.4` under a key that reads as an RSI on a 0–100 scale. `04_screener.py` now
+  snapshots `rsi_14` and `vol_20d` into `*_raw` before normalisation. The pipeline was re-run
+  end to end (503 constituents, 776,581 price rows, features to 2026-07-27) and both
+  `data/screener.json` and `data/dashboard_data.json` were regenerated: `rsi_14` now spans
+  **9.7–87.5, mean 51.5**, and `vol_20d` is raw annualised volatility. Signals moved 2 → 0 at
+  the unchanged 0.60 threshold on three months of newer prices — honest output from a model
+  whose own `cv_auc` is 0.518.
+- Two reproducibility failures found during that rebuild, both fixed:
+  `lxml` was missing from `requirements.txt` (so `pandas.read_html` could not fetch the S&P
+  500 list at all), and `read_html` was being handed raw bytes, which pandas ≥ 2.1 treats as a
+  *path*. Both were swallowed by a bare `except` that returned an empty frame, letting a run
+  finish with 13 tickers while printing "Pipeline complete" — that branch now hard-exits.
+  `scikit-learn` is pinned to `==1.8.0` because `data/model.pkl` is unloadable under 1.9.0
+  (`ModuleNotFoundError: No module named '_loss'`).
+- Both JSON writers now emit `null` for non-finite floats and pass `allow_nan=False`. Bare
+  `NaN` is not valid JSON — the first rebuild wrote 16 and 13 such tokens for tickers with no
+  latest price, and both files failed a strict parse.
 - Strategy A cannot short. The frame is filtered to `prob >= 0.60` and `pred` is
   therefore always 1, making the `else -fwd_ret_5d` branch dead code. The dashboard's
   "Strong Sell (≤35%)" tier is displayed but never traded.
