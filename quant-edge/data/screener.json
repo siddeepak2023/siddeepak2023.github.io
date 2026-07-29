@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-29T01:24:56.196759Z",
+  "generated_at": "2026-07-29T01:30:57.527821Z",
   "date": "2026-07-28",
   "n_tickers": 503,
   "n_signals": 0,
@@ -726,7 +726,7 @@
         660.45,
         660.75,
         665.03,
-        NaN,
+        null,
         661.84
       ],
       "rsi_14": 51.2,
@@ -903,8 +903,8 @@
       "sector": "Health Care",
       "prob_up": 0.5433,
       "signal": 0,
-      "price": NaN,
-      "ret_5d_pct": NaN,
+      "price": null,
+      "ret_5d_pct": null,
       "sparkline": [
         1258.82,
         1277.51,
@@ -925,7 +925,7 @@
         1285.9,
         1331.87,
         1327.18,
-        NaN
+        null
       ],
       "rsi_14": 55.6,
       "vol_20d": 0.2879
@@ -957,7 +957,7 @@
         528.37,
         526.82,
         520.11,
-        NaN,
+        null,
         538.01
       ],
       "rsi_14": 66.1,
@@ -990,7 +990,7 @@
         163.39,
         166.06,
         164.65,
-        NaN,
+        null,
         166.74
       ],
       "rsi_14": 47.2,
@@ -1101,8 +1101,8 @@
       "sector": "Industrials",
       "prob_up": 0.5433,
       "signal": 0,
-      "price": NaN,
-      "ret_5d_pct": NaN,
+      "price": null,
+      "ret_5d_pct": null,
       "sparkline": [
         223.37,
         222.88,
@@ -1123,7 +1123,7 @@
         236.38,
         237.27,
         238.75,
-        NaN
+        null
       ],
       "rsi_14": 60.4,
       "vol_20d": 0.2665
@@ -1365,8 +1365,8 @@
       "sector": "Information Technology",
       "prob_up": 0.542,
       "signal": 0,
-      "price": NaN,
-      "ret_5d_pct": NaN,
+      "price": null,
+      "ret_5d_pct": null,
       "sparkline": [
         132.79,
         129.62,
@@ -1387,7 +1387,7 @@
         132.1,
         133.69,
         140.5,
-        NaN
+        null
       ],
       "rsi_14": 54.4,
       "vol_20d": 0.5957
@@ -1419,7 +1419,7 @@
         366.24,
         366.05,
         371.5,
-        NaN,
+        null,
         376.26
       ],
       "rsi_14": 47.5,
@@ -4170,8 +4170,8 @@
       "sector": "Industrials",
       "prob_up": 0.5373,
       "signal": 0,
-      "price": NaN,
-      "ret_5d_pct": NaN,
+      "price": null,
+      "ret_5d_pct": null,
       "sparkline": [
         287.89,
         289.43,
@@ -4192,7 +4192,7 @@
         292.24,
         289.37,
         288.3,
-        NaN
+        null
       ],
       "rsi_14": 58.8,
       "vol_20d": 0.3631

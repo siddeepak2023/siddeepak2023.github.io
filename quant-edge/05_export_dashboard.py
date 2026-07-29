@@ -7,6 +7,7 @@ Run:  python3 05_export_dashboard.py
 """
 
 import json
+import math
 import logging
 import sqlite3
 from datetime import date, datetime
@@ -25,6 +26,24 @@ logging.basicConfig(level=logging.INFO,
                     datefmt="%H:%M:%S")
 log = logging.getLogger(__name__)
 
+
+
+def json_safe(obj):
+    """Replace non-finite floats with None, recursively — see 04_screener.py.
+
+    Bare NaN is not valid JSON; JSON.parse throws on it, so one priceless ticker
+    would take the whole dashboard down.
+    """
+    if isinstance(obj, dict):
+        return {k: json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [json_safe(v) for v in obj]
+    if isinstance(obj, float) and not math.isfinite(obj):
+        return None
+    if isinstance(obj, (np.floating, np.integer)):
+        f = obj.item()
+        return None if isinstance(f, float) and not math.isfinite(f) else f
+    return obj
 
 def load_json(path):
     with open(path) as f:
@@ -258,7 +277,7 @@ def main():
     }
 
     with open(OUTPUT_JSON, "w") as f:
-        json.dump(dashboard_data, f, indent=2)
+        json.dump(json_safe(dashboard_data), f, indent=2, allow_nan=False)
 
     log.info("Saved → %s", OUTPUT_JSON)
     log.info("  screener picks: %d  |  signals: %d",

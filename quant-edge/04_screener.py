@@ -7,6 +7,7 @@ Run:  python3 04_screener.py
 """
 
 import json
+import math
 import logging
 import pickle
 import sqlite3
@@ -24,6 +25,25 @@ logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s  %(levelname)s  %(message)s",
                     datefmt="%H:%M:%S")
 log = logging.getLogger(__name__)
+
+
+def json_safe(obj):
+    """Replace non-finite floats with None, recursively.
+
+    A ticker with no usable latest price yields NaN, and json.dump writes that as
+    a bare `NaN` token — accepted by Python, rejected by JSON.parse and by any
+    strict parser. Emit null instead so the artifact stays valid JSON.
+    """
+    if isinstance(obj, dict):
+        return {k: json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [json_safe(v) for v in obj]
+    if isinstance(obj, float) and not math.isfinite(obj):
+        return None
+    if isinstance(obj, (np.floating, np.integer)):
+        f = obj.item()
+        return None if isinstance(f, float) and not math.isfinite(f) else f
+    return obj
 
 
 def load_model():
@@ -206,7 +226,11 @@ def main():
     }
 
     with open(SCREENER_JSON, "w") as f:
-        json.dump(out, f, indent=2)
+        # allow_nan=False: bare NaN is not valid JSON and JSON.parse throws on it,
+        # so a ticker with no latest price would silently break the dashboard.
+        # json_safe converts non-finite floats to null first; the flag then makes
+        # any case it missed a hard failure instead of a corrupt artifact.
+        json.dump(json_safe(out), f, indent=2, allow_nan=False)
 
     log.info("Screener → %s", SCREENER_JSON)
     log.info("  %d tickers scored, %d signals (≥%.0f%% prob)",
