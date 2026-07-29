@@ -60,6 +60,10 @@ Private Problems Archive/
 # Friday — personal AI OS. LOCAL-ONLY. Never publish (faith/health/people/journal).
 friday/
 
+# cofounder — internal business operating layer. LOCAL-ONLY. Never publish
+# (decision ledger rationale, pricing decisions, competitor analysis, audit findings).
+cofounder/
+
 # Personal documents
 *.pdf
 *.docx
