@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cosmos — A Map of the Observable Universe</title>
+<meta name="description" content="An interactive 3D map of ~850,000 real astronomical objects — Gaia DR3 stars, 2MRS galaxies, NASA exoplanets, and SDSS quasars."/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{--cyan:#ff5ec4;--violet:#b48cff;--amber:#ff8ad4;--ink:#070210;--glass:rgba(20,6,24,.74);--line:rgba(255,110,200,.16);--text:#f3dcef;--mut:#a366a0;}
+  html,body{height:100%;}
+  body{background:var(--ink);overflow:hidden;font-family:'SF Mono',ui-monospace,Menlo,monospace;color:var(--text);}
+  canvas{display:block;}
+  #bg{position:fixed;inset:0;z-index:0;background:radial-gradient(120% 90% at 50% 0%,#1c0626 0%,#0e0316 45%,#050108 100%);}
+  #c{position:fixed;inset:0;z-index:1;}
+  #hud{position:fixed;inset:0;z-index:5;pointer-events:none;}
+
+  .glass{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:14px;}
+  /* title */
+  #title{position:absolute;top:26px;left:50%;transform:translateX(-50%);text-align:center;}
+  #title h1{font-family:'Sora',system-ui,sans-serif;font-size:15px;font-weight:600;letter-spacing:.42em;text-transform:uppercase;
+    background:linear-gradient(90deg,var(--cyan),#fff,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  #title p{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-top:7px;}
+
+  /* control panel */
+  #panel{position:absolute;top:20px;right:20px;width:228px;padding:16px 17px;pointer-events:all;}
+  #panel h2{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:flex;justify-content:space-between;}
+  #panel h2 span{color:var(--mut);}
+  .layer{display:flex;align-items:center;gap:9px;margin-bottom:9px;cursor:pointer;user-select:none;font-size:11px;}
+  .swatch{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 8px currentColor;}
+  .layer .nm{flex:1;color:var(--text);}
+  .layer .ct{font-size:9px;color:var(--mut);}
+  .layer.off{opacity:.4;}
+  .layer.off .swatch{box-shadow:none;background:#2a3550 !important;color:#2a3550 !important;}
+  .div{height:1px;background:var(--line);margin:12px 0;}
+  .sld{margin-bottom:11px;}
+  .sld label{display:flex;justify-content:space-between;font-size:9.5px;color:var(--mut);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
+  .sld label b{color:var(--text);font-weight:500;}
+  input[type=range]{width:100%;height:3px;-webkit-appearance:none;appearance:none;background:rgba(120,170,255,.18);border-radius:3px;outline:none;cursor:pointer;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);cursor:pointer;}
+
+  /* preset buttons */
+  #tours{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:7px;pointer-events:all;flex-wrap:wrap;justify-content:center;max-width:90vw;}
+  .tour{padding:8px 14px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);cursor:pointer;transition:.18s;border-radius:9px;}
+  .tour:hover{color:var(--text);border-color:rgba(120,170,255,.4);}
+  .tour.on{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 16px rgba(90,209,255,.25);}
+
+  /* readouts */
+  #read{position:absolute;left:20px;bottom:24px;font-size:9px;letter-spacing:.1em;color:var(--mut);line-height:2;pointer-events:none;}
+  #read b{color:var(--cyan);}
+  #hint{position:absolute;left:20px;top:24px;font-size:9.5px;color:var(--mut);letter-spacing:.08em;line-height:1.9;max-width:200px;pointer-events:none;}
+  #hint b{color:var(--text);}
+
+  /* tooltip */
+  #tip{position:fixed;z-index:8;pointer-events:none;padding:7px 11px;font-size:10px;letter-spacing:.06em;display:none;transform:translate(-50%,-140%);white-space:nowrap;}
+  #tip .k{color:var(--mut);}
+
+  /* loader */
+  #load{position:fixed;inset:0;z-index:30;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .9s ease;}
+  #load h1{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;letter-spacing:.4em;text-transform:uppercase;
+    background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  #lbw{width:260px;height:2px;background:rgba(120,170,255,.14);margin-top:24px;border-radius:2px;overflow:hidden;}
+  #lb{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:2px;transition:width .35s;}
+  #lm{font-size:9px;letter-spacing:.18em;color:var(--mut);margin-top:13px;text-transform:uppercase;}
+  @media(max-width:640px){#panel{display:none;}#title h1{font-size:11px;letter-spacing:.3em;}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="c"></canvas>
+
+<div id="load">
+  <h1>Cosmos</h1>
+  <div id="lbw"><div id="lb"></div></div>
+  <div id="lm">Charting the universe…</div>
+</div>
+
+<div id="hud">
+  <div id="title">
+    <h1>Cosmos</h1>
+    <p>Gaia&nbsp;DR3&nbsp;·&nbsp;2MRS&nbsp;Galaxies&nbsp;·&nbsp;NASA&nbsp;Exoplanets&nbsp;·&nbsp;SDSS&nbsp;Quasars</p>
+  </div>
+
+  <div id="hint">Drag to orbit · scroll to zoom · <b>right-drag</b> to pan · <b>WASD</b>/arrows to fly, <b>R/F</b> up-down, <b>Shift</b> to boost. Pick a tour below.</div>
+
+  <div id="panel" class="glass">
+    <h2>Layers <span id="total">—</span></h2>
+    <div class="layer" data-k="stars"><span class="swatch" style="color:#ffd9b0"></span><span class="nm">Stars</span><span class="ct" id="ct-stars">—</span></div>
+    <div class="layer" data-k="galaxies"><span class="swatch" style="color:#cf7bff"></span><span class="nm">Galaxies</span><span class="ct" id="ct-galaxies">—</span></div>
+    <div class="layer" data-k="quasars"><span class="swatch" style="color:#ff5ec4"></span><span class="nm">Quasars</span><span class="ct" id="ct-quasars">—</span></div>
+    <div class="layer" data-k="exo"><span class="swatch" style="color:#00dbb5"></span><span class="nm">Exoplanets</span><span class="ct" id="ct-exo">—</span></div>
+    <div class="layer" data-k="filaments" title="Tempel et al. 2014 (MNRAS 438, 3465) — SDSS filament spines found with the Bisous process. Segments, not objects."><span class="swatch" style="color:#7fb2ff"></span><span class="nm">Cosmic web</span><span class="ct" id="ct-filaments">—</span></div>
+    <div class="div"></div>
+    <div class="sld"><label>Glow <b id="v-bloom">0.55</b></label><input type="range" id="s-bloom" min="0" max="2.5" step="0.05" value="0.55"></div>
+    <div class="sld"><label>Point size <b id="v-size">1.0</b></label><input type="range" id="s-size" min="0.3" max="2.5" step="0.05" value="1.0"></div>
+    <div class="sld"><label>Drift <b id="v-rot">0.6</b></label><input type="range" id="s-rot" min="0" max="3" step="0.1" value="0.6"></div>
+    <div class="div"></div>
+    <div class="layer" id="palToggle" title="Vivid spreads real values across a wider hue ramp. True colour is the calibrated appearance.">
+      <span class="swatch" style="color:#ff8ad4"></span><span class="nm">Palette</span><span class="ct" id="palLabel">VIVID</span>
+    </div>
+  </div>
+
+  <div id="tours">
+    <div class="tour on" data-t="home">Overview</div>
+    <div class="tour" data-t="milky">Milky Way</div>
+    <div class="tour" data-t="local">Local Group</div>
+    <div class="tour" data-t="web">Cosmic Web</div>
+    <div class="tour" data-t="quasar">Quasar Field</div>
+    <div class="tour" data-t="exo">Exoplanets</div>
+  </div>
+
+  <div id="read">
+    <div><b id="r-fps">60</b> fps · <b id="r-pts">0</b> points drawn this frame in <b id="r-nodes">0</b> octree nodes</div>
+    <div>distance to centre <b id="r-dist">—</b></div>
+  </div>
+</div>
+<div id="tip" class="glass"></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const lb=document.getElementById('lb'), lm=document.getElementById('lm');
+const setProg=(p,m)=>{lb.style.width=(p*100).toFixed(0)+'%';if(m)lm.textContent=m;};
+
+// ── scene ──────────────────────────────────────────────────────────────
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+// Filmic roll-off instead of hard clipping to white: bright cores keep their
+// colour instead of blowing out, which is what made the field read as flat.
+// Applied by OutputPass at the end of the composer chain.
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x04060d,0.0); // depth handled in shader; keep subtle
+
+const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,6000);
+camera.position.set(0,120,560);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true; controls.dampingFactor=0.06;
+controls.rotateSpeed=0.5; controls.zoomSpeed=0.8; controls.panSpeed=0.6;
+controls.minDistance=2; controls.maxDistance=4000;
+
+// bloom
+// Selective bloom: half-resolution and a high threshold, so only genuinely bright
+// objects flare and faint stars stay pinpoints. The old full-res 0.22 threshold
+// bloomed the entire 850k-point field into haze — which is why the star colours
+// had to be hand-dimmed to stop it becoming a blob.
+const composer=new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene,camera));
+const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),0.85,0.75,0.78);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+// ── point shader (soft glowing sprite, depth-attenuated) ───────────────
+const vert=`
+  attribute float aBright;
+  attribute vec3 aColor;
+  uniform float uSize; uniform float uScale;
+  varying float vB; varying vec3 vC;
+  void main(){
+    // uSize already carries this octree node's LOD size compensation (see
+    // makeOctreeLayer): a coarse node draws a random subsample of its region, so
+    // its sprites are larger to keep the region's total brightness.
+    vB=aBright; vC=aColor;
+    vec4 mv=modelViewMatrix*vec4(position,1.0);
+    float d=-mv.z;
+    gl_PointSize = uSize * (0.6+aBright*1.7) * (uScale/ max(d,1.0));
+    gl_PointSize = clamp(gl_PointSize, 0.6, 26.0);
+    gl_Position = projectionMatrix*mv;
+  }`;
+const frag=`
+  precision mediump float;
+  varying float vB; varying vec3 vC;
+  uniform float uExposure;   // per-layer exposure. Additive blending accumulates,
+                             // so a dense layer needs less per-point energy. This
+                             // is exposure, NOT a change to the measured colour.
+  void main(){
+    vec2 p=gl_PointCoord-0.5;
+    float r=length(p);
+    if(r>0.5) discard;
+    float core=smoothstep(0.5,0.0,r);
+    float glow=pow(core,1.8);
+    float a=glow*(0.35+vB*0.65)*uExposure;
+    // Core highlight is tinted by the star's own colour rather than pure white —
+    // a white add on every point is what averaged 500k real colours into grey.
+    vec3 col=vC*(0.55+vB*0.9) + mix(vC,vec3(1.0),0.30)*pow(core,9.0)*0.16;
+    gl_FragColor=vec4(col,a);
+  }`;
+
+// ── v3 octree binary load ──────────────────────────────────────────────
+// Written by pack_octree.py. 8 B/point instead of v2's 20 B, and the points are
+// grouped into octree nodes so the renderer can draw only what is near and
+// on-screen instead of the whole catalogue every frame.
+//   header 32 B : "CSM3" | u32 version,nodeCount,pointCount | f32 vmin,vmax,smin,smax
+//   node   64 B : f32 bx,by,bz,edge | u32 offset,count,level,subtree | i32 child[8]
+//   point   8 B : u16 qx,qy,qz (inside the node cube) | u8 qs | u8 qv
+// qv === 255 means "no measured value" → NaN → neutral colour, never invented.
+// Positions are quantized per NODE, so precision is nodeEdge/65535 rather than
+// catalogueEdge/65535 — far below any structure the viewer can resolve.
+async function loadOctree(url,onP){
+  const res=await fetch(url);
+  if(!res.ok) throw new Error(url+': HTTP '+res.status);
+  const total=+res.headers.get('content-length')||0;
+  const reader=res.body.getReader();
+  const chunks=[]; let got=0;
+  while(true){ const {done,value}=await reader.read(); if(done) break; chunks.push(value); got+=value.length; if(onP&&total) onP(got/total); }
+  let len=0; for(const c of chunks) len+=c.length;
+  const bytes=new Uint8Array(len); let off=0; for(const c of chunks){ bytes.set(c,off); off+=c.length; }
+
+  if(!(len>32 && bytes[0]===0x43&&bytes[1]===0x53&&bytes[2]===0x4d&&bytes[3]===0x33)) throw new Error(url+': not a CSM3 file');
+  const dv=new DataView(bytes.buffer);
+  const version=dv.getUint32(4,true), nodeCount=dv.getUint32(8,true), n=dv.getUint32(12,true);
+  if(version!==3) throw new Error(url+': unsupported CSM3 version '+version);
+  const vmin=dv.getFloat32(16,true), vmax=dv.getFloat32(20,true);
+  const smin=dv.getFloat32(24,true), smax=dv.getFloat32(28,true);
+
+  const nodes=new Array(nodeCount);
+  for(let i=0;i<nodeCount;i++){
+    const o=32+i*64, child=new Int32Array(8);
+    for(let c=0;c<8;c++) child[c]=dv.getInt32(o+32+c*4,true);
+    nodes[i]={ bmin:[dv.getFloat32(o,true),dv.getFloat32(o+4,true),dv.getFloat32(o+8,true)],
+               edge:dv.getFloat32(o+12,true),
+               offset:dv.getUint32(o+16,true), count:dv.getUint32(o+20,true),
+               level:dv.getUint32(o+24,true), subtree:dv.getUint32(o+28,true),
+               child, pts:null, center:new THREE.Vector3(), radius:0 };
+  }
+
+  const pOff=32+nodeCount*64;                       // multiple of 4 → 16-bit aligned
+  const u16=new Uint16Array(bytes.buffer,pOff,n*4);
+  const u8 =new Uint8Array (bytes.buffer,pOff,n*8);
+  const pos=new Float32Array(n*3), rad=new Float32Array(n), val=new Float32Array(n);
+  const ds=(smax-smin)/254, dvv=(vmax-vmin)/254;
+  let unmeasured=0;
+  for(const nd of nodes){
+    const e=nd.edge/65535, bx=nd.bmin[0], by=nd.bmin[1], bz=nd.bmin[2];
+    for(let i=nd.offset, end=nd.offset+nd.count; i<end; i++){
+      const q=i*4, b=i*8;
+      pos[i*3  ]=bx+u16[q  ]*e;
+      pos[i*3+1]=by+u16[q+1]*e;
+      pos[i*3+2]=bz+u16[q+2]*e;
+      rad[i]=smin+u8[b+6]*ds;
+      const qv=u8[b+7];
+      if(qv===255){ val[i]=NaN; unmeasured++; } else val[i]=vmin+qv*dvv;
+    }
+  }
+  return {nodes,pos,rad,val,n,unmeasured,bytes:len};
+}
+
+// Each dataset lives in its own physical coordinate frame & scale (Gaia stars
+// ~1e3 pc, 2MRS galaxies ~1e8 pc, SDSS quasars ~1e9 pc). Recenter each layer on
+// its centroid and rescale so its 98th-percentile radius maps to a target shell
+// radius → concentric "shells of the universe" that share one camera scale.
+// The octree node cubes are carried through the same transform, since the LOD
+// walker culls and scores against them in scene units.
+function normalizeOctree(O,target){
+  const {pos,n,nodes}=O; if(n<1) return;
+  let cx=0,cy=0,cz=0;
+  for(let i=0;i<n;i++){cx+=pos[i*3];cy+=pos[i*3+1];cz+=pos[i*3+2];}
+  cx/=n;cy/=n;cz/=n;
+  const d=new Float64Array(n);
+  for(let i=0;i<n;i++){const x=pos[i*3]-cx,y=pos[i*3+1]-cy,z=pos[i*3+2]-cz; d[i]=Math.sqrt(x*x+y*y+z*z);}
+  const sorted=Float64Array.from(d).sort();
+  let p=sorted[Math.floor(0.98*(n-1))]||1; if(p<=0)p=1;
+  const s=target/p;
+  for(let i=0;i<n;i++){ pos[i*3]=(pos[i*3]-cx)*s; pos[i*3+1]=(pos[i*3+1]-cy)*s; pos[i*3+2]=(pos[i*3+2]-cz)*s; }
+  for(const nd of nodes){
+    nd.bmin=[(nd.bmin[0]-cx)*s,(nd.bmin[1]-cy)*s,(nd.bmin[2]-cz)*s];
+    nd.edge*=s;
+    nd.center.set(nd.bmin[0]+nd.edge/2,nd.bmin[1]+nd.edge/2,nd.bmin[2]+nd.edge/2);
+    nd.radius=nd.edge*0.8660254;            // half the cube's space diagonal
+  }
+}
+
+// ── cosmic web: CSMF line list ─────────────────────────────────────────
+// Written by pack_filaments.py from Tempel et al. (2014), MNRAS 438, 3465 — SDSS
+// filament spines from the Bisous process. This is a line list, not a point cloud,
+// so it does not use the CSM3 octree: 260,178 segments at 12 B each is 3.0 MB and
+// draws in one call, which is cheaper than any culling scheme would be.
+//   header  32 B : "CSMF" | u32 version,segCount | f32 bmin[3], edge
+//   segment 14 B : u16 x1,y1,z1,x2,y2,z2 | u8 t1,t2  (one global cube, isotropic step)
+// t is each endpoint's normalised arc position along its own filament, so the pulse
+// in filFrag travels the spine without the CPU walking any topology per frame.
+async function loadFilaments(url,onP){
+  const res=await fetch(url);
+  if(!res.ok) throw new Error(url+': HTTP '+res.status);
+  const total=+res.headers.get('content-length')||0;
+  const reader=res.body.getReader(); const chunks=[]; let got=0;
+  for(;;){ const {done,value}=await reader.read(); if(done)break; chunks.push(value); got+=value.length; if(total&&onP)onP(got/total); }
+  let len=0; for(const c of chunks) len+=c.length;
+  const bytes=new Uint8Array(len); let off=0; for(const c of chunks){ bytes.set(c,off); off+=c.length; }
+
+  if(!(len>32 && bytes[0]===0x43&&bytes[1]===0x53&&bytes[2]===0x4d&&bytes[3]===0x46)) throw new Error(url+': not a CSMF file');
+  const dv=new DataView(bytes.buffer);
+  const version=dv.getUint32(4,true), segCount=dv.getUint32(8,true);
+  if(version!==2) throw new Error(url+': unsupported CSMF version '+version+' (expected 2 — repack with pack_filaments.py)');
+  const bx=dv.getFloat32(12,true), by=dv.getFloat32(16,true), bz=dv.getFloat32(20,true);
+  const edge=dv.getFloat32(24,true), e=edge/65535;
+
+  // two endpoints per segment → LineSegments wants them consecutive.
+  // Stride is 14 B, which is not a multiple of 4, so the u16 view cannot span the
+  // whole block; read each record from the DataView at its own offset instead.
+  const pos=new Float32Array(segCount*6);
+  const arc=new Float32Array(segCount*2);
+  for(let i=0;i<segCount;i++){
+    const o=28+i*14, p=i*6, a=i*2;
+    pos[p  ]=bx+dv.getUint16(o   ,true)*e;
+    pos[p+1]=by+dv.getUint16(o+2 ,true)*e;
+    pos[p+2]=bz+dv.getUint16(o+4 ,true)*e;
+    pos[p+3]=bx+dv.getUint16(o+6 ,true)*e;
+    pos[p+4]=by+dv.getUint16(o+8 ,true)*e;
+    pos[p+5]=bz+dv.getUint16(o+10,true)*e;
+    arc[a  ]=bytes[o+12]/255;
+    arc[a+1]=bytes[o+13]/255;
+  }
+  return {pos,arc,segCount,n:segCount*2,bytes:len};
+}
+
+// Same centroid-and-98th-percentile transform the point layers get, so the web
+// sits on the shared camera scale. Percentile is over endpoints.
+function normalizeFilaments(F,target){
+  const p=F.pos, n=F.n; if(n<1) return;
+  let cx=0,cy=0,cz=0;
+  for(let i=0;i<n;i++){cx+=p[i*3];cy+=p[i*3+1];cz+=p[i*3+2];}
+  cx/=n;cy/=n;cz/=n;
+  const r=new Float32Array(n);
+  for(let i=0;i<n;i++){const x=p[i*3]-cx,y=p[i*3+1]-cy,z=p[i*3+2]-cz; r[i]=Math.hypot(x,y,z);}
+  const sorted=Array.from(r).sort((a,b)=>a-b);
+  let pc=sorted[Math.floor(0.98*(n-1))]||1; if(pc<=0)pc=1;
+  const s=target/pc;
+  for(let i=0;i<n;i++){ p[i*3]=(p[i*3]-cx)*s; p[i*3+1]=(p[i*3+1]-cy)*s; p[i*3+2]=(p[i*3+2]-cz)*s; }
+}
+
+// Additive lines with distance extinction. gl.LINES ignores linewidth on every
+// desktop GL driver, so depth is carried by opacity rather than thickness.
+const filVert=`
+  attribute float aArc;
+  uniform float uFade;
+  varying float vF; varying float vT;
+  void main(){
+    vec4 mv=modelViewMatrix*vec4(position,1.0);
+    vF=exp(-max(-mv.z,0.0)*uFade);      // nearer = brighter
+    vT=aArc;
+    gl_Position=projectionMatrix*mv;
+  }`;
+// The pulse is interpolated across each segment from its two endpoint arc values,
+// so it slides continuously along a spine instead of blinking per segment. Pure
+// display: it moves light along real geometry and changes no measured quantity.
+const filFrag=`
+  precision mediump float;
+  uniform vec3 uColor; uniform float uOpacity; uniform float uTime;
+  uniform float uFlow; uniform float uPulses;
+  varying float vF; varying float vT;
+  void main(){
+    float phase=fract(vT*uPulses - uTime*uFlow);
+    // narrow bright head with a trailing falloff
+    float pulse=pow(1.0-phase, 14.0);
+    float lum=vF*(1.0+pulse*2.2);
+    gl_FragColor=vec4(uColor*lum, lum*uOpacity);
+  }`;
+
+function makeFilamentLayer(F,cfg){
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.BufferAttribute(F.pos,3));
+  g.setAttribute('aArc',new THREE.BufferAttribute(F.arc,1));
+  const m=new THREE.ShaderMaterial({
+    uniforms:{uColor:{value:new THREE.Color(cfg.color)},uOpacity:{value:cfg.opacity},uFade:{value:cfg.fade},
+              uTime:{value:0},uFlow:{value:cfg.flow},uPulses:{value:cfg.pulses}},
+    vertexShader:filVert,fragmentShader:filFrag,
+    transparent:true,depthWrite:false,blending:THREE.AdditiveBlending
+  });
+  const lines=new THREE.LineSegments(g,m);
+  lines.frustumCulled=false;
+  scene.add(lines);
+  return lines;
+}
+
+// Ballesteros (2012) colour-index → effective temperature. Derived for B−V;
+// Gaia's BP−RP tracks it closely enough for colour, not for astrophysics.
+function teffFromBpRp(bp_rp){
+  const c=0.92*bp_rp;
+  return 4600*(1/(c+1.7) + 1/(c+0.62));
+}
+// Planck locus → linear RGB (Tanner Helland's fit). Renderer tone-maps after.
+function blackbodyRGB(K,S){
+  const t=Math.min(40000,Math.max(1000,K))/100;
+  let R,G,B;
+  if(t<=66){ R=255; G=99.4708025861*Math.log(t)-161.1195681661; }
+  else { R=329.698727446*Math.pow(t-60,-0.1332047592); G=288.1221695283*Math.pow(t-60,-0.0755148492); }
+  if(t>=66) B=255;
+  else if(t<=19) B=0;
+  else B=138.5177312231*Math.log(t-10)-305.0447927307;
+  const cl=v=>Math.min(1,Math.max(0,v/255));
+  let r=cl(R),g=cl(G),b=cl(B);
+  // Modest saturation boost: additive blending and ACES both pull toward white,
+  // so the true hue needs headroom to survive to the screen. Hue is unchanged.
+  const lum=0.2126*r+0.7152*g+0.0722*b; S=S??1.35;
+  r=Math.min(1,lum+(r-lum)*S); g=Math.min(1,lum+(g-lum)*S); b=Math.min(1,lum+(b-lum)*S);
+  return [r,g,b];
+}
+
+// Colour comes from measured values only. `val` carries the layer's real scalar
+// (bp_rp for stars); NaN means unmeasured and gets a neutral colour rather than
+// an invented one. Brightness derives from the packed size/radius, also real.
+function colorize(n,rad,val,kind,mode){
+  const c=new Float32Array(n*3), b=new Float32Array(n);
+  let mx=0; for(let i=0;i<n;i++) if(rad[i]>mx) mx=rad[i]; if(mx<=0)mx=1;
+  const NEUTRAL=[1.0,0.94,0.86];                 // unmeasured: warm white, no claim
+  const FLAT={galaxies:[0.86,0.55,1.0], quasars:[1.0,0.42,0.82], exo:[0.35,0.95,0.85]};
+
+  // Two palettes over the SAME measured values. VIVID keeps the original
+  // multi-hue look — violet/rose/gold galaxies, ice-to-magenta quasars — with
+  // redshift driving position along the ramp. TRUE is the calibrated
+  // appearance: real blackbody for stars, a subtle physical reddening for the
+  // rest. Neither invents per-object variation; they differ only in saturation
+  // and hue choice, and the readout says which is active.
+  const RAMPS={
+    vivid:{
+      galaxies:[[0.45,0.85,1.00],[0.72,0.55,1.00],[1.00,0.42,0.82],[1.00,0.78,0.36]],
+      quasars :[[0.60,0.92,1.00],[0.78,0.60,1.00],[1.00,0.36,0.78],[1.00,0.55,0.42]],
+    },
+    true:{
+      galaxies:[[0.78,0.85,1.00],[1.00,0.97,0.92],[1.00,0.82,0.62],[0.92,0.55,0.42]],
+      quasars :[[0.72,0.82,1.00],[1.00,0.96,0.90],[1.00,0.78,0.52],[0.90,0.45,0.34]],
+    },
+  };
+  let zmax=0; if(val) for(let i=0;i<n;i++){const v=val[i]; if(Number.isFinite(v)&&v>zmax) zmax=v;}
+  if(!zmax) zmax=1;
+  function ramp(stops,t){
+    t=Math.min(1,Math.max(0,t));
+    const f=t*(stops.length-1), i0=Math.min(stops.length-2,Math.floor(f)), u=f-i0;
+    const a=stops[i0], b2=stops[i0+1];
+    return [a[0]+(b2[0]-a[0])*u, a[1]+(b2[1]-a[1])*u, a[2]+(b2[2]-a[2])*u];
+  }
+  const vivid = mode!=='true';
+  for(let i=0;i<n;i++){
+    let br=Math.min(1, Math.pow((rad[i]||0.4)/mx,0.5)+0.12);
+    let rgb;
+    const v=val?val[i]:NaN;
+    if(kind==='stars'){
+      rgb = Number.isFinite(v) ? blackbodyRGB(teffFromBpRp(v), vivid?1.5:1.05) : NEUTRAL;
+    }else if((kind==='quasars'||kind==='galaxies') && Number.isFinite(v)){
+      // sqrt spreads the low-z crowd across the ramp instead of bunching it
+      rgb = ramp(RAMPS[vivid?'vivid':'true'][kind], Math.sqrt(v/zmax));
+    }else{
+      rgb = vivid ? (FLAT[kind]||NEUTRAL) : NEUTRAL;
+    }
+    b[i]=br;
+    c[i*3]=rgb[0]; c[i*3+1]=rgb[1]; c[i*3+2]=rgb[2];
+  }
+  return {col:c,bright:b};
+}
+
+const layers={};                    // k → THREE.Group of per-node Points, or LineSegments
+const octrees={};                   // k → {nodes,pos,rad,val,n,col,...}
+let filaments=null;                 // CSMF line list; not an octree, so LOD skips it
+const counts={};
+let paletteMode='vivid';
+function fmt(n){return n.toLocaleString();}
+
+// One THREE.Points per octree node, all sharing the same shader program. Node
+// geometries are views into the layer's single decoded buffer, so grouping costs
+// no extra memory — it buys per-node frustum culling and LOD.
+function makeOctreeLayer(O,cfg){
+  const {col,bright}=colorize(O.n,O.rad,O.val,cfg.k,paletteMode);
+  O.col=col; O.bright=bright;
+  const group=new THREE.Group(); scene.add(group);
+  // Reference spacing = the finest node in the tree, so the deepest level keeps
+  // the sizing the flat renderer had and only coarser levels grow.
+  let refSpacing=Infinity;
+  for(const nd of O.nodes){ if(!nd.count) continue;
+    const sp=nd.edge/Math.cbrt(nd.count); if(sp<refSpacing) refSpacing=sp; }
+  if(!(refSpacing>0)||!isFinite(refSpacing)) refSpacing=1;
+  for(const nd of O.nodes){
+    if(!nd.count) continue;
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(O.pos.subarray(nd.offset*3,(nd.offset+nd.count)*3),3));
+    g.setAttribute('aColor', new THREE.BufferAttribute(col.subarray(nd.offset*3,(nd.offset+nd.count)*3),3));
+    g.setAttribute('aBright',new THREE.BufferAttribute(bright.subarray(nd.offset,nd.offset+nd.count),1));
+    // A coarse node draws a random subsample of its region, so its points must
+    // carry more light each or the field dims every time the walker steps up a
+    // level. Two ways to pay for that: bigger sprites (costs fill rate) or
+    // brighter sprites (nearly free). Measured at 1280x720, compensating purely
+    // by radius cost 30.7 ms/frame at the close camera against 17.1 ms with no
+    // compensation at all — the enlarged sprites are pure overdraw under additive
+    // blending. So most of the compensation is exposure and only a little is size,
+    // which still helps close the visible gaps between sparse points.
+    // Both are display settings, not data: they change how much light a point
+    // emits, never its position, colour hue or measured value.
+    const lod=(nd.edge/Math.cbrt(nd.count))/refSpacing;
+    const sizeMul=cfg.size*Math.min(3.0,Math.pow(lod,0.5));
+    const exposure=(cfg.exp??1.0)*Math.min(4.0,Math.pow(lod,1.5));
+    const m=new THREE.ShaderMaterial({
+      uniforms:{uSize:{value:sizeMul},uScale:{value:260.0},uExposure:{value:exposure}},
+      vertexShader:vert,fragmentShader:frag,
+      transparent:true,depthWrite:false,blending:THREE.AdditiveBlending
+    });
+    const pts=new THREE.Points(g,m);
+    pts.frustumCulled=false;          // the LOD walker culls whole subtrees itself
+    pts.visible=false;
+    pts.userData={sizeMul,node:nd};
+    nd.pts=pts; group.add(pts);
+  }
+  return group;
+}
+
+// ── LOD walker ─────────────────────────────────────────────────────────
+// Best-first descent under a hard point budget: a node's score is its projected
+// screen radius in pixels, so near/large nodes get detail first and the frame
+// cost stays bounded no matter how big the catalogue is. Parent and child point
+// sets are disjoint (the packer partitions, it never duplicates), so drawing a
+// parent plus some of its children double-counts nothing.
+const _frustum=new THREE.Frustum(), _clip=new THREE.Matrix4(), _inv=new THREE.Matrix4();
+const _sph=new THREE.Sphere(), _camLocal=new THREE.Vector3();
+// Both tunables were measured at 1440x900 with devicePixelRatio 2 (a 2880x1800
+// backbuffer), camera at the default overview [0,120,560], on this machine's GPU.
+//
+// POINT_BUDGET is a backstop, not the active control: the walker never reached it
+// at 849,918 points. The most it ever drew was ~724k, at the close camera. It
+// exists so a larger catalogue degrades by shedding detail instead of dropping
+// frames.
+let POINT_BUDGET=1_200_000;
+// MIN_PX is what actually decides detail. It was 160, which drew only 386k of
+// 849,918 — 45% — at the default view. Sweep at that camera, timed with a
+// gl.finish() after every frame (without the sync, performance.now() measures
+// command submission rather than completion and the numbers move by 6x run to
+// run, which is how the first pass at this measurement went wrong):
+//   160px → 386,726 pts, 0.93 ms      80px → 590,414 pts, 3.42 ms
+//    40px → 808,388 pts, 3.94 ms      20px → 814,726 pts, 4.17 ms
+// 20px is where it saturates — what is left is genuinely outside the frustum.
+// So 40 buys 95.1% of the catalogue for ~4 ms, i.e. 250 fps of headroom, and the
+// frame is indistinguishable from drawing everything: mean framebuffer luminance
+// matches to within 0.7% and the clipped-pixel fraction is identical at 3.12%.
+// Detail was being discarded to save 3 ms nobody could perceive.
+//
+// Not a speedup claim: forcing every node visible costs 10.63 ms, but that is not
+// what the old flat renderer did. It draws each coarse node's subsample on top of
+// the fine nodes covering the same region, and those sprites carry up to 3x size
+// compensation, so most of that cost is additive overdraw rather than a fair
+// baseline. The octree's honest wins are download size (6.51 MB against v2's
+// 12.8 MB) and frustum culling, plus the ability to shed detail on a weaker GPU.
+let MIN_PX=40;
+let lodStats={points:0,nodes:0,culled:0};
+
+function updateLOD(){
+  scene.updateMatrixWorld(true);
+  _clip.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse).multiply(scene.matrixWorld);
+  _frustum.setFromProjectionMatrix(_clip);                 // planes in scene-local space
+  _inv.copy(scene.matrixWorld).invert();
+  _camLocal.copy(camera.position).applyMatrix4(_inv);
+  const projFactor=(innerHeight*0.5)/Math.tan(camera.fov*0.5*Math.PI/180);
+  const score=nd=>{
+    const dist=Math.max(_camLocal.distanceTo(nd.center)-nd.radius, 1e-4);
+    return nd.radius/dist*projFactor;
+  };
+
+  const q=[];
+  for(const k in octrees){
+    const O=octrees[k]; if(!O) continue;
+    for(const nd of O.nodes) if(nd.pts) nd.pts.visible=false;
+    if(!layers[k]||!layers[k].visible) continue;
+    const root=O.nodes[0]; if(root&&root.pts) q.push({O,nd:root,s:score(root)});
+  }
+
+  let pts=0,nodes=0,culled=0;
+  while(q.length){
+    let bi=0; for(let i=1;i<q.length;i++) if(q[i].s>q[bi].s) bi=i;
+    const it=q.splice(bi,1)[0], nd=it.nd;
+    _sph.center.copy(nd.center); _sph.radius=nd.radius;
+    if(!_frustum.intersectsSphere(_sph)){ culled+=nd.subtree; continue; }   // whole subtree off-screen
+    if(nodes>0 && pts+nd.count>POINT_BUDGET) break;                          // budget spent
+    nd.pts.visible=true; pts+=nd.count; nodes++;
+    if(it.s>MIN_PX){
+      for(let c=0;c<8;c++){
+        const ci=nd.child[c]; if(ci<0) continue;
+        const ch=it.O.nodes[ci]; if(!ch||!ch.pts) continue;
+        q.push({O:it.O,nd:ch,s:score(ch)});
+      }
+    }
+  }
+  lodStats={points:pts,nodes,culled};
+}
+
+// Recolour in place from the same measured values — no reload, no refetch.
+function applyPalette(mode){
+  paletteMode=mode;
+  for(const k in octrees){
+    const O=octrees[k]; if(!O||!O.col) continue;
+    const {col}=colorize(O.n,O.rad,O.val,k,mode);
+    O.col.set(col);
+    for(const nd of O.nodes) if(nd.pts) nd.pts.geometry.getAttribute('aColor').needsUpdate=true;
+  }
+  const el=document.getElementById('palLabel');
+  if(el) el.textContent = mode==='true' ? 'TRUE COLOUR' : 'VIVID';
+}
+
+async function boot(){
+  // norm = target shell radius (concentric: exo inner → quasars outer)
+  // exp = per-layer exposure. 500k stars pile up additively in a small volume, so
+  // they need far less energy each than the 6k exoplanets do.
+  const files=[
+    {k:'stars',    url:'stars_o.bin',    size:0.9, norm:70,   exp:0.10, p:[0,0.55]},
+    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.55, p:[0.55,0.82]},
+    {k:'galaxies', url:'galaxies_o.bin', size:1.7, norm:320,  exp:0.85, p:[0.82,0.94]},
+    // exoplanets are only 6,411 points inside the star cloud — they need real
+    // presence or the 500k-star glow swallows them entirely
+    {k:'exo',      url:'exo_o.bin',      size:2.4, norm:26,   exp:0.32, p:[0.94,1.0]},
+  ];
+  let totalN=0, totalBytes=0;
+  for(const f of files){
+    setProg(f.p[0], 'Loading '+f.k+'…');
+    let O=null;
+    try{ O=await loadOctree(f.url, (fp)=>setProg(f.p[0]+(f.p[1]-f.p[0])*fp)); }
+    catch(e){ console.error(e); document.getElementById('ct-'+f.k).textContent='failed'; setProg(f.p[1]); continue; }
+    normalizeOctree(O,f.norm);
+    octrees[f.k]=O;
+    layers[f.k]=makeOctreeLayer(O,f);
+    counts[f.k]=O.n; totalN+=O.n; totalBytes+=O.bytes;
+    document.getElementById('ct-'+f.k).textContent=fmt(O.n);
+    setProg(f.p[1]);
+  }
+  // The cosmic web loads last: it is the only layer the viewer can do without, and
+  // a failure here must not stop the point layers from being interactive.
+  // Its shell target sits just inside the galaxy shell so the web reads as
+  // large-scale structure rather than as a foreground cage.
+  try{
+    setProg(0.99,'Loading cosmic web…');
+    const F=await loadFilaments('filaments.bin');
+    normalizeFilaments(F,300);
+    filaments=F;
+    // fade is per scene unit, so it has to be read against the 300-unit shell above:
+    // at a natural viewing distance of ~1100 this leaves ~63% transmission. The first
+    // value tried, 0.0016, left 16% and made the whole web nearly invisible from
+    // outside — measured, not guessed.
+    // flow=0 for anyone who asked the OS for reduced motion — the web still renders,
+    // it just stops travelling.
+    const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.8,fade:0.0004,
+                                          flow:calm?0:0.09,pulses:3.0});
+    counts.filaments=F.segCount;
+    document.getElementById('ct-filaments').textContent=fmt(F.segCount);
+    totalBytes+=F.bytes;
+    console.log('cosmic web: '+fmt(F.segCount)+' segments, '+(F.bytes/1048576).toFixed(2)+' MB of CSMF');
+  }catch(e){
+    console.error(e);
+    document.getElementById('ct-filaments').textContent='failed';
+  }
+  document.getElementById('total').textContent=fmt(totalN);
+  console.log('loaded '+fmt(totalN)+' points, '+(totalBytes/1048576).toFixed(2)+' MB across '
+    +Object.values(octrees).reduce((a,O)=>a+O.nodes.length,0)+' octree nodes');
+  setProg(1,'Ready');
+  // fade out loader
+  const L=document.getElementById('load'); L.style.opacity='0'; setTimeout(()=>L.remove(),900);
+  intro();
+}
+
+// ── interactions ───────────────────────────────────────────────────────
+document.querySelectorAll('.layer').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const k=el.dataset.k; if(!k) return;   // .layer is reused by the palette row
+    const on=el.classList.toggle('off');
+    if(layers[k]) layers[k].visible=!on;   // the LOD walker updates the readout
+  });
+});
+document.getElementById('palToggle').addEventListener('click',()=>{
+  applyPalette(paletteMode==='vivid'?'true':'vivid');
+});
+const sB=document.getElementById('s-bloom'), sS=document.getElementById('s-size'), sR=document.getElementById('s-rot');
+sB.oninput=()=>{bloom.strength=+sB.value; document.getElementById('v-bloom').textContent=sB.value;};
+sS.oninput=()=>{document.getElementById('v-size').textContent=sS.value;
+  const v=+sS.value;
+  Object.values(layers).forEach(g=>{ if(g) g.children.forEach(p=>{ p.material.uniforms.uSize.value=v*p.userData.sizeMul; }); });};
+sR.oninput=()=>{document.getElementById('v-rot').textContent=sR.value;};
+
+// camera tweening
+let tween=null;
+function flyTo(pos,tgt,ms=2200){
+  const c0=camera.position.clone(), t0=controls.target.clone(), t1=new THREE.Vector3(...tgt), p1=new THREE.Vector3(...pos);
+  const start=performance.now();
+  tween={start,ms,from:c0,to:p1,tf:t0,tt:t1};
+}
+const TOURS={
+  home:  {pos:[0,120,560],  tgt:[0,0,0]},
+  milky: {pos:[6,3,16],     tgt:[0,0,0]},
+  local: {pos:[40,20,120],  tgt:[0,0,0]},
+  web:   {pos:[0,300,1500], tgt:[0,0,0]},
+  quasar:{pos:[200,140,900],tgt:[60,0,-120]},
+  exo:   {pos:[3,1.5,9],    tgt:[0,0,0]},
+};
+document.querySelectorAll('.tour').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tour').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    const t=TOURS[b.dataset.t]; if(t) flyTo(t.pos,t.tgt);
+  });
+});
+function intro(){ camera.position.set(0,40,2600); flyTo([0,120,560],[0,0,0],3200); }
+
+// ── flight controls ────────────────────────────────────────────────────
+// WASD/arrows fly; R/F climb and dive; Shift boosts. OrbitControls stays in charge
+// of looking around, so flying moves the camera AND its orbit target by the same
+// vector — otherwise the next drag would swing you back to wherever the target was
+// left behind.
+//
+// Speed is proportional to distance from the centre, because this scene spans four
+// orders of magnitude between the exoplanet shell (26) and the quasar shell (1000).
+// A fixed speed that feels right among the stars would take minutes to cross the
+// quasar field, and would be unusable once you are inside the star cloud.
+const keys=new Set();
+const FLY={forward:['keyw','arrowup'],back:['keys','arrowdown'],
+           left:['keya','arrowleft'],right:['keyd','arrowright'],
+           up:['keyr'],down:['keyf']};
+function typingInAField(){
+  const el=document.activeElement;
+  if(!el) return false;
+  const t=el.tagName;
+  // range inputs use the arrow keys themselves — don't steal them
+  return t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||el.isContentEditable;
+}
+addEventListener('keydown',e=>{
+  if(typingInAField()) return;
+  const c=e.code.toLowerCase();
+  const known=Object.values(FLY).some(list=>list.includes(c));
+  if(known){ keys.add(c); e.preventDefault(); }        // stop arrows scrolling the page
+  if(c==='shiftleft'||c==='shiftright') keys.add('shift');
+});
+addEventListener('keyup',e=>{
+  const c=e.code.toLowerCase();
+  keys.delete(c);
+  if(c==='shiftleft'||c==='shiftright') keys.delete('shift');
+});
+// a lost focus event means keys that are still held would stick down forever
+addEventListener('blur',()=>keys.clear());
+
+const _fwd=new THREE.Vector3(), _right=new THREE.Vector3(), _up=new THREE.Vector3(0,1,0), _move=new THREE.Vector3();
+function held(action){ return FLY[action].some(c=>keys.has(c)); }
+function updateFlight(dt){
+  const f=held('forward')-held('back'), s=held('right')-held('left'), u=held('up')-held('down');
+  if(!f&&!s&&!u) return false;
+  camera.getWorldDirection(_fwd);
+  _right.crossVectors(_fwd,_up).normalize();
+  // 45% of the distance to centre per second, so travel is scale-free
+  const dist=Math.max(camera.position.distanceTo(controls.target),2);
+  const speed=dist*0.45*(keys.has('shift')?3.5:1)*dt;
+  _move.set(0,0,0)
+    .addScaledVector(_fwd,f*speed)
+    .addScaledVector(_right,s*speed)
+    .addScaledVector(_up,u*speed);
+  camera.position.add(_move);
+  controls.target.add(_move);      // keep orbit anchored ahead of the camera
+  return true;
+}
+
+// ── render loop ────────────────────────────────────────────────────────
+const ease=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+let last=performance.now(), fEl=document.getElementById('r-fps'), dEl=document.getElementById('r-dist');
+const pEl=document.getElementById('r-pts'), nEl=document.getElementById('r-nodes');
+let frames=0,fAcc=0;
+function tick(now){
+  const dt=(now-last)/1000; last=now;
+  // tween
+  if(tween){
+    const k=Math.min(1,(now-tween.start)/tween.ms), e=ease(k);
+    camera.position.lerpVectors(tween.from,tween.to,e);
+    controls.target.lerpVectors(tween.tf,tween.tt,e);
+    if(k>=1) tween=null;
+  }
+  // drift (auto-rotate the whole cosmos — layers are children of the scene)
+  const rot=+sR.value;
+  // drift is ambience; hold it while the viewer is actively flying or the scene
+  // slides under you as you try to aim
+  if(rot>0 && !tween && !flying){ scene.rotation.y += rot*dt*0.04; }
+  const flying=updateFlight(Math.min(dt,0.05));   // clamp dt so a stalled tab can't teleport you
+  controls.update();
+  if(layers.filaments) layers.filaments.material.uniforms.uTime.value=now*0.001;
+  updateLOD();
+  composer.render();
+  // hud
+  frames++; fAcc+=dt;
+  if(fAcc>=0.5){
+    fEl.textContent=Math.round(frames/fAcc); frames=0; fAcc=0;
+    pEl.textContent=fmt(lodStats.points);
+    nEl.textContent=lodStats.nodes;
+  }
+  dEl.textContent=camera.position.length().toFixed(0);
+  requestAnimationFrame(tick);
+}
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight); composer.setSize(innerWidth,innerHeight);
+});
+// Debug hook for performance work: lets a console session add synthetic layers and
+// measure the real point-count ceiling on this GPU instead of guessing.
+window.__cosmos={THREE,scene,renderer,composer,camera,controls,layers,octrees,counts,applyPalette,
+  fil:()=>filaments, keys, updateFlight,
+  updateLOD,lod:()=>lodStats,
+  budget:v=>{ if(v!=null) POINT_BUDGET=v; return POINT_BUDGET; },
+  minPx:v=>{ if(v!=null) MIN_PX=v; return MIN_PX; }};
+
+boot(); requestAnimationFrame(tick);
+</script>
+</body>
+</html>
