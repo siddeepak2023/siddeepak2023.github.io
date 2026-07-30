@@ -230,20 +230,22 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 .mini-canvas{position:relative;flex:1;min-height:96px}
 /* Card minis are real screenshots of the artifact each card's headline claim comes
    from — the precision@k panel, the ablation chart, the delivery/rating panel, a live
-   frame from the viewer. Captured by scratchpad/capture-cards.mjs, not hand-drawn.
+   frame from the viewer. Captured by tools/capture-cards.mjs, not hand-drawn.
    Retail and NBA ship light and dark variants because their dashboards theme; Olist
    has no theme switch and Cosmos is dark by construction, so those are single-variant
-   and simply sit on the card background. */
+   and simply sit on the card background. The dark shots have to drive Dash.applyTheme
+   rather than rely on prefers-color-scheme — a flip rebuilds the charts against a
+   separate validated palette, so a headless dark context alone still yields a light
+   chart. */
 .mini-shot{overflow:hidden;border:1px solid var(--line-soft);background:var(--bg2);display:flex;
   flex:1;width:100%;min-height:130px}
-/* cover, now that each capture is cropped to the plot itself rather than the whole
-   panel: nothing but chart is in frame, so filling the box costs a sliver of margin
-   instead of cutting a sentence, and the plot stays readable at card size. */
-.mini-shot .shot{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
 /* contain, not cover. These are charts: the whole curve IS the content, so cropping one
-   is not a framing choice, it is a different claim. At card width the retail image is
-   3.28:1 against a roughly square well, and cover was slicing it down to the first 200
-   customers — the part where precision is flat and the finding is invisible. */
+   is not a framing choice, it is a different claim. Captures are now the whole panel —
+   heading, method line, plot and takeaway — at roughly 1.6:1, because the bare plot
+   read as unlabelled dots at card size: the NBA mini had no title and no axis name, so
+   a glance could not tell what the six points measured. The panel carries its own
+   caption, which is what makes it legible in a 450px well. */
+.mini-shot .shot{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
 [data-theme="light"] .shot--dark{display:none}
 [data-theme="dark"] .shot--light{display:none}
 .mini-note{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--mut);text-transform:uppercase;margin-top:10px}
