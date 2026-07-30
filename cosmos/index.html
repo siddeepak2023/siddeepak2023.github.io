@@ -703,6 +703,7 @@ const TOURS={
 };
 document.querySelectorAll('.tour').forEach(b=>{
   b.addEventListener('click',()=>{
+    endStuckDrag();
     document.querySelectorAll('.tour').forEach(x=>x.classList.remove('on')); b.classList.add('on');
     const t=TOURS[b.dataset.t]; if(t) flyTo(t.pos,t.tgt);
   });
@@ -788,6 +789,7 @@ function leashTarget(){
 
 // A way back that does not require knowing the tour buttons are also a reset.
 function recenter(){
+  endStuckDrag();   // a guaranteed way out if a drag ever does jam the wheel handler
   document.querySelectorAll('.tour').forEach(x=>x.classList.remove('on'));
   const b=document.querySelector('.tour[data-t="home"]'); if(b) b.classList.add('on');
   flyTo(TOURS.home.pos,TOURS.home.tgt,1400);
@@ -796,14 +798,47 @@ addEventListener('keydown',e=>{
   if(e.code==='Digit0'||e.code==='Numpad0'||e.code==='Home'){ e.preventDefault(); recenter(); }
 });
 
-// No pointer-state rescue here on purpose. A drag released outside the canvas looked
-// like it left the controls panning — the target kept moving on button-free mouse
-// moves — but that reading was wrong: the movement decays 19.4 -> 7.2 -> 2.7 units,
-// which is OrbitControls' own damping settling, not a live drag. Running the same
-// probe against the build before any change gives identical numbers (0.02 units of
-// drift once settled, against 0.5 for "stuck"), so there was nothing to fix. The real
-// fault behind "pan gets stuck" is the leash problem above: pan far enough and the
-// field leaves the frame, so every input feels dead.
+// Trackpad drags that never end, and the zoom they take with them.
+//
+// OrbitControls ignores the wheel while a drag is in progress — onMouseWheel returns
+// early unless state === NONE. So a single missed pointerup does not just leave the
+// view panning; it disables scroll-zoom permanently, which is exactly the reported
+// "it stays in pan and never goes back to scroll zoom". Lifting a finger off a
+// trackpad outside the canvas, or while the window loses focus, is the usual way to
+// miss one.
+//
+// Honest note on what is and is not proven here: this could NOT be reproduced with
+// synthetic events — Playwright always delivers the pointerup, so zoom kept working
+// down every path, including a release off-canvas. An earlier attempt at this guard
+// was removed because the evidence for it (target drift after release) turned out to
+// be damping decay, not a live drag. This version is justified by the mechanism in
+// OrbitControls' own wheel handler rather than by that bad measurement, and it is
+// inert when nothing is stuck: it only fires when a drag is open and the buttons are
+// already up.
+let _dragPointer=null;
+renderer.domElement.addEventListener('pointerdown',e=>{ _dragPointer=e.pointerId; });
+addEventListener('pointerup',()=>{ _dragPointer=null; });
+function endStuckDrag(){
+  if(_dragPointer===null) return;
+  renderer.domElement.dispatchEvent(new PointerEvent('pointerup',
+    {pointerId:_dragPointer,bubbles:true,cancelable:true}));
+  _dragPointer=null;
+}
+// A move or a scroll carrying no buttons means the release was missed. The wheel one
+// runs in the capture phase so the drag is closed before OrbitControls sees the event
+// and discards it.
+addEventListener('pointermove',e=>{ if(_dragPointer!==null && e.buttons===0) endStuckDrag(); });
+addEventListener('wheel',e=>{ if(_dragPointer!==null && e.buttons===0) endStuckDrag(); },{capture:true,passive:true});
+addEventListener('pointercancel',endStuckDrag);
+addEventListener('blur',endStuckDrag);
+
+// Drift keeps rotating the scene after you let go, which makes a released drag look
+// like it is still running. Hold it for a moment after any input so "did it stop?"
+// has an unambiguous answer.
+let _lastInput=0;
+['pointerdown','pointerup','pointermove','wheel'].forEach(ev=>
+  addEventListener(ev,()=>{ _lastInput=performance.now(); },{passive:true}));
+function driftHeld(){ return performance.now()-_lastInput < 1500; }
 
 // ── render loop ────────────────────────────────────────────────────────
 const ease=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
@@ -829,7 +864,7 @@ function tick(now){
   const rot=+sR.value;
   // drift is ambience; hold it while the viewer is actively flying or the scene
   // slides under you as you try to aim
-  if(rot>0 && !tween && !flying){ scene.rotation.y += rot*dt*0.04; }
+  if(rot>0 && !tween && !flying && !driftHeld()){ scene.rotation.y += rot*dt*0.04; }
   controls.update();
   leashTarget();
   if(layers.filaments) layers.filaments.material.uniforms.uTime.value=now*0.001;
@@ -853,7 +888,8 @@ addEventListener('resize',()=>{
 // measure the real point-count ceiling on this GPU instead of guessing.
 window.__cosmos={THREE,scene,renderer,composer,camera,controls,layers,octrees,counts,applyPalette,tick,
   fil:()=>filaments, keys, updateFlight,
-  updateLOD,lod:()=>lodStats,
+  updateLOD,lod:()=>lodStats,tick,
+  dragOpen:()=>_dragPointer!==null, endStuckDrag,
   budget:v=>{ if(v!=null) POINT_BUDGET=v; return POINT_BUDGET; },
   minPx:v=>{ if(v!=null) MIN_PX=v; return MIN_PX; }};
 
