@@ -239,7 +239,11 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 /* cover, now that each capture is cropped to the plot itself rather than the whole
    panel: nothing but chart is in frame, so filling the box costs a sliver of margin
    instead of cutting a sentence, and the plot stays readable at card size. */
-.mini-shot .shot{width:100%;height:100%;object-fit:cover;object-position:left center;display:block}
+.mini-shot .shot{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+/* contain, not cover. These are charts: the whole curve IS the content, so cropping one
+   is not a framing choice, it is a different claim. At card width the retail image is
+   3.28:1 against a roughly square well, and cover was slicing it down to the first 200
+   customers — the part where precision is flat and the finding is invisible. */
 [data-theme="light"] .shot--dark{display:none}
 [data-theme="dark"] .shot--light{display:none}
 .mini-note{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--mut);text-transform:uppercase;margin-top:10px}
@@ -462,10 +466,10 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
       <article class="prod rv">
         <div class="prod-idx"><span>05 · Data viz</span><span>WebGL</span></div>
         <h3>Cosmos Deep Field</h3>
-        <p>An interactive 3D map where <strong>every point is a real object someone measured</strong> — <strong>1,302,828</strong> of them: <strong>752,910</strong> SDSS quasars, <strong>500,000</strong> Gaia DR3 stars, <strong>43,507</strong> 2MRS/HyperLEDA galaxies and <strong>6,411</strong> NASA exoplanet host stars, plus the cosmic web as <strong>260,178 filament segments</strong> across 15,421 filaments (Tempel et al. 2014). Nothing is generated or decorative. The stars reach ~2 kpc, the quasars 3.9 Gpc — about 27% of the observable radius — and each layer is rescaled onto its own shell, so distances <em>between</em> layers are presentational. Five sky-survey APIs feed a Python pipeline; Astropy turns parallax or redshift into 3D positions. Each point is quantized to <strong>8 bytes</strong> and streamed through an <strong>octree LOD</strong> that draws only what is on screen — 24.7 MB of geometry down to 10.0 MB, holding <strong>60 fps</strong> with 1.17M points in frame. Fly it with WASD.</p>
+        <p>An interactive 3D map where <strong>every point is a real object someone measured</strong> — <strong>4,616,289</strong> of them by default: <strong>2,613,461</strong> SDSS spectroscopic galaxies, <strong>1,200,000</strong> Gaia DR3 stars, <strong>752,910</strong> SDSS quasars and <strong>6,411</strong> NASA exoplanet host stars, plus the cosmic web as <strong>260,178 filament segments</strong> (Tempel et al. 2014). Nothing is generated or decorative. Quasars are galaxies — the blazing cores of the most distant ones — so they are drawn as their own layer for contrast, not as a separate kind of thing. The quasars sit at a <strong>median 4.6 Gpc</strong>, roughly a third of the observable radius, from a low-redshift distance approximation that gets unreliable for the rarest few; and each layer is rescaled onto its own shell, so distances <em>between</em> layers are presentational. Five sky-survey APIs feed a Python pipeline; Astropy turns parallax or redshift into 3D positions. Each point is quantized to <strong>8 bytes</strong> and streamed through an <strong>octree LOD</strong> that draws only what is on screen — about <strong>1.2M points per frame</strong>, holding <strong>29–52 fps</strong>. Fly it with WASD.</p>
         <div class="mini">
           <div class="mini-canvas mini-shot"><img class="shot" src="cards/cosmos-dark.jpg" alt="Live render from the Cosmos Deep Field viewer: Gaia stars and quasars around a bright core with the blue filaments of the SDSS cosmic web threading through them." loading="lazy" decoding="async"></div>
-          <p class="mini-note">752,910 quasars · 500,000 stars · 43,507 galaxies · 6,411 exo hosts · <em>+260,178 filament segments</em></p>
+          <p class="mini-note">6,786,069 stars · 2,656,968 galaxies · 752,910 quasars · 6,411 exo hosts · <em>+260,178 filament segments</em></p>
         </div>
         <p class="stack-line"><b>Python</b> · <b>Astropy</b> · <b>Three.js</b> · <b>Pandas</b></p>
         <div class="prod-links">

@@ -137,3 +137,8 @@ netflix_dashboard.html
 # numbers have never been through the audit the other projects went through, so it is
 # unpublished until they are verified. Same treatment as netflix_dashboard.html.
 churn_dashboard.html
+
+# The full 6.79 MB-per-million star layer (52 MB). Git keeps every blob forever and
+# Pages will not serve LFS, so the upgrade tier is hosted outside this repo; the viewer
+# skips it gracefully when the fetch fails.
+cosmos/stars_o.bin

@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Cosmos Deep Field — an interactive 3D map of real stars, galaxies and quasars</title>
-<meta name="description" content="An interactive 3D map of 1,302,828 real astronomical objects — 752,910 SDSS quasars, 500,000 Gaia DR3 stars, 43,507 2MRS galaxies, 6,411 NASA exoplanet hosts — plus 260,178 cosmic-web filament segments."/>
+<meta name="description" content="An interactive 3D map of 4,616,289 real astronomical objects — 2,613,461 SDSS DR17 spectroscopic galaxies, 1,200,000 Gaia DR3 stars, 752,910 SDSS quasars, 43,507 2MRS galaxies, 6,411 NASA exoplanet hosts — plus 260,178 cosmic-web filament segments."/>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
   :root{--cyan:#ff5ec4;--violet:#b48cff;--amber:#ff8ad4;--ink:#070210;--glass:rgba(20,6,24,.74);--line:rgba(255,110,200,.16);--text:#f3dcef;--mut:#a366a0;}
@@ -38,6 +38,33 @@
   .sld label b{color:var(--text);font-weight:500;}
   input[type=range]{width:100%;height:3px;-webkit-appearance:none;appearance:none;background:rgba(120,170,255,.18);border-radius:3px;outline:none;cursor:pointer;}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);cursor:pointer;}
+
+  /* about overlay */
+  #aboutBtn{position:absolute;bottom:24px;right:24px;pointer-events:all;padding:9px 15px;font-size:9.5px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--mut);cursor:pointer;transition:.18s;}
+  #aboutBtn:hover{color:var(--cyan);border-color:rgba(255,94,196,.45);}
+  #about{position:absolute;inset:0;z-index:9;display:none;pointer-events:all;
+    background:rgba(4,1,10,.82);backdrop-filter:blur(7px);overflow-y:auto;}
+  #about.on{display:block;}
+  #aboutIn{max-width:760px;margin:0 auto;padding:64px 30px 96px;}
+  #about h2{font-family:'Sora',system-ui,sans-serif;font-size:19px;letter-spacing:.13em;text-transform:uppercase;
+    background:linear-gradient(90deg,var(--cyan),#fff,var(--violet));-webkit-background-clip:text;background-clip:text;
+    color:transparent;margin-bottom:8px;}
+  #about h3{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin:34px 0 12px;}
+  #about p{font-size:13px;line-height:1.72;color:var(--text);margin-bottom:13px;}
+  #about p.sm{font-size:11.5px;color:var(--mut);line-height:1.68;}
+  #about b{color:#fff;font-weight:600;}
+  #about em{color:var(--violet);font-style:normal;}
+  #about table{width:100%;border-collapse:collapse;font-size:11.5px;margin:8px 0 4px;}
+  #about th{text-align:left;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);
+    font-weight:400;padding:7px 10px 7px 0;border-bottom:1px solid var(--line);}
+  #about td{padding:8px 10px 8px 0;border-bottom:1px solid rgba(255,110,200,.07);vertical-align:top;color:var(--text);}
+  #about td.n{color:var(--mut);white-space:nowrap;}
+  #about .warn{border-left:2px solid var(--cyan);padding:2px 0 2px 15px;margin:16px 0;}
+  #aboutClose{position:absolute;top:22px;right:26px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--mut);cursor:pointer;pointer-events:all;}
+  #aboutClose:hover{color:var(--cyan);}
+  @media(max-width:640px){#aboutIn{padding:52px 20px 80px}#about p{font-size:12.5px}}
 
   /* preset buttons */
   #tours{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:7px;pointer-events:all;flex-wrap:wrap;justify-content:center;max-width:90vw;}
@@ -79,7 +106,7 @@
 <div id="hud">
   <div id="title">
     <h1>Cosmos Deep Field</h1>
-    <p>Every&nbsp;point&nbsp;is&nbsp;a&nbsp;real&nbsp;star,&nbsp;galaxy&nbsp;or&nbsp;quasar&nbsp;·&nbsp;1,302,828&nbsp;of&nbsp;them,&nbsp;all&nbsp;measured&nbsp;by&nbsp;real&nbsp;telescopes</p>
+    <p id="subcount">Every&nbsp;point&nbsp;is&nbsp;a&nbsp;real&nbsp;star,&nbsp;galaxy&nbsp;or&nbsp;quasar&nbsp;·&nbsp;4,616,289&nbsp;of&nbsp;them,&nbsp;all&nbsp;measured&nbsp;by&nbsp;real&nbsp;telescopes</p>
   </div>
 
   <div id="hint">Drag to orbit · scroll to zoom · <b>right-drag</b> to pan · <b>WASD</b>/arrows to fly, <b>R/F</b> up-down, <b>Shift</b> to boost · <b>0</b> to recentre. Pick a tour below.</div>
@@ -92,12 +119,151 @@
     <div class="layer" data-k="exo"><span class="swatch" style="color:#00dbb5"></span><span class="nm">Exoplanets</span><span class="ct" id="ct-exo">—</span></div>
     <div class="layer" data-k="filaments" title="Tempel et al. 2014 (MNRAS 438, 3465) — SDSS filament spines found with the Bisous process. Segments, not objects."><span class="swatch" style="color:#7fb2ff"></span><span class="nm">Cosmic web</span><span class="ct" id="ct-filaments">—</span></div>
     <div class="div"></div>
-    <div class="sld"><label>Glow <b id="v-bloom">0.55</b></label><input type="range" id="s-bloom" min="0" max="2.5" step="0.05" value="0.55"></div>
-    <div class="sld"><label>Point size <b id="v-size">1.0</b></label><input type="range" id="s-size" min="0.3" max="2.5" step="0.05" value="1.0"></div>
+    <div class="sld"><label>Glow <b id="v-bloom">0.55</b></label><input type="range" id="s-bloom" min="0" max="1.2" step="0.05" value="0.55"></div>
+    <div class="sld"><label>Point size <b id="v-size">1.0</b></label><input type="range" id="s-size" min="0.3" max="1.6" step="0.05" value="1.0"></div>
     <div class="sld"><label>Drift <b id="v-rot">0.6</b></label><input type="range" id="s-rot" min="0" max="3" step="0.1" value="0.6"></div>
     <div class="div"></div>
     <div class="layer" id="palToggle" title="Vivid spreads real values across a wider hue ramp. True colour is the calibrated appearance.">
       <span class="swatch" style="color:#ff8ad4"></span><span class="nm">Palette</span><span class="ct" id="palLabel">VIVID</span>
+    </div>
+  </div>
+
+  <div class="tour glass" id="aboutBtn">About this map</div>
+
+  <div id="about">
+    <div id="aboutClose">Close ✕</div>
+    <div id="aboutIn">
+      <h2>Cosmos Deep Field</h2>
+      <p class="sm">A map of everything we have actually measured the distance to.</p>
+
+      <p>Nearly every picture of the universe you have seen is flat. The sky is a dome and
+      the objects on it are pinned to that dome, because from here you cannot tell what is
+      near and what is far — a nearby dwarf galaxy and a quasar eleven billion years old sit
+      side by side, the same size, the same nothing-in-particular.</p>
+
+      <p>This map is what happens when you put the third dimension back. Every point here has
+      a <b>measured</b> distance: a parallax wobble that Gaia tracked over years, or a redshift
+      that a spectrograph pulled out of the object's own light. Nothing is placed by guess and
+      nothing is simulated. Fly into it and the flat sky comes apart into structure —
+      the local star cloud, then a shell of galaxies, then filaments, then quasars at the edge
+      of what we can see.</p>
+
+      <h3>What you are looking at</h3>
+      <table>
+        <thead><tr><th>Layer</th><th>Count</th><th>How the distance is known</th></tr></thead>
+        <tbody>
+          <tr><td class="n">Stars</td><td class="n">1,200,000 <span style="opacity:.6">&rarr; 6,786,069</span></td>
+              <td><b>Gaia DR3</b> parallax — the star's apparent shift as Earth swings around the
+              Sun. Every star brighter than <b>G = 13.26</b> whose distance is known to better
+              than 10%. Both cuts matter: the magnitude limit is what makes this a complete
+              sample rather than a draw, and the parallax quality is what caps it at 2 kpc.</td></tr>
+          <tr><td class="n">Galaxies</td><td class="n">2,656,968</td>
+              <td><b>SDSS DR17</b> spectroscopic redshift for 2,613,461 of them — every one a
+              galaxy whose light was split into a spectrum and measured, not estimated from a
+              photograph, and that is the entire catalogue under the cut rather than a sample.
+              The remaining 43,507 are a nearby all-sky set whose source file carries no
+              provenance header; they have no measured redshift and are drawn neutral.</td></tr>
+          <tr><td class="n">Quasars</td><td class="n">752,910</td>
+              <td><b>SDSS DR17</b> spectroscopic redshift. These are galaxies too — a quasar is the
+              blazing core of one, lit by a feeding supermassive black hole. They get their own layer
+              because they are the most distant objects here, not because they are a different kind of
+              thing. Again, all of them.</td></tr>
+          <tr><td class="n">Exoplanets</td><td class="n">6,411</td>
+              <td><b>NASA Exoplanet Archive</b>, one point per <em>confirmed planet</em>. Plotted
+              at its host star, so multi-planet systems stack on one position.</td></tr>
+          <tr><td class="n">Cosmic web</td><td class="n">260,178</td>
+              <td><b>Tempel et al. 2014</b> — <em>inferred, not observed</em>. See below.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>How much of it is here</h3>
+      <p>Worth being precise about, because "10 million" invites the question. For two of the
+      layers this map draws the <b>entire catalogue</b>; for the stars it is a deliberate slice.</p>
+      <table>
+        <thead><tr><th>Layer</th><th>Drawn</th><th>Exists in the catalogue</th><th>Share</th></tr></thead>
+        <tbody>
+          <tr><td class="n">Galaxies</td><td class="n">2,613,461</td>
+              <td class="n">2,613,461 SDSS galaxies with a spectroscopic redshift</td>
+              <td><b>100%</b></td></tr>
+          <tr><td class="n">Quasars</td><td class="n">752,910</td>
+              <td class="n">752,910 SDSS quasars under the same cut</td>
+              <td><b>100%</b></td></tr>
+          <tr><td class="n">Stars</td><td class="n">6,786,069</td>
+              <td class="n">1,200,000 load first; the full set arrives on a fast connection with enough memory. Every Gaia DR3 star brighter than G = 13.26 with a distance known to
+              10%, out of ~1.81 billion sources in the release</td>
+              <td><b>100%</b></td></tr>
+        </tbody>
+      </table>
+      <p class="sm">And the honest denominator behind all of it: the Milky Way holds somewhere
+      around a hundred billion stars, and the observable universe perhaps two trillion galaxies.
+      Every catalogue ever assembled is a rounding error against that. What is remarkable is not
+      the count — it is that for a few million objects, somebody actually measured how far away
+      they are.</p>
+
+      <h3>What is real, and what is not</h3>
+      <p>Four honest caveats, because a map that hides them is a painting.</p>
+
+      <div class="warn">
+      <p><b>The cosmic web is a model.</b> Those blue threads are not photographs of anything.
+      They are filament spines found by fitting a statistical process to where SDSS galaxies
+      sit — real structure, genuinely there, but <em>inferred</em> rather than observed. They
+      are counted separately from the object total for exactly that reason.</p>
+      </div>
+
+      <div class="warn">
+      <p><b>The layers are not to scale with each other.</b> Each one is drawn into its own
+      shell so you can see them all at once. The order is right — stars inside galaxies inside
+      quasars — but the gaps between shells are compressed. In reality the deep field is
+      roughly a thousand times further away than the star cloud, not nine times. Inside any
+      one layer, relative positions are true.</p>
+      </div>
+
+      <div class="warn">
+      <p><b>Turning a redshift into a distance assumes a cosmology.</b> The redshifts are
+      measured. Converting them to a position needs a model of how fast the universe expands
+      — here the standard one, H₀ = 70, Ω<sub>m</sub> = 0.3. Change those numbers and
+      everything shifts. That is normal, and it is a model, not a ruler.</p>
+      </div>
+
+      <div class="warn">
+      <p><b>The star sphere is a selection boundary, not a shape.</b> The stars form a clean ball
+      around you, and that ball is not the Milky Way — it is the edge of what parallax can
+      measure. The cut keeps stars whose distance is known to 10%, which stops hard at 2 kpc, and
+      3.4% of the layer piles into the outermost 100 pc of that shell. The real distribution
+      underneath is a <em>disk</em>: measured axis ratio 0.38, roughly two and a half times wider
+      than it is tall. Look for the flattening and you can see it.</p>
+      </div>
+
+      <p class="sm">Also: dot size and brightness are rendering choices, not physical sizes —
+      a bright dot is not a big object. And the slow drift is animation, not real motion. The
+      universe does move, but not while you watch.</p>
+
+      <h3>How it survives being this large</h3>
+      <p>The whole catalogue does not get drawn. The points are packed into an <b>octree</b> —
+      a cube split into eight cubes, recursively — where every node keeps a random sample of
+      what is beneath it. That sampling is the trick: draw a node without its children and you
+      get a fair thinning of that region, so distant structure keeps its true shape and just
+      gets sparser.</p>
+      <p>Each frame walks the tree best-first under a fixed budget of about 1.2 million points,
+      skipping whole subtrees that are off-screen or too small to matter. So the frame cost is
+      set by the budget, not by the catalogue — which is why tripling the data changed the
+      frame time by nothing at all.</p>
+      <p class="sm">Positions are stored as 16-bit offsets inside each node's own cube rather
+      than as full coordinates, which is where the file size goes: 8 bytes a point instead of
+      20, at a precision finer than anything you can see.</p>
+
+      <h3>Colour</h3>
+      <p>Colour is a real measurement, not decoration. Stars are tinted by <em>BP−RP</em>,
+      Gaia's own colour index, so hot blue stars are blue because they are hot. Galaxies and
+      quasars are tinted by redshift, so the colour is telling you how far back in time you
+      are looking. <b>Vivid</b> spreads those values across a wider hue ramp; <b>True colour</b>
+      is the calibrated appearance. Both encode the same measured numbers — anything the
+      instrument did not measure is drawn neutral, never invented.</p>
+
+      <h3>Credits</h3>
+      <p class="sm">ESA Gaia DR3 · SDSS DR17 (SkyServer) · NASA Exoplanet Archive ·
+      Tempel, Stoica, Kipper &amp; Saar 2014, MNRAS 438, 3465. Built with three.js.
+      Public data, all of it — you can download every catalogue here and check the numbers.</p>
     </div>
   </div>
 
@@ -112,6 +278,7 @@
 
   <div id="read">
     <div><b id="r-fps">60</b> fps · <b id="r-pts">0</b> points drawn this frame in <b id="r-nodes">0</b> octree nodes</div>
+    <div id="r-perlayer" style="opacity:.75"></div>
     <div>distance to centre <b id="r-dist">—</b></div>
   </div>
 </div>
@@ -136,7 +303,11 @@ const lb=document.getElementById('lb'), lm=document.getElementById('lm');
 const setProg=(p,m)=>{lb.style.width=(p*100).toFixed(0)+'%';if(m)lm.textContent=m;};
 
 // ── scene ──────────────────────────────────────────────────────────────
-const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,alpha:true});
+// preserveDrawingBuffer only under ?capture=1. It costs a framebuffer copy every frame,
+// so it is not on for readers - but without it canvas.toDataURL() returns an empty image,
+// which is why the project-card capture could not be taken from the real GPU at all.
+const CAPTURE=/[?&]capture=1/.test(location.search);
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,alpha:true,preserveDrawingBuffer:CAPTURE});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.setSize(innerWidth,innerHeight);
 // Filmic roll-off instead of hard clipping to white: bright cores keep their
@@ -162,7 +333,11 @@ controls.minDistance=2; controls.maxDistance=4000;
 // had to be hand-dimmed to stop it becoming a blob.
 const composer=new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene,camera));
-const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),0.85,0.75,0.78);
+// 0.55 not 0.85, and it matches the Glow slider's own default so the first frame is not
+// brighter than the control claims. Measured against the committed project-card image
+// (mean 102.5, 0.64% clipped): the shipped values landed mean 96.5 at 2.2% clipped, where
+// the pre-tune build was mean 231 at 39.6% clipped — a white screen.
+const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),0.55,0.75,0.78);
 composer.addPass(bloom);
 composer.addPass(new OutputPass());
 
@@ -421,6 +596,10 @@ function colorize(n,rad,val,kind,mode){
   let mx=0; for(let i=0;i<n;i++) if(rad[i]>mx) mx=rad[i]; if(mx<=0)mx=1;
   const NEUTRAL=[1.0,0.94,0.86];                 // unmeasured: warm white, no claim
   const FLAT={galaxies:[0.86,0.55,1.0], quasars:[1.0,0.42,0.82], exo:[0.35,0.95,0.85]};
+  // The SDSS spectroscopic layer is galaxies too — same measured quantity (redshift),
+  // so it reads on the same ramp. Aliasing rather than duplicating keeps one place to
+  // change if the galaxy palette is ever retuned.
+  if(kind==='deep') kind='galaxies';
 
   // Two palettes over the SAME measured values. VIVID keeps the original
   // multi-hue look — violet/rose/gold galaxies, ice-to-magenta quasars — with
@@ -438,7 +617,32 @@ function colorize(n,rad,val,kind,mode){
       quasars :[[0.72,0.82,1.00],[1.00,0.96,0.90],[1.00,0.78,0.52],[0.90,0.45,0.34]],
     },
   };
-  let zmax=0; if(val) for(let i=0;i<n;i++){const v=val[i]; if(Number.isFinite(v)&&v>zmax) zmax=v;}
+  // Normalising redshift by its MAXIMUM wastes most of the ramp. Quasar z is heavy
+  // tailed — median 1.66, p99 3.76, max 7.0 — so dividing by 7 leaves 99% of points
+  // inside the first 54% of the gradient and reserves magenta and gold for a few
+  // dozen outliers. The layer then reads as a flat blue-violet wash instead of the
+  // spread it was designed to show. Clip to p98 and let the tail saturate at the
+  // hot end, which is what a percentile clip is for.
+  //
+  // Stars are the exception and keep the full range: their value is bp_rp, where the
+  // rare hot-blue tail is exactly the population whose colour matters most — the same
+  // reasoning pack_octree.qrange() gives for not clipping the measured channel there.
+  let zmax=0;
+  if(val){
+    if(kind==='stars'){
+      for(let i=0;i<n;i++){const v=val[i]; if(Number.isFinite(v)&&v>zmax) zmax=v;}
+    }else{
+      // Typed array, not a plain one: at 2.6M points a boxed JS array costs ~90 MB of
+      // heap for a value thrown away on the next line. Float32Array.sort() is numeric
+      // by default, so no comparator is needed either.
+      const fin=new Float32Array(n); let m=0;
+      for(let i=0;i<n;i++){const v=val[i]; if(Number.isFinite(v)) fin[m++]=v;}
+      if(m){
+        const use=fin.subarray(0,m); use.sort();
+        zmax=use[Math.min(m-1, Math.floor(0.98*(m-1)))];
+      }
+    }
+  }
   if(!zmax) zmax=1;
   function ramp(stops,t){
     t=Math.min(1,Math.max(0,t));
@@ -476,6 +680,8 @@ function fmt(n){return n.toLocaleString();}
 // geometries are views into the layer's single decoded buffer, so grouping costs
 // no extra memory — it buys per-node frustum culling and LOD.
 function makeOctreeLayer(O,cfg){
+  O.always = !!cfg.always;   // tiny layers opt out of the LOD budget - see updateLOD
+  O.coreGlow = !!cfg.coreGlow;   // scale exposure with distance - see coreGlowMul
   const {col,bright}=colorize(O.n,O.rad,O.val,cfg.k,paletteMode);
   O.col=col; O.bright=bright;
   const group=new THREE.Group(); scene.add(group);
@@ -503,6 +709,18 @@ function makeOctreeLayer(O,cfg){
     // emits, never its position, colour hue or measured value.
     const lod=(nd.edge/Math.cbrt(nd.count))/refSpacing;
     const sizeMul=cfg.size*Math.min(3.0,Math.pow(lod,0.5));
+    // Left at the tuned 1.5 / 4.0 after trying to soften it. The theory was sound —
+    // the exponent sets the brightness step between ADJACENT levels, so lowering it
+    // should soften the seam where two levels meet along an octree cube face. In
+    // practice 1.15 dimmed the point layers until the filaments dominated the frame,
+    // and no cap compensated cleanly: raising it over-brightened the coarsest nodes
+    // while the mid-levels stayed dark.
+    //
+    // What actually fixed the reported artefacts was elsewhere: POINT_BUDGET, which was
+    // starving the walker into a few enormous nodes (the "patches"), and the fade pass,
+    // which cross-dissolves LOD swaps (the "flashing"). Exposure was not the problem, so
+    // it is not the fix. If the seams are still visible after those two, come back here
+    // — but change it against a real GPU, not a headless software one.
     const exposure=(cfg.exp??1.0)*Math.min(4.0,Math.pow(lod,1.5));
     const m=new THREE.ShaderMaterial({
       uniforms:{uSize:{value:sizeMul},uScale:{value:260.0},uExposure:{value:exposure}},
@@ -512,6 +730,9 @@ function makeOctreeLayer(O,cfg){
     const pts=new THREE.Points(g,m);
     pts.frustumCulled=false;          // the LOD walker culls whole subtrees itself
     pts.visible=false;
+    // fade is the cross-dissolve weight for LOD transitions; base is the exposure it
+    // multiplies. Kept on the node so the walker can drive it without re-deriving.
+    nd.fade=0; nd.baseExp=exposure;
     pts.userData={sizeMul,node:nd};
     nd.pts=pts; group.add(pts);
   }
@@ -533,7 +754,20 @@ const _sph=new THREE.Sphere(), _camLocal=new THREE.Vector3();
 // at 849,918 points. The most it ever drew was ~724k, at the close camera. It
 // exists so a larger catalogue degrades by shedding detail instead of dropping
 // frames.
+// Swept twice at 7.4M stars / 10.8M points, 1280x720. The FIRST sweep was run against
+// a broken build — the fade pass had stopped restoring .visible, so nodes faded in and
+// then vanished, and "flat frame time up to 4M" was the cost of drawing nothing. Once
+// visibility was fixed the real curve appeared, and it has a cliff just past 1.2M:
+//   0.80M budget ->   795,650 drawn,  165 nodes, 16.6 ms
+//   1.20M        -> 1,196,914 drawn,  269 nodes, 16.7 ms
+//   1.80M        -> 1,795,894 drawn,  431 nodes, 54.2 ms
+//   2.50M        -> 2,498,058 drawn,  672 nodes, 37.4 ms
+//   4.00M        -> 3,495,271 drawn, 1035 nodes, 50.1 ms
+// So 1.2M stands, and it was never the cause of the patchiness — the fade bug was.
 let POINT_BUDGET=1_200_000;
+// Share of the frame budget each visible layer is guaranteed before the open contest.
+// Four contested layers x 0.14 = 56% reserved, leaving 44% allocated purely by screen size.
+let RESERVE_SHARE=0.14;
 // MIN_PX is what actually decides detail. It was 160, which drew only 386k of
 // 849,918 — 45% — at the default view. Sweep at that camera, timed with a
 // gl.finish() after every frame (without the sync, performance.now() measures
@@ -569,21 +803,80 @@ function updateLOD(){
   };
 
   const q=[];
+  // Layers marked always:true bypass the budget contest. A layer small enough to draw in
+  // full has nothing to gain from LOD and everything to lose: it is either one node that
+  // pops in as a cube, or it loses the contest to a nearer layer and disappears for no
+  // reason the reader can see.
+  let forced=0;
   for(const k in octrees){
-    const O=octrees[k]; if(!O) continue;
-    for(const nd of O.nodes) if(nd.pts) nd.pts.visible=false;
+    const O=octrees[k]; if(!O||!O.always) continue;
+    if(!layers[k]||!layers[k].visible) continue;
+    for(const nd of O.nodes){ if(nd.pts){ nd.want=1; forced+=nd.count; } }
+  }
+  for(const k in octrees){
+    const O=octrees[k]; if(!O||O.always) continue;
+    // Visibility is owned by updateFades now, not reset here. Blanket-hiding every
+    // node each frame was correct when the walker set .visible directly; with a
+    // fade pass it meant a node that had finished fading in — and was therefore
+    // skipped as already-at-target — never got .visible restored, so every node
+    // faded in over 180ms and then vanished for good.
     if(!layers[k]||!layers[k].visible) continue;
     const root=O.nodes[0]; if(root&&root.pts) q.push({O,nd:root,s:score(root)});
   }
 
-  let pts=0,nodes=0,culled=0;
+  let pts=forced,nodes=0,culled=0;
+  const perLayer={};
+  for(const k in octrees){ if(octrees[k]) perLayer[k]=0; }
+  for(const k in octrees){
+    const O=octrees[k]; if(!O||!O.always) continue;
+    for(const nd of O.nodes){ if(nd.pts&&nd.want) perLayer[k]+=nd.count; }
+  }
+  // ── per-layer floor ──────────────────────────────────────────────────
+  // Best-first by projected radius always favours the physically largest shell, so the
+  // compact star cloud loses every contest as the camera pulls back. Measured on the
+  // lite build: stars drew 281,064 points at d=90, 64,000 at d=250, 8,000 at d=573 —
+  // its root node alone — and ZERO at d=1150, where quasars and galaxies split the
+  // whole 1.2M between them. That is why the far view had no star sphere in it, and it
+  // is also why no exposure ramp could fix it: you cannot brighten a layer that is
+  // drawing nothing. Each visible layer now gets a guaranteed slice before the open
+  // contest starts; the rest of the budget is still allocated by screen size.
+  const RESERVE=Math.floor(POINT_BUDGET*RESERVE_SHARE);
+  const takeNode=(O,nd)=>{
+    nd.want=1; pts+=nd.count; nodes++;
+    for(const kk in octrees){ if(octrees[kk]===O){ perLayer[kk]=(perLayer[kk]||0)+nd.count; break; } }
+  };
+  for(const it0 of q){
+    const O=it0.O; let used=0;
+    const lq=[{nd:it0.nd,s:it0.s}];
+    while(lq.length){
+      let bi=0; for(let i=1;i<lq.length;i++) if(lq[i].s>lq[bi].s) bi=i;
+      const it=lq.splice(bi,1)[0], nd=it.nd;
+      if(nd.want) continue;
+      _sph.center.copy(nd.center); _sph.radius=nd.radius;
+      if(!_frustum.intersectsSphere(_sph)) continue;
+      if(used>0 && used+nd.count>RESERVE) break;
+      takeNode(O,nd); used+=nd.count;
+      if(it.s>MIN_PX){
+        for(let c=0;c<8;c++){
+          const ci=nd.child[c]; if(ci<0) continue;
+          const ch=O.nodes[ci]; if(!ch||!ch.pts) continue;
+          lq.push({nd:ch,s:score(ch)});
+        }
+      }
+    }
+  }
+
   while(q.length){
     let bi=0; for(let i=1;i<q.length;i++) if(q[i].s>q[bi].s) bi=i;
     const it=q.splice(bi,1)[0], nd=it.nd;
     _sph.center.copy(nd.center); _sph.radius=nd.radius;
     if(!_frustum.intersectsSphere(_sph)){ culled+=nd.subtree; continue; }   // whole subtree off-screen
-    if(nodes>0 && pts+nd.count>POINT_BUDGET) break;                          // budget spent
-    nd.pts.visible=true; pts+=nd.count; nodes++;
+    // A node already taken by the reserve pass still has to be descended through, or
+    // the contest can never reach its children.
+    if(!nd.want){
+      if(nodes>0 && pts+nd.count>POINT_BUDGET) break;                        // budget spent
+      takeNode(it.O,nd);
+    }
     if(it.s>MIN_PX){
       for(let c=0;c<8;c++){
         const ci=nd.child[c]; if(ci<0) continue;
@@ -592,7 +885,95 @@ function updateLOD(){
       }
     }
   }
-  lodStats={points:pts,nodes,culled};
+  // Per-layer counts, because "1.19M points drawn" cannot tell you whether the star cloud got
+  // 400k of them or 4k. At distance the walker scores by screen radius, and the star shell is
+  // only ~7 degrees wide at d=1156 against the galaxy shell's ~56, so stars can be starved of
+  // budget - and no exposure setting fixes too few points. This makes that visible.
+  lodStats={points:pts,nodes,culled,perLayer};
+}
+
+// Cross-dissolve between LOD levels. The walker chooses a set of nodes each frame;
+// switching .visible on that set directly is what made regions flash when the camera
+// moved — a patch would jump from "few coarse points, 2.5x exposure" to "many fine
+// points, 1x exposure" in a single frame. Parent and child point sets are disjoint,
+// so ramping the outgoing node down while the incoming ones ramp up keeps the light
+// in that region roughly constant through the swap.
+//
+// 180ms is short enough that detail still feels immediate and long enough to read as
+// a dissolve rather than a jump.
+// 90ms, not 180. The walker budgets the nodes it wants, but a node fading OUT is still
+// being drawn, so the real point count overshoots the budget for the length of the fade
+// — measured at 1,569,583 against a 1,200,000 budget during a camera move, which lands
+// in the 1.8M range where frame time jumps to 54ms. Halving the window halves the
+// overlap, and at 90ms the dissolve still reads as a dissolve rather than a jump.
+const FADE_MS=90;
+// FAR-FIELD CORE GLOW.
+// The exoplanet layer reads as a tiny glowing orb from a distance and dissolves into
+// individual host stars when you fly in. That is not a setting anyone chose - it happens
+// because exo is always drawn in full, so from far away all 6,411 points land in a handful
+// of pixels and additive blending stacks them until they saturate.
+//
+// The star cloud cannot do that, by design: the LOD draws a random SUBSAMPLE of each distant
+// node and compensates its exposure by pow(lod,1.5) precisely so the field's brightness stays
+// CONSTANT as you pull back. That constancy is what removes the core - the thing the old card
+// screenshot had, back when the layer was 500k points at sprite size 0.9 and simply overlapped
+// itself into saturation.
+//
+// So the glow is restored with distance, not with size or position: beyond CORE_D0 the star
+// layer's exposure is scaled up, saturating the dense middle into an orb, and inside CORE_D0 it
+// returns to exactly the tuned value that makes individual stars resolve. Sprite radius (0.32)
+// and shell radius (70) are untouched, so flying through the sphere is unchanged.
+// A FLOOR and a CEILING, not a ramp from nothing. The previous curve started at 1x inside the
+// cloud, so close in there was no core at all, and it ran to 25x far out, which is how the orb
+// turned into a solid white sphere that swallowed every other layer. Both ends were wrong.
+//
+// The exoplanet layer is the reference behaviour: a small glow you can see from ANY distance,
+// never bright enough to take over the frame. So the star core gets the same shape - a floor so
+// it is always present, a ceiling so it can never blow out, and a gentle rise between them.
+// Interpolated in LOG distance because that is how the scale reads: 90 -> 900 is one decade and
+// should feel like one step, not like the 810 linear units it happens to be.
+// NEAR = 1.0 on purpose: inside the cloud there is no core ball, because a solid ball is not
+// what the data looks like from in there - individual stars are, and that is the view worth
+// keeping honest. The glow is a FAR-FIELD effect only: it earns its brightness the same way the
+// exoplanet layer does, by many points landing in few pixels, and it exists because the LOD
+// otherwise normalises that stacking away.
+let CORE_NEAR=1.0, CORE_FAR=25.0, CORE_D0=90, CORE_D1=900;
+// Tunable live under ?capture=1 only, so the orb can be set against a measured clipped-pixel
+// fraction rather than by eye. Not exposed to readers.
+if(CAPTURE) window.__glow=(near,far,d0,d1)=>{ CORE_NEAR=near; CORE_FAR=far;
+  if(d0) CORE_D0=d0; if(d1) CORE_D1=d1;
+  return {CORE_NEAR,CORE_FAR,CORE_D0,CORE_D1}; };
+function coreGlowMul(){
+  const d=camera.position.length();
+  if(d<=CORE_D0) return CORE_NEAR;
+  if(d>=CORE_D1) return CORE_FAR;
+  const t=Math.log(d/CORE_D0)/Math.log(CORE_D1/CORE_D0);
+  return CORE_NEAR+(CORE_FAR-CORE_NEAR)*t;
+}
+function updateFades(dtMs){
+  const step=dtMs/FADE_MS;
+  const glow=coreGlowMul();
+  for(const k in octrees){
+    const O=octrees[k]; if(!O) continue;
+    const mul=O.coreGlow?glow:1;
+    for(const nd of O.nodes){
+      if(!nd.pts) continue;
+      const target=nd.want?1:0;
+      if(nd.fade!==target){
+        nd.fade += target>nd.fade ? Math.min(step,target-nd.fade)
+                                  : -Math.min(step,nd.fade-target);
+        if(nd.fade<0.001) nd.fade=0;
+        if(nd.fade>0.999) nd.fade=1;
+      }
+      // Set visibility unconditionally, including for nodes already at their target —
+      // this is the only place that decides it, so an early-out here is a node that
+      // never comes back.
+      const on=nd.fade>0;
+      if(nd.pts.visible!==on) nd.pts.visible=on;
+      if(on) nd.pts.material.uniforms.uExposure.value=nd.baseExp*nd.fade*mul;
+      nd.want=0;
+    }
+  }
 }
 
 // Recolour in place from the same measured values — no reload, no refetch.
@@ -612,24 +993,94 @@ async function boot(){
   // norm = target shell radius (concentric: exo inner → quasars outer)
   // exp = per-layer exposure. 500k stars pile up additively in a small volume, so
   // they need far less energy each than the 6k exoplanets do.
+  // Progress weights track DOWNLOAD SIZE, not point count: the deep field is 20 MB
+  // of the ~30 MB total, so giving it a proportional share is the difference between
+  // a bar that crawls and a bar that lies.
+  // Phones get a thinned star layer, not a thinned map. The desktop build settles around
+  // 475 MB of JS heap and iOS Safari starts killing tabs somewhere past 300-400 MB — and
+  // the star layer is 7.4M of the 10.8M points and 57 MB of the 86 MB download. Every
+  // other catalogue still loads in full, because those are what make this a map of the
+  // universe rather than a map of the solar neighbourhood.
+  //
+  // deviceMemory is the real signal where it exists (Chrome/Android); the width test
+  // catches iOS, which does not expose it. Either one trips the lite build.
+  // A viewport of 0 is not a small screen - it is a browser that has not laid out yet
+  // (an offscreen pane, a headless capture, a background tab). Math.min(0,0) < 700 was true,
+  // so those got the 1.2M layer and the page then reported 4,616,289 as the count on a
+  // desktop. Treat a missing or zero dimension as unknown and fall through to the full build.
+  const vpMin = Math.min(innerWidth || Infinity, innerHeight || Infinity);
+  const LITE = (navigator.deviceMemory && navigator.deviceMemory <= 4)
+            || vpMin < 700;
+  // The lite layer is 1.2M of the same stars, so each point stands for ~6x as many and
+  // needs proportionally more light to keep the core reading at the same brightness.
   const files=[
-    {k:'stars',    url:'stars_o.bin',    size:0.9, norm:70,   exp:0.10, p:[0,0.55]},
-    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.55, p:[0.55,0.82]},
-    {k:'galaxies', url:'galaxies_o.bin', size:1.7, norm:320,  exp:0.85, p:[0.82,0.94]},
-    // exoplanets are only 6,411 points inside the star cloud — they need real
+    // PROGRESSIVE. Everyone starts on the 1.2M layer - 9.6 MB instead of 54.5 MB - because
+    // the first thing a reader does is decide whether to keep looking, and 54 MB of stars
+    // before the first frame spends that decision on a blank screen. On a machine that can
+    // hold the full field, upgradeStars() fetches the 6.79M layer afterwards and swaps it in.
+    // LITE devices stop at the small layer and keep the brighter per-point exposure, since
+    // each of their points stands for ~6x as many stars.
+    {k:'stars',    url:'stars_lite_o.bin',
+                   size:0.32,norm:70,   exp:0.0375, p:[0,0.62], coreGlow:true},
+    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.066, p:[0.62,0.70]},
+    // One galaxy layer, not two. The nearby set and the SDSS deep field are the same
+    // class of object and were being drawn as if they were different kinds of thing —
+    // two shells, two sizes, a 12x gap in exposure. Merged they share one normalisation,
+    // so the nearby galaxies land at their true 22% of the deep field's radius instead
+    // of being pushed out to a shell of their own. 43,507 of the 2,656,968 carry no
+    // measured redshift and are drawn neutral, which is the existing contract.
+    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.002, p:[0.70,0.98]},
+    // Stars went 500k -> 7.4M in the SAME 2 kpc shell, so ~15x the density under additive
+  // blending. Two knobs, and size matters more than exposure here: 'solid' is sprites
+  // OVERLAPPING, and overlap goes as the square of the radius, so halving size cuts the
+  // overlap ~4x while exposure only dims what is already merged. 0.9/0.10 was tuned for a
+  // field 15x sparser; 0.55/0.020 is the same total light through smaller, dimmer sprites,
+  // which is what lets you fly in and resolve individual stars again.
+  //
+  // Worth knowing while judging this: the star cloud is a DISK, not a sphere — measured
+  // axis ratio 0.38 (|z| p90 639 pc against in-plane p90 1670 pc). The sphere is the
+  // parallax>0.5 cut, a hard edge at exactly 2 kpc, with 3.4% of the layer piled in the
+  // outer 100 pc rind. If it reads as a solid ball rather than a flattened disk, the
+  // sprites are still merging.
+  // exoplanets are only 6,411 points inside the star cloud — they need real
     // presence or the 500k-star glow swallows them entirely
-    {k:'exo',      url:'exo_o.bin',      size:2.4, norm:26,   exp:0.32, p:[0.94,1.0]},
+    // always:true, and it is not a tuning preference - it is the fix for a real artefact.
+    // exo packs to ONE octree node (6,411 points), so the budget walker either draws the
+    // whole layer or none of it, and it scores by screen radius on a shell of radius 26.
+    // Zooming in crossed that threshold and the entire layer appeared in one frame as a
+    // glowing CUBE - the node's own bounding box, fading in as a unit. Always-drawing it
+    // costs 6,411 points against a 1,200,000 budget (0.5%) and removes the pop entirely.
+    // Size and exposure come down with it: at 2.4 the sprites are 7.5x a star's and merge
+    // into a blob instead of reading as individual host stars.
+    // Size and exposure both come down hard, and the reason is a category error worth naming:
+    // exo is 6,411 points on a radius-26 shell - the innermost thing in the scene - so at
+    // size 2.4 / exp 0.32 it merged into a bright blob AT THE CENTRE and read as the glowing
+    // core of the map. The core should be the 6.79M-star cloud around it; a layer three
+    // orders of magnitude smaller has no business being the brightest thing in frame. At
+    // 0.9/0.10 the host stars still resolve when you fly to them, which is when they matter.
+    {k:'exo',      url:'exo_o.bin',      size:0.9, norm:26,   exp:0.10, p:[0.98,1.0], always:true},
   ];
   let totalN=0, totalBytes=0;
   for(const f of files){
     setProg(f.p[0], 'Loading '+f.k+'…');
     let O=null;
+    const t0=performance.now();
     try{ O=await loadOctree(f.url, (fp)=>setProg(f.p[0]+(f.p[1]-f.p[0])*fp)); }
     catch(e){ console.error(e); document.getElementById('ct-'+f.k).textContent='failed'; setProg(f.p[1]); continue; }
     normalizeOctree(O,f.norm);
     octrees[f.k]=O;
     layers[f.k]=makeOctreeLayer(O,f);
     counts[f.k]=O.n; totalN+=O.n; totalBytes+=O.bytes;
+    // Measure the link on the layer everyone downloads, and use it to decide whether the
+    // 54.5 MB upgrade is worth starting. Guarded against a zero/absurd interval: a warm
+    // cache returns in ~0 ms, which would read as infinite bandwidth - true enough, since
+    // a cached full layer is also instant.
+    if(f.k==='stars'){
+      const secs=Math.max((performance.now()-t0)/1000, 0.001);
+      liteRateMBs=(O.bytes/1048576)/secs;
+      console.log('lite star layer: '+(O.bytes/1048576).toFixed(1)+' MB in '+secs.toFixed(2)+
+                  's = '+liteRateMBs.toFixed(2)+' MB/s');
+    }
     document.getElementById('ct-'+f.k).textContent=fmt(O.n);
     setProg(f.p[1]);
   }
@@ -660,6 +1111,15 @@ async function boot(){
     document.getElementById('ct-filaments').textContent='failed';
   }
   document.getElementById('total').textContent=fmt(totalN);
+  // Kicked off after the first frame is interactive, never before it.
+  if(!LITE) upgradeStars(totalN - counts.stars);
+  // The headline count has to come from what actually loaded, not from a number typed
+  // into the markup. On the lite build the star layer is 1.2M rather than 7.4M, and a
+  // hardcoded 10,202,358 would be a claim the page did not deliver — which is exactly
+  // the class of thing the About panel promises this map does not do.
+  const sub=document.getElementById('subcount');
+  if(sub) sub.innerHTML=('Every point is a real star, galaxy or quasar · '+fmt(totalN)+
+    ' of them, all measured by real telescopes').replace(/ /g,'&nbsp;');
   console.log('loaded '+fmt(totalN)+' points, '+(totalBytes/1048576).toFixed(2)+' MB across '
     +Object.values(octrees).reduce((a,O)=>a+O.nodes.length,0)+' octree nodes');
   setProg(1,'Ready');
@@ -702,13 +1162,121 @@ const TOURS={
   exo:   {pos:[3,1.5,9],    tgt:[0,0,0]},
 };
 document.querySelectorAll('.tour').forEach(b=>{
+  // #aboutBtn borrows .tour for its styling but is not a camera preset. Without this
+  // guard, clicking it would clear the active tour's highlight and then fly nowhere.
+  if(!b.dataset.t) return;
   b.addEventListener('click',()=>{
     endStuckDrag();
-    document.querySelectorAll('.tour').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    document.querySelectorAll('.tour[data-t]').forEach(x=>x.classList.remove('on')); b.classList.add('on');
     const t=TOURS[b.dataset.t]; if(t) flyTo(t.pos,t.tgt);
   });
 });
-function intro(){ camera.position.set(0,40,2600); flyTo([0,120,560],[0,0,0],3200); }
+// Swap the 1.2M star layer for the full 6.79M one, in the background, after the map is
+// already usable. The two files are the same format and the same shell, so this is a layer
+// rebuild rather than new machinery.
+//
+// Two bail-outs, both honest about what the reader gets:
+//   * a slow link. Measured from the lite download itself - if that arrived under 1.5 MB/s,
+//     the 54.5 MB upgrade would take 36s+, so it is skipped and the page keeps saying 4.6M,
+//     which is what it actually drew. Better a true small number than a stalled big one.
+//   * a failed fetch. The lite layer stays; nothing regresses.
+// The 52 MB full-star tier is NOT hosted alongside the site: git keeps every blob
+// forever and GitHub Pages will not serve LFS, so committing it would bloat the repo
+// permanently and put 52 MB on every visitor who qualified for the upgrade. The fetch
+// therefore 404s in production and upgradeStars bails without touching the lite layer,
+// which is why no surface claims the 10.2M figure. To turn it on, host stars_o.bin
+// anywhere with CORS and point this url at it.
+const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.015,coreGlow:true};
+let liteRateMBs=Infinity;
+async function upgradeStars(otherLayersN){
+  // The full layer measured 393 MB of JS heap against 188 MB for lite. On a 4 GB phone
+  // that is a tab crash, and a crash is a worse outcome than a smaller honest number.
+  // navigator.deviceMemory is coarse and absent on Safari; absent means "unknown", and
+  // unknown is allowed through rather than blocked, because the speed gate below already
+  // filters the worst cases.
+  const mem=navigator.deviceMemory;
+  if(mem!==undefined && mem<8){
+    console.log('skipping the full star layer: deviceMemory reports '+mem+' GB');
+    return;
+  }
+  if(liteRateMBs < 1.5){
+    console.log('skipping the full star layer: lite arrived at '+liteRateMBs.toFixed(2)+' MB/s');
+    return;
+  }
+  const note=document.getElementById('subcount');
+  try{
+    const O=await loadOctree(STARS_FULL.url);
+    normalizeOctree(O,STARS_FULL.norm);
+    const old=layers.stars, wasVisible=!old||old.visible;
+    const fresh=makeOctreeLayer(O,STARS_FULL);
+    fresh.visible=wasVisible;              // honour a reader who switched the layer off
+    if(old){
+      scene.remove(old);
+      old.traverse(o=>{ if(o.geometry) o.geometry.dispose(); if(o.material) o.material.dispose(); });
+    }
+    octrees.stars=O; layers.stars=fresh; counts.stars=O.n;
+    document.getElementById('ct-stars').textContent=fmt(O.n);
+    const total=otherLayersN + O.n;
+    document.getElementById('total').textContent=fmt(total);
+    if(note) note.innerHTML=('Every point is a real star, galaxy or quasar · '+fmt(total)+
+      ' of them, all measured by real telescopes').replace(/ /g,'&nbsp;');
+    console.log('upgraded to the full star layer: '+fmt(O.n)+' stars, total '+fmt(total));
+  }catch(e){
+    console.error('full star layer failed; staying on the lite layer', e);
+  }
+}
+
+// A view is worth sharing and worth reproducing. `#cam=px,py,pz,tx,ty,tz` restores an exact
+// camera and skips the fly-in, which is how the project-card capture is repeatable rather than
+// hand-flown; press C to copy the current view as such a link. Six finite numbers or it is
+// ignored, because a malformed hash should give you the normal intro, not a black screen.
+function camFromHash(){
+  const m = /(?:^|[#&])cam=([-\d.,eE]+)/.exec(location.hash || '');
+  if(!m) return null;
+  const v = m[1].split(',').map(Number);
+  return (v.length === 6 && v.every(Number.isFinite)) ? v : null;
+}
+function intro(){
+  const v = camFromHash();
+  if(v){
+    tween = null;
+    setView(v);
+    return;
+  }
+  camera.position.set(0,40,2600); flyTo([0,120,560],[0,0,0],3200);
+}
+// Editing the hash moves the camera live. Without this, restoring a view meant a full
+// reload - 85 MB of layers and an octree rebuild - which makes iterating on a framing
+// impractical and makes a shared link jarring for a reader already on the page.
+addEventListener('hashchange', () => {
+  const v = camFromHash();
+  if(!v) return;
+  // Cancel any tour flight first. A tween overwrites camera.position every frame until it
+  // finishes, so setting the camera mid-flight silently loses - which is what happens if a
+  // reader pastes a view link while the fly-in is still running.
+  tween = null;
+  setView(v);
+});
+// OrbitControls with damping keeps its own spherical state, so assigning camera.position and
+// calling update() interpolates FROM that stale state and snaps straight back - the camera
+// visibly refused to move. Damping has to be off for the one frame that teleports it.
+function setView(v){
+  const damp = controls.enableDamping;
+  controls.enableDamping = false;
+  camera.position.set(v[0], v[1], v[2]);
+  controls.target.set(v[3], v[4], v[5]);
+  controls.update();
+  controls.enableDamping = damp;
+}
+addEventListener('keydown', e => {
+  if(e.key !== 'c' && e.key !== 'C') return;
+  if(e.target && /^(input|textarea)$/i.test(e.target.tagName)) return;
+  const p = camera.position, t = controls.target, r = n => Math.round(n*10)/10;
+  const link = location.origin + location.pathname +
+    '#cam=' + [r(p.x),r(p.y),r(p.z),r(t.x),r(t.y),r(t.z)].join(',');
+  if(navigator.clipboard) navigator.clipboard.writeText(link).catch(()=>{});
+  console.log('view:', link);
+});
 
 // ── flight controls ────────────────────────────────────────────────────
 // WASD/arrows fly; R/F climb and dive; Shift boosts. OrbitControls stays in charge
@@ -731,8 +1299,24 @@ function typingInAField(){
   // range inputs use the arrow keys themselves — don't steal them
   return t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||el.isContentEditable;
 }
+// ── About overlay ────────────────────────────────────────────────────────────
+// The overlay sits above the canvas and takes pointer events, so a drag started on
+// it must never reach the orbit controls. Closing also releases any held fly keys:
+// reading for a minute with W down would otherwise launch the camera on close.
+const aboutEl=document.getElementById('about');
+function setAbout(on){
+  aboutEl.classList.toggle('on',on);
+  if(on){ endStuckDrag(); keys.clear(); aboutEl.scrollTop=0; }
+}
+document.getElementById('aboutBtn').addEventListener('click',()=>setAbout(true));
+document.getElementById('aboutClose').addEventListener('click',()=>setAbout(false));
+aboutEl.addEventListener('click',e=>{ if(e.target===aboutEl) setAbout(false); });
+
 addEventListener('keydown',e=>{
   if(typingInAField()) return;
+  if(e.key==='Escape'){ setAbout(false); return; }
+  if(e.key==='?'||(e.shiftKey&&e.code==='Slash')){ setAbout(!aboutEl.classList.contains('on')); e.preventDefault(); return; }
+  if(aboutEl.classList.contains('on')) return;   // overlay swallows flight keys
   const c=e.code.toLowerCase();
   const known=Object.values(FLY).some(list=>list.includes(c));
   if(known){ keys.add(c); e.preventDefault(); }        // stop arrows scrolling the page
@@ -869,12 +1453,19 @@ function tick(now){
   leashTarget();
   if(layers.filaments) layers.filaments.material.uniforms.uTime.value=now*0.001;
   updateLOD();
+  updateFades(dt*1000);
   composer.render();
   // hud
   frames++; fAcc+=dt;
   if(fAcc>=0.5){
     fEl.textContent=Math.round(frames/fAcc); frames=0; fAcc=0;
     pEl.textContent=fmt(lodStats.points);
+    const pl=lodStats.perLayer;
+    if(pl){
+      const bits=[];
+      for(const k of ['stars','galaxies','quasars','exo']) if(pl[k]!=null) bits.push(k+' '+fmt(pl[k]));
+      const el=document.getElementById('r-perlayer'); if(el) el.textContent=bits.join(' · ');
+    }
     nEl.textContent=lodStats.nodes;
   }
   dEl.textContent=camera.position.length().toFixed(0);
@@ -891,7 +1482,8 @@ window.__cosmos={THREE,scene,renderer,composer,camera,controls,layers,octrees,co
   updateLOD,lod:()=>lodStats,tick,
   dragOpen:()=>_dragPointer!==null, endStuckDrag,
   budget:v=>{ if(v!=null) POINT_BUDGET=v; return POINT_BUDGET; },
-  minPx:v=>{ if(v!=null) MIN_PX=v; return MIN_PX; }};
+  minPx:v=>{ if(v!=null) MIN_PX=v; return MIN_PX; },
+  reserve:v=>{ if(v!=null) RESERVE_SHARE=v; return RESERVE_SHARE; }};
 
 boot(); requestAnimationFrame(tick);
 </script>
