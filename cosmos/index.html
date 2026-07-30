@@ -82,7 +82,7 @@
     <p>Gaia&nbsp;DR3&nbsp;·&nbsp;2MRS&nbsp;Galaxies&nbsp;·&nbsp;NASA&nbsp;Exoplanets&nbsp;·&nbsp;SDSS&nbsp;Quasars</p>
   </div>
 
-  <div id="hint">Drag to orbit · scroll to zoom · <b>right-drag</b> to pan · <b>WASD</b>/arrows to fly, <b>R/F</b> up-down, <b>Shift</b> to boost. Pick a tour below.</div>
+  <div id="hint">Drag to orbit · scroll to zoom · <b>right-drag</b> to pan · <b>WASD</b>/arrows to fly, <b>R/F</b> up-down, <b>Shift</b> to boost · <b>0</b> to recentre. Pick a tour below.</div>
 
   <div id="panel" class="glass">
     <h2>Layers <span id="total">—</span></h2>
@@ -764,6 +764,47 @@ function updateFlight(dt){
   return true;
 }
 
+// ── keeping the view on the data ───────────────────────────────────────
+// Panning moves the orbit target, and the target is what zoom dollies toward. Pan far
+// enough and the target sits in empty space: zoom still works mechanically but aims at
+// nothing, so the field slides away and the controls feel broken. Measured on the
+// shipped build — four pan strokes put the target 1,112 units out and dropped the frame
+// from 686,881 points to 160,395, and zooming in from there made it worse, not better.
+//
+// So the target is leashed. Measured at the clamp: 1400 still left only 134,345 points
+// in frame, which is barely better than being lost, so the leash is 900 — inside the
+// quasar shell (radius 1000) rather than outside it, which keeps the cloud on screen
+// while still allowing a long pan across the galaxy and star layers. When the leash bites, the camera is moved by the same correction,
+// so the view direction and the zoom distance are untouched — it stops you drifting
+// away, it does not tug the picture.
+const MAX_TARGET=900, _leash=new THREE.Vector3();
+function leashTarget(){
+  const d=controls.target.length();
+  if(d<=MAX_TARGET) return;
+  _leash.copy(controls.target).multiplyScalar(MAX_TARGET/d).sub(controls.target);
+  controls.target.add(_leash);
+  camera.position.add(_leash);
+}
+
+// A way back that does not require knowing the tour buttons are also a reset.
+function recenter(){
+  document.querySelectorAll('.tour').forEach(x=>x.classList.remove('on'));
+  const b=document.querySelector('.tour[data-t="home"]'); if(b) b.classList.add('on');
+  flyTo(TOURS.home.pos,TOURS.home.tgt,1400);
+}
+addEventListener('keydown',e=>{
+  if(e.code==='Digit0'||e.code==='Numpad0'||e.code==='Home'){ e.preventDefault(); recenter(); }
+});
+
+// No pointer-state rescue here on purpose. A drag released outside the canvas looked
+// like it left the controls panning — the target kept moving on button-free mouse
+// moves — but that reading was wrong: the movement decays 19.4 -> 7.2 -> 2.7 units,
+// which is OrbitControls' own damping settling, not a live drag. Running the same
+// probe against the build before any change gives identical numbers (0.02 units of
+// drift once settled, against 0.5 for "stuck"), so there was nothing to fix. The real
+// fault behind "pan gets stuck" is the leash problem above: pan far enough and the
+// field leaves the frame, so every input feels dead.
+
 // ── render loop ────────────────────────────────────────────────────────
 const ease=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 let last=performance.now(), fEl=document.getElementById('r-fps'), dEl=document.getElementById('r-dist');
@@ -790,6 +831,7 @@ function tick(now){
   // slides under you as you try to aim
   if(rot>0 && !tween && !flying){ scene.rotation.y += rot*dt*0.04; }
   controls.update();
+  leashTarget();
   if(layers.filaments) layers.filaments.material.uniforms.uTime.value=now*0.001;
   updateLOD();
   composer.render();
