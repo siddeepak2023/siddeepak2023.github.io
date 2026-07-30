@@ -215,18 +215,14 @@
       </ul>
     </div>
 
-    <div class="project project-hidden">
-      <div class="project-header">
-        <span class="project-name">Cosmos Deep Field — Universe Data Visualization</span>
-        <span class="project-link"><a href="https://siddharthdeepak.bizfalconai.com/cosmos/">Live Demo</a></span>
-      </div>
-      <div class="project-stack">Python &nbsp;|&nbsp; Pandas &nbsp;|&nbsp; NumPy &nbsp;|&nbsp; Astropy &nbsp;|&nbsp; Three.js &nbsp;|&nbsp; HTML/JS</div>
-      <ul class="bullets">
-        <li>Built an interactive 3D map of <strong>4.6 million real astronomical objects</strong> (2.6M SDSS galaxies, 1.2M Gaia stars, 752,910 quasars, 6,411 exoplanet hosts, 260,178 cosmic-web filament segments), streamed through an octree level-of-detail renderer that draws ~1.2M points per frame at 29–52 fps</li>
-        <li>Engineered a Python pipeline over 5 catalogue APIs (ESA Gaia TAP, SDSS SkyServer, NASA Exoplanet Archive, HyperLEDA/2MRS, VizieR) converting parallax, redshift and RA/Dec to 3D Cartesian positions via Astropy</li>
-        <li>Cut the wire format from 16.0 MB to 6.5 MB by quantizing points to 8 bytes and added an octree level-of-detail walker that draws only the nodes inside the frustum under a fixed per-frame point budget</li>
-      </ul>
-    </div>
+    <!-- COSMOS — removed from source 2026-07-30, not merely hidden. project-hidden does
+         not print, but it does ship in the public page source, and the figures had drifted:
+         "4.6 million objects, 1.2M Gaia stars" were captured from a PHONE render, where a
+         reduced star layer loads to protect memory. The desktop map is 10,202,358 measured
+         objects. It also folded the 260,178 filament segments into the object count, which
+         breaks the inferred-vs-measured separation the project states everywhere else.
+         Hidden-but-wrong is the same failure as the Spotify block deleted for the same
+         reason. Live figures live on the portfolio card and the viewer HUD. -->
 
   </div>
 
