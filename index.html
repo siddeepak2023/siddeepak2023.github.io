@@ -461,11 +461,11 @@ section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative}
 
       <article class="prod rv">
         <div class="prod-idx"><span>05 · Data viz</span><span>WebGL</span></div>
-        <h3>Cosmos — Universe Data Visualization</h3>
-        <p>An interactive 3D map of <strong>849,918 real astronomical objects</strong> — Gaia DR3 stars, 2MRS/HyperLEDA galaxies, SDSS quasars, NASA exoplanet hosts — plus the cosmic web as <strong>260,178 filament segments</strong> across 15,421 filaments (Tempel et al. 2014, SDSS). Five catalogue APIs feed a Python pipeline; Astropy turns parallax or redshift into 3D positions. The renderer quantizes each point to <strong>8 bytes</strong> and walks an <strong>octree LOD</strong>, so it draws what is on screen instead of the whole catalogue — 16.0 MB of geometry down to 6.5 MB on the wire. Fly it with WASD.</p>
+        <h3>Lightcone — Universe Data Visualization</h3>
+        <p>An interactive 3D map of <strong>849,918 catalogued objects</strong> — <strong>500,000</strong> Gaia DR3 stars, <strong>300,000</strong> SDSS quasars, <strong>43,507</strong> 2MRS/HyperLEDA galaxies, <strong>6,411</strong> NASA exoplanet hosts — plus the cosmic web as <strong>260,178 filament segments</strong> across 15,421 filaments (Tempel et al. 2014, SDSS). It is deliberately <em>not</em> billed as the observable universe: the stars reach ~2 kpc, galaxies 326 Mpc and quasars 3.9 Gpc against an observable radius of ~14,300 Mpc, so it covers at most <strong>2% of that volume</strong>, and each layer is rescaled onto its own shell — distances between layers are presentational. Five catalogue APIs feed a Python pipeline; Astropy turns parallax or redshift into 3D positions. The renderer quantizes each point to <strong>8 bytes</strong> and walks an <strong>octree LOD</strong>, drawing what is on screen instead of the whole catalogue — 16.0 MB of geometry down to 6.5 MB on the wire. Fly it with WASD.</p>
         <div class="mini">
-          <div class="mini-canvas mini-shot"><img class="shot" src="cards/cosmos-dark.jpg" alt="Live render from the Cosmos viewer: Gaia stars and quasars around a bright core with the blue filaments of the SDSS cosmic web threading through them." loading="lazy" decoding="async"></div>
-          <p class="mini-note">Live render · <em>849,918 objects + 260,178 filament segments</em></p>
+          <div class="mini-canvas mini-shot"><img class="shot" src="cards/cosmos-dark.jpg" alt="Live render from the Lightcone viewer: Gaia stars and quasars around a bright core with the blue filaments of the SDSS cosmic web threading through them." loading="lazy" decoding="async"></div>
+          <p class="mini-note">500,000 stars · 300,000 quasars · 43,507 galaxies · 6,411 exo hosts · <em>+260,178 filament segments</em></p>
         </div>
         <p class="stack-line"><b>Python</b> · <b>Astropy</b> · <b>Three.js</b> · <b>Pandas</b></p>
         <div class="prod-links">
