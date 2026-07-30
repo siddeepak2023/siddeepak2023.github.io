@@ -778,12 +778,17 @@ function tick(now){
     controls.target.lerpVectors(tween.tf,tween.tt,e);
     if(k>=1) tween=null;
   }
+  // Flight first: the drift check below reads `flying`, and reading it before this
+  // const initialises is a temporal-dead-zone ReferenceError — which threw on the very
+  // first frame, and since requestAnimationFrame(tick) is the last line of this
+  // function, that one throw killed the loop permanently. The viewer rendered nothing
+  // and the HUD sat at its initial HTML values (0 points, 0 nodes, distance "—").
+  const flying=updateFlight(Math.min(dt,0.05));   // clamp dt so a stalled tab can't teleport you
   // drift (auto-rotate the whole cosmos — layers are children of the scene)
   const rot=+sR.value;
   // drift is ambience; hold it while the viewer is actively flying or the scene
   // slides under you as you try to aim
   if(rot>0 && !tween && !flying){ scene.rotation.y += rot*dt*0.04; }
-  const flying=updateFlight(Math.min(dt,0.05));   // clamp dt so a stalled tab can't teleport you
   controls.update();
   if(layers.filaments) layers.filaments.material.uniforms.uTime.value=now*0.001;
   updateLOD();
@@ -804,7 +809,7 @@ addEventListener('resize',()=>{
 });
 // Debug hook for performance work: lets a console session add synthetic layers and
 // measure the real point-count ceiling on this GPU instead of guessing.
-window.__cosmos={THREE,scene,renderer,composer,camera,controls,layers,octrees,counts,applyPalette,
+window.__cosmos={THREE,scene,renderer,composer,camera,controls,layers,octrees,counts,applyPalette,tick,
   fil:()=>filaments, keys, updateFlight,
   updateLOD,lod:()=>lodStats,
   budget:v=>{ if(v!=null) POINT_BUDGET=v; return POINT_BUDGET; },
