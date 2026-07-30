@@ -217,10 +217,11 @@
 
     <!-- COSMOS — removed from source 2026-07-30, not merely hidden. project-hidden does
          not print, but it does ship in the public page source, and the figures had drifted:
-         "4.6 million objects, 1.2M Gaia stars" were captured from a PHONE render, where a
-         reduced star layer loads to protect memory. The desktop map is 10,202,358 measured
-         objects. It also folded the 260,178 filament segments into the object count, which
-         breaks the inferred-vs-measured separation the project states everywhere else.
+         it folded the 260,178 filament segments into the object count, which breaks the
+         inferred-vs-measured separation the project states everywhere else. (An earlier
+         version of this comment blamed the 4.6M figure on a phone render. That was wrong:
+         4,616,289 is what every visitor gets, because cosmos/stars_o.bin is gitignored and
+         the 6.8M star tier is not served. The count was right; the reason given was not.)
          Hidden-but-wrong is the same failure as the Spotify block deleted for the same
          reason. Live figures live on the portfolio card and the viewer HUD. -->
 

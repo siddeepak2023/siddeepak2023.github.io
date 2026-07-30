@@ -152,11 +152,13 @@
       <table>
         <thead><tr><th>Layer</th><th>Count</th><th>How the distance is known</th></tr></thead>
         <tbody>
-          <tr><td class="n">Stars</td><td class="n">1,200,000 <span style="opacity:.6">&rarr; 6,786,069</span></td>
+          <tr><td class="n">Stars</td><td class="n">1,200,000</td>
               <td><b>Gaia DR3</b> parallax — the star's apparent shift as Earth swings around the
-              Sun. Every star brighter than <b>G = 13.26</b> whose distance is known to better
-              than 10%. Both cuts matter: the magnitude limit is what makes this a complete
-              sample rather than a draw, and the parallax quality is what caps it at 2 kpc.</td></tr>
+              Sun. A uniform random draw from the 6,786,069 Gaia stars brighter than
+              <b>G = 13.26</b> whose distance is known to better than 10%. The full 6.8M tier is
+              built by the pipeline but is not hosted with this site — it is a 52 MB file, and
+              git keeps every blob forever — so what you are flying through is the 1.2M draw.
+              The parallax quality cut is what caps the layer at 2 kpc.</td></tr>
           <tr><td class="n">Galaxies</td><td class="n">2,656,968</td>
               <td><b>SDSS DR17</b> spectroscopic redshift for 2,613,461 of them — every one a
               galaxy whose light was split into a spectrum and measured, not estimated from a
@@ -188,10 +190,11 @@
           <tr><td class="n">Quasars</td><td class="n">752,910</td>
               <td class="n">752,910 SDSS quasars under the same cut</td>
               <td><b>100%</b></td></tr>
-          <tr><td class="n">Stars</td><td class="n">6,786,069</td>
-              <td class="n">1,200,000 load first; the full set arrives on a fast connection with enough memory. Every Gaia DR3 star brighter than G = 13.26 with a distance known to
-              10%, out of ~1.81 billion sources in the release</td>
-              <td><b>100%</b></td></tr>
+          <tr><td class="n">Stars</td><td class="n">1,200,000</td>
+              <td class="n">a uniform random draw from the 6,786,069 Gaia DR3 stars brighter than
+              G = 13.26 with a distance known to 10% (out of ~1.81 billion sources in the
+              release); the full tier is built but not hosted, so 1.2M is what ships</td>
+              <td><b>17.7%</b></td></tr>
         </tbody>
       </table>
       <p class="sm">And the honest denominator behind all of it: the Milky Way holds somewhere
