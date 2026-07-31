@@ -1047,7 +1047,23 @@ function updateFades(dtMs){
         for(let c=0;c<8;c++){ const ci=nd.child[c]; if(ci<0) continue; const ch=O.nodes[ci];
           if(!ch||!ch.pts) continue; kids++; if(ch.fade>0) drawnKids++; }
         const f = kids ? drawnKids/kids : 0;
-        const compE = Math.pow(nd.lodComp, 1-f), compS = Math.pow(nd.sizeComp, 1-f);
+        let compE, compS;
+        if(O.uniform){
+          // The cut is at one depth, but the tree is NOT uniformly deep: a dense
+          // region subdivides further, so cutting at level L drops far more of it
+          // than of a sparse region. Measured on the star layer, the leaves of the
+          // cut need 1x to 16.3x to represent what they stand for - and pow(lod,1.5)
+          // capped at 4.0 handed the densest of them 1.0, so they rendered ~16x too
+          // dim while fully-drawn sparse neighbours rendered correctly. That ratio,
+          // aligned to the node grid, is the slab pattern.
+          // subtree/count is the true ratio and the node already carries both.
+          // A node whose children are drawn represents only itself, so it stays at 1.
+          compE = f>0.999 ? 1 : Math.pow(Math.min(24, nd.subtree/Math.max(1,nd.count)), 0.7);
+          compS = 1;                       // exposure only; enlarged sprites are pure overdraw
+        } else {
+          compE = Math.pow(nd.lodComp, 1-f);
+          compS = Math.pow(nd.sizeComp, 1-f);
+        }
         nd.pts.material.uniforms.uExposure.value = nd.expBase0*compE*nd.fade*mul;
         nd.pts.material.uniforms.uSize.value     = nd.sizeBase0*compS;
       }
@@ -1101,7 +1117,7 @@ async function boot(){
     // LITE devices stop at the small layer and keep the brighter per-point exposure, since
     // each of their points stands for ~6x as many stars.
     {k:'stars',    url:'stars_lite_o.bin',
-                   size:0.32,norm:70,   exp:0.030, p:[0,0.62], coreGlow:true, uniform:true},
+                   size:0.32,norm:70,   exp:0.020, p:[0,0.62], coreGlow:true, uniform:true},
     {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.105, p:[0.62,0.70]},
     // One galaxy layer, not two. The nearby set and the SDSS deep field are the same
     // class of object and were being drawn as if they were different kinds of thing —
@@ -1266,7 +1282,7 @@ document.querySelectorAll('.tour').forEach(b=>{
 // therefore 404s in production and upgradeStars bails without touching the lite layer,
 // which is why no surface claims the 10.2M figure. To turn it on, host stars_o.bin
 // anywhere with CORS and point this url at it.
-const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.012,coreGlow:true,uniform:true};
+const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.008,coreGlow:true,uniform:true};
 let liteRateMBs=Infinity;
 async function upgradeStars(otherLayersN){
   // The full layer measured 393 MB of JS heap against 188 MB for lite. On a 4 GB phone
