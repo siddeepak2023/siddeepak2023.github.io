@@ -281,6 +281,7 @@
 
   <div id="tours">
     <div class="tour on" data-t="home">Overview</div>
+    <div class="tour" data-t="sun">Sun &amp; Earth</div>
     <div class="tour" data-t="milky">Milky Way</div>
     <div class="tour" data-t="local">Local Group</div>
     <div class="tour" data-t="quasar">Quasar Field</div>
@@ -296,8 +297,8 @@
 <div id="tip" class="glass"></div>
 <div id="sunlbl" style="position:fixed;left:0;top:0;pointer-events:none;opacity:0;transform:translate(-50%,-160%);
      font:600 10px/1.5 ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;
-     color:#ffe6b0;text-shadow:0 0 10px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,1);white-space:nowrap;
-     transition:opacity .25s ease;z-index:5">You are here · the Sun</div>
+     color:#cfe4ff;text-shadow:0 0 10px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,1);white-space:nowrap;
+     transition:opacity .25s ease;z-index:5">Earth · you are here <span style="opacity:.6">(not to scale)</span></div>
 
 <script type="importmap">
 { "imports": {
@@ -1066,39 +1067,73 @@ const FADE_MS=90;
 // Held at a constant SCREEN size rather than a constant world size. A world-sized marker is
 // either invisible from outside the star cloud or swallows the core once you fly in, and its
 // job is to stay findable at every distance. depthTest off so no point cloud buries it.
-let sunMark=null;
-function makeSunMarker(){
-  const N=64, cv=document.createElement('canvas'); cv.width=cv.height=N;
-  const g=cv.getContext('2d'), c0=N/2;
-  const rg=g.createRadialGradient(c0,c0,0,c0,c0,c0);
-  rg.addColorStop(0.00,'rgba(255,252,242,1)');
-  rg.addColorStop(0.22,'rgba(255,229,170,0.95)');
-  rg.addColorStop(0.55,'rgba(255,183,92,0.35)');
-  rg.addColorStop(1.00,'rgba(255,170,70,0)');
+let sunMark=null, earthMark=null, sunTour=false;
+// Earth's real separation from the Sun cannot be drawn here: 1 AU is 1/206,265 of a parsec,
+// and the nearest star in this map is 1.3pc away, so at any zoom where a star is visible the
+// whole solar system is far below one pixel. EARTH_AT is therefore a symbolic offset, not a
+// measured position, and the label says so — it is the one deliberately untrue distance in
+// the map, which is why it is confined to its own view instead of sitting in the sky
+// permanently. Chosen roughly perpendicular to the Sun & Earth tour's view direction so both
+// bodies are separated on screen rather than one hiding behind the other.
+const EARTH_AT=new THREE.Vector3(0.10,0.02,-0.10);
+function dot(N,stops){
+  const cv=document.createElement('canvas'); cv.width=cv.height=N;
+  const g=cv.getContext('2d'), c0=N/2, rg=g.createRadialGradient(c0,c0,0,c0,c0,c0);
+  for(const [at,col] of stops) rg.addColorStop(at,col);
   g.fillStyle=rg; g.fillRect(0,0,N,N);
-  const tex=new THREE.CanvasTexture(cv);
-  sunMark=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,blending:THREE.AdditiveBlending,
-    depthTest:false,depthWrite:false,transparent:true}));
-  sunMark.renderOrder=999;
-  scene.add(sunMark);
+  return new THREE.CanvasTexture(cv);
 }
-const _sunV=new THREE.Vector3();
+function sprite(tex,order){
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,blending:THREE.AdditiveBlending,
+    depthTest:false,depthWrite:false,transparent:true}));
+  s.renderOrder=order; scene.add(s); return s;
+}
+function makeSunMarker(){
+  sunMark=sprite(dot(64,[[0,'rgba(255,252,242,1)'],[0.22,'rgba(255,229,170,0.95)'],
+                        [0.55,'rgba(255,183,92,0.35)'],[1,'rgba(255,170,70,0)']]),999);
+  // Earth reads blue-white and small; additive blending means it has to sit clear of the
+  // Sun's glow to survive, hence the Sun dims in this one view.
+  earthMark=sprite(dot(64,[[0,'rgba(226,242,255,1)'],[0.30,'rgba(120,186,255,0.95)'],
+                          [0.62,'rgba(60,130,235,0.30)'],[1,'rgba(40,110,220,0)']]),1000);
+  earthMark.position.copy(EARTH_AT);
+  earthMark.visible=false;
+}
+const _sunV=new THREE.Vector3(), _earV=new THREE.Vector3();
 function updateSunMarker(){
   if(!sunMark) return;
-  // World units per screen pixel at the marker's depth, so 22px stays 22px.
   _sunV.set(0,0,0).applyMatrix4(scene.matrixWorld);
   const d=Math.max(camera.position.distanceTo(_sunV),1e-4);
+  // World units per screen pixel at that depth, so a size in px stays that size in px.
   const perPx=2*d*Math.tan(camera.fov*0.5*Math.PI/180)/innerHeight;
-  const s=22*perPx;
-  sunMark.scale.set(s,s,1);
+  // Dimmer and smaller in the Sun & Earth view: at full 22px the Sun's additive glow
+  // swallows a body 8px across sitting beside it.
+  const sunPx = sunTour ? 13 : 22;
+  sunMark.material.color.setScalar(sunTour ? 0.55 : 1.0);
+  sunMark.scale.setScalar(sunPx*perPx); sunMark.scale.z=1;
+  // Earth only near the Sun, and never dressed up as resolvable from across the galaxy.
+  const near = d < 3;
+  earthMark.visible = near;
+  // World position, computed once and used for both the scale and the label. The sprite is
+  // a child of the scene and the scene drifts (scene.rotation.y), so its LOCAL offset and
+  // its world offset are different vectors — sizing off the local one made the sprite
+  // breathe between roughly 6 and 10px as the map turned, because the camera-to-Earth
+  // distance swings by |EARTH_AT| either way while the local distance never changes.
+  _earV.copy(EARTH_AT).applyMatrix4(scene.matrixWorld);
+  if(near){
+    const dE=Math.max(camera.position.distanceTo(_earV),1e-4);
+    const perPxE=2*dE*Math.tan(camera.fov*0.5*Math.PI/180)/innerHeight;
+    earthMark.scale.setScalar(8*perPxE); earthMark.scale.z=1;
+  }
+  // The label belongs to the tour, not to the sky. It used to hang over the core at every
+  // distance, which is noise on a map whose subject is ten million other things.
   const lbl=document.getElementById('sunlbl');
   if(lbl){
-    _sunV.project(camera);
-    const on=_sunV.z<1 && Math.abs(_sunV.x)<1 && Math.abs(_sunV.y)<1;
-    lbl.style.opacity=on?'0.92':'0';
+    _earV.project(camera);
+    const on = sunTour && near && _earV.z<1 && Math.abs(_earV.x)<1 && Math.abs(_earV.y)<1;
+    lbl.style.opacity = on ? '0.92' : '0';
     if(on){
-      lbl.style.left=((_sunV.x*0.5+0.5)*innerWidth)+'px';
-      lbl.style.top =((-_sunV.y*0.5+0.5)*innerHeight)+'px';
+      lbl.style.left=((_earV.x*0.5+0.5)*innerWidth)+'px';
+      lbl.style.top =((-_earV.y*0.5+0.5)*innerHeight)+'px';
     }
   }
 }
@@ -1476,6 +1511,7 @@ function flyTo(pos,tgt,ms=2200,up){
 // what makes the band read horizontally instead of standing on end.
 const TOURS={
   home:  {pos:[0,120,560],  tgt:[0,0,0], up:[0,1,0]},
+  sun:   {pos:[0.42,0.18,0.42], tgt:[0,0,0], up:[0,1,0]},  // the only view with Earth in it
   milky: {pos:[96,0,7],     tgt:[0,0,0], up:[0,0,1]},   // in the plane, looking along it
   local: {pos:[40,20,120],  tgt:[0,0,0], up:[0,1,0]},
   quasar:{pos:[200,140,900],tgt:[60,0,-120], up:[0,1,0]},
@@ -1488,6 +1524,7 @@ document.querySelectorAll('.tour').forEach(b=>{
   b.addEventListener('click',()=>{
     endStuckDrag();
     document.querySelectorAll('.tour[data-t]').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    sunTour = b.dataset.t==='sun';   // the Earth label is scoped to this one view
     const t=TOURS[b.dataset.t]; if(t) flyTo(t.pos,t.tgt,2200,t.up);
   });
 });
@@ -1734,6 +1771,7 @@ function recenter(){
   endStuckDrag();   // a guaranteed way out if a drag ever does jam the wheel handler
   document.querySelectorAll('.tour').forEach(x=>x.classList.remove('on'));
   const b=document.querySelector('.tour[data-t="home"]'); if(b) b.classList.add('on');
+  sunTour=false;
   flyTo(TOURS.home.pos,TOURS.home.tgt,1400,TOURS.home.up);
 }
 addEventListener('keydown',e=>{
