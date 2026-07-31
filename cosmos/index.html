@@ -255,6 +255,15 @@
       than as full coordinates, which is where the file size goes: 8 bytes a point instead of
       20, at a precision finer than anything you can see.</p>
 
+      <h3>The streaks in the star cloud</h3>
+      <p>Fly around the Milky Way sphere and you will see faint linear ridges in the star
+      density. They are not a rendering artefact — they are <b>Gaia's scanning law</b>. The
+      spacecraft sweeps the sky on a fixed repeating pattern, so some directions were observed
+      more often than others, and the catalogue's source density carries that pattern. The
+      ridges stay fixed to the sky and turn with the data as you orbit, which is how you can
+      tell them from anything the renderer is doing. Smoothing them away would mean moving
+      stars off their measured positions, so they are left in.</p>
+
       <h3>Colour</h3>
       <p>Colour is a real measurement, not decoration. Stars are tinted by <em>BP−RP</em>,
       Gaia's own colour index, so hot blue stars are blue because they are hot. Galaxies and
@@ -1123,15 +1132,15 @@ async function boot(){
     // LITE devices stop at the small layer and keep the brighter per-point exposure, since
     // each of their points stands for ~6x as many stars.
     {k:'stars',    url:'stars_lite_o.bin',
-                   size:0.32,norm:70,   exp:0.020, p:[0,0.62], coreGlow:true, uniform:true},
-    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.105, p:[0.62,0.70]},
+                   size:0.32,norm:70,   exp:0.011, p:[0,0.62], coreGlow:true, uniform:true},
+    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.19, p:[0.62,0.70]},
     // One galaxy layer, not two. The nearby set and the SDSS deep field are the same
     // class of object and were being drawn as if they were different kinds of thing —
     // two shells, two sizes, a 12x gap in exposure. Merged they share one normalisation,
     // so the nearby galaxies land at their true 22% of the deep field's radius instead
     // of being pushed out to a shell of their own. 43,507 of the 2,656,968 carry no
     // measured redshift and are drawn neutral, which is the existing contract.
-    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.0085, p:[0.70,0.98]},
+    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.022, p:[0.70,0.98]},
     // Stars went 500k -> 7.4M in the SAME 2 kpc shell, so ~15x the density under additive
   // blending. Two knobs, and size matters more than exposure here: 'solid' is sprites
   // OVERLAPPING, and overlap goes as the square of the radius, so halving size cuts the
@@ -1202,7 +1211,7 @@ async function boot(){
     // flow=0 for anyone who asked the OS for reduced motion — the web still renders,
     // it just stops travelling.
     const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.45,fade:0.0004,
+    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.22,fade:0.0004,
                                           flow:calm?0:0.09,pulses:3.0});
     counts.filaments=F.segCount;
     document.getElementById('ct-filaments').textContent=fmt(F.segCount);
@@ -1214,7 +1223,15 @@ async function boot(){
   }
   document.getElementById('total').textContent=fmt(totalN);
   // Kicked off after the first frame is interactive, never before it.
-  if(!LITE) upgradeStars(totalN - counts.stars);
+  // The 6.79M tier is opt-in via ?full=1, and off by default on purpose. Within a
+  // 1,200,000 frame budget a uniform cut of that tree reaches only levels 0..2 -
+  // 397,349 points, 5.9% of the layer, drawn as 64 coarse blocks, which is the cube.
+  // The 1.2M tier gets 300,725 points at the same cut, 25% of its layer, and reads as
+  // a smooth sphere. It is also the only tier production serves (stars_o.bin is not
+  // hosted), so leaving the upgrade on made a local machine disagree with every
+  // visitor AND made the headline flicker between 4,616,289 and 10,202,358 depending
+  // on whether the fetch won its race on that reload.
+  if(!LITE && new URLSearchParams(location.search).get('full')==='1') upgradeStars(totalN - counts.stars);
   // The headline count has to come from what actually loaded, not from a number typed
   // into the markup. On the lite build the star layer is 1.2M rather than 7.4M, and a
   // hardcoded 10,202,358 would be a claim the page did not deliver — which is exactly
