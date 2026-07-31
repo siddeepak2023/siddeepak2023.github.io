@@ -349,7 +349,7 @@ composer.addPass(new RenderPass(scene,camera));
 // brighter than the control claims. Measured against the committed project-card image
 // (mean 102.5, 0.64% clipped): the shipped values landed mean 96.5 at 2.2% clipped, where
 // the pre-tune build was mean 231 at 39.6% clipped — a white screen.
-const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),0.55,0.75,0.45);
+const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),0.55,0.90,0.16);
 composer.addPass(bloom);
 composer.addPass(new OutputPass());
 
@@ -985,55 +985,28 @@ function updateLOD(){
 // in the 1.8M range where frame time jumps to 54ms. Halving the window halves the
 // overlap, and at 90ms the dissolve still reads as a dissolve rather than a jump.
 const FADE_MS=90;
-// FAR-FIELD CORE GLOW.
-// The exoplanet layer reads as a tiny glowing orb from a distance and dissolves into
-// individual host stars when you fly in. That is not a setting anyone chose - it happens
-// because exo is always drawn in full, so from far away all 6,411 points land in a handful
-// of pixels and additive blending stacks them until they saturate.
-//
-// The star cloud cannot do that, by design: the LOD draws a random SUBSAMPLE of each distant
-// node and compensates its exposure by pow(lod,1.5) precisely so the field's brightness stays
-// CONSTANT as you pull back. That constancy is what removes the core - the thing the old card
-// screenshot had, back when the layer was 500k points at sprite size 0.9 and simply overlapped
-// itself into saturation.
-//
-// So the glow is restored with distance, not with size or position: beyond CORE_D0 the star
-// layer's exposure is scaled up, saturating the dense middle into an orb, and inside CORE_D0 it
-// returns to exactly the tuned value that makes individual stars resolve. Sprite radius (0.32)
-// and shell radius (70) are untouched, so flying through the sphere is unchanged.
-// A FLOOR and a CEILING, not a ramp from nothing. The previous curve started at 1x inside the
-// cloud, so close in there was no core at all, and it ran to 25x far out, which is how the orb
-// turned into a solid white sphere that swallowed every other layer. Both ends were wrong.
-//
-// The exoplanet layer is the reference behaviour: a small glow you can see from ANY distance,
-// never bright enough to take over the frame. So the star core gets the same shape - a floor so
-// it is always present, a ceiling so it can never blow out, and a gentle rise between them.
-// Interpolated in LOG distance because that is how the scale reads: 90 -> 900 is one decade and
-// should feel like one step, not like the 810 linear units it happens to be.
-// NEAR = 1.0 on purpose: inside the cloud there is no core ball, because a solid ball is not
-// what the data looks like from in there - individual stars are, and that is the view worth
-// keeping honest. The glow is a FAR-FIELD effect only: it earns its brightness the same way the
-// exoplanet layer does, by many points landing in few pixels, and it exists because the LOD
-// otherwise normalises that stacking away.
-let CORE_NEAR=1.0, CORE_FAR=5.0, CORE_D0=90, CORE_D1=900;
-// Tunable live under ?capture=1 only, so the orb can be set against a measured clipped-pixel
-// fraction rather than by eye. Not exposed to readers.
-if(CAPTURE) window.__glow=(near,far,d0,d1)=>{ CORE_NEAR=near; CORE_FAR=far;
-  if(d0) CORE_D0=d0; if(d1) CORE_D1=d1;
-  return {CORE_NEAR,CORE_FAR,CORE_D0,CORE_D1}; };
-function coreGlowMul(){
-  const d=camera.position.length();
-  if(d<=CORE_D0) return CORE_NEAR;
-  if(d>=CORE_D1) return CORE_FAR;
-  const t=Math.log(d/CORE_D0)/Math.log(CORE_D1/CORE_D0);
-  return CORE_NEAR+(CORE_FAR-CORE_NEAR)*t;
+// Glow is a SCREEN-SPACE job, not a per-node one. An earlier version scaled each drawn
+// octree node's exposure with camera distance to make the star cloud read as a glowing orb
+// from far away. It worked, and it also drew a hard-edged glowing SQUARE around the cloud:
+// at distance the LOD draws only a few coarse nodes, each node is a cube, and multiplying a
+// cube's brightness by 25 makes the cube visible. Bloom does the same job correctly, because
+// it operates on pixels and knows nothing about the octree.
+// Flying into the star cloud stacks enough additive sprites per pixel through the bulge to
+// clip to flat white — a solid ball, which is the one thing the orb is not supposed to look
+// like up close. Damp the STAR layer alone, only inside NEAR_D0, on a smooth curve so there
+// is no threshold to see, and leave every distance past it at exactly 1.0 so the far view is
+// untouched. One scalar for the whole layer, not per node: unlike the coreGlowMul this
+// replaces, it has no way to make the octree grid visible.
+const NEAR_D0=60, NEAR_MIN=0.45;
+function nearDamp(k,camD){
+  if(k!=='stars' || camD>=NEAR_D0) return 1;
+  return NEAR_MIN+(1-NEAR_MIN)*Math.pow(camD/NEAR_D0,1.5);
 }
 function updateFades(dtMs){
   const step=dtMs/FADE_MS;
-  const glow=coreGlowMul();
+  const camD=camera.position.length();   // the star cloud is centred on the sun at the origin
   for(const k in octrees){
     const O=octrees[k]; if(!O) continue;
-    const mul=O.coreGlow?glow:1;
     for(const nd of O.nodes){
       if(!nd.pts) continue;
       const target=nd.want?1:0;
@@ -1079,7 +1052,11 @@ function updateFades(dtMs){
           compE = Math.pow(nd.lodComp, 1-f);
           compS = Math.pow(nd.sizeComp, 1-f);
         }
-        nd.pts.material.uniforms.uExposure.value = nd.expBase0*compE*nd.fade*mul;
+        // No `mul` here any more. The far-field glow multiplier that used to sit at the end
+        // of this line was removed - it scaled whole octree nodes, which is what drew a
+        // glowing cube around the star sphere. Glow is bloom's job now (threshold 0.16),
+        // and bloom works on pixels, so it cannot inherit the node grid.
+        nd.pts.material.uniforms.uExposure.value = nd.expBase0*compE*nd.fade*nearDamp(k,camD);
         nd.pts.material.uniforms.uSize.value     = nd.sizeBase0*compS;
       }
       nd.want=0;
@@ -1133,14 +1110,17 @@ async function boot(){
     // each of their points stands for ~6x as many stars.
     {k:'stars',    url:'stars_lite_o.bin',
                    size:0.32,norm:70,   exp:0.038, p:[0,0.62], coreGlow:true, uniform:true},
-    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.19, p:[0.62,0.70]},
+    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.32, p:[0.62,0.70]},
     // One galaxy layer, not two. The nearby set and the SDSS deep field are the same
     // class of object and were being drawn as if they were different kinds of thing —
     // two shells, two sizes, a 12x gap in exposure. Merged they share one normalisation,
     // so the nearby galaxies land at their true 22% of the deep field's radius instead
     // of being pushed out to a shell of their own. 43,507 of the 2,656,968 carry no
     // measured redshift and are drawn neutral, which is the existing contract.
-    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.022, p:[0.70,0.98]},
+    // exp 0.022 -> 0.085. This is the largest layer (2.66M) and the shape that defines the
+    // map - the bowtie - and at 0.022 it was the dimmest thing on screen, losing to both the
+    // star glow and the inferred cosmic web. Light per point only; no position or size change.
+    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.085, p:[0.70,0.98]},
     // Stars went 500k -> 7.4M in the SAME 2 kpc shell, so ~15x the density under additive
   // blending. Two knobs, and size matters more than exposure here: 'solid' is sprites
   // OVERLAPPING, and overlap goes as the square of the radius, so halving size cuts the
@@ -1211,7 +1191,9 @@ async function boot(){
     // flow=0 for anyone who asked the OS for reduced motion — the web still renders,
     // it just stops travelling.
     const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.42,fade:0.0004,
+    // 0.42 -> 0.22. The web was the loudest thing at every distance, and it is the one layer
+    // that is INFERRED rather than observed - it should never out-shout measured points.
+    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.22,fade:0.0004,
                                           flow:calm?0:0.09,pulses:3.0});
     counts.filaments=F.segCount;
     document.getElementById('ct-filaments').textContent=fmt(F.segCount);
