@@ -349,7 +349,7 @@ composer.addPass(new RenderPass(scene,camera));
 // brighter than the control claims. Measured against the committed project-card image
 // (mean 102.5, 0.64% clipped): the shipped values landed mean 96.5 at 2.2% clipped, where
 // the pre-tune build was mean 231 at 39.6% clipped — a white screen.
-const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),0.55,0.75,0.78);
+const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth/2,innerHeight/2),0.55,0.75,0.45);
 composer.addPass(bloom);
 composer.addPass(new OutputPass());
 
@@ -1132,7 +1132,7 @@ async function boot(){
     // LITE devices stop at the small layer and keep the brighter per-point exposure, since
     // each of their points stands for ~6x as many stars.
     {k:'stars',    url:'stars_lite_o.bin',
-                   size:0.32,norm:70,   exp:0.011, p:[0,0.62], coreGlow:true, uniform:true},
+                   size:0.32,norm:70,   exp:0.038, p:[0,0.62], coreGlow:true, uniform:true},
     {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.19, p:[0.62,0.70]},
     // One galaxy layer, not two. The nearby set and the SDSS deep field are the same
     // class of object and were being drawn as if they were different kinds of thing —
@@ -1211,7 +1211,7 @@ async function boot(){
     // flow=0 for anyone who asked the OS for reduced motion — the web still renders,
     // it just stops travelling.
     const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.22,fade:0.0004,
+    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.42,fade:0.0004,
                                           flow:calm?0:0.09,pulses:3.0});
     counts.filaments=F.segCount;
     document.getElementById('ct-filaments').textContent=fmt(F.segCount);
@@ -1259,7 +1259,15 @@ document.getElementById('palToggle').addEventListener('click',()=>{
   applyPalette(paletteMode==='vivid'?'true':'vivid');
 });
 const sB=document.getElementById('s-bloom'), sS=document.getElementById('s-size'), sR=document.getElementById('s-rot');
-sB.oninput=()=>{bloom.strength=+sB.value; document.getElementById('v-bloom').textContent=sB.value;};
+sB.oninput=()=>{ const v=+sB.value;
+  bloom.strength=v;
+  // GLOW used to move bloom.strength alone, and bloom only touches pixels above the
+  // threshold - which in practice was the star core and nothing else. So the slider
+  // appeared to do nothing to galaxies, quasars or the web. Driving tone-mapping
+  // exposure as well makes it a brightness control for EVERY layer, threshold or not.
+  // 0.7 + 0.55v puts the 0.55 default back at 1.0, so the default frame is unchanged.
+  renderer.toneMappingExposure = 0.7 + v*0.55;
+  document.getElementById('v-bloom').textContent=sB.value; };
 sS.oninput=()=>{document.getElementById('v-size').textContent=sS.value;
   const v=+sS.value;
   Object.values(layers).forEach(g=>{ if(g) g.children.forEach(p=>{ p.material.uniforms.uSize.value=v*p.userData.sizeMul; }); });};
@@ -1305,7 +1313,7 @@ document.querySelectorAll('.tour').forEach(b=>{
 // therefore 404s in production and upgradeStars bails without touching the lite layer,
 // which is why no surface claims the 10.2M figure. To turn it on, host stars_o.bin
 // anywhere with CORS and point this url at it.
-const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.008,coreGlow:true,uniform:true};
+const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.026,coreGlow:true,uniform:true};
 let liteRateMBs=Infinity;
 async function upgradeStars(otherLayersN){
   // The full layer measured 393 MB of JS heap against 188 MB for lite. On a 4 GB phone
