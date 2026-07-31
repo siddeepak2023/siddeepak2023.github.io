@@ -697,6 +697,7 @@ function fmt(n){return n.toLocaleString();}
 function makeOctreeLayer(O,cfg){
   O.always = !!cfg.always;   // tiny layers opt out of the LOD budget - see updateLOD
   O.coreGlow = !!cfg.coreGlow;   // scale exposure with distance - see coreGlowMul
+  O.uniform  = !!cfg.uniform;    // draw one octree level only - see uniformCutFor
   const {col,bright}=colorize(O.n,O.rad,O.val,cfg.k,paletteMode);
   O.col=col; O.bright=bright;
   const group=new THREE.Group(); scene.add(group);
@@ -818,6 +819,33 @@ let RESERVE_SHARE=0.14;
 let MIN_PX=12;
 let lodStats={points:0,nodes:0,culled:0};
 
+// A compact layer (the star cloud) subtends a small angle and sits at essentially
+// one distance, so scoring its nodes by screen radius buys no detail - it only makes
+// the cut UNEVEN, and an uneven cut is what produces the seam: a leaf node carries up
+// to 4x exposure and 3x sprite size to stand in for its subsample while the node next
+// to it, whose children are drawn, carries 1x. Same total light, different texture -
+// a few fat bright points beside many small dim ones - and that boundary reads as a
+// box face. Drawing every node of the layer at the SAME level removes the boundary by
+// construction. Returns the deepest complete cut that fits the budget.
+function uniformCutFor(O, budget){
+  if(O._maxLevel===undefined){ let m=0; for(const nd of O.nodes) if(nd.pts&&nd.level>m) m=nd.level; O._maxLevel=m; }
+  // ALL levels down to L, not the level-L nodes alone. A node's points and its
+  // children's are DISJOINT sets, so drawing one level draws only that level's
+  // subsample and omits everything below it - at level 2 that is 228,725 of
+  // 1,200,000, and what survives is sparse with per-node counts from 12 to 8,000,
+  // which reads as a grid of blocks. Nested ancestors overlay the whole region
+  // evenly, so they cannot make a lateral boundary; only side-by-side nodes at
+  // DIFFERENT levels can, and taking every level to the same depth removes that.
+  let best=null;
+  for(let L=0; L<=O._maxLevel; L++){
+    const sel=[]; let pts=0;
+    for(const nd of O.nodes){ if(!nd.pts||nd.level>L) continue; sel.push(nd); pts+=nd.count; }
+    if(!sel.length) break;
+    if(pts<=budget) best=sel; else break;
+  }
+  return best||[];
+}
+
 function updateLOD(){
   scene.updateMatrixWorld(true);
   _clip.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse).multiply(scene.matrixWorld);
@@ -842,7 +870,7 @@ function updateLOD(){
     for(const nd of O.nodes){ if(nd.pts){ nd.want=1; forced+=nd.count; } }
   }
   for(const k in octrees){
-    const O=octrees[k]; if(!O||O.always) continue;
+    const O=octrees[k]; if(!O||O.always||O.uniform) continue;
     // Visibility is owned by updateFades now, not reset here. Blanket-hiding every
     // node each frame was correct when the walker set .visible directly; with a
     // fade pass it meant a node that had finished fading in — and was therefore
@@ -858,6 +886,19 @@ function updateLOD(){
   for(const k in octrees){
     const O=octrees[k]; if(!O||!O.always) continue;
     for(const nd of O.nodes){ if(nd.pts&&nd.want) perLayer[k]+=nd.count; }
+  }
+  // Uniform-depth layers, drawn before the contest so they cannot be starved by a
+  // physically larger shell. Frustum culling still applies; it removes whole nodes
+  // rather than changing any node's level, so it cannot reintroduce a seam.
+  for(const k in octrees){
+    const O=octrees[k]; if(!O||!O.uniform) continue;
+    if(!layers[k]||!layers[k].visible) continue;
+    for(const nd of uniformCutFor(O, Math.floor(POINT_BUDGET*RESERVE_SHARE*2.6))){
+      _sph.center.copy(nd.center); _sph.radius=nd.radius;
+      if(!_frustum.intersectsSphere(_sph)) continue;
+      if(nd.want) continue;
+      nd.want=1; pts+=nd.count; nodes++; perLayer[k]=(perLayer[k]||0)+nd.count;
+    }
   }
   // ── per-layer floor ──────────────────────────────────────────────────
   // Best-first by projected radius always favours the physically largest shell, so the
@@ -1060,7 +1101,7 @@ async function boot(){
     // LITE devices stop at the small layer and keep the brighter per-point exposure, since
     // each of their points stands for ~6x as many stars.
     {k:'stars',    url:'stars_lite_o.bin',
-                   size:0.32,norm:70,   exp:0.01125, p:[0,0.62], coreGlow:true},
+                   size:0.32,norm:70,   exp:0.030, p:[0,0.62], coreGlow:true, uniform:true},
     {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.105, p:[0.62,0.70]},
     // One galaxy layer, not two. The nearby set and the SDSS deep field are the same
     // class of object and were being drawn as if they were different kinds of thing —
@@ -1225,7 +1266,7 @@ document.querySelectorAll('.tour').forEach(b=>{
 // therefore 404s in production and upgradeStars bails without touching the lite layer,
 // which is why no surface claims the 10.2M figure. To turn it on, host stars_o.bin
 // anywhere with CORS and point this url at it.
-const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.0045,coreGlow:true};
+const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.012,coreGlow:true,uniform:true};
 let liteRateMBs=Infinity;
 async function upgradeStars(otherLayersN){
   // The full layer measured 393 MB of JS heap against 188 MB for lite. On a 4 GB phone
