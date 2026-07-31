@@ -597,6 +597,17 @@ function blackbodyRGB(K,S){
 function colorize(n,rad,val,kind,mode){
   const c=new Float32Array(n*3), b=new Float32Array(n);
   let mx=0; for(let i=0;i<n;i++) if(rad[i]>mx) mx=rad[i]; if(mx<=0)mx=1;
+  // Merging the nearby 2MRS set into the SDSS deep field fixed their POSITIONS — they
+  // now sit at their true ~24% of the deep field's radius instead of a shell of their
+  // own — but it silently dimmed them. br is normalised by the layer's MAX radius, and
+  // the nearby set only reaches 23.7% of it, so a typical nearby galaxy fell from
+  // br 0.549 to 0.329. br drives alpha AND point size, so that is ~4.5x less light per
+  // point, and 43,507 of them against 2,613,461 deep-field points reads as gone.
+  // Normalise each population by its own extent: identical geometry, pre-merge
+  // brightness. The nearby set is exactly the no-measured-redshift subset.
+  let mxU=0;
+  if(val) for(let i=0;i<n;i++) if(!Number.isFinite(val[i]) && rad[i]>mxU) mxU=rad[i];
+  if(mxU<=0) mxU=mx;
   const NEUTRAL=[1.0,0.94,0.86];                 // unmeasured: warm white, no claim
   const FLAT={galaxies:[0.86,0.55,1.0], quasars:[1.0,0.42,0.82], exo:[0.35,0.95,0.85]};
   // The SDSS spectroscopic layer is galaxies too — same measured quantity (redshift),
@@ -655,9 +666,10 @@ function colorize(n,rad,val,kind,mode){
   }
   const vivid = mode!=='true';
   for(let i=0;i<n;i++){
-    let br=Math.min(1, Math.pow((rad[i]||0.4)/mx,0.5)+0.12);
-    let rgb;
     const v=val?val[i]:NaN;
+    const rScale=(kind==='galaxies'&&!Number.isFinite(v))?mxU:mx;
+    let br=Math.min(1, Math.pow((rad[i]||0.4)/rScale,0.5)+0.12);
+    let rgb;
     if(kind==='stars'){
       rgb = Number.isFinite(v) ? blackbodyRGB(teffFromBpRp(v), vivid?1.5:1.05) : NEUTRAL;
     }else if((kind==='quasars'||kind==='galaxies') && Number.isFinite(v)){
@@ -790,7 +802,7 @@ let RESERVE_SHARE=0.14;
 // compensation, so most of that cost is additive overdraw rather than a fair
 // baseline. The octree's honest wins are download size (6.51 MB against v2's
 // 12.8 MB) and frustum culling, plus the ability to shed detail on a weaker GPU.
-let MIN_PX=40;
+let MIN_PX=12;
 let lodStats={points:0,nodes:0,culled:0};
 
 function updateLOD(){
@@ -940,7 +952,7 @@ const FADE_MS=90;
 // keeping honest. The glow is a FAR-FIELD effect only: it earns its brightness the same way the
 // exoplanet layer does, by many points landing in few pixels, and it exists because the LOD
 // otherwise normalises that stacking away.
-let CORE_NEAR=1.0, CORE_FAR=25.0, CORE_D0=90, CORE_D1=900;
+let CORE_NEAR=1.0, CORE_FAR=5.0, CORE_D0=90, CORE_D1=900;
 // Tunable live under ?capture=1 only, so the orb can be set against a measured clipped-pixel
 // fraction rather than by eye. Not exposed to readers.
 if(CAPTURE) window.__glow=(near,far,d0,d1)=>{ CORE_NEAR=near; CORE_FAR=far;
@@ -1024,15 +1036,15 @@ async function boot(){
     // LITE devices stop at the small layer and keep the brighter per-point exposure, since
     // each of their points stands for ~6x as many stars.
     {k:'stars',    url:'stars_lite_o.bin',
-                   size:0.32,norm:70,   exp:0.0375, p:[0,0.62], coreGlow:true},
-    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.066, p:[0.62,0.70]},
+                   size:0.32,norm:70,   exp:0.01125, p:[0,0.62], coreGlow:true},
+    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.0825, p:[0.62,0.70]},
     // One galaxy layer, not two. The nearby set and the SDSS deep field are the same
     // class of object and were being drawn as if they were different kinds of thing —
     // two shells, two sizes, a 12x gap in exposure. Merged they share one normalisation,
     // so the nearby galaxies land at their true 22% of the deep field's radius instead
     // of being pushed out to a shell of their own. 43,507 of the 2,656,968 carry no
     // measured redshift and are drawn neutral, which is the existing contract.
-    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.002, p:[0.70,0.98]},
+    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.0052, p:[0.70,0.98]},
     // Stars went 500k -> 7.4M in the SAME 2 kpc shell, so ~15x the density under additive
   // blending. Two knobs, and size matters more than exposure here: 'solid' is sprites
   // OVERLAPPING, and overlap goes as the square of the radius, so halving size cuts the
@@ -1189,7 +1201,7 @@ document.querySelectorAll('.tour').forEach(b=>{
 // therefore 404s in production and upgradeStars bails without touching the lite layer,
 // which is why no surface claims the 10.2M figure. To turn it on, host stars_o.bin
 // anywhere with CORS and point this url at it.
-const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.015,coreGlow:true};
+const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.0045,coreGlow:true};
 let liteRateMBs=Infinity;
 async function upgradeStars(otherLayersN){
   // The full layer measured 393 MB of JS heap against 188 MB for lite. On a 4 GB phone
