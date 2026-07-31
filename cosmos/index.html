@@ -283,7 +283,6 @@
     <div class="tour on" data-t="home">Overview</div>
     <div class="tour" data-t="milky">Milky Way</div>
     <div class="tour" data-t="local">Local Group</div>
-    <div class="tour" data-t="web">Cosmic Web</div>
     <div class="tour" data-t="quasar">Quasar Field</div>
     <div class="tour" data-t="exo">Exoplanets</div>
   </div>
@@ -295,6 +294,10 @@
   </div>
 </div>
 <div id="tip" class="glass"></div>
+<div id="sunlbl" style="position:fixed;left:0;top:0;pointer-events:none;opacity:0;transform:translate(-50%,-160%);
+     font:600 10px/1.5 ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;
+     color:#ffe6b0;text-shadow:0 0 10px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,1);white-space:nowrap;
+     transition:opacity .25s ease;z-index:5">You are here · the Sun</div>
 
 <script type="importmap">
 { "imports": {
@@ -357,7 +360,7 @@ composer.addPass(new OutputPass());
 const vert=`
   attribute float aBright;
   attribute vec3 aColor;
-  uniform float uSize; uniform float uScale;
+  uniform float uSize; uniform float uScale; uniform float uMaxPx;
   varying float vB; varying vec3 vC;
   void main(){
     // uSize already carries this octree node's LOD size compensation (see
@@ -367,7 +370,12 @@ const vert=`
     vec4 mv=modelViewMatrix*vec4(position,1.0);
     float d=-mv.z;
     gl_PointSize = uSize * (0.6+aBright*1.7) * (uScale/ max(d,1.0));
-    gl_PointSize = clamp(gl_PointSize, 0.6, 26.0);
+    // Per-layer ceiling. 26px suits a layer whose brightness varies, because only the few
+    // bright members reach the cap. Every exoplanet host arrives with aBright=1 — nothing
+    // in that catalogue was measured into it — so all 6,411 hit the cap at once and stack
+    // additively into a saturated slab with a boxy edge. A tighter cap for that layer keeps
+    // them reading as individual hosts.
+    gl_PointSize = clamp(gl_PointSize, 0.6, uMaxPx);
     gl_Position = projectionMatrix*mv;
   }`;
 const frag=`
@@ -756,7 +764,8 @@ function makeOctreeLayer(O,cfg){
     // — but change it against a real GPU, not a headless software one.
     const exposure=(cfg.exp??1.0)*Math.min(4.0,Math.pow(lod,1.5));
     const m=new THREE.ShaderMaterial({
-      uniforms:{uSize:{value:sizeMul},uScale:{value:260.0},uExposure:{value:exposure}},
+      uniforms:{uSize:{value:sizeMul},uScale:{value:260.0},uExposure:{value:exposure},
+                uMaxPx:{value:cfg.maxPx??26.0}},
       vertexShader:vert,fragmentShader:frag,
       transparent:true,depthWrite:false,blending:THREE.AdditiveBlending
     });
@@ -1046,6 +1055,54 @@ function updateLOD(){
 // overlap, and at 90ms the dissolve still reads as a dissolve rather than a jump.
 const FADE_MS=90;
 
+// ── the Sun ────────────────────────────────────────────────────────────
+// Every position in this map is measured FROM here: parallax and redshift both give
+// distance from the solar system, so the origin is not a neutral centre of the data, it is
+// where the observer stands. Nothing marked it, which left a 10-million-point map with no
+// answer to "where am I in this". Earth is far too small to plot at any of these scales —
+// the nearest star in the map is a quarter of a million times further from us than we are
+// from the Sun — so the honest marker is the Sun itself, at the origin, labelled as us.
+//
+// Held at a constant SCREEN size rather than a constant world size. A world-sized marker is
+// either invisible from outside the star cloud or swallows the core once you fly in, and its
+// job is to stay findable at every distance. depthTest off so no point cloud buries it.
+let sunMark=null;
+function makeSunMarker(){
+  const N=64, cv=document.createElement('canvas'); cv.width=cv.height=N;
+  const g=cv.getContext('2d'), c0=N/2;
+  const rg=g.createRadialGradient(c0,c0,0,c0,c0,c0);
+  rg.addColorStop(0.00,'rgba(255,252,242,1)');
+  rg.addColorStop(0.22,'rgba(255,229,170,0.95)');
+  rg.addColorStop(0.55,'rgba(255,183,92,0.35)');
+  rg.addColorStop(1.00,'rgba(255,170,70,0)');
+  g.fillStyle=rg; g.fillRect(0,0,N,N);
+  const tex=new THREE.CanvasTexture(cv);
+  sunMark=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,blending:THREE.AdditiveBlending,
+    depthTest:false,depthWrite:false,transparent:true}));
+  sunMark.renderOrder=999;
+  scene.add(sunMark);
+}
+const _sunV=new THREE.Vector3();
+function updateSunMarker(){
+  if(!sunMark) return;
+  // World units per screen pixel at the marker's depth, so 22px stays 22px.
+  _sunV.set(0,0,0).applyMatrix4(scene.matrixWorld);
+  const d=Math.max(camera.position.distanceTo(_sunV),1e-4);
+  const perPx=2*d*Math.tan(camera.fov*0.5*Math.PI/180)/innerHeight;
+  const s=22*perPx;
+  sunMark.scale.set(s,s,1);
+  const lbl=document.getElementById('sunlbl');
+  if(lbl){
+    _sunV.project(camera);
+    const on=_sunV.z<1 && Math.abs(_sunV.x)<1 && Math.abs(_sunV.y)<1;
+    lbl.style.opacity=on?'0.92':'0';
+    if(on){
+      lbl.style.left=((_sunV.x*0.5+0.5)*innerWidth)+'px';
+      lbl.style.top =((-_sunV.y*0.5+0.5)*innerHeight)+'px';
+    }
+  }
+}
+
 // A node's vertex buffers are uploaded to the GPU, and its shader program linked, on the
 // first frame it is actually drawn — not when its geometry is created. So the first flight
 // through the map paid for every node the moment the LOD walker first chose it, and that
@@ -1263,7 +1320,9 @@ async function boot(){
     // core of the map. The core should be the 6.79M-star cloud around it; a layer three
     // orders of magnitude smaller has no business being the brightest thing in frame. At
     // 0.9/0.10 the host stars still resolve when you fly to them, which is when they matter.
-    {k:'exo',      url:'exo_o.bin',      size:0.9, norm:26,   exp:0.10, p:[0.98,1.0], always:true},
+    // maxPx 9, not the default 26: every host has aBright=1, so without a tighter ceiling
+    // all 6,411 draw at the cap simultaneously and merge into one saturated block.
+    {k:'exo',      url:'exo_o.bin',      size:0.5, norm:26,   exp:0.10, p:[0.98,1.0], always:true, maxPx:9.0},
   ];
   let totalN=0, totalBytes=0;
   for(const f of files){
@@ -1321,7 +1380,6 @@ async function boot(){
     console.error(e);
     document.getElementById('ct-filaments').textContent='failed';
   }
-  document.getElementById('total').textContent=fmt(totalN);
   // Kicked off after the first frame is interactive, never before it.
   // The 6.79M tier used to be opt-in via ?full=1 for two reasons, and neither holds now.
   // It was not hosted, so production could not serve it - it is, see STARS_FULL. And a
@@ -1331,18 +1389,28 @@ async function boot(){
   // is now compensated by each node's TRUE subtree ratio rather than a capped pow(lod,1.5)
   // - the miscompensation was the cube, not the coarseness. Verified at d=573: a smooth
   // core, and a denser bright foreground than the 1.2M tier gives.
-  // The headline follows whatever actually loaded, so a reader whose upgrade is gated out
-  // by the memory or link check keeps seeing 4,616,289, which stays true for them.
-  if(!LITE) upgradeStars(totalN - counts.stars);
-  // The headline count has to come from what actually loaded, not from a number typed
-  // into the markup. On the lite build the star layer is 1.2M rather than 7.4M, and a
-  // hardcoded 10,202,358 would be a claim the page did not deliver — which is exactly
-  // the class of thing the About panel promises this map does not do.
+  // The count still has to come from what actually loaded rather than from a number typed
+  // into the markup — a hardcoded 10,202,358 would be a claim the page might not deliver,
+  // which is the class of thing the About panel promises this map does not do. But it is
+  // now written ONCE. Ask the gate first: if this visitor is getting the full tier, leave
+  // the headline blank and say so, and let upgradeStars publish the only number it will
+  // ever show. If they are not, publish the lite total immediately, because that total is
+  // final for them. Either way nobody watches the figure correct itself mid-load.
+  const upgrading = !LITE && starUpgradeAllowed();
   const sub=document.getElementById('subcount');
-  if(sub) sub.innerHTML=('Every point is a real star, galaxy or quasar · '+fmt(totalN)+
-    ' of them, all measured by real telescopes').replace(/ /g,'&nbsp;');
+  if(upgrading){
+    const t=document.getElementById('total'); if(t) t.textContent='—';
+    if(sub) sub.innerHTML=('Every&nbsp;point&nbsp;is&nbsp;a&nbsp;real&nbsp;star,&nbsp;galaxy&nbsp;or&nbsp;quasar&nbsp;·&nbsp;'+
+      'still&nbsp;streaming&nbsp;the&nbsp;full&nbsp;star&nbsp;catalogue…');
+    upgradeStars(totalN - counts.stars);
+  }else{
+    document.getElementById('total').textContent=fmt(totalN);
+    if(sub) sub.innerHTML=('Every point is a real star, galaxy or quasar · '+fmt(totalN)+
+      ' of them, all measured by real telescopes').replace(/ /g,'&nbsp;');
+  }
   console.log('loaded '+fmt(totalN)+' points, '+(totalBytes/1048576).toFixed(2)+' MB across '
     +Object.values(octrees).reduce((a,O)=>a+O.nodes.length,0)+' octree nodes');
+  makeSunMarker();
   warmGPU();
   setProg(1,'Ready');
   // fade out loader
@@ -1381,18 +1449,37 @@ sR.oninput=()=>{document.getElementById('v-rot').textContent=sR.value;};
 
 // camera tweening
 let tween=null;
-function flyTo(pos,tgt,ms=2200){
+function flyTo(pos,tgt,ms=2200,up){
+  // Set the up axis before the flight rather than animating it: OrbitControls derives its
+  // whole spherical frame from camera.up, and interpolating that mid-orbit rolls the view in
+  // a way that reads as the map tipping over. Snapping it while the camera is still at the
+  // old position is invisible, because the first tween frame immediately re-aims.
+  if(up){ camera.up.set(up[0],up[1],up[2]); controls.object.up.copy(camera.up); }
   const c0=camera.position.clone(), t0=controls.target.clone(), t1=new THREE.Vector3(...tgt), p1=new THREE.Vector3(...pos);
-  const start=performance.now();
-  tween={start,ms,from:c0,to:p1,tf:t0,tt:t1};
+  // el accumulates FRAME TIME, it does not read the clock. Reading the clock is what made
+  // the intro flight jump: a blocking stall on the main thread renders no frames while
+  // wall time keeps advancing, so the first frame after the stall found the tween most of
+  // the way done and teleported the camera there. Accumulating dt means a stall costs the
+  // flight nothing except being that much longer, which is invisible.
+  tween={el:0,ms,from:c0,to:p1,tf:t0,tt:t1};
 }
+// Milky Way was pos[6,3,16] and Exoplanets pos[3,1.5,9] — the same direction to the same
+// target, differing only in distance, which is why the two buttons showed the same picture.
+//
+// The pipeline emits GALACTIC cartesian coordinates, so the galactic plane is the XY plane
+// and its pole is +Z. Measured rather than assumed: the star cloud's smallest-variance axis
+// comes out as (0.013, -0.041, 0.999), and it does NOT line up with the galactic pole
+// expressed in equatorial coordinates, which would be (-0.868, -0.198, 0.456), 63 degrees
+// away. The same sample is 29.34 mean in-plane against 8.35 out of it, a real 3.5:1
+// flattening — so an edge-on view shows the actual disk in the actual data and nothing has
+// to be drawn in to suggest it. `up:[0,0,1]` puts the galactic pole on screen-up, which is
+// what makes the band read horizontally instead of standing on end.
 const TOURS={
-  home:  {pos:[0,120,560],  tgt:[0,0,0]},
-  milky: {pos:[6,3,16],     tgt:[0,0,0]},
-  local: {pos:[40,20,120],  tgt:[0,0,0]},
-  web:   {pos:[0,300,1500], tgt:[0,0,0]},
-  quasar:{pos:[200,140,900],tgt:[60,0,-120]},
-  exo:   {pos:[3,1.5,9],    tgt:[0,0,0]},
+  home:  {pos:[0,120,560],  tgt:[0,0,0], up:[0,1,0]},
+  milky: {pos:[96,0,7],     tgt:[0,0,0], up:[0,0,1]},   // in the plane, looking along it
+  local: {pos:[40,20,120],  tgt:[0,0,0], up:[0,1,0]},
+  quasar:{pos:[200,140,900],tgt:[60,0,-120], up:[0,1,0]},
+  exo:   {pos:[3,1.5,9],    tgt:[0,0,0], up:[0,1,0]},
 };
 document.querySelectorAll('.tour').forEach(b=>{
   // #aboutBtn borrows .tour for its styling but is not a camera preset. Without this
@@ -1401,7 +1488,7 @@ document.querySelectorAll('.tour').forEach(b=>{
   b.addEventListener('click',()=>{
     endStuckDrag();
     document.querySelectorAll('.tour[data-t]').forEach(x=>x.classList.remove('on')); b.classList.add('on');
-    const t=TOURS[b.dataset.t]; if(t) flyTo(t.pos,t.tgt);
+    const t=TOURS[b.dataset.t]; if(t) flyTo(t.pos,t.tgt,2200,t.up);
   });
 });
 // Swap the 1.2M star layer for the full 6.79M one, in the background, after the map is
@@ -1426,25 +1513,47 @@ const DEV=location.hostname==='localhost'||location.hostname==='127.0.0.1';
 const STARS_FULL={k:'stars',url:DEV?'stars_o.bin':'/cosmos-data/stars_o.bin',
                   size:0.32,norm:70,exp:0.026,coreGlow:true,uniform:true};
 let liteRateMBs=Infinity;
-async function upgradeStars(otherLayersN){
-  // The full layer measured 393 MB of JS heap against 188 MB for lite. On a 4 GB phone
-  // that is a tab crash, and a crash is a worse outcome than a smaller honest number.
-  // navigator.deviceMemory is coarse and absent on Safari; absent means "unknown", and
-  // unknown is allowed through rather than blocked, because the speed gate below already
-  // filters the worst cases.
+// Split out of upgradeStars so boot can ask the question BEFORE it publishes a count. The
+// headline used to show the lite total and then be overwritten when the full tier landed,
+// which reads as the page correcting itself mid-load — 4,616,289 one moment and 10,202,358
+// the next, with no way for a reader to tell which is true. Deciding first means the number
+// is written exactly once, to whichever total this visitor is actually going to get.
+//
+// The full layer measured 393 MB of JS heap against 188 MB for lite. On a 4 GB phone that is
+// a tab crash, and a crash is a worse outcome than a smaller honest number.
+// navigator.deviceMemory is coarse and absent on Safari; absent means "unknown", and unknown
+// is allowed through rather than blocked, because the speed gate already filters the worst.
+function starUpgradeAllowed(){
   const mem=navigator.deviceMemory;
   if(mem!==undefined && mem<8){
     console.log('skipping the full star layer: deviceMemory reports '+mem+' GB');
-    return;
+    return false;
   }
   if(liteRateMBs < 1.5){
     console.log('skipping the full star layer: lite arrived at '+liteRateMBs.toFixed(2)+' MB/s');
-    return;
+    return false;
   }
+  return true;
+}
+async function upgradeStars(otherLayersN){
+  if(!starUpgradeAllowed()) return;
   const note=document.getElementById('subcount');
   try{
     const O=await loadOctree(STARS_FULL.url);
     normalizeOctree(O,STARS_FULL.norm);
+    // Wait for any camera flight to finish before swapping. Building the layer and warming
+    // its 2,899 nodes blocks the main thread for about a second, and landing that inside the
+    // intro flight is what made the zoom stop dead and then jump. The tween is immune to
+    // stalls now, but a one-second freeze mid-flight still looks broken, whereas the same
+    // freeze with a stationary camera is nearly invisible.
+    // setTimeout, not requestAnimationFrame, and with a ceiling. rAF does not fire at all in
+    // a background tab, so an rAF poll here meant that opening the map in an unfocused tab
+    // left the flight permanently unfinished, the swap permanently deferred, and the headline
+    // showing a dash forever. Timers are throttled when hidden but they do fire. The 5s cap
+    // covers the remaining case where a flight is somehow still running: a late swap is worth
+    // less than a swap that never happens.
+    await new Promise(res=>{ const t0=performance.now();
+      const chk=()=>(!tween||performance.now()-t0>5000)?res():setTimeout(chk,120); chk(); });
     const old=layers.stars, wasVisible=!old||old.visible;
     const fresh=makeOctreeLayer(O,STARS_FULL);
     fresh.visible=wasVisible;              // honour a reader who switched the layer off
@@ -1465,6 +1574,13 @@ async function upgradeStars(otherLayersN){
     console.log('upgraded to the full star layer: '+fmt(O.n)+' stars, total '+fmt(total));
   }catch(e){
     console.error('full star layer failed; staying on the lite layer', e);
+    // The headline was left blank on the promise that this function would fill it. If the
+    // fetch died, fall back to the lite total rather than leaving a dash on screen forever.
+    const liteTotal=otherLayersN + counts.stars;
+    const t=document.getElementById('total'); if(t) t.textContent=fmt(liteTotal);
+    const note2=document.getElementById('subcount');
+    if(note2) note2.innerHTML=('Every point is a real star, galaxy or quasar · '+fmt(liteTotal)+
+      ' of them, all measured by real telescopes').replace(/ /g,'&nbsp;');
   }
 }
 
@@ -1618,7 +1734,7 @@ function recenter(){
   endStuckDrag();   // a guaranteed way out if a drag ever does jam the wheel handler
   document.querySelectorAll('.tour').forEach(x=>x.classList.remove('on'));
   const b=document.querySelector('.tour[data-t="home"]'); if(b) b.classList.add('on');
-  flyTo(TOURS.home.pos,TOURS.home.tgt,1400);
+  flyTo(TOURS.home.pos,TOURS.home.tgt,1400,TOURS.home.up);
 }
 addEventListener('keydown',e=>{
   if(e.code==='Digit0'||e.code==='Numpad0'||e.code==='Home'){ e.preventDefault(); recenter(); }
@@ -1685,7 +1801,10 @@ function tick(now){
   const dt=(now-last)/1000; last=now;
   // tween
   if(tween){
-    const k=Math.min(1,(now-tween.start)/tween.ms), e=ease(k);
+    // Clamped per frame, so one long frame advances the flight by one ordinary frame's
+    // worth rather than by however long the main thread was blocked.
+    tween.el += Math.min(dt,0.05)*1000;
+    const k=Math.min(1,tween.el/tween.ms), e=ease(k);
     camera.position.lerpVectors(tween.from,tween.to,e);
     controls.target.lerpVectors(tween.tf,tween.tt,e);
     if(k>=1) tween=null;
@@ -1706,6 +1825,7 @@ function tick(now){
   if(layers.filaments) layers.filaments.material.uniforms.uTime.value=now*0.001;
   updateLOD();
   updateFades(dt*1000);
+  updateSunMarker();
   composer.render();
   // hud
   frames++; fAcc+=dt;
