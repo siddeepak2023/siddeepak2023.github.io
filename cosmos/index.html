@@ -400,12 +400,20 @@ const frag=`
 // Positions are quantized per NODE, so precision is nodeEdge/65535 rather than
 // catalogueEdge/65535 — far below any structure the viewer can resolve.
 async function loadOctree(url,onP){
+  const tFetch0=performance.now();
   const res=await fetch(url);
   if(!res.ok) throw new Error(url+': HTTP '+res.status);
   const total=+res.headers.get('content-length')||0;
   const reader=res.body.getReader();
   const chunks=[]; let got=0;
   while(true){ const {done,value}=await reader.read(); if(done) break; chunks.push(value); got+=value.length; if(onP&&total) onP(got/total); }
+  // Bytes-on-the-wire time only, ending at the last chunk. Everything below this line is
+  // CPU: parsing 64-byte node records, normalising, and building GPU buffers. The caller
+  // uses this to decide whether the link can carry a 52 MB upgrade, and timing the CPU work
+  // as though it were transfer made a localhost load report 1.24 MB/s for a file that
+  // actually arrived in milliseconds - which then gated the upgrade off on machines whose
+  // connection was never the problem.
+  const fetchMs=performance.now()-tFetch0;
   let len=0; for(const c of chunks) len+=c.length;
   const bytes=new Uint8Array(len); let off=0; for(const c of chunks){ bytes.set(c,off); off+=c.length; }
 
@@ -445,7 +453,7 @@ async function loadOctree(url,onP){
       if(qv===255){ val[i]=NaN; unmeasured++; } else val[i]=vmin+qv*dvv;
     }
   }
-  return {nodes,pos,rad,val,n,unmeasured,bytes:len};
+  return {nodes,pos,rad,val,n,unmeasured,bytes:len,fetchMs};
 }
 
 // Each dataset lives in its own physical coordinate frame & scale (Gaia stars
@@ -802,7 +810,18 @@ const _sph=new THREE.Sphere(), _camLocal=new THREE.Vector3();
 //   2.50M        -> 2,498,058 drawn,  672 nodes, 37.4 ms
 //   4.00M        -> 3,495,271 drawn, 1035 nodes, 50.1 ms
 // So 1.2M stands, and it was never the cause of the patchiness — the fade bug was.
-let POINT_BUDGET=1_200_000;
+// 1.2M was leaving the catalogue at a third of what the GPU can draw. Measured at d=573
+// with gl.finish() forcing the GPU to actually drain each frame - without it render()
+// returns before the work is done and 2.4M appears to cost the same as 1.2M, which is how
+// this stayed low: 1.2M drew 9.0ms/112fps with 458k galaxy points, 1.8M drew 15.3ms/65fps
+// with 881k, 2.4M drew 19.6ms/51fps, 3.0M drew 42ms/24fps. Galaxies are what the extra
+// budget buys - stars sit at a fixed 397,349 because their cut takes only complete octree
+// levels - and galaxy DENSITY is what made the cosmic web look like it was the whole map.
+// 1.8M is the knee. Slow GPUs step down from it at runtime, see slowWins below.
+// A still frame has no frame rate to protect, so ?capture=1 takes the whole catalogue.
+const BUDGET_FLOOR=900_000;
+let slowWins=0, ctlFrames=0, ctlAcc=0;
+let POINT_BUDGET=CAPTURE?3_000_000:1_800_000;
 // Share of the frame budget each visible layer is guaranteed before the open contest.
 // Four contested layers x 0.14 = 56% reserved, leaving 44% allocated purely by screen size.
 let RESERVE_SHARE=0.14;
@@ -1167,10 +1186,14 @@ async function boot(){
     // cache returns in ~0 ms, which would read as infinite bandwidth - true enough, since
     // a cached full layer is also instant.
     if(f.k==='stars'){
-      const secs=Math.max((performance.now()-t0)/1000, 0.001);
+      // O.fetchMs, not the wall time to here: t0 predates the fetch and this point is
+      // three CPU stages past it (parse, normalise, build buffers), so the old figure was
+      // a throughput-of-everything number that understated the link and gated the upgrade
+      // off for readers whose connection could have carried it.
+      const secs=Math.max(O.fetchMs/1000, 0.001);
       liteRateMBs=(O.bytes/1048576)/secs;
-      console.log('lite star layer: '+(O.bytes/1048576).toFixed(1)+' MB in '+secs.toFixed(2)+
-                  's = '+liteRateMBs.toFixed(2)+' MB/s');
+      console.log('lite star layer: '+(O.bytes/1048576).toFixed(1)+' MB fetched in '+secs.toFixed(2)+
+                  's = '+liteRateMBs.toFixed(2)+' MB/s on the wire');
     }
     document.getElementById('ct-'+f.k).textContent=fmt(O.n);
     setProg(f.p[1]);
@@ -1573,8 +1596,36 @@ function tick(now){
   composer.render();
   // hud
   frames++; fAcc+=dt;
+  // A frame over 100ms is a stall, not a cost measurement — see the controller below.
+  if(dt<0.1){ ctlFrames++; ctlAcc+=dt; }
   if(fAcc>=0.5){
-    fEl.textContent=Math.round(frames/fAcc); frames=0; fAcc=0;
+    const fps=frames/fAcc;
+    // Adaptive, and deliberately ONE-WAY. The budget that looks best here (measured with
+    // gl.finish, so a floor rather than a boast: 1.8M at 15.3ms, 65fps) is not a budget
+    // every visitor's GPU can hold, and a portfolio piece that stutters reads worse than
+    // one drawing fewer points. Stepping only downwards cannot oscillate: a budget cut
+    // raises the frame rate, which would otherwise argue for raising it again, and a
+    // two-way controller would then hunt across the threshold forever.
+    //
+    // The decision runs on ctlFrames/ctlAcc, NOT on the displayed fps, and that is the
+    // whole trick. Frames slower than 100ms are dropped from the controller's average
+    // because at that point they are not measuring how much this GPU can draw - they are
+    // a background tab whose rAF is throttled, a garbage collection pause, or the 52 MB
+    // star upgrade being decoded. Averaging those in made the budget step down on a fast
+    // machine that had merely been in another tab, which is the opposite of the intent.
+    // Two consecutive qualifying windows are required on top of that.
+    if(ctlAcc>=0.4 && ctlFrames>=12){
+      const ctlFps=ctlFrames/ctlAcc;
+      if(ctlFps<30 && POINT_BUDGET>BUDGET_FLOOR){
+        if(++slowWins>=2){
+          POINT_BUDGET=Math.max(BUDGET_FLOOR,Math.round(POINT_BUDGET*0.7));
+          slowWins=0;
+          console.log('point budget stepped down to '+fmt(POINT_BUDGET)+' after '+ctlFps.toFixed(0)+' fps of real frames');
+        }
+      } else slowWins=0;
+      ctlFrames=0; ctlAcc=0;
+    }
+    fEl.textContent=Math.round(fps); frames=0; fAcc=0;
     pEl.textContent=fmt(lodStats.points);
     const pl=lodStats.perLayer;
     if(pl){
