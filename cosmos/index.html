@@ -1048,7 +1048,13 @@ function updateFades(dtMs){
           if(!ch||!ch.pts) continue; kids++; if(ch.fade>0) drawnKids++; }
         const f = kids ? drawnKids/kids : 0;
         let compE, compS;
-        if(O.uniform){
+        // The true ratio applies to EVERY layer, not just the uniform one. Capped
+        // pow(lod,1.5) under-compensates exactly where a node stands in for the most
+        // points, which is what drew slabs in the stars and vertical seams in the
+        // quasars. Galaxies and quasars keep the screen-size CUT - they run out to
+        // z~7, so near parts genuinely want more detail than far parts - and only
+        // the compensation changes.
+        if(true){
           // The cut is at one depth, but the tree is NOT uniformly deep: a dense
           // region subdivides further, so cutting at level L drops far more of it
           // than of a sparse region. Measured on the star layer, the leaves of the
