@@ -1205,15 +1205,17 @@ async function boot(){
   }
   document.getElementById('total').textContent=fmt(totalN);
   // Kicked off after the first frame is interactive, never before it.
-  // The 6.79M tier is opt-in via ?full=1, and off by default on purpose. Within a
-  // 1,200,000 frame budget a uniform cut of that tree reaches only levels 0..2 -
-  // 397,349 points, 5.9% of the layer, drawn as 64 coarse blocks, which is the cube.
-  // The 1.2M tier gets 300,725 points at the same cut, 25% of its layer, and reads as
-  // a smooth sphere. It is also the only tier production serves (stars_o.bin is not
-  // hosted), so leaving the upgrade on made a local machine disagree with every
-  // visitor AND made the headline flicker between 4,616,289 and 10,202,358 depending
-  // on whether the fetch won its race on that reload.
-  if(!LITE && new URLSearchParams(location.search).get('full')==='1') upgradeStars(totalN - counts.stars);
+  // The 6.79M tier used to be opt-in via ?full=1 for two reasons, and neither holds now.
+  // It was not hosted, so production could not serve it - it is, see STARS_FULL. And a
+  // uniform cut of that tree within the 1,200,000 budget reaches only levels 0..2, which
+  // at the time drew 397,349 points as 64 visible coarse blocks: the cube. The cut still
+  // lands on the same 397,349 points, but they no longer read as blocks, because exposure
+  // is now compensated by each node's TRUE subtree ratio rather than a capped pow(lod,1.5)
+  // - the miscompensation was the cube, not the coarseness. Verified at d=573: a smooth
+  // core, and a denser bright foreground than the 1.2M tier gives.
+  // The headline follows whatever actually loaded, so a reader whose upgrade is gated out
+  // by the memory or link check keeps seeing 4,616,289, which stays true for them.
+  if(!LITE) upgradeStars(totalN - counts.stars);
   // The headline count has to come from what actually loaded, not from a number typed
   // into the markup. On the lite build the star layer is 1.2M rather than 7.4M, and a
   // hardcoded 10,202,358 would be a claim the page did not deliver — which is exactly
@@ -1289,13 +1291,18 @@ document.querySelectorAll('.tour').forEach(b=>{
 //     the 54.5 MB upgrade would take 36s+, so it is skipped and the page keeps saying 4.6M,
 //     which is what it actually drew. Better a true small number than a stalled big one.
 //   * a failed fetch. The lite layer stays; nothing regresses.
-// The 52 MB full-star tier is NOT hosted alongside the site: git keeps every blob
-// forever and GitHub Pages will not serve LFS, so committing it would bloat the repo
-// permanently and put 52 MB on every visitor who qualified for the upgrade. The fetch
-// therefore 404s in production and upgradeStars bails without touching the lite layer,
-// which is why no surface claims the 10.2M figure. To turn it on, host stars_o.bin
-// anywhere with CORS and point this url at it.
-const STARS_FULL={k:'stars',url:'stars_o.bin',size:0.32,norm:70,exp:0.026,coreGlow:true,uniform:true};
+// The 52 MB full-star tier is hosted OUT of the site repo, in siddeepak2023/cosmos-data,
+// because git keeps every blob forever and Pages will not serve LFS — committing it here
+// would bloat this repo's history permanently for a file that changes never. That repo
+// publishes to Pages under the same account, so /cosmos-data/ is the SAME ORIGIN as this
+// page on both the github.io host and the custom domain, and the path stays correct on
+// each without hardcoding either. Pages also sends access-control-allow-origin:* anyway.
+// Release assets were the obvious first choice and are unusable: they send no CORS header.
+// A site-root path would 404 under a local dev server, where the binary sits next to
+// index.html instead — so localhost keeps the relative path.
+const DEV=location.hostname==='localhost'||location.hostname==='127.0.0.1';
+const STARS_FULL={k:'stars',url:DEV?'stars_o.bin':'/cosmos-data/stars_o.bin',
+                  size:0.32,norm:70,exp:0.026,coreGlow:true,uniform:true};
 let liteRateMBs=Infinity;
 async function upgradeStars(otherLayersN){
   // The full layer measured 393 MB of JS heap against 188 MB for lite. On a 4 GB phone
