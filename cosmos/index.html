@@ -747,6 +747,19 @@ function makeOctreeLayer(O,cfg){
     pts.visible=false;
     // fade is the cross-dissolve weight for LOD transitions; base is the exposure it
     // multiplies. Kept on the node so the walker can drive it without re-deriving.
+    // Seam fix. lodComp/sizeComp are the SUBSAMPLE compensation on their own, kept
+    // separate from the tuned base so updateFades can dial them back per frame.
+    // A coarse node is compensated because it stands in for its region alone — but
+    // the walker also draws its children, and then the region is already at full
+    // density and the compensation becomes a brightness/size STEP along the octree
+    // cube face. That step is the square outline and the vertical seams in the star
+    // cloud. Scaling the compensation by how many children are drawn removes it:
+    // no children drawn -> full compensation (the node really is standing in);
+    // all children drawn -> none (the region is fully covered).
+    nd.lodComp=Math.min(4.0,Math.pow(lod,1.5));
+    nd.sizeComp=Math.min(3.0,Math.pow(lod,0.5));
+    nd.expBase0=(cfg.exp??1.0);
+    nd.sizeBase0=cfg.size;
     nd.fade=0; nd.baseExp=exposure;
     pts.userData={sizeMul,node:nd};
     nd.pts=pts; group.add(pts);
@@ -985,7 +998,18 @@ function updateFades(dtMs){
       // never comes back.
       const on=nd.fade>0;
       if(nd.pts.visible!==on) nd.pts.visible=on;
-      if(on) nd.pts.material.uniforms.uExposure.value=nd.baseExp*nd.fade*mul;
+      if(on){
+        // Fraction of this node's children the walker also drew. 0 -> this node is
+        // the cut and carries its region alone; 1 -> the region is fully covered by
+        // finer nodes and any compensation here is a seam.
+        let kids=0, drawnKids=0;
+        for(let c=0;c<8;c++){ const ci=nd.child[c]; if(ci<0) continue; const ch=O.nodes[ci];
+          if(!ch||!ch.pts) continue; kids++; if(ch.fade>0) drawnKids++; }
+        const f = kids ? drawnKids/kids : 0;
+        const compE = Math.pow(nd.lodComp, 1-f), compS = Math.pow(nd.sizeComp, 1-f);
+        nd.pts.material.uniforms.uExposure.value = nd.expBase0*compE*nd.fade*mul;
+        nd.pts.material.uniforms.uSize.value     = nd.sizeBase0*compS;
+      }
       nd.want=0;
     }
   }
@@ -1037,14 +1061,14 @@ async function boot(){
     // each of their points stands for ~6x as many stars.
     {k:'stars',    url:'stars_lite_o.bin',
                    size:0.32,norm:70,   exp:0.01125, p:[0,0.62], coreGlow:true},
-    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.0825, p:[0.62,0.70]},
+    {k:'quasars',  url:'quasars_o.bin',  size:1.25,norm:1000, exp:0.105, p:[0.62,0.70]},
     // One galaxy layer, not two. The nearby set and the SDSS deep field are the same
     // class of object and were being drawn as if they were different kinds of thing —
     // two shells, two sizes, a 12x gap in exposure. Merged they share one normalisation,
     // so the nearby galaxies land at their true 22% of the deep field's radius instead
     // of being pushed out to a shell of their own. 43,507 of the 2,656,968 carry no
     // measured redshift and are drawn neutral, which is the existing contract.
-    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.0052, p:[0.70,0.98]},
+    {k:'galaxies', url:'galaxies_all_o.bin', size:1.0, norm:620, exp:0.0085, p:[0.70,0.98]},
     // Stars went 500k -> 7.4M in the SAME 2 kpc shell, so ~15x the density under additive
   // blending. Two knobs, and size matters more than exposure here: 'solid' is sprites
   // OVERLAPPING, and overlap goes as the square of the radius, so halving size cuts the
@@ -1115,7 +1139,7 @@ async function boot(){
     // flow=0 for anyone who asked the OS for reduced motion — the web still renders,
     // it just stops travelling.
     const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.8,fade:0.0004,
+    layers.filaments=makeFilamentLayer(F,{color:0x7fb2ff,opacity:0.45,fade:0.0004,
                                           flow:calm?0:0.09,pulses:3.0});
     counts.filaments=F.segCount;
     document.getElementById('ct-filaments').textContent=fmt(F.segCount);
