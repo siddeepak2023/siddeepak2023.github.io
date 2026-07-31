@@ -821,6 +821,10 @@ const _sph=new THREE.Sphere(), _camLocal=new THREE.Vector3();
 // A still frame has no frame rate to protect, so ?capture=1 takes the whole catalogue.
 const BUDGET_FLOOR=900_000;
 let slowWins=0, ctlFrames=0, ctlAcc=0;
+// Owned by the POINT SIZE slider and read by updateFades, which is the only place allowed
+// to write uSize. A slider that writes the uniform directly loses the race with the
+// per-frame write on the very next frame.
+let SIZE_MUL=1;
 let POINT_BUDGET=CAPTURE?3_000_000:1_800_000;
 // Share of the frame budget each visible layer is guaranteed before the open contest.
 // Four contested layers x 0.14 = 56% reserved, leaving 44% allocated purely by screen size.
@@ -1004,6 +1008,57 @@ function updateLOD(){
 // in the 1.8M range where frame time jumps to 54ms. Halving the window halves the
 // overlap, and at 90ms the dissolve still reads as a dissolve rather than a jump.
 const FADE_MS=90;
+
+// A node's vertex buffers are uploaded to the GPU, and its shader program linked, on the
+// first frame it is actually drawn — not when its geometry is created. So the first flight
+// through the map paid for every node the moment the LOD walker first chose it, and that
+// cost lands inside one frame: measured worst frame 168ms on a cold pass, versus 39ms
+// running the identical camera path a second time with everything already resident. Frames
+// that introduced new nodes averaged 15.1ms against 16.6ms for frames that did not, which is
+// what rules out the drawing itself — it is purely the first upload.
+//
+// So do it here, while the loader is still on screen and a long frame costs nothing. A 1x1
+// scissor keeps fragment work at essentially zero; the upload and the program link, which
+// are the parts being paid for, happen anyway.
+//
+// One render per LAYER, in a scratch scene holding only that layer. Two earlier shapes were
+// both worse. Batches of 48 nodes against the live scene cost 1,716ms at load and 3,491ms
+// after the star upgrade: the expense is not the uploading, it is that every
+// renderer.render() walks the whole scene graph, so 87 batches meant 87 full traversals.
+// One render of the live scene with everything visible fixed that and still cost 1,090ms,
+// because the traversal it does walk is the entire map. Isolating one layer at a time keeps
+// each traversal proportional to that layer alone, leaving only the upload itself — and it
+// lets the upgraded star layer be warmed BEFORE it is added to the scene, which is the
+// difference between a one-off cost behind the loader and a visible stall under the reader.
+const _warmScene=new THREE.Scene();
+function warmGroup(g){
+  if(!g) return;
+  const parent=g.parent;
+  _warmScene.add(g);                        // reparenting removes it from the live scene
+  const vis=[];
+  // Only nodes not already resident. Warming is idempotent because the two callers race:
+  // on a fast link the star upgrade finishes before boot reaches its warm pass, and without
+  // this the boot pass re-warmed all 4,165 nodes for a second time at 3,450ms.
+  g.traverse(o=>{ if(o.isPoints && !o._warm){ o._warm=true; vis.push([o,o.visible]); o.visible=true; } });
+  if(vis.length){
+    renderer.setScissorTest(true); renderer.setScissor(0,0,1,1);
+    renderer.render(_warmScene,camera);
+    renderer.setScissorTest(false);
+  }
+  for(const [o,v] of vis) o.visible=v;
+  _warmScene.remove(g);
+  if(parent) parent.add(g);
+}
+function warmGPU(){
+  const t0=performance.now(); let n=0;
+  for(const k in layers){ const g=layers[k]; if(!g||!g.traverse) continue;
+    let c=0; g.traverse(o=>{ if(o.isPoints && !o._warm) c++; });
+    if(!c) continue;
+    warmGroup(g); n+=c;
+  }
+  if(n) console.log('GPU warm-up: '+n+' node buffers resident in '+
+                    (performance.now()-t0).toFixed(0)+'ms');
+}
 // Glow is a SCREEN-SPACE job, not a per-node one. An earlier version scaled each drawn
 // octree node's exposure with camera distance to make the star cloud read as a glowing orb
 // from far away. It worked, and it also drew a hard-edged glowing SQUARE around the cloud:
@@ -1076,7 +1131,10 @@ function updateFades(dtMs){
         // glowing cube around the star sphere. Glow is bloom's job now (threshold 0.16),
         // and bloom works on pixels, so it cannot inherit the node grid.
         nd.pts.material.uniforms.uExposure.value = nd.expBase0*compE*nd.fade*nearDamp(k,camD);
-        nd.pts.material.uniforms.uSize.value     = nd.sizeBase0*compS;
+        // SIZE_MUL, or the POINT SIZE slider does nothing. This line runs for every drawn
+        // node every frame, so it overwrote whatever the slider had just written into
+        // uSize — the control moved, the readout changed, and the picture never did.
+        nd.pts.material.uniforms.uSize.value     = nd.sizeBase0*compS*SIZE_MUL;
       }
       nd.want=0;
     }
@@ -1248,6 +1306,7 @@ async function boot(){
     ' of them, all measured by real telescopes').replace(/ /g,'&nbsp;');
   console.log('loaded '+fmt(totalN)+' points, '+(totalBytes/1048576).toFixed(2)+' MB across '
     +Object.values(octrees).reduce((a,O)=>a+O.nodes.length,0)+' octree nodes');
+  warmGPU();
   setProg(1,'Ready');
   // fade out loader
   const L=document.getElementById('load'); L.style.opacity='0'; setTimeout(()=>L.remove(),900);
@@ -1276,8 +1335,11 @@ sB.oninput=()=>{ const v=+sB.value;
   renderer.toneMappingExposure = 0.7 + v*0.55;
   document.getElementById('v-bloom').textContent=sB.value; };
 sS.oninput=()=>{document.getElementById('v-size').textContent=sS.value;
-  const v=+sS.value;
-  Object.values(layers).forEach(g=>{ if(g) g.children.forEach(p=>{ p.material.uniforms.uSize.value=v*p.userData.sizeMul; }); });};
+  // Hand the value to updateFades rather than writing uSize here. Writing it here reached
+  // every currently-drawn node and was then undone by the next frame's per-node write; going
+  // through SIZE_MUL also means nodes that fade in later inherit it, so the setting applies
+  // to the whole catalogue instead of to whatever happened to be on screen when it moved.
+  SIZE_MUL=+sS.value;};
 sR.oninput=()=>{document.getElementById('v-rot').textContent=sR.value;};
 
 // camera tweening
@@ -1349,6 +1411,10 @@ async function upgradeStars(otherLayersN){
     const old=layers.stars, wasVisible=!old||old.visible;
     const fresh=makeOctreeLayer(O,STARS_FULL);
     fresh.visible=wasVisible;              // honour a reader who switched the layer off
+    // 2,899 cold nodes. Warm them here, isolated, before the swap: every one of them would
+    // otherwise upload under whoever is flying the camera when the walker first reaches it,
+    // and a first-draw upload lands inside a single frame — 168ms worst case, measured.
+    warmGroup(fresh);
     if(old){
       scene.remove(old);
       old.traverse(o=>{ if(o.geometry) o.geometry.dispose(); if(o.material) o.material.dispose(); });
@@ -1558,10 +1624,20 @@ addEventListener('blur',endStuckDrag);
 // Drift keeps rotating the scene after you let go, which makes a released drag look
 // like it is still running. Hold it for a moment after any input so "did it stop?"
 // has an unambiguous answer.
-let _lastInput=0;
-['pointerdown','pointerup','pointermove','wheel'].forEach(ev=>
-  addEventListener(ev,()=>{ _lastInput=performance.now(); },{passive:true}));
-function driftHeld(){ return performance.now()-_lastInput < 1500; }
+// pointermove is NOT input. It used to be, and that single entry is why the map looked
+// frozen: moving the cursor anywhere over the window — reaching for these sliders, or an
+// idle twitch — refreshed the hold, so drift was suppressed the entire time anyone was
+// using the panel and for 1.5s after every stray movement. A viewer whose only motion is
+// switched off whenever the mouse moves is indistinguishable from a hung one, which also
+// made the DRIFT slider look dead: it is read on the frame, and the frame never ran it.
+// A held drag still has to suppress drift, so track the drag explicitly instead of
+// inferring it from movement.
+let _lastInput=0, _dragging=false;
+addEventListener('pointerdown',()=>{ _dragging=true;  _lastInput=performance.now(); },{passive:true});
+['pointerup','pointercancel'].forEach(ev=>
+  addEventListener(ev,()=>{ _dragging=false; _lastInput=performance.now(); },{passive:true}));
+addEventListener('wheel',()=>{ _lastInput=performance.now(); },{passive:true});
+function driftHeld(){ return _dragging || performance.now()-_lastInput < 1500; }
 
 // ── render loop ────────────────────────────────────────────────────────
 const ease=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
