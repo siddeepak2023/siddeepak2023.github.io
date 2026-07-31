@@ -925,7 +925,44 @@ function updateLOD(){
   for(const k in octrees){
     const O=octrees[k]; if(!O||!O.uniform) continue;
     if(!layers[k]||!layers[k].visible) continue;
-    for(const nd of uniformCutFor(O, Math.floor(POINT_BUDGET*RESERVE_SHARE*2.6))){
+    const cap=Math.floor(POINT_BUDGET*RESERVE_SHARE*2.6);
+    const sel=uniformCutFor(O,cap);
+    // A complete level is not enough on its own. On the 6.79M star tree the cut lands at
+    // level 2 — 397,349 points in 64 cubes — and within those 64, subtree/count runs from
+    // 1 to 96.2. Since compE is that ratio to the 0.7, one cube renders at 24x its
+    // neighbour's exposure, and a 24x step across a shared cube face is a straight bright
+    // edge: the "square in the star sphere", and the vertical lines inside it.
+    //
+    // Brightening a coarse node was always the wrong lever, because the mismatch is spatial
+    // and no per-node scalar can smooth an edge between two nodes. Descend instead: hand the
+    // budget to the nodes standing in for the most points, deepest-need first. Drawing a
+    // node's children makes f=1 for the parent, so compE falls to 1 by itself and the step
+    // disappears rather than being compensated. The budget also lands where the data is
+    // densest, which is the core.
+    let used=0;
+    for(const nd of sel) used+=nd.count;
+    const refinable=sel.filter(nd=>{
+      if(nd.subtree/Math.max(1,nd.count) <= 2) return false;      // already representative
+      for(let c=0;c<8;c++){ const ci=nd.child[c]; if(ci>=0){ const ch=O.nodes[ci]; if(ch&&ch.pts) return true; } }
+      return false;
+    }).sort((a,b)=>(b.subtree/Math.max(1,b.count))-(a.subtree/Math.max(1,a.count)));
+    // Two passes, so a child that is itself a dense stand-in can be opened as well.
+    let queue=refinable;
+    for(let pass=0; pass<2 && queue.length; pass++){
+      const next=[];
+      for(const nd of queue){
+        const kids=[]; let add=0;
+        for(let c=0;c<8;c++){ const ci=nd.child[c]; if(ci<0) continue;
+          const ch=O.nodes[ci]; if(!ch||!ch.pts||ch._usel) continue; kids.push(ch); add+=ch.count; }
+        if(!kids.length || used+add>cap) continue;
+        for(const ch of kids){ ch._usel=1; sel.push(ch);
+          if(ch.subtree/Math.max(1,ch.count) > 2) next.push(ch); }
+        used+=add;
+      }
+      queue=next.sort((a,b)=>(b.subtree/Math.max(1,b.count))-(a.subtree/Math.max(1,a.count)));
+    }
+    for(const nd of sel) nd._usel=0;
+    for(const nd of sel){
       _sph.center.copy(nd.center); _sph.radius=nd.radius;
       if(!_frustum.intersectsSphere(_sph)) continue;
       if(nd.want) continue;
