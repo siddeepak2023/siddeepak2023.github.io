@@ -935,7 +935,32 @@ function updateLOD(){
   for(const k in octrees){
     const O=octrees[k]; if(!O||!O.uniform) continue;
     if(!layers[k]||!layers[k].visible) continue;
-    const cap=Math.floor(POINT_BUDGET*RESERVE_SHARE*2.6);
+    // If the whole layer fits, draw the whole layer and the artifact stops existing rather
+    // than being compensated for. Every visible edge in this cloud comes from compE, and
+    // compE is only ever above 1 on a node standing in for children that are NOT drawn.
+    // Draw every node and f=1 everywhere, so compE=1 everywhere and there is no step left.
+    //
+    // Measured against the shipped octree, not reasoned about: at the old cap of
+    // POINT_BUDGET*RESERVE_SHARE*2.6 = 655,200 the cut lands at level 2, draws 646,642 of
+    // 1,200,000 (53.9%), and the worst exposure ratio between neighbouring nodes is 6.31x —
+    // that ratio IS the visible banding. Raising the cap to cover the tier takes the cut to
+    // level 5, draws all 1,200,000, and the ratio becomes exactly 1.00x with all 584 nodes
+    // at 1.0. Extra refinement passes were tried first and changed nothing: refinement was
+    // already saturating the cap at 646,642 of 655,200, so the cap was the binding limit.
+    //
+    // Deliberately does NOT cover the 6.79M tier, which measures 9.25x at every cap tried
+    // (655k / 1.2M / 1.8M) and genuinely needs LOD. That tier is gitignored and opt-in
+    // behind ?full=1, so no visitor is served it — the tier everyone actually gets is the
+    // one that can be drawn whole.
+    // Gated on the fps governor, not just on size. Drawing the layer whole spends budget the
+    // open contest would otherwise give galaxies and quasars — that loop breaks on
+    // pts+count>POINT_BUDGET and pts already includes this layer — so on a machine that has
+    // been stepped down it would buy a clean star cloud by making everything else coarse.
+    // Above the step-down threshold there is headroom for it; below it, fall back to the LOD
+    // cut and accept the banding, because a map running at 12 fps is the worse defect.
+    const FULL_DRAW_MAX=1_400_000;
+    const fullDraw = O.n<=FULL_DRAW_MAX && POINT_BUDGET>=1_500_000;
+    const cap=Math.max(Math.floor(POINT_BUDGET*RESERVE_SHARE*2.6), fullDraw ? O.n : 0);
     const sel=uniformCutFor(O,cap);
     // A complete level is not enough on its own. On the 6.79M star tree the cut lands at
     // level 2 — 397,349 points in 64 cubes — and within those 64, subtree/count runs from
@@ -1279,6 +1304,19 @@ function applyPalette(mode){
     O.col.set(col);
     for(const nd of O.nodes) if(nd.pts) nd.pts.geometry.getAttribute('aColor').needsUpdate=true;
   }
+  // The cosmic web is not an octree, so the loop above never reached it and it stayed the
+  // same stylised blue in both palettes — the one layer that ignored the toggle.
+  //
+  // Neutral is the correct TRUE COLOUR for it, and for the same reason every unmeasured
+  // value in this map is drawn neutral: filament spines are INFERRED. They are the Bisous
+  // process run over galaxy positions (Tempel et al. 2014), not light anyone recorded, so
+  // there is no true colour to show. Blue is a legend choice, which is exactly what VIVID
+  // is for. Keeping it blue under a switch labelled TRUE COLOUR would be the map claiming a
+  // measurement it does not have.
+  if(layers.filaments && layers.filaments.material && layers.filaments.material.uniforms.uColor){
+    layers.filaments.material.uniforms.uColor.value.setRGB(
+      ...(mode==='true' ? [1.0,0.94,0.86] : [0x7f/255,0xb2/255,0xff/255]));
+  }
   const el=document.getElementById('palLabel');
   if(el) el.textContent = mode==='true' ? 'TRUE COLOUR' : 'VIVID';
 }
@@ -1431,7 +1469,22 @@ async function boot(){
   // the headline blank and say so, and let upgradeStars publish the only number it will
   // ever show. If they are not, publish the lite total immediately, because that total is
   // final for them. Either way nobody watches the figure correct itself mid-load.
-  const upgrading = !LITE && starUpgradeAllowed();
+  // OPT-IN AGAIN, on measurement. The 6.79M tier cannot be de-banded by any cap: measured
+  // against the shipped octree it steps 9.25x between neighbouring cut-edge nodes at 655,200
+  // / 1.2M / 1.4M / 1.8M alike, drawing only 5.9%-23.4% of itself, because compE at :1277 is
+  // pow(min(24, subtree/count), 0.7) — a node standing in for 24x its own points is brightened
+  // 9.25x while its neighbour standing in for 1x is not brightened at all, and that difference
+  // across a shared cube face IS the vertical line and the box around the core.
+  //
+  // The 1.2M tier has no such step once it is drawn whole: same measurement gives 7.07x at the
+  // old cap and exactly 1.00x at any cap >= 1,200,000, with every node at f=1. So the tier
+  // choice is the banding fix, and the comment at :1457 claiming true-subtree compensation had
+  // already fixed the cube is wrong — it is still 9.25x today.
+  //
+  // Default is therefore the tier that can be drawn whole. ?full=1 still gets the dense field
+  // for anyone who wants it and accepts the LOD edges.
+  const FULL_OPT = /[?&]full=1\b/.test(location.search);
+  const upgrading = FULL_OPT && !LITE && starUpgradeAllowed();
   const sub=document.getElementById('subcount');
   if(upgrading){
     const t=document.getElementById('total'); if(t) t.textContent='—';
