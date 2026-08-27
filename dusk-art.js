@@ -50,6 +50,21 @@ var DPRc = Math.min(window.devicePixelRatio || 1, 2);
 var follow = !reduceMotion && !!canvas;
 var falconPts = null, falconAspect = 1.336;
 var mT = 0, mE = 0, sc = 0, txr = 0, wsr = 0;
+/* ---------- HERO FRAME BUDGET ----------
+   The draw cap, the density lever and the probe are ONE decision, so they live
+   together. CAP_MS is the ceiling the probe can ever measure, and PROBE_FPS is
+   the floor that trips a density step — the pair is ported from the Talon hero
+   (HeroTerrain.tsx), which is the newest version of this loop. */
+var CAP_MS = 33;                        /* ~30fps draw cap */
+var PROBE_FPS = 18;                     /* sustained rate that trips a density step */
+var probeN = 0, probeStart = 0;
+/* Dust density multiplier, stepped DOWN when the frame budget is missed.
+   Cost is dominated by the point count (92 x 341 ~= 31k points/frame, each four
+   octaves of noise plus two exponentials), so the honest response to a missed
+   budget is fewer points, not fewer frames. Freezing is the last resort. */
+var quality = 1, QUALITY_STEPS = [1, 0.72, 0.5], qStep = 0;
+var running = false, rafId = 0;
+var frozenGuardOn = false, frozenCleared = false;
 var waveTopDoc = 0, waveH = 0, dockBotDoc = 0, dockSecTop = 0, dockShown = false;
 var dockSec = document.querySelector("[data-dock]");
 var dockSection = dockSec ? dockSec.closest("section") : null;
@@ -160,7 +175,8 @@ function drawFrame(t){
   var Hw = follow ? waveH : H;
   var yOff = follow ? waveTopDoc - sc : 0;
   ctx.clearRect(0, 0, W, H);
-  var ROWS = 92, COLS = Math.min(340, Math.max(150, Math.floor(W / 4)));
+  var ROWS = Math.round(92 * quality);
+  var COLS = Math.round(Math.min(340, Math.max(150, Math.floor(W / 4))) * quality);
   var horizon = Hw * 0.24, spread = Hw * 0.68, maxH = Hw * 0.78;
   var stepX = W / COLS;
   ggx += (gmx - ggx) * 0.07; ggy += (gmy - ggy) * 0.07;
@@ -261,13 +277,55 @@ function resizeTerrain(){
   if (dockShown) drawDockFalcon(); // resize invalidates the docked bird's geometry
   drawFrame(last / 1000);
 }
+/* Keeps a frozen hero from smearing over the page: clear once scrolled past,
+   repaint the single still frame when back in range. A stopped loop can never
+   reach the clear inside drawFrame, so the last frame would otherwise hang over
+   the whole page on a position:fixed layer. One comparison per event. */
+function installFrozenGuard(){
+  if (frozenGuardOn) return;
+  frozenGuardOn = true;
+  function onFrozenScroll(){
+    var past = follow && (waveTopDoc + waveH - window.scrollY < -60);
+    if (past && !frozenCleared) { ctx.clearRect(0, 0, W, H); frozenCleared = true; }
+    else if (!past && frozenCleared) { frozenCleared = false; drawFrame(last / 1000); }
+  }
+  window.addEventListener("scroll", onFrozenScroll, { passive: true });
+  onFrozenScroll();
+}
 function loop(ts){
-  requestAnimationFrame(loop);
-  if (document.hidden) return;
-  if (!heroVisible && !dockShown && mE < 0.01) { /* resting + offscreen */ }
-  if (mE < 0.01 && ts - last < 33) return;
+  if (!running) return;
+  rafId = requestAnimationFrame(loop);
+  /* Reset the probe wherever draws stop while the clock keeps running, or the next
+     completed window reads as a false stall and thins the dust on a fast machine.
+     Background tabs throttle rAF to ~1fps; scrolling past the hero stops draws. */
+  if (document.hidden) { probeN = 0; probeStart = 0; return; }
+  if (!heroVisible && !dockShown && mE < 0.01) { probeN = 0; probeStart = 0; return; }
+  /* 30fps cap, ALWAYS. This was gated on `mE < 0.01`, so the cap held only while
+     the falcon morph was at rest and lifted the moment it engaged — drawing every
+     rAF at 60-120Hz through the single most expensive phase (morph + dock canvas +
+     scroll geometry). That was the scroll lag. Halves the cost, no visible change. */
+  if (ts - last < CAP_MS) return;
   last = ts;
   drawFrame(ts / 1000);
+  /* Adaptive density — only after a warmup (skip initial load jank), over a clean
+     sustained window, and only for a genuinely weak GPU. */
+  if (++probeN <= 40) return;              /* warmup: ignore first 40 drawn frames */
+  if (probeStart === 0) { probeStart = ts; return; }
+  if (probeN - 40 >= 90) {                 /* sustained 90-frame window (~3s) */
+    if (90000 / Math.max(1, ts - probeStart) < PROBE_FPS) {
+      if (qStep < QUALITY_STEPS.length - 1) {
+        /* Thin the dust and keep moving. Half the points is roughly half the
+           per-frame cost, so one step usually clears the budget outright. */
+        quality = QUALITY_STEPS[++qStep];
+      } else {
+        /* Already at the sparsest field and still missing. Now a static frame is
+           the right answer — the device cannot do this at all. */
+        running = false; cancelAnimationFrame(rafId);
+        installFrozenGuard();
+      }
+    }
+    probeN = 41; probeStart = ts;           /* re-arm */
+  }
 }
 if (follow) window.addEventListener("scroll", heroScroll, { passive: true });
 
@@ -850,13 +908,27 @@ function syncColors(){
 }
 
 /* ---------- INIT ---------- */
-window.addEventListener("resize", function(){ resizeTerrain(); renderArts(); });
+/* Coalesced, and width-only. resizeTerrain() re-runs querySelectorAll, three glyph
+   measurements, measureDock, heroScroll and a full draw; bound raw to `resize` that
+   ran once PER EVENT, and on mobile the URL bar showing/hiding fires resize
+   continuously while you scroll — for a height change the wave does not care about. */
+var sizeRaf = 0, lastRW = window.innerWidth;
+window.addEventListener("resize", function(){
+  if (window.innerWidth === lastRW) return;
+  lastRW = window.innerWidth;
+  if (sizeRaf) return;
+  sizeRaf = requestAnimationFrame(function(){ sizeRaf = 0; resizeTerrain(); renderArts(); });
+});
 resizeTerrain();
 syncColors();
 if (canvas && !reduceMotion) {
   new IntersectionObserver(function(en){ heroVisible = en[0].isIntersecting; })
     .observe(canvas.closest("section") || canvas);
-  requestAnimationFrame(loop);
+  document.addEventListener("visibilitychange", function(){
+    if (!document.hidden) { probeN = 0; probeStart = 0; }
+  });
+  running = true;
+  rafId = requestAnimationFrame(loop);
 }
 
 /* ---------- SCROLL REVEALS ---------- */
