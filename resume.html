@@ -194,7 +194,7 @@
       <div class="project-stack">Python, HistGradientBoosting, Optuna, SQLite, nba_api</div>
       <ul class="bullets">
         <li>Trained a gradient-boosted classifier on <strong>10,624 real NBA games</strong> across 9 seasons and validated it on the fully held-out 2024-25 season, reaching <strong>66.4% accuracy against a 54.4% always-home baseline</strong> with calibrated probabilities and TimeSeriesSplit</li>
-        <li>Ran a <strong>feature ablation</strong> showing Elo differential alone reaches 0.710 AUC, so the remaining 70 features added <strong>0.015, less than the 0.021 spread across folds</strong>. Re-tested on <strong>1,230 unseen games</strong> from 2025-26, where it matched a closed-form Elo on ranking and beat it only on calibration</li>
+        <li>Ran a <strong>feature ablation</strong> to test whether the model's complexity earned its keep: Elo differential alone reached 0.710 AUC and the remaining 70 features added <strong>0.015, inside the 0.021 spread across folds</strong>. Retested on <strong>1,230 unseen games</strong> from 2025-26, isolating calibration as where the model adds value over a closed-form Elo</li>
       </ul>
     </div>
 
