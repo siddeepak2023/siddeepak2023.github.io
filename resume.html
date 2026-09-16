@@ -14,7 +14,7 @@
     font-weight: 400;
     color: #1a1a1a;
     background: #fff;
-    line-height: 1.22;
+    line-height: 1.18;
   }
 
   .page {
@@ -36,12 +36,12 @@
     text-align: center;
     font-size: 9.4pt;
     color: #444;
-    line-height: 1.22;
+    line-height: 1.18;
   }
   .contact a { color: #1a56c4; text-decoration: underline; text-underline-offset: 1.5px; }
 
   /* ── Sections ── */
-  .section { margin-top: 3px; }
+  .section { margin-top: 2px; }
   .section-title {
     font-size: 10.5pt;
     font-weight: 600;
@@ -59,7 +59,7 @@
   .edu-school { font-style: italic; font-size: 10.5pt; color: #444; margin-top: 1px; }
 
   /* ── Coursework ── */
-  .coursework { font-size: 10.5pt; color: #333; line-height: 1.28; }
+  .coursework { font-size: 10.5pt; color: #333; line-height: 1.24; }
 
   /* ── Skills ── */
   .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 20px; font-size: 10.5pt; }
@@ -73,7 +73,7 @@
   .exp-title { font-weight: 400; font-size: 10.5pt; }
   .exp-date { font-size: 10.5pt; color: #555; white-space: nowrap; }
   ul.bullets { padding-left: 14px; margin-top: 1px; }
-  ul.bullets li { margin-bottom: 1px; font-size: 9.9pt; color: #222; line-height: 1.22; }
+  ul.bullets li { margin-bottom: 1px; font-size: 9.9pt; color: #222; line-height: 1.18; }
 
   /* ── Projects ── */
   .project { margin-bottom: 2px; }
@@ -133,11 +133,11 @@
       </div>
       <div class="skill-row">
         <span class="skill-label">Libraries:</span>
-        <span class="skill-val">Pandas, NumPy, scikit-learn, statsmodels, HistGradientBoosting, Optuna</span>
+        <span class="skill-val">Pandas, NumPy, scikit-learn, statsmodels, HistGradientBoosting</span>
       </div>
       <div class="skill-row">
         <span class="skill-label">Tools:</span>
-        <span class="skill-val">Tableau, Excel, Git, SQLite, Firebase</span>
+        <span class="skill-val">Tableau, Excel, Git, Firebase, Firestore, Stripe, Cloudflare</span>
       </div>
       
     </div>
@@ -151,17 +151,18 @@
       <span class="exp-date">May 2026 – Present</span>
     </div>
     <ul class="bullets">
-      <li>Launched two analytics products: <strong><a href="https://profitfalcon.com">ProfitFalcon</a></strong> for e-commerce brands, covering contribution margin, LTV/CAC and discount leakage, and <strong><a href="https://clientfalcon.com">ClientFalcon</a></strong> for agencies, multi-client reporting on an explainable account-health score, both running on standard Shopify, Meta, Google Ads and GA4 exports</li>
-      <li>Engineered the shared analysis engine, <strong><a href="https://talon.bizfalconai.com">Talon</a></strong>, running Python across a client's full dataset rather than a sample. Authored <strong>9 metric packs</strong> and <strong>11 guided statistical workflows</strong> spanning hypothesis testing, regression, cohort and time-series analysis, with every formula exposed for audit</li>
-      <li>Designed a recommendation layer that names the next action with <strong>projected dollar impact</strong> and required human approval, then scores each decision against its realized result to make recommendation quality measurable</li>
-      <li>Recruited and led a <strong>3-person team</strong> while building and operating the full stack in React, TypeScript, Firebase, in-browser Python and Stripe, maintaining <strong>2,400+ automated tests</strong> under CI</li>
+      <li>Launched <strong><a href="https://bizfalconai.com/profitfalcon">ProfitFalcon</a></strong> for e-commerce brands: contribution margin by SKU, LTV/CAC by cohort, discount leakage by promo code and reorder timing from sell-through rates</li>
+      <li>Launched <strong><a href="https://bizfalconai.com/clientfalcon">ClientFalcon</a></strong> for marketing agencies: ROAS and CAC by channel across an agency's full client book, ranked by an explainable account-health score</li>
+      <li>Engineered <strong><a href="https://analyst.bizfalconai.com">BizFalcon Analyst</a></strong>, the shared engine underneath both, which writes and runs Python in-browser across a client's full dataset, not a sample. Authored <strong>9 metric packs</strong> and <strong>11 guided statistical workflows</strong> covering hypothesis testing, regression, cohort and time-series analysis, every formula exposed for audit</li>
+      <li>Designed a recommendation layer that names the next action with <strong>projected dollar impact</strong> and required approval, then scores each against its realized result</li>
+      <li>Recruited and led a <strong>3-person team</strong> while building and operating the architecture end to end: React, TypeScript, Firebase and Firestore, Pyodide, Stripe billing and Cloudflare DNS, under CI</li>
     </ul>
     <div class="exp-header">
       <span><span class="exp-org">YMCA Central Texas</span>, <span class="exp-title">Summer Camp Counselor</span></span>
       <span class="exp-date">May 2021 – Aug 2025</span>
     </div>
     <ul class="bullets">
-      <li>Led groups of 15 to 25 campers across four summers, trained incoming counselors through a structured shadowing program, and earned Counselor of the Week five times and Rookie Counselor of the Year</li>
+      <li>Led groups of 15 to 25 campers across four summers, trained incoming counselors through a shadowing program, and earned Counselor of the Week five times and Rookie Counselor of the Year</li>
     </ul>
   </div>
 
@@ -196,12 +197,12 @@
     <div class="project">
       <div class="project-header">
         <span class="project-name">Olist E-Commerce Revenue &amp; Sales Analysis</span>
-        <span class="project-link"><a href="https://siddharthdeepak.bizfalconai.com/olist_dashboard.html">Live Dashboard</a></span>
+        <span class="project-link"><a href="https://siddharthdeepak.bizfalconai.com/olist_dashboard.html">Live Dashboard</a>, <a href="https://github.com/siddeepak2023/Olist-E-Commerce-Analysis-SQL">GitHub</a></span>
       </div>
       <div class="project-stack">Python, SQL, Pandas, Tableau, Excel</div>
       <ul class="bullets">
         <li>Analyzed <strong>96,478 e-commerce orders</strong> across 9 source tables, joining them into a star schema and querying in SQL with CTEs and window functions. Health and Beauty led revenue at R$1.4M of R$15.4M</li>
-        <li>Modeled review scores with a logistic regression controlling for state, category and freight: each day of delivery delay raised the odds of a low review by <strong>8.5%, or 1.78 times over a one-week slip</strong> (OR 1.085/day, n=95,824)</li>
+        <li>Modeled review scores with a logistic regression controlling for state, category and freight: each day of delay raised the odds of a low review <strong>8.5%, or 1.78x over a one-week slip</strong> (OR 1.085/day, n=95,824)</li>
       </ul>
     </div>
 
